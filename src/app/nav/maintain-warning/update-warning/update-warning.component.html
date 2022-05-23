@@ -1,0 +1,67 @@
+<h1>&nbsp;Update warning</h1>
+<div class="container-fluid">
+  <label
+    class="form-label"
+    style="
+      margin: 1%;
+      font-weight: bold;
+      margin-top: 0%;
+      font-size: 19px;
+      padding-right: 0;
+      padding-left: 6%;
+    "
+    >Edit and update a warning:</label
+  >
+</div>
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <div class="container">
+    <label
+      class="form-label"
+      style="margin: 1%; 
+        margin-top: 0%; 
+        padding-right: 0; 
+        padding-left: 9%"
+      >Warning name:</label
+    >
+  </div>
+  <div class="container" style="margin-left: 6%">
+    <input
+      type="text"
+      name="warningname"
+      style="margin-left: 3%; width: 70%"
+      placeholder="{{warning.warininG_NAME}}"
+      [(ngModel)]="warning.warininG_NAME"
+      (input) = onInput()
+    />
+  </div>
+  <label
+    class="form-label"
+    style="
+      margin: 1%;
+      margin-top: 3%;
+      padding-right: 0;
+      padding-left: 9%;
+      margin-right: 0%;
+      margin-left: 3%;
+    "
+    >Reason:</label
+  >
+  <div class="container" style="margin-left: 6%">
+    <input
+      type="text"
+      name="reason"
+      style="margin-left: 3%; width: 70%"
+      placeholder="{{ warning.reason }}"
+      [(ngModel)]="warning.reason"
+    />
+  </div>
+  <div class="container">
+    <button
+      class="btn btn-primary"
+      type="submit"
+      style="margin-top: 7%; margin-left: 8%"
+    >
+      Update
+    </button>
+  </div>
+</form>

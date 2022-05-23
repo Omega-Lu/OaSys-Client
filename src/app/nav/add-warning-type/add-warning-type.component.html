@@ -1,0 +1,31 @@
+<h1>&nbsp;Add Warning type</h1>
+<div class="container-fluid">
+  <label
+    class="form-label"
+    style="
+      margin: 1%;
+      font-weight: bold;
+      margin-top: 0%;
+      font-size: 19px;
+      padding-right: 0;
+      padding-left: 0%;
+    "
+    >Add a new warning type:</label
+  >
+</div>
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <label
+    class="form-label"
+    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
+    >Warning Type Name:</label
+  >
+  <div class="container" style="margin-left: 3%">
+    <input type="text" style="padding-right: 0" name="warningTypeName" [(ngModel)]="warningType.description"/>
+  </div>
+
+  <div class="container" style="margin-left: 3%">
+    <button class="btn btn-primary" type="submit" style="margin-top: 7%">
+      Add
+    </button>
+  </div>
+</form>

@@ -1,0 +1,86 @@
+<h2 style="color: rgb(0, 0, 0); margin-left: 10px">Add Supplier</h2>
+<div class="container-fluid">
+  <h3 class="text-dark mb-1"></h3>
+</div>
+<form
+  style="
+    width: 450px;
+    height: 200px;
+    margin-left: 80px;
+    margin-bottom: 0px;
+    margin-top: 50px;
+  "
+  #form="ngForm"
+  (ngSubmit)="onSubmit()"
+>
+  <header></header>
+  <h4 style="color: rgb(0, 0, 0); margin-left: 10px">
+    Add New Employee Type Details:
+  </h4>
+  <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
+    >Name:</label
+  ><input
+    class="form-control"
+    name="positionName"
+    placeholder="Name"
+    type="text"
+    style="margin-left: 10px; width: 400px"
+    [(ngModel)]="supplier.name"
+    (click)="namevalidate()"
+    (keyup)="namevalidate()"
+  />
+  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+  <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
+    >VAT Number:</label
+  ><input
+    class="form-control"
+    name="vatnum"
+    placeholder="0"
+    type="text"
+    style="margin-left: 10px; width: 400px"
+    [(ngModel)]="supplier.vaT_NUMBER"
+  />
+  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+  <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
+    >Contact Number:</label
+  ><input
+    class="form-control"
+    name="connum"
+    placeholder="0"
+    type="text"
+    style="margin-left: 10px; width: 400px"
+    [(ngModel)]="supplier.contacT_NUMBER"
+  />
+  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+  <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
+    >Alternate Contact Number:</label
+  ><input
+    class="form-control"
+    name="altnum"
+    placeholder="0"
+    type="text"
+    style="margin-left: 10px; width: 400px"
+    [(ngModel)]="supplier.alT_NUMBER"
+  />
+  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+  <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
+    >Email:</label
+  ><input
+    class="form-control"
+    name="email"
+    placeholder="exmaple@email.com"
+    type="email"
+    style="margin-left: 10px; width: 400px"
+    [(ngModel)]="supplier.email"
+  />
+  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+  <!-- <button class="btn btn-primary" (click)="Return()">Cancel</button> -->
+  <button
+    class="btn btn-primary"
+    type="submit"
+    style="background: var(--bs-orange); margin-top: 20px; margin-left: 10px"
+    *ngIf="details"
+  >
+    Save
+  </button>
+</form>

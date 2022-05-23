@@ -1,0 +1,50 @@
+<h1>&nbsp;Update wage rate</h1>
+<div class="container-fluid">
+  <label
+    class="form-label"
+    style="
+      margin: 1%;
+      font-weight: bold;
+      margin-top: 0%;
+      font-size: 19px;
+      padding-right: 0;
+      padding-left: 6%;
+    "
+    >Update wage rate details:</label
+  >
+</div>
+<form #form="ngForm" (ngSubmit)="onSubmit()" >
+  <label
+  class="form-label"
+  style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 9%"
+  >Wage rate name:</label
+>
+<div class="container">
+  <input type="text" style="padding-left: 4%; margin-left: 8%" 
+  name="RateName"
+  placeholder="{{rate.ratE_NAME}}"
+  [(ngModel)] = "rate.ratE_NAME"/>
+</div>
+<label
+  class="form-label"
+  style="margin: 1%; margin-top: 3%; padding-right: 0; padding-left: 9%"
+  >Wage rate(R/h):</label
+>
+<div class="container" style="margin-left: 6%">
+  <label class="form-label">R</label
+  ><label class="form-label"
+    ><input type="number" style="margin-left: 0%" 
+    placeholder="{{rate.ratE_AMOUNT}}"
+    [(ngModel)] = "rate.ratE_AMOUNT"/>/h</label
+  >
+</div>
+<div class="container">
+  <button
+    class="btn btn-primary"
+    type="submit"
+    style="margin-top: 7%; margin-left: 8%"
+  >
+    Update
+  </button>
+</div>
+</form> 

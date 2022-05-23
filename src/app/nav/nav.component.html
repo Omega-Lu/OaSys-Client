@@ -1,0 +1,732 @@
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+  />
+  <title>OaSys</title>
+  <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap"
+  />
+  <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css" />
+  <link rel="stylesheet" href="/assets/css/styles.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"
+  />
+</head>
+<body id="page-top">
+  <div id="wrapper">
+    <nav
+      class="navbar navbar-light align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
+      style="background: rgb(0, 0, 0)"
+    >
+      <div class="container-fluid d-flex flex-column p-0">
+        <!-- <a
+          class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
+          href="#"
+          ><img src="/assets/img/System%20Logo.png" 
+          class="pl-4"
+          style="width:100%; height: auto;"/>
+          <div class="sidebar-brand-icon rotate-n-15"></div>
+          <div class="sidebar-brand-text mx-3"></div
+        ></a> -->
+        <img
+          src="/assets/img/System%20Logo.png"
+          style="width: 100%; height: 71px"
+        />
+        <hr class="sidebar-divider my-0" />
+        <ul class="navbar-nav text-dark" id="accordionSidebar">
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span class="text-warning" (click)="back()">Dashboard</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile.html"
+              ><i class="fas fa-user"></i
+              ><span class="text-warning">Employee</span></a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content">
+        <nav
+          class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top"
+        >
+          <div class="container-fluid">
+            <h1
+              style="
+                --bs-body-color: #000000;
+                --bs-dark: #000000;
+                --bs-dark-rgb: 0, 0, 0;
+                color: rgb(0, 0, 0);
+              "
+              *ngIf="landingPage"
+            >
+              LANDING PAGE
+            </h1>
+            <form
+              class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search"
+            >
+              <div class="input-group"></div>
+            </form>
+            <ul class="navbar-nav flex-nowrap ms-auto">
+              <div class="d-none d-sm-block topbar-divider"></div>
+              <li class="nav-item dropdown no-arrow">
+                <div class="nav-item dropdown no-arrow">
+                  <a
+                    class="dropdown-toggle nav-link"
+                    aria-expanded="false"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    ><span class="d-none d-lg-inline me-2 text-gray-600 small"
+                      >Human Resource Manager</span
+                    ><img
+                      class="border rounded-circle img-profile"
+                      src="assets/img/avatars/avatar1.jpeg"
+                  /></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div class="pl-3">
+          <app-add-eployee
+            *ngIf="addEmployee"
+            (return)="back()"
+          ></app-add-eployee>
+          <app-add-eployee-type
+            *ngIf="addEmployeeType"
+            (return)="back()"
+          ></app-add-eployee-type>
+          <app-add-wage-rate
+            *ngIf="addWageRate"
+            (return)="back()"
+          ></app-add-wage-rate>
+          <app-add-warning
+            *ngIf="addWarning"
+            (return)="back()"
+          ></app-add-warning>
+          <app-add-warning-type
+            *ngIf="addWarningType"
+            (return)="back()"
+          ></app-add-warning-type>
+          <app-add-supplier
+            *ngIf="addSupplier"
+            (return)="back()"
+          ></app-add-supplier>
+          <app-add-product
+            *ngIf="addProduct"
+            (return)="back()"
+          ></app-add-product>
+          <app-search-employee
+            *ngIf="searchEmployee"
+            (return)="back()"
+          ></app-search-employee>
+          <app-search-employee-type
+            *ngIf="searchEmployeeType"
+            (return)="back()"
+          ></app-search-employee-type>
+          <app-search-wage-rate
+            *ngIf="searchWageRate"
+            (return)="back()"
+          ></app-search-wage-rate>
+          <app-search-warning
+            *ngIf="searchWarning"
+            (return)="back()"
+          ></app-search-warning>
+          <app-search-warning-type
+            *ngIf="searchWarningType"
+            (return)="back()"
+          ></app-search-warning-type>
+          <app-search-supplier
+            *ngIf="searchSupplier"
+            (return)="back()"
+          ></app-search-supplier>
+          <app-search-product
+            *ngIf="searchProduct"
+            (return)="back()"
+          ></app-search-product>
+          <app-maintain-employee
+            *ngIf="maintainEmployee"
+            (return)="back()"
+          ></app-maintain-employee>
+          <app-maintain-employee-type
+            *ngIf="maintainEmployeeType"
+            (return)="back()"
+          ></app-maintain-employee-type>
+          <app-maintain-wage-rate
+            *ngIf="maintainWageRate"
+            (return)="back()"
+          ></app-maintain-wage-rate>
+          <app-maintain-warning
+            *ngIf="maintainWarning"
+            (return)="back()"
+          ></app-maintain-warning>
+          <app-maintain-warning-type
+            *ngIf="maintainWarningType"
+            (return)="back()"
+          ></app-maintain-warning-type>
+          <app-maintain-supplier
+            *ngIf="maintainSupplier"
+            (return)="back()"
+          ></app-maintain-supplier>
+          <app-maintain-product
+            *ngIf="maintainProduct"
+            (return)="back()"
+          ></app-maintain-product>
+        </div>
+
+        <div *ngIf="landingPage">
+          <div class="container-fluid">
+            <div
+              class="d-sm-flex justify-content-between align-items-center mb-4"
+            ></div>
+          </div>
+          <h3 class="text-dark mb-0"></h3>
+          <div class="card">
+            <div class="card-header">
+              <h5
+                class="mb-0"
+                style="
+                  --bs-primary: #3c404d;
+                  --bs-primary-rgb: 60, 64, 77;
+                  color: rgb(0, 0, 0);
+                  font-weight: bold;
+                "
+              >
+                Employee
+              </h5>
+            </div>
+          </div>
+          <div class="card-group">
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-plus text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="addEmployee = true; landingPage = false"
+                >
+                  Add employee
+                </button>
+              </div>
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-plus text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="addEmployeeType = true; landingPage = false"
+                >
+                  Add employee type
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-search text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="searchEmployee = true; landingPage = false"
+                >
+                  Search employee
+                </button>
+              </div>
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-search text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="searchEmployeeType = true; landingPage = false"
+                >
+                  Search employee type
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-pencil-alt text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="maintainEmployee = true; landingPage = false"
+                >
+                  Maintain employee
+                </button>
+              </div>
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-pencil-alt text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="maintainEmployeeType = true; landingPage = false"
+                >
+                  Maintain employee type
+                </button>
+              </div>
+            </div>
+          </div>
+          <div id="content-1" style="color: var(--bs-indigo)">
+            <div class="container-fluid">
+              <div
+                class="d-sm-flex justify-content-between align-items-center mb-4"
+              ></div>
+            </div>
+            <h3 class="text-dark mb-0"></h3>
+            <div class="card">
+              <div class="card-header">
+                <h5
+                  class="mb-0"
+                  style="
+                    --bs-primary: #3c404d;
+                    --bs-primary-rgb: 60, 64, 77;
+                    color: rgb(0, 0, 0);
+                    font-weight: bold;
+                  "
+                >
+                  Wage rate
+                </h5>
+              </div>
+            </div>
+            <div class="card-group">
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-plus text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="addWageRate = true; landingPage = false"
+                  >
+                    Add wage rate
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-search text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="searchWageRate = true; landingPage = false"
+                  >
+                    Search wage rate
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-pencil-alt text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="maintainWageRate = true; landingPage = false"
+                  >
+                    Maintain wage rate
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="content-2" style="color: var(--bs-indigo)">
+            <div class="container-fluid">
+              <div
+                class="d-sm-flex justify-content-between align-items-center mb-4"
+              ></div>
+            </div>
+            <h3 class="text-dark mb-0"></h3>
+            <div class="card">
+              <div class="card-header">
+                <h5
+                  class="mb-0"
+                  style="
+                    --bs-primary: #3c404d;
+                    --bs-primary-rgb: 60, 64, 77;
+                    color: rgb(0, 0, 0);
+                    font-weight: bold;
+                  "
+                >
+                  Warnings
+                </h5>
+              </div>
+            </div>
+            <div class="card-group">
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-plus text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="addWarning = true; landingPage = false"
+                  >
+                    Add warning
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-search text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="searchWarning = true; landingPage = false"
+                  >
+                    Search warning
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-pencil-alt text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="maintainWarning = true; landingPage = false"
+                  >
+                    Maintain warning
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-group">
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-plus text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn link-dark"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="addWarningType = true; landingPage = false"
+                >
+                  Add warning type
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-search text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn link-dark"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="searchWarningType = true; landingPage = false"
+                >
+                  Search warning type
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-pencil-alt text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn link-dark"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="maintainWarningType = true; landingPage = false"
+                >
+                  Maintain warning type
+                </button>
+              </div>
+            </div>
+          </div>
+          <div id="content-2" style="color: var(--bs-indigo)">
+            <div class="container-fluid">
+              <div
+                class="d-sm-flex justify-content-between align-items-center mb-4"
+              ></div>
+            </div>
+            <h3 class="text-dark mb-0"></h3>
+            <div class="card">
+              <div class="card-header">
+                <h5
+                  class="mb-0"
+                  style="
+                    --bs-primary: #3c404d;
+                    --bs-primary-rgb: 60, 64, 77;
+                    color: rgb(0, 0, 0);
+                    font-weight: bold;
+                  "
+                >
+                  Suppliers
+                </h5>
+              </div>
+            </div>
+            <div class="card-group">
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-plus text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="addSupplier = true; landingPage = false"
+                  >
+                    Add Supplier
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-search text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="searchSupplier = true; landingPage = false"
+                  >
+                    Search Supplier
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-pencil-alt text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="maintainSupplier = true; landingPage = false"
+                  >
+                    Maintain Supplier
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="content-2" style="color: var(--bs-indigo)">
+              <div class="container-fluid">
+                <div
+                  class="d-sm-flex justify-content-between align-items-center mb-4"
+                ></div>
+              </div>
+              <h3 class="text-dark mb-0"></h3>
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="mb-0"
+                    style="
+                      --bs-primary: #3c404d;
+                      --bs-primary-rgb: 60, 64, 77;
+                      color: rgb(0, 0, 0);
+                      font-weight: bold;
+                    "
+                  >
+                    Products
+                  </h5>
+                </div>
+              </div>
+              <div class="card-group">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="addProduct = true; landingPage = false"
+                    >
+                      Add Product
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-search text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="searchProduct = true; landingPage = false"
+                    >
+                      Search Product
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="maintainProduct = true; landingPage = false"
+                    >
+                      Maintain Product
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+          <div class="text-center my-auto copyright">
+            <span>Oasys © Brand 2022</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <a class="border rounded d-inline scroll-to-top" href="#page-top"
+      ><i class="fas fa-angle-up"></i
+    ></a>
+  </div>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+  <script src="assets/js/script.min.js"></script>
+</body>

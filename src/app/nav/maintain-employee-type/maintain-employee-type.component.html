@@ -1,0 +1,73 @@
+<div class="container-fluid">
+  <app-update-employee-type *ngIf="updateEmployeeType" [employeetype] = "employeetype"></app-update-employee-type>
+  <h3 class="text-dark mb-1" *ngIf="!updateEmployeeType">Maintain Employee Type</h3>
+</div>
+<form
+  style="
+    width: 600px;
+    margin-right: 0px;
+    margin-left: 80px;
+    margin-bottom: 0px;
+    margin-top: 10px;
+    height: 400px;
+  "
+  *ngIf="!updateEmployeeType"
+>
+<div class="search-container">
+    <i class="fas fa-search text-primary"></i
+    ><input
+      type="search"
+      style="padding-bottom: 0%; margin-bottom: 2%"
+      placeholder="Search..."
+      [(ngModel)]="searchText" 
+      (input) ="Search()"
+    />
+</div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Position Name</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <tbody>
+        <tr *ngFor="let employeetype of employeetypes">
+          <td>{{ employeetype.positioN_NAME }}</td>
+          <!-- <td>0412345678954</td> -->
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              name="position"
+              style="background: var(--bs-orange)"
+              (click)="updateEmployeeType = true; populateForm(employeetype)"
+            >
+              Edit
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              name="delete"
+              style="background: var(--bs-red)"
+              (click)="deleteEmployee(employeetype.employeE_TYPE_ID)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange); margin-left: 10px"
+  >
+    Back
+  </button>
+</form>

@@ -1,0 +1,58 @@
+<app-update-warning *ngIf="updateWarning" [warning] = "warning"></app-update-warning>
+<h3 class="text-dark" style="padding-top: 3%; padding-left: 3%" *ngIf="!updateWarning">
+  Maintain warning
+</h3>
+<div class="search container" *ngIf="!updateWarning">
+  <i class="fas fa-search text-primary"></i
+  ><input
+    type="search"
+    style="padding-bottom: 0%; margin-bottom: 2%"
+    placeholder="Search..."
+    [(ngModel)]="searchText"
+    (input)="Search()"
+  />
+</div>
+<div class="container-fluid" *ngIf="!updateWarning">
+  <h3 class="text-dark mb-4"></h3>
+  <div class="card shadow">
+    <div class="card-header py-3">
+      <p class="text-primary m-0 fw-bold">Warning info</p>
+    </div>
+    <div class="card-body">
+      <div
+        class="table-responsive table mt-2"
+        id="dataTable"
+        role="grid"
+        aria-describedby="dataTable_info"
+      >
+        <table class="table my-0" id="dataTable">
+          <thead>
+            <tr>
+              <th>Warning Name</th>
+              <th>Reason</th>
+              <th style="margin-right: 0%; width: 24%">Employee Name</th>
+              <th>Update/Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let warning of warnings">
+                  <td>{{warning.warininG_NAME}}</td>
+                  <td>{{warning.reason}}</td>
+                  <td>{{warning.employeE_ID}}</td>
+                 <i class="far fa-edit text-primary" style="padding-left: 0%"
+                 (click)="updateWarning = true; populateForm(warning)"
+                 ></i>
+                 <i class="fas fa-trash-alt text-danger"
+                  style="padding-left: 10%"
+                  (click)="deleteEmployee(warning.warninG_ID)"
+                ></i> 
+              </tr>
+          </tbody>
+          <tfoot>
+            <tr></tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="container-fluid">
+  <h3 class="text-dark mb-1">Search Employee Type</h3>
+</div>
+<form
+  style="
+    width: 600px;
+    margin-right: 0px;
+    margin-left: 80px;
+    margin-bottom: 0px;
+    margin-top: 10px;
+    height: 400px;
+  "
+>
+  <div
+    class="search-container"
+    style="
+      width: 400px;
+      height: 50px;
+      margin-left: 180px;
+      margin-bottom: 70px;
+      margin-top: 30px;
+    "
+  >
+    <input
+      class="form-control search-input"
+      type="text"
+      name="search-bar"
+      placeholder="Search..."
+      style="margin-bottom: 0px"
+      [(ngModel)]="searchText"
+      (input)="Search()"
+    /><button class="btn btn-light search-btn" type="button">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Position Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employeetype of employeetypes">
+          <td>{{ employeetype.positioN_NAME }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange); margin-left: 10px"
+    (click)="Return()"
+  >
+    Back
+  </button>
+</form>

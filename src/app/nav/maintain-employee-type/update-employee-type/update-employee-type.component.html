@@ -1,0 +1,41 @@
+<h2 style="color: rgb(0, 0, 0); margin-left: 10px">
+    Update Employee Type
+  </h2>
+  <div class="container-fluid"><h3 class="text-dark mb-1"></h3></div>
+  <form
+    style="
+      width: 450px;
+      height: 200px;
+      margin-left: 80px;
+      margin-bottom: 0px;
+      margin-top: 50px;
+    "
+    #form="ngForm" (ngSubmit)="onSubmit()"
+  >
+    <header></header>
+    <h4 style="color: rgb(0, 0, 0); margin-left: 10px">
+      Update Employee Type Details:
+    </h4>
+    <label
+      class="form-label"
+      style="margin-left: 10px; color: rgb(0, 0, 0)"
+      >Position Name:</label
+    ><input
+      class="form-control"
+      type="text"
+      name="position"
+      style="margin-left: 10px; width: 400px"
+      placeholder= "{{employeetype.positioN_NAME}}"
+      [(ngModel)]= "employeetype.positioN_NAME"
+    /><button
+      class="btn btn-primary"
+      type="submit"
+      style="
+        background: var(--bs-orange);
+        margin-top: 20px;
+        margin-left: 10px;
+      "
+    >
+      Save
+    </button>
+  </form>

@@ -1,0 +1,63 @@
+<h1>&nbsp;Add Warning</h1>
+<div class="container-fluid">
+  <label
+    class="form-label"
+    style="
+      margin: 1%;
+      font-weight: bold;
+      margin-top: 0%;
+      font-size: 19px;
+      padding-right: 0;
+      padding-left: 0%;
+    "
+    >Add a new warning:</label
+  >
+</div>
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <label
+    class="form-label"
+    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
+    >Employee name:</label
+  >
+  <div class="container" style="margin-left: 3%">
+    <input
+      type="text"
+      style="padding-right: 0"
+      name="warningEmployee"
+      [(ngModel)]="warning.employeE_ID"
+    />
+  </div>
+  <label
+    class="form-label"
+    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
+    >Warning name:</label
+  >
+  <div class="container" style="margin-left: 3%">
+    <input
+      type="text"
+      style="padding-right: 0"
+      name="warningName"
+      [(ngModel)]="warning.warininG_NAME"
+    />
+  </div>
+  <label
+    class="form-label"
+    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
+    >Reason:</label
+  >
+  <div class="container" style="margin-left: 3%">
+    <label class="form-label"> </label
+    ><label class="form-label"
+      ><input
+        type="text"
+        placeholder=""
+        name="warningReason"
+        [(ngModel)]="warning.reason"
+    /></label>
+  </div>
+  <div class="container" style="margin-left: 3%">
+    <button class="btn btn-primary" type="submit" style="margin-top: 7%">
+      Add
+    </button>
+  </div>
+</form>
