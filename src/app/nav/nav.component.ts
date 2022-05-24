@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 //import { AccountService } from '../_services/account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -60,7 +61,9 @@ export class NavComponent implements OnInit {
     this.maintainProduct = false;
   }
   //constructor(private accountService: AccountService) {}
-
+  constructor(){
+    this.loggedIn = true;
+  }
   ngOnInit(): void {}
 
   // login() {
