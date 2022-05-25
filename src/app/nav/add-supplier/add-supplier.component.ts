@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
 
@@ -9,6 +9,7 @@ import { SupplierService } from 'src/app/_services/supplier.service';
 })
 export class AddSupplierComponent implements OnInit {
 
+  @Output() return = new EventEmitter<string>();
   details: boolean = true;
 
   supplier: Supplier = {
@@ -29,7 +30,7 @@ export class AddSupplierComponent implements OnInit {
     this.suppliierService.addSupplier(this.supplier).subscribe(response =>{
       console.log(response);
     })
-    
+
   }
 
  namevalidate() {
@@ -39,6 +40,9 @@ export class AddSupplierComponent implements OnInit {
     } else {
       this.details = true;
     }
+  }
+  Return(){
+    this.return.emit("false");
   }
 
 }

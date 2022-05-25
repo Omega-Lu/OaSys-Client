@@ -1,1 +1,143 @@
-<p>maintain-supplier works!</p>
+<div class="container-fluid">
+  <!--<app-update-employee
+    *ngIf="updateEmployee"
+    [employee]="employee"
+    (return)="back()"
+  ></app-update-employee>-->
+  <form style="height: 530px; margin-right: 0px" *ngIf="">
+    <h4 class="text-dark">Maintain Employee</h4>
+    <div class="search-container">
+      <i class="fas fa-search text-primary"></i
+      ><input
+        type="search"
+        name="Search"
+        style="padding-bottom: 0%; margin-bottom: 2%"
+        placeholder="Search..."
+        [(ngModel)]="searchText"
+        (input)="Search()"
+      />
+    </div>
+    <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>&nbsp;Name</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <!-- <th>ID Number</th> -->
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let supplier of suppliers">
+            <td>{{ supplier.name }}</td>
+            <td>{{ supplier.contacT_NUMBER }}</td>
+            <td>{{ supplier.email }}</td>
+            <!-- <td>0412345678954</td> -->
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-orange)"
+                (click)="updateEmployee = true; populateForm(employee)"
+              >
+                Edit
+              </button>
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-red)"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                (click)="deletee(employee.employeE_ID)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      (click)="back()"
+      style="
+        --bs-warning: #f6c23e;
+        --bs-warning-rgb: 246, 194, 62;
+        background: var(--bs-orange);
+        margin-left: 10px;
+        margin-top: 20px;
+      "
+    >
+      Back
+    </button>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="!successDelete"
+            >
+              Are You Sure You Would Like To Delete This Supplier
+            </h5>
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="successDelete"
+            >
+              Supplier Successfully Deleted
+            </h5>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              *ngIf="!successDelete"
+            >
+              No
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              name="deleteempl"
+              data-target="#exampleModal"
+              *ngIf="!successDelete"
+              (click)="successDelete = true; deleteEmployee()"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-dismiss="modal"
+              *ngIf="successDelete"
+              (click)="back()"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -35,6 +35,12 @@ import { MaintainSupplierComponent } from './nav/maintain-supplier/maintain-supp
 import { MaintainProductComponent } from './nav/maintain-product/maintain-product.component';
 import { SearchProductComponent } from './nav/search-product/search-product.component';
 import { AddProductComponent } from './nav/add-product/add-product.component';
+import { LoginComponent } from './login/login.component';
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  {path: "nav", component: NavComponent}
+]
 
 @NgModule({
   declarations: [
@@ -66,6 +72,7 @@ import { AddProductComponent } from './nav/add-product/add-product.component';
     MaintainProductComponent,
     SearchProductComponent,
     AddProductComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +82,7 @@ import { AddProductComponent } from './nav/add-product/add-product.component';
     FormsModule,
     MatTableModule,
     ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes)
 
   ],
   providers: [],
