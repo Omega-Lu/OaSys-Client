@@ -17,6 +17,7 @@ export class NavComponent implements OnInit {
   addWarningType: boolean = false;
   addSupplier: boolean = false;
   addProduct: boolean = false;
+  addCustomerAccount: boolean = false;
   searchEmployee: boolean = false;
   searchEmployeeType: boolean = false;
   searchWageRate: boolean = false;
@@ -24,6 +25,7 @@ export class NavComponent implements OnInit {
   searchWarningType: boolean = false;
   searchSupplier: boolean = false;
   searchProduct: boolean = false;
+  searchCustomerAccount: boolean = false;
   maintainEmployee: boolean = false;
   maintainEmployeeType: boolean = false;
   maintainWageRate: boolean = false;
@@ -31,6 +33,7 @@ export class NavComponent implements OnInit {
   maintainWarningType: boolean = false;
   maintainSupplier: boolean = false;
   maintainProduct: boolean = false;
+  maintainCustomerAccount: boolean = false;
 
   back() {
     this.landingPage = true;
@@ -44,6 +47,7 @@ export class NavComponent implements OnInit {
     this.addWarningType = false;
     this.addSupplier = false;
     this.addProduct = false;
+    this.addCustomerAccount = false;
     this.searchEmployee = false;
     this.searchEmployeeType = false;
     this.searchWageRate = false;
@@ -51,6 +55,7 @@ export class NavComponent implements OnInit {
     this.searchWarningType = false;
     this.searchSupplier = false;
     this.searchProduct = false;
+    this.searchCustomerAccount = false;
     this.maintainEmployee = false;
     this.maintainEmployeeType = false;
     this.maintainWageRate = false;
@@ -58,6 +63,7 @@ export class NavComponent implements OnInit {
     this.maintainWarningType = false;
     this.maintainSupplier = false;
     this.maintainProduct = false;
+    this.maintainCustomerAccount= false;
   }
   //constructor(private accountService: AccountService) {}
 

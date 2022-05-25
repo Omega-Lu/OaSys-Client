@@ -45,12 +45,12 @@
               ><span class="text-warning" (click)="back()">Dashboard</span></a
             >
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="profile.html"
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#"
               ><i class="fas fa-user"></i
               ><span class="text-warning">Employee</span></a
             >
-          </li>
+          </li> -->
         </ul>
       </div>
     </nav>
@@ -125,6 +125,10 @@
             *ngIf="addProduct"
             (return)="back()"
           ></app-add-product>
+          <app-add-debtor
+            *ngIf="addCustomerAccount"
+            (return)="back()"
+          ></app-add-debtor>
           <app-search-employee
             *ngIf="searchEmployee"
             (return)="back()"
@@ -153,6 +157,10 @@
             *ngIf="searchProduct"
             (return)="back()"
           ></app-search-product>
+          <app-search-debtor
+            *ngIf="searchCustomerAccount"
+            (return)="back()"
+          ></app-search-debtor>
           <app-maintain-employee
             *ngIf="maintainEmployee"
             (return)="back()"
@@ -181,6 +189,10 @@
             *ngIf="maintainProduct"
             (return)="back()"
           ></app-maintain-product>
+          <app-maintain-debtor
+            *ngIf="maintainCustomerAccount"
+            (return)="back()"
+          ></app-maintain-debtor>
         </div>
 
         <div *ngIf="landingPage">
@@ -705,6 +717,101 @@
                       (click)="maintainProduct = true; landingPage = false"
                     >
                       Maintain Product
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="content-2" style="color: var(--bs-indigo)">
+              <div class="container-fluid">
+                <div
+                  class="d-sm-flex justify-content-between align-items-center mb-4"
+                ></div>
+              </div>
+              <h3 class="text-dark mb-0"></h3>
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="mb-0"
+                    style="
+                      --bs-primary: #3c404d;
+                      --bs-primary-rgb: 60, 64, 77;
+                      color: rgb(0, 0, 0);
+                      font-weight: bold;
+                    "
+                  >
+                    Debtors
+                  </h5>
+                </div>
+              </div>
+              <div class="card-group">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="addCustomerAccount = true; landingPage = false"
+                    >
+                      Add Debtor
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-search text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        searchCustomerAccount = true; landingPage = false
+                      "
+                    >
+                      Search Debtor
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        maintainCustomerAccount = true; landingPage = false
+                      "
+                    >
+                      Maintain Debtor
                     </button>
                   </div>
                 </div>

@@ -1,7 +1,3 @@
-<h2 style="color: rgb(0, 0, 0); margin-left: 10px">Add Supplier</h2>
-<div class="container-fluid">
-  <h3 class="text-dark mb-1"></h3>
-</div>
 <form
   style="
     width: 450px;
@@ -13,10 +9,12 @@
   #form="ngForm"
   (ngSubmit)="onSubmit()"
 >
-  <header></header>
-  <h4 style="color: rgb(0, 0, 0); margin-left: 10px">
-    Add New Employee Type Details:
-  </h4>
+
+<h1 style="color: rgb(0, 0, 0); margin-left: 10px">Add Supplier</h1>
+<div class="container-fluid">
+  <h3 class="text-dark mb-1"></h3>
+</div>
+   
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Name:</label
   ><input
@@ -29,6 +27,7 @@
     (click)="namevalidate()"
     (keyup)="namevalidate()"
   />
+
   <div *ngIf="!details" style="color: Red">Invalid Details</div>
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >VAT Number:</label
@@ -40,7 +39,7 @@
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="supplier.vaT_NUMBER"
   />
-  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Contact Number:</label
   ><input
@@ -51,7 +50,7 @@
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="supplier.contacT_NUMBER"
   />
-  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Alternate Contact Number:</label
   ><input
@@ -62,7 +61,7 @@
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="supplier.alT_NUMBER"
   />
-  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Email:</label
   ><input
@@ -72,15 +71,100 @@
     type="email"
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="supplier.email"
+    (click)="emailvalidate()"
+    (keyup)="emailvalidate()"
   />
-  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+  <div *ngIf="!edetails" style="color: Red">Invalid Details</div>
   <!-- <button class="btn btn-primary" (click)="Return()">Cancel</button> -->
-  <button
-    class="btn btn-primary"
-    type="submit"
-    style="background: var(--bs-orange); margin-top: 20px; margin-left: 10px"
-    *ngIf="details"
-  >
-    Save
-  </button>
+  <div class="form-group">
+    <span>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="Return()"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 30px;
+          margin-top: 10px;
+        "
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 0px;
+          margin-top: 10px;
+        "
+        *ngIf="details && edetails"
+      >
+        Save
+      </button>
+    </span>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="!successSubmit"
+            >
+              Are You Sure You Would Like To Add A New Supplier
+            </h5>
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="successSubmit"
+            >
+              Supplier Successfully Added
+            </h5>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              *ngIf="!successSubmit"
+            >
+              No
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-target="#exampleModal"
+              *ngIf="!successSubmit"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-dismiss="modal"
+              *ngIf="successSubmit"
+              (click)="Return()"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </form>

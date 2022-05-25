@@ -35,6 +35,11 @@ import { MaintainSupplierComponent } from './nav/maintain-supplier/maintain-supp
 import { MaintainProductComponent } from './nav/maintain-product/maintain-product.component';
 import { SearchProductComponent } from './nav/search-product/search-product.component';
 import { AddProductComponent } from './nav/add-product/add-product.component';
+import { AddDebtorComponent } from './nav/add-debtor/add-debtor.component';
+import { SearchDebtorComponent } from './nav/search-debtor/search-debtor.component';
+import { MaintainDebtorComponent } from './nav/maintain-debtor/maintain-debtor.component';
+import { UpdateDebtorComponent } from './nav/maintain-debtor/update-debtor/update-debtor.component';
+import { UpdateSupplierComponent } from './nav/maintain-supplier/update-supplier/update-supplier.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +71,11 @@ import { AddProductComponent } from './nav/add-product/add-product.component';
     MaintainProductComponent,
     SearchProductComponent,
     AddProductComponent,
+    AddDebtorComponent,
+    SearchDebtorComponent,
+    MaintainDebtorComponent,
+    UpdateDebtorComponent,
+    UpdateSupplierComponent,
   ],
   imports: [
     BrowserModule,
