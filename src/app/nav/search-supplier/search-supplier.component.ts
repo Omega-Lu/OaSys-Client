@@ -1,7 +1,9 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
 import { Output, EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: 'app-search-supplier',

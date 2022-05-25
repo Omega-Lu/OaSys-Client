@@ -40,6 +40,12 @@ import { SearchDebtorComponent } from './nav/search-debtor/search-debtor.compone
 import { MaintainDebtorComponent } from './nav/maintain-debtor/maintain-debtor.component';
 import { UpdateDebtorComponent } from './nav/maintain-debtor/update-debtor/update-debtor.component';
 import { UpdateSupplierComponent } from './nav/maintain-supplier/update-supplier/update-supplier.component';
+import { LoginComponent } from './login/login.component';
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  {path: "nav", component: NavComponent}
+]
 
 @NgModule({
   declarations: [
@@ -76,6 +82,7 @@ import { UpdateSupplierComponent } from './nav/maintain-supplier/update-supplier
     MaintainDebtorComponent,
     UpdateDebtorComponent,
     UpdateSupplierComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +92,7 @@ import { UpdateSupplierComponent } from './nav/maintain-supplier/update-supplier
     FormsModule,
     MatTableModule,
     ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes)
 
   ],
   providers: [],

@@ -1,6 +1,8 @@
+
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
+
 
 @Component({
   selector: 'app-maintain-supplier',
@@ -56,6 +58,7 @@ export class MaintainSupplierComponent implements OnInit {
         console.log(supplier.name.match(searchValue));
         return supplier.name.match(searchValue);  
       
+
             });
             console.log(this.supplier);
           }
@@ -68,8 +71,5 @@ export class MaintainSupplierComponent implements OnInit {
     this.return.emit('false');
   }
  
-  Return() {
-    this.return.emit('false');
-  }
 
 }

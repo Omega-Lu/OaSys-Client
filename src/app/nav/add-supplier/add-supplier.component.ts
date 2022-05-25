@@ -1,3 +1,4 @@
+
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
@@ -34,7 +35,6 @@ export class AddSupplierComponent implements OnInit {
       console.log(response);
     });
     this.successSubmit = true;
-    
   }
 
  namevalidate() {
@@ -45,6 +45,9 @@ export class AddSupplierComponent implements OnInit {
       this.details = true;
     }
   }
+  Return(){
+    this.return.emit("false");
+  }
 
   
   emailvalidate() {
@@ -54,10 +57,5 @@ export class AddSupplierComponent implements OnInit {
          this.edetails = true;
        }
      }
-
-     
-  Return() {
-    this.return.emit('false');
-  }
 
 }

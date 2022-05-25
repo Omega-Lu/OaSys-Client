@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { User } from './models/user.model';
-import { UserService } from './_services/user.service';
+import { User } from '../models/user.model';
+import { UserService } from '../_services/user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class AppComponent implements OnInit{
+export class LoginComponent implements OnInit {
   details : boolean = true;
   username : string = '';
   password : string = '';
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
   users: User[] = [];
   title = 'OaSys';
   loggedIn: boolean;
-  loginForm: FormGroup;
+  public loginForm: FormGroup;
   userservice :UserService;
 
   constructor(private http: HttpClient, private formBuilder: FormBuilder) {
@@ -39,6 +39,14 @@ export class AppComponent implements OnInit{
 
   login() {
 
+    /*this.http.get<any>('https://localhost:7113/api/user')
+    .subscribe(res => {
+      const user = res.find((a.any)=>{
+        return a.username === this.loginForm.value.username && a.username === this.loginForm.value.password
+      }
+    });
+  }*/
+
     if(this.username != 'admin'){
       this.details = false;
     } else if (this.password != 'admin') {
@@ -47,6 +55,8 @@ export class AppComponent implements OnInit{
       console.log(this.loggedIn);
       this.loggedIn = true;
     }
+
+
 
 
 
