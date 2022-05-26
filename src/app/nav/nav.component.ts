@@ -35,6 +35,12 @@ export class NavComponent implements OnInit {
   maintainSupplier: boolean = false;
   maintainProduct: boolean = false;
   maintainCustomerAccount: boolean = false;
+  addProductCategory: boolean = false;
+  searchProductCategory: boolean = false;
+  maintainProductCategory: boolean = false;
+  addProductType: boolean = false;
+  searchProductType: boolean = false;
+  maintainProductType: boolean = false;
 
   back() {
     this.landingPage = true;
@@ -65,6 +71,12 @@ export class NavComponent implements OnInit {
     this.maintainSupplier = false;
     this.maintainProduct = false;
     this.maintainCustomerAccount= false;
+    this.addProductCategory = false;
+    this.searchProductCategory = false;
+    this.maintainProductCategory = false;
+    this.addProductType = false;
+    this.searchProductType = false;
+    this.maintainProductType = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor(){

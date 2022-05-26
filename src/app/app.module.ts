@@ -42,6 +42,13 @@ import { UpdateDebtorComponent } from './nav/maintain-debtor/update-debtor/updat
 import { UpdateSupplierComponent } from './nav/maintain-supplier/update-supplier/update-supplier.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
+import { AddProductCategoryComponent } from './nav/add-product-category/add-product-category.component';
+import { AddProductTypeComponent } from './nav/add-product-type/add-product-type.component';
+import { SearchProductCategoryComponent } from './nav/search-product-category/search-product-category.component';
+import { SearchProductTypeComponent } from './nav/search-product-type/search-product-type.component';
+import { MaintainProductTypeComponent } from './nav/maintain-product-type/maintain-product-type.component';
+import { MaintainProductCategoryComponent } from './nav/maintain-product-category/maintain-product-category.component';
+import { UpdateProductCategoryComponent } from './nav/maintain-product-category/update-product-category/update-product-category.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -83,6 +90,13 @@ const appRoutes: Routes = [
     UpdateDebtorComponent,
     UpdateSupplierComponent,
     LoginComponent,
+    AddProductCategoryComponent,
+    AddProductTypeComponent,
+    SearchProductCategoryComponent,
+    SearchProductTypeComponent,
+    MaintainProductTypeComponent,
+    MaintainProductCategoryComponent,
+    UpdateProductCategoryComponent,
   ],
   imports: [
     BrowserModule,

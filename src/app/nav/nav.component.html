@@ -19,7 +19,6 @@
 </head>
 <body id="page-top">
   <div id="wrapper">
-
     <nav
       class="navbar navbar-light align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
       style="background: rgb(0, 0, 0)"
@@ -195,6 +194,30 @@
             *ngIf="maintainCustomerAccount"
             (return)="back()"
           ></app-maintain-debtor>
+          <app-add-product-category
+            *ngIf="addProductCategory"
+            (return)="back()"
+          ></app-add-product-category>
+          <app-search-product-category
+            *ngIf="searchProductCategory"
+            (return)="back()"
+          ></app-search-product-category>
+          <app-maintain-product-category
+            *ngIf="maintainProductCategory"
+            (return)="back()"
+          ></app-maintain-product-category>
+          <app-add-product-type
+            *ngIf="addProductType"
+            (return)="back()"
+          ></app-add-product-type>
+          <app-search-product-type
+            *ngIf="searchProductType"
+            (return)="back()"
+          ></app-search-product-type>
+          <app-maintain-product-type
+            *ngIf="maintainProductType"
+            (return)="back()"
+          ></app-maintain-product-type>
         </div>
 
         <div *ngIf="landingPage">
@@ -570,7 +593,7 @@
                     font-weight: bold;
                   "
                 >
-                  Suppliers
+                  Supplier
                 </h5>
               </div>
             </div>
@@ -723,6 +746,146 @@
                   </div>
                 </div>
               </div>
+              <div class="card-group">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="addProductCategory = true; landingPage = false"
+                    >
+                      Add Product Category
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-search text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        searchProductCategory = true; landingPage = false
+                      "
+                    >
+                      Search Product Category
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        maintainProductCategory = true; landingPage = false
+                      "
+                    >
+                      Maintain Product Category
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-group">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="addProductType = true; landingPage = false"
+                    >
+                      Add Product Type
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-search text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="searchProductType = true; landingPage = false"
+                    >
+                      Search Product Type
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="maintainProductType = true; landingPage = false"
+                    >
+                      Maintain Product Type
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
             <div id="content-2" style="color: var(--bs-indigo)">
               <div class="container-fluid">
@@ -742,7 +905,7 @@
                       font-weight: bold;
                     "
                   >
-                    Debtors
+                    Debtor
                   </h5>
                 </div>
               </div>
