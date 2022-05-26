@@ -1,13 +1,281 @@
+<p
+  style="
+    width: 996px;
+    color: rgb(4, 5, 11);
+    font-size: 23px;
+    margin-top: 0px;
+    margin-bottom: 6px;
+    margin-left: 6px;
+  "
+>
+  ADD PRODUCTS:
+</p>
+<form
+  #form="ngForm"
+  (ngSubmit)="onSubmit()"
+  class="text-start"
+  style="height: 565px; width: 723px; margin-left: 20px; margin-top: 23px"
+>
+  <div class="container">
+    <div class="row">
+      <h1
+        style="
+          width: 508px;
+          color: var(--bs-dark);
+          font-size: 19.880000000000006px;
+          font-weight: bold;
+          height: 7.8438000000000025px;
+        "
+      >
+        New products details:
+      </h1>
+      <p style="margin-top: 35px; width: 100%; color: var(--bs-dark)">
+        Product Name:
+      </p>
+      <input
+        class="form-control"
+        name="productname"
+        type="text"
+        style="margin-bottom: 5px; margin-top: -11px; width: 395px"
+        [(ngModel)]="product.producT_NAME"
+        (click)="namevalidate()"
+        (keyup)="namevalidate()"
+      />
+      <div *ngIf="!details" style="color: Red;">
+        Invalid Details
+      </div>
+      </div>
+    <div class="row">
+    <p
+      style="
+        width: 328px;
+        color: var(--bs-gray-900);
+        margin-bottom: 37px;
+      "
+    >
+      Product Description:
+    </p>
+    <input
+      class="form-control"
+      name="productDescription"
+      type="text"
+      style="width: 402px; margin-top: -30px; margin-bottom: 5px"
+      [(ngModel)]="product.producT_DESCRIPTION"
+      (click)="survalidate()"
+      (keyup)="survalidate()"
+    />
+    <div *ngIf="!pdetails" style="color: Red">Invalid Details</div>
+    </div>
+    </div>
 
+  <div class="container" style="margin-top: 21px; margin-bottom: 7px">
+    <div
+      class="row"
+      style="height: 136px; margin-bottom: -3px; margin-top: -13px"
+    >
+      <div class="col-md-6">
+        <p
+          style="
+            color: var(--bs-gray-900);
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: -16px;
+          "
+        >
+          Product Category:
+        </p>
+        <div
+          class="dropdown"
+          style="
+            width: 336px;
+            height: 75px;
+            margin: 46px 0px -19px 2px;
+            margin-right: 0px;
+            margin-top: 1px;
+            margin-bottom: -19px;
+            margin-left: 2px;
+          "
+        >
+          <select
+            name="productCategory"
+            id="productCategory"
+            class="btn btn-primary"
+            style="
+              background: var(--bs-orange);
+              border-right-color: var(--bs-orange);
+            "
+            [(ngModel)]="product.producT_CATEGORY_ID"
+          >
+            <option value="0">Hardware</option>
+            <option value="1">Cosmetics</option>
+            <option value="2">Food</option>
+            <option value="3">Drinks</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p style="color: rgb(2, 3, 7)">Product type:</p>
+        <div class="dropdown show">
+          <select
+            name="productType"
+            id="productType"
+            class="btn btn-primary"
+            style="
+              background: var(--bs-orange);
+              border-right-color: var(--bs-orange);
+            "
+          >
+            <option value="0">Pipes</option>
+            <option value="1">Glass</option>
+            <option value="2">Wood</option>
+            <option value="3">Metal</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="margin-top: 39px">
+    <div class="row" style="margin-top: -13px; margin-right: -23px">
+      <div
+        class="col-md-6"
+        style="margin: 34px 0px 0px; margin-top: -4px; width: 205px"
+      >
+        <p style="margin-top: 7px; color: rgb(13, 13, 14)">
+          Product Cost Price:(R)
+        </p>
+        <input
+          class="form-control"
+          name="costPrice"
+          type="text"
+          style="width: 138.5px"
+          required
+          [(ngModel)]="product.cosT_PRICE"
+        />
+      </div>
+      <div
+        class="col-md-6"
+        style="margin: 34px 0px 0px; margin-top: -4px; width: 208px"
+      >
+        <p style="margin-top: 7px; color: rgb(3, 3, 4)">
+          Product Selling Price:(R)
+        </p>
+        <input
+          class="form-control"
+          name="sellingPrice"
+          type="text"
+          style="width: 138.5px"
+          required
+          [(ngModel)]="product.sellinG_PRICE"
+        />
+      </div>
+      <div
+        class="col-md-6"
+        style="margin: 34px 0px 0px; margin-top: -4px; width: 208px"
+      >
+        <div class="form-check" style="margin-top: 30px">
+          <input
+            id="formCheck-1"
+            class="form-check-input"
+            type="checkbox"
+          /><label
+            class="form-check-label"
+            for="formCheck-1"
+            style="color: var(--bs-dark)"
+            >VAT</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <span>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="Return()"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 30px;
+          margin-top: 10px;
+        "
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 0px;
+          margin-top: 10px;
+        "
+        *ngIf="details && pdetails"
+      >
+        Save
+      </button>
+    </span>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="!successSubmit"
+            >
+              Are You Sure You Would Like To Add A New Product
+            </h5>
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="successSubmit"
+            >
+              Product Successfully Added
+            </h5>
+          </div>
 
-<form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-    <div class="input-group"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              *ngIf="!successSubmit"
+            >
+              No
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-target="#exampleModal"
+              *ngIf="!successSubmit"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-dismiss="modal"
+              *ngIf="successSubmit"
+              (click)="Return()"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </form>
-<div class="container-fluid">
-    <h3 class="text-dark mb-1">Add Product Category </h3>
-</div>
-<form style="width: 815px;margin-left: 67px;height: 401px;">
-    <p>Product Category  Name:</p><input class="form-control" type="text" />
-    <p style="margin-bottom: 20px;margin-top: 27px;">Product Category Description:</p><input class="form-control" type="text" /><button class="btn btn-primary" type="button" style="margin-bottom: -75px;margin-left: 377px;width: 102.8594px;">save </button>
-</form>
-

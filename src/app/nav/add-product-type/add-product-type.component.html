@@ -1,1 +1,111 @@
-<p>add-product-type works!</p>
+<h1>&nbsp;Add Product Type</h1>
+<div class="container-fluid">
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <label class="form-label" style="margin-right: 650px"
+        >Product Type Name:</label
+      >
+      <input
+        class="form-control"
+        name="emplyeeName"
+        type="text"
+        style="width: 300px; margin-right: 50px; margin-left: 10px"
+        [(ngModel)]="productType.typE_NAME"
+        (click)="namevalidate()"
+        (keyup)="namevalidate()"
+      />
+      <div *ngIf="!details" style="color: Red">Invalid Details</div>
+    </div>
+    <div class="form-group">
+      <span>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="Return()"
+          style="
+            border-right-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 30px;
+            margin-top: 10px;
+          "
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          style="
+            border-right-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 0px;
+            margin-top: 10px;
+          "
+          *ngIf="details"
+        >
+          Save
+        </button>
+      </span>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="exampleModalLabel"
+                *ngIf="!successSubmit"
+              >
+                Are You Sure You Would Like To Add A New Employee
+              </h5>
+              <h5
+                class="modal-title"
+                id="exampleModalLabel"
+                *ngIf="successSubmit"
+              >
+                Employee Successfully Added
+              </h5>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                *ngIf="!successSubmit"
+              >
+                No
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-target="#exampleModal"
+                *ngIf="!successSubmit"
+              >
+                Yes
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                data-dismiss="modal"
+                *ngIf="successSubmit"
+                (click)="Return()"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
