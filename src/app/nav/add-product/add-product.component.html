@@ -41,32 +41,24 @@
         (click)="namevalidate()"
         (keyup)="namevalidate()"
       />
-      <div *ngIf="!details" style="color: Red;">
-        Invalid Details
-      </div>
-      </div>
+      <div *ngIf="!details" style="color: Red">Invalid Details</div>
+    </div>
     <div class="row">
-    <p
-      style="
-        width: 328px;
-        color: var(--bs-gray-900);
-        margin-bottom: 37px;
-      "
-    >
-      Product Description:
-    </p>
-    <input
-      class="form-control"
-      name="productDescription"
-      type="text"
-      style="width: 402px; margin-top: -30px; margin-bottom: 5px"
-      [(ngModel)]="product.producT_DESCRIPTION"
-      (click)="survalidate()"
-      (keyup)="survalidate()"
-    />
-    <div *ngIf="!pdetails" style="color: Red">Invalid Details</div>
+      <p style="width: 328px; color: var(--bs-gray-900); margin-bottom: 37px">
+        Product Description:
+      </p>
+      <input
+        class="form-control"
+        name="productDescription"
+        type="text"
+        style="width: 402px; margin-top: -30px; margin-bottom: 5px"
+        [(ngModel)]="product.producT_DESCRIPTION"
+        (click)="survalidate()"
+        (keyup)="survalidate()"
+      />
+      <div *ngIf="!pdetails" style="color: Red">Invalid Details</div>
     </div>
-    </div>
+  </div>
 
   <div class="container" style="margin-top: 21px; margin-bottom: 7px">
     <div
@@ -105,17 +97,36 @@
               border-right-color: var(--bs-orange);
             "
             [(ngModel)]="product.producT_CATEGORY_ID"
+            
+            (input)="
+              categorySelect($event.target.value);
+            "
           >
-            <option value="0">Hardware</option>
-            <option value="1">Cosmetics</option>
-            <option value="2">Food</option>
-            <option value="3">Drinks</option>
+            <option
+              value=" {{ productCategory.producT_CATEGORY_ID }} "
+              *ngFor="let productCategory of productCategories"
+            >
+              {{ productCategory.categorY_NAME }}
+            </option>
           </select>
         </div>
       </div>
-      <div class="col-md-6">
-        <p style="color: rgb(2, 3, 7)">Product type:</p>
-        <div class="dropdown show">
+      <div class="col-md-6" *ngIf="categorySelected">
+        <p style="color: rgb(2, 3, 7)" style="margin-bottom: 0px !important">
+          Product type:
+        </p>
+        <div
+          class="dropdown"
+          style="
+            width: 336px;
+            height: 75px;
+            margin: 46px 0px -19px 2px;
+            margin-right: 0px;
+            margin-top: 1px;
+            margin-bottom: -19px;
+            margin-left: 2px;
+          "
+        >
           <select
             name="productType"
             id="productType"
@@ -124,11 +135,14 @@
               background: var(--bs-orange);
               border-right-color: var(--bs-orange);
             "
+            [(ngModel)]="product.producT_TYPE_ID"
           >
-            <option value="0">Pipes</option>
-            <option value="1">Glass</option>
-            <option value="2">Wood</option>
-            <option value="3">Metal</option>
+            <option
+              value=" {{ productType.producT_TYPE_ID }} "
+              *ngFor="let productType of productTypes"
+            >
+              {{ productType.typE_NAME }}
+            </option>
           </select>
         </div>
       </div>

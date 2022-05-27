@@ -17,6 +17,7 @@ export class AddProductTypeComponent implements OnInit {
 
   productType: ProductType = {
     producT_TYPE_ID: 0,
+    producT_CATEGORY_ID: 0,
     typE_NAME: ""
   }
 
