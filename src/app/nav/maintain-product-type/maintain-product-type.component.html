@@ -1,1 +1,136 @@
-<p>maintain-product-type works!</p>
+<app-update-product-type
+  *ngIf="updateProductType"
+  [productType]="productType"
+  (return)="back()"
+></app-update-product-type>
+<div class="container-fluid" *ngIf="!updateProductType">
+  <form style="height: 530px; margin-right: 0px">
+    <h4 class="text-dark">Maintain Product Type</h4>
+    <div class="search-container" style="margin-right: 0px; margin-left: 300px">
+      <input
+        class="form-control search-input"
+        type="text"
+        name="search-bar"
+        placeholder="Search..."
+        style="width: 320px; margin-right: 0px; margin-left: 400px"
+        [(ngModel)]="searchText"
+        (keyup)="Search()"
+      /><button class="btn btn-light search-btn" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Type ID</th>
+            <th>&nbsp;Product Type Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let productType of productTypes">
+            <td>{{ productType.producT_TYPE_ID }}</td>
+            <td>{{ productType.typE_NAME }}</td>
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-orange)"
+                (click)="updateProductType = true; populateForm(productType)"
+              >
+                Edit
+              </button>
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-red)"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                (click)="deletee(productType.producT_TYPE_ID)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      style="
+        --bs-warning: #f6c23e;
+        --bs-warning-rgb: 246, 194, 62;
+        background: var(--bs-orange);
+        margin-left: 10px;
+      "
+      (click)="back()"
+    >
+      Back
+    </button>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="!successDelete"
+            >
+              Are You Sure You Would Like To Delete This Product Type
+            </h5>
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="successDelete"
+            >
+              Product Type Successfully Deleted
+            </h5>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              *ngIf="!successDelete"
+            >
+              No
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              name="deleteempl"
+              data-target="#exampleModal"
+              *ngIf="!successDelete"
+              (click)="successDelete = true; deleteProductType()"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-dismiss="modal"
+              *ngIf="successDelete"
+              (click)="back()"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -49,6 +49,8 @@ import { SearchProductTypeComponent } from './nav/search-product-type/search-pro
 import { MaintainProductTypeComponent } from './nav/maintain-product-type/maintain-product-type.component';
 import { MaintainProductCategoryComponent } from './nav/maintain-product-category/maintain-product-category.component';
 import { UpdateProductCategoryComponent } from './nav/maintain-product-category/update-product-category/update-product-category.component';
+import { UpdateProductComponent } from './nav/maintain-product/update-product/update-product.component';
+import { UpdateProductTypeComponent } from './nav/maintain-product-type/update-product-type/update-product-type.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -97,6 +99,8 @@ const appRoutes: Routes = [
     MaintainProductTypeComponent,
     MaintainProductCategoryComponent,
     UpdateProductCategoryComponent,
+    UpdateProductComponent,
+    UpdateProductTypeComponent,
   ],
   imports: [
     BrowserModule,

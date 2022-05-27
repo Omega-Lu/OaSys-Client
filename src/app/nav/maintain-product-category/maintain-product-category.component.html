@@ -1,1 +1,138 @@
-<p>maintain-product-category works!</p>
+<app-update-product-category
+  *ngIf="updateProductCategory"
+  [productCategory]="productCategory"
+  (return)="back()"
+></app-update-product-category>
+<div class="container-fluid" *ngIf="!updateProductCategory">
+  <form style="height: 530px; margin-right: 0px">
+    <h1 class="text-dark">Maintain Product Category</h1>
+    <div class="search-container" style="margin-right: 0px; margin-left: 300px">
+      <input
+        class="form-control search-input"
+        type="text"
+        name="search-bar"
+        placeholder="Search..."
+        style="width: 320px; margin-right: 0px; margin-left: 400px"
+        [(ngModel)]="searchText"
+        (keyup)="Search()"
+      /><button class="btn btn-light search-btn" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Category Name</th>
+            <th>&nbsp;Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let productCategory of productCategories">
+            <td>{{ productCategory.categorY_NAME }}</td>
+            <td>{{ productCategory.categorY_DESCRIPTION }}</td>
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-orange)"
+                (click)="
+                  updateProductCategory = true; populateForm(productCategory)
+                "
+              >
+                Edit
+              </button>
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-red)"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                (click)="deletee(productCategory.producT_CATEGORY_ID)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      style="
+        --bs-warning: #f6c23e;
+        --bs-warning-rgb: 246, 194, 62;
+        background: var(--bs-orange);
+        margin-left: 10px;
+      "
+      (click)="back()"
+    >
+      Back
+    </button>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="!successDelete"
+            >
+              Are You Sure You Would Like To Delete This Product Category
+            </h5>
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="successDelete"
+            >
+              Product Category Successfully Deleted
+            </h5>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              *ngIf="!successDelete"
+            >
+              No
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              name="deleteempl"
+              data-target="#exampleModal"
+              *ngIf="!successDelete"
+              (click)="successDelete = true; deleteProductCategory()"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-dismiss="modal"
+              *ngIf="successDelete"
+              (click)="back()"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
