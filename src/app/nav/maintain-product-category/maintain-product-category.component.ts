@@ -52,6 +52,7 @@ export class MaintainProductCategoryComponent implements OnInit {
         console.log(this.productCategories);
       });
   }
+  //comment
 
   Search() {
     if (this.searchText !== '') {
