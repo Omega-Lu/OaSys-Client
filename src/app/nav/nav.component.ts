@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 //import { AccountService } from '../_services/account.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -19,6 +20,8 @@ export class NavComponent implements OnInit {
   addSupplier: boolean = false;
   addProduct: boolean = false;
   addCustomerAccount: boolean = false;
+  addDebtor: boolean = false;
+  searchDebtor: boolean = false;
   searchEmployee: boolean = false;
   searchEmployeeType: boolean = false;
   searchWageRate: boolean = false;
@@ -47,12 +50,16 @@ export class NavComponent implements OnInit {
   supplier: boolean = false;
   product: boolean = false;
   debtor: boolean = false;
+  maintainDebtor: boolean = false;
+
+
 
   back() {
     this.landingPage = true;
     //this.navName = 'LANDING PAGE';
     console.log('back to Landing ' + this.landingPage);
 
+    this.addDebtor = false;
     this.addEmployee = false;
     this.addEmployeeType = false;
     this.addWageRate = false;
@@ -61,6 +68,7 @@ export class NavComponent implements OnInit {
     this.addSupplier = false;
     this.addProduct = false;
     this.addCustomerAccount = false;
+    this.searchDebtor = false;
     this.searchEmployee = false;
     this.searchEmployeeType = false;
     this.searchWageRate = false;
