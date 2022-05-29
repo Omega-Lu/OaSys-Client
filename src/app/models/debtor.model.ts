@@ -1,4 +1,4 @@
-export interface CustomerAccount {
+export interface Debtor {
   customeR_ACCOUNT_ID: number;
   accounT_STATUS_ID: number;
   provincE_ID: number;
@@ -6,7 +6,7 @@ export interface CustomerAccount {
   surname: string;
   email: string;
   contacT_NUMBER: number;
-  amounT_OWING: number;
   crediT_LIMIT: number;
+  amounT_OWING: number;
   remindeR_MESSAGE: string;
 }

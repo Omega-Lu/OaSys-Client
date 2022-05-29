@@ -165,10 +165,6 @@
             *ngIf="addProduct"
             (return)="back()"
           ></app-add-product>
-          <app-add-debtor
-            *ngIf="addCustomerAccount"
-            (return)="back()"
-          ></app-add-debtor>
           <app-search-employee
             *ngIf="searchEmployee"
             (return)="back()"
@@ -229,10 +225,6 @@
             *ngIf="maintainProduct"
             (return)="back()"
           ></app-maintain-product>
-          <app-maintain-debtor
-            *ngIf="maintainCustomerAccount"
-            (return)="back()"
-          ></app-maintain-debtor>
           <app-add-product-category
             *ngIf="addProductCategory"
             (return)="back()"
@@ -257,6 +249,16 @@
             *ngIf="maintainProductType"
             (return)="back()"
           ></app-maintain-product-type>
+          <app-add-debtor
+            *ngIf="addDebtor"
+            (return)="back()">
+          </app-add-debtor>
+          <app-search-debtor
+          *ngIf="searchDebtor"
+          (return)="back()"></app-search-debtor>
+          <app-maintain-debtor
+          *ngIf="maintainDebtor"
+          (return)="back()"></app-maintain-debtor>
         </div>
 
         <div *ngIf="landingPage">
@@ -1057,7 +1059,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="addCustomerAccount = true; landingPage = false"
+                      (click)="addDebtor = true; landingPage = false"
                     >
                       Add Debtor
                     </button>
@@ -1079,9 +1081,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="
-                        searchCustomerAccount = true; landingPage = false
-                      "
+                      (click)="searchDebtor = true; landingPage = false"
                     >
                       Search Debtor
                     </button>
@@ -1103,9 +1103,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="
-                        maintainCustomerAccount = true; landingPage = false
-                      "
+                      (click)="maintainDebtor = true; landingPage = false"
                     >
                       Maintain Debtor
                     </button>
@@ -1113,7 +1111,7 @@
                 </div>
               </div>
             </div>
-          </div>
+           </div>
         </div>
       </div>
       <footer class="bg-white sticky-footer">
