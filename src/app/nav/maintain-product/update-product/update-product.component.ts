@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
+import { ProductType } from 'src/app/models/Product-Type.model';
+import { ProductCategoryService } from 'src/app/_services/product-category.service';
+import { ProductCategory } from 'src/app/models/Product-Category.model';
+import { ProductTypeService } from 'src/app/_services/product-type.service';
 
 @Component({
   selector: 'app-update-product',
@@ -14,12 +18,42 @@ export class UpdateProductComponent implements OnInit {
 
   details: boolean = true;
   pdetails: boolean = true;
+  categorySelected: boolean = false;
   successSubmit: boolean = false;
 
-  constructor(private productService: ProductService) {}
+  productCategory: ProductCategory;
+  productCategories: ProductCategory[] = [];
+
+  productType: ProductType;
+  productTypes: ProductType[] = [];
+  productTemp: ProductType[] = [];
+
+  constructor(
+    private productService: ProductService,
+    private productCategoryService: ProductCategoryService,
+    private productTypeService: ProductTypeService
+  ) {}
 
   ngOnInit(): void {
     console.log(this.product);
+    this.getAllProductCategories();
+    this.getAllProductTypes();
+  }
+
+  getAllProductCategories() {
+    this.productCategoryService
+      .getAllProductCategories()
+      .subscribe((response) => {
+        this.productCategories = response;
+        console.log(this.productCategories);
+      });
+  }
+
+  getAllProductTypes() {
+    this.productTypeService.getAllProductTypes().subscribe((response) => {
+      this.productTemp = response;
+      console.log(this.productTypes);
+    });
   }
 
   onSubmit() {
@@ -53,5 +87,18 @@ export class UpdateProductComponent implements OnInit {
 
   Return() {
     this.return.emit('false');
+  }
+
+  async categorySelect(id: number) {
+    this.productTypeService.getAllProductTypes().subscribe((response) => {
+      this.productTemp = response;
+      console.log(this.productTypes);
+    });
+    this.productTypes = this.productTemp.filter((productType) => {
+      console.log(productType.producT_CATEGORY_ID == id);
+      return productType.producT_CATEGORY_ID == id;
+    });
+    console.log(this.productTypes);
+    this.categorySelected = true;
   }
 }

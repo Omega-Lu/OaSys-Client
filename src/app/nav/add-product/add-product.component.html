@@ -66,14 +66,7 @@
       style="height: 136px; margin-bottom: -3px; margin-top: -13px"
     >
       <div class="col-md-6">
-        <p
-          style="
-            color: var(--bs-gray-900);
-            margin-top: 0px;
-            margin-bottom: 0px;
-            margin-left: -16px;
-          "
-        >
+        <p style="color: rgb(2, 3, 7)" style="margin-bottom: 0px !important">
           Product Category:
         </p>
         <div
@@ -97,7 +90,7 @@
               border-right-color: var(--bs-orange);
             "
             [(ngModel)]="product.producT_CATEGORY_ID"
-            
+            required
             (input)="
               categorySelect($event.target.value);
             "
