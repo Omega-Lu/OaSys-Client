@@ -5,7 +5,7 @@
     (return)="back()"
   ></app-update-debtor>
   <form style="height: 530px; margin-right: 0px" *ngIf="!updateDebtor">
-    <h4 class="text-dark">Maintain Debtor</h4>
+    <h1 class="text-dark">Maintain Debtor</h1>
     <div class="search-container">
       <i class="fas fa-search text-primary"></i
       ><input
@@ -52,7 +52,7 @@
           <tr *ngFor="let debtor of debtors">
             <td>{{ debtor.name }}</td>
             <td>{{ debtor.surname }}</td>
-            <td>{{ debtor.contacT_NUMBER }}</td>
+            <td>0{{ debtor.contacT_NUMBER }}</td>
             <!-- <td>0412345678954</td> -->
             <td>
               <button
@@ -71,7 +71,7 @@
                 style="background: var(--bs-red)"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                (click)="deletee(debtor.debtoR_ID)"
+                (click)="deletee(debtor.customeR_ACCOUNT_ID)"
               >
                 Delete
               </button>

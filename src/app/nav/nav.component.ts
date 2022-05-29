@@ -91,6 +91,7 @@ export class NavComponent implements OnInit {
     this.addProductType = false;
     this.searchProductType = false;
     this.maintainProductType = false;
+    this.maintainDebtor = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {

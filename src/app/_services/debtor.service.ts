@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class DebtorService {
   model: any;
 
-  baseUrl = 'https://localhost:7113/api/Debtor'
+  baseUrl = 'https://localhost:7113/api/CustomerAccount'
 
   constructor(private http: HttpClient) {
 

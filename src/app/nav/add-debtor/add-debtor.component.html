@@ -11,19 +11,9 @@
   #form="ngForm"
   (ngSubmit)="onSubmit()"
 >
-  <h4
-    style="
-      margin-right: 750px;
-      color: rgb(0, 0, 0);
-      width: 241px;
-      margin-left: 0px;
-    "
-  >
-    Debtor
-  </h4>
-  <h5 style="color: rgb(0, 0, 0); margin-right: 480px; height: 27px">
+  <h1 style="color: rgb(0, 0, 0); margin-right: 480px; height: 27px">
     Add Debtor
-  </h5>
+  </h1>
   <div class="container">
     <div class="row">
       <div
@@ -34,7 +24,9 @@
           border-bottom-color: var(--bs-red);
         "
       >
-        <label class="form-label" style="margin-right: 650px; margin-left: 20px;">Name:</label>
+        <label class="form-label" style="margin-right: 650px; margin-left: 20px"
+          >Name:</label
+        >
         <input
           class="form-control"
           name="debtorName"
@@ -45,20 +37,23 @@
           (keyup)="nameValidate()"
         />
         <div *ngIf="!nDetails" style="color: Red">Invalid Details</div>
-        <label class="form-label" style="margin-right: 300px; margin-left: 20px;">Surname:</label
-          ><input
-            class="form-control"
-            type="text"
-            required
-            name="debtorSurname"
-            style="width: 300px; margin-right: -500px; margin-left: 20px"
-            [(ngModel)]="debtor.surname"
-            (click)="surnameValidate()"
-            (keyup)="surnameValidate()"
-          />
-          <div *ngIf="!sDetails" style="color: Red">Invalid Details</div>
+        <label class="form-label" style="margin-right: 300px; margin-left: 20px"
+          >Surname:</label
+        ><input
+          class="form-control"
+          type="text"
+          required
+          name="debtorSurname"
+          style="width: 300px; margin-right: -500px; margin-left: 20px"
+          [(ngModel)]="debtor.surname"
+          (click)="surnameValidate()"
+          (keyup)="surnameValidate()"
+        />
+        <div *ngIf="!sDetails" style="color: Red">Invalid Details</div>
 
-          <label class="form-label" style="margin-right: 1200px; width: 130px; margin-left: 20px;"
+        <label
+          class="form-label"
+          style="margin-right: 1200px; width: 130px; margin-left: 20px"
           >Contact Number: </label
         ><style></style>+27<input
           class="form-control"
@@ -75,133 +70,217 @@
 
         <div class="container">
           <div class="row" style="height: 100px">
-            <div class="col-md-6 text-dark" style="height: 100px">
+            <div class="col-md-6 text-dark" style="height: 75px">
               <label class="form-label" style="margin-right: 250px">Email</label
               ><input
                 class="form-control"
                 name="debtorEmail"
                 type="text"
                 required
-                style="width: 300px;"
+                style="width: 300px"
                 [(ngModel)]="debtor.email"
                 (click)="emailValidate()"
                 (keyup)="emailValidate()"
               />
               <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
-
-      </div>
-      <div class="container">
-        <div class="row" style="height: 100px">
-          <div class="col-md-6 text-dark" style="height: 100px">
-            <label class="form-label" style="margin-right: 20px">Credit Limit</label
-            ><input
-              class="form-control"
-              name="debtorLimit"
-              type="text"
-              required
-              style="width: 300px; padding-left: 20px;"
-              [(ngModel)]="debtor.crediT_LIMIT"
-            />
-            <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
-
-    </div>
-  </div>
-
-        <div class="form-group">
-          <span>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="Return()"
-              style="
-                border-right-color: var(--bs-orange);
-                background: var(--bs-orange);
-                margin-right: 30px;
-                margin-top: 10px;
-              "
-            >
-              Cancel
-            </button>
-            <button
-              class="btn btn-primary"
-              type="button"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              style="
-                border-right-color: var(--bs-orange);
-                background: var(--bs-orange);
-                margin-right: 0px;
-                margin-top: 10px;
-              "
-              *ngIf="nDetails && sDetails && eDetails && cnDetails"
-            >
-              Save
-            </button>
-          </span>
-          <div
-            class="modal fade"
-            id="exampleModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5
-                    class="modal-title"
-                    id="exampleModalLabel"
-                    *ngIf="!successSubmit"
+            </div>
+            <div class="container" style="margin-top: 21px; margin-bottom: 7px">
+              <div
+                class="row"
+                style="height: 136px; margin-bottom: -3px; margin-top: -13px"
+              >
+                <div class="col-md-6">
+                  <p
+                    style="color: rgb(2, 3, 7)"
+                    style="margin-bottom: 0px !important"
                   >
-                    Are You Sure You Would Like To Add A New Debtor
-                  </h5>
-                  <h5
-                    class="modal-title"
-                    id="exampleModalLabel"
-                    *ngIf="successSubmit"
+                    Province:
+                  </p>
+                  <select
+                    name="productCategory"
+                    id="productCategory"
+                    class="btn btn-primary"
+                    style="
+                      background: var(--bs-orange);
+                      border-right-color: var(--bs-orange);
+                    "
+                    [(ngModel)]="debtor.provincE_ID"
+                    required
+                    (input)="categorySelect($event.target.value)"
                   >
-                    Debtor Successfully Added
-                  </h5>
+                    <option value="1">Gauteng</option>
+                    <option value="2">Northen Cape</option>
+                    <option value="3">North-West</option>
+                    <option value="4">Mpumalanga</option>
+                    <option value="5">Limpopo</option>
+                    <option value="6">Western Cape</option>
+                    <option value="7">Eastern Cape</option>
+                    <option value="8">KwaZulu-Natal</option>
+                    <option value="9">Free State</option>
+                  </select>
+                  <div class="col-md-6" *ngIf="categorySelected">
+                    <p
+                      style="color: rgb(2, 3, 7)"
+                      style="margin-bottom: 0px !important; margin-top: 15px"
+                    >
+                      City:
+                    </p>
+                    <select
+                      name="productCategor"
+                      id="productCategor"
+                      class="btn btn-primary"
+                      style="
+                        background: var(--bs-orange);
+                        border-right-color: var(--bs-orange);
+                        padding-bottom: 10px;
+                      "
+                    >
+                      <option value="1" *ngIf="Gauteng">Pretoria</option>
+                      <option value="2" *ngIf="Gauteng">Johannesburg</option>
+                      <option value="2" *ngIf="Gauteng">Centurion</option>
+                      <option value="2" *ngIf="Gauteng">Alexandra</option>
+                      <option value="2" *ngIf="Gauteng">Lenasia</option>
+                      <option value="2" *ngIf="Gauteng">Midrand</option>
+                      <option value="2" *ngIf="Gauteng">Roodepoort</option>
+                      <option value="2" *ngIf="Gauteng">Sandton</option>
+                      <option value="2" *ngIf="Gauteng">Soweto</option>
+                      <option value="2" *ngIf="Gauteng">Mshongo</option>
+                      <option value="3" *ngIf="NorthWest">Brits</option>
+                      <option value="4" *ngIf="NorthWest">Rustenburg</option>
+                      <option value="5" *ngIf="Mpumalanga">Tabazimbi</option>
+                      <option value="6" *ngIf="Mpumalanga">Mkloho</option>
+                      <option value="7" *ngIf="Limpopo">Zanene</option>
+                      <option value="8" *ngIf="Limpopo">Mghto</option>
+                      <option value="9" *ngIf="Western">Mossel Bay</option>
+                      <option value="5" *ngIf="Western">Cape Town</option>
+                      <option value="6" *ngIf="Eastern">East London</option>
+                      <option value="7" *ngIf="Eastern">Port Elizabeth</option>
+                      <option value="8" *ngIf="KwaZulu">Durban</option>
+                      <option value="9" *ngIf="KwaZulu">Natal</option>
+                      <option value="5" *ngIf="State">Bloemfontein</option>
+                      <option value="5" *ngIf="State">Bethlehem</option>
+                    </select>
+                  </div>
                 </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row" style="height: 100px">
+                <div class="text-dark" style="height: 100px">
+                  <label
+                  
+                    class="form-label"
+                    style="margin-right: 20px; padding-top: 16px; width: 100;"
+                    >Credit Limit (R)</label
+                  ><input
+                    class="form-control"
+                    name="debtorLimit"
+                    type="text"
+                    required
+                    style="width: 300px; padding-left: 20px"
+                    [(ngModel)]="debtor.crediT_LIMIT"
+                  />
+                  <div *ngIf="!eDetails" style="color: Red">
+                    Invalid Details
+                  </div>
+                </div>
+              </div>
 
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                    *ngIf="!successSubmit"
-                  >
-                    No
-                  </button>
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    data-target="#exampleModal"
-                    *ngIf="!successSubmit"
-                  >
-                    Yes
-                  </button>
+              <div class="form-group">
+                <span>
                   <button
                     type="button"
                     class="btn btn-primary"
+                    (click)="Return()"
+                    style="
+                      border-right-color: var(--bs-orange);
+                      background: var(--bs-orange);
+                      margin-right: 30px;
+                      margin-top: 10px;
+                    "
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="btn btn-primary"
+                    type="button"
                     data-toggle="modal"
                     data-target="#exampleModal"
-                    data-dismiss="modal"
-                    *ngIf="successSubmit"
-                    (click)="Return()"
+                    style="
+                      border-right-color: var(--bs-orange);
+                      background: var(--bs-orange);
+                      margin-right: 0px;
+                      margin-top: 10px;
+                    "
+                    *ngIf="nDetails && sDetails && eDetails && cnDetails"
                   >
-                    OK
+                    Save
                   </button>
+                </span>
+                <div
+                  class="modal fade"
+                  id="exampleModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5
+                          class="modal-title"
+                          id="exampleModalLabel"
+                          *ngIf="!successSubmit"
+                        >
+                          Are You Sure You Would Like To Add A New Debtor
+                        </h5>
+                        <h5
+                          class="modal-title"
+                          id="exampleModalLabel"
+                          *ngIf="successSubmit"
+                        >
+                          Debtor Successfully Added
+                        </h5>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                          *ngIf="!successSubmit"
+                        >
+                          No
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          data-target="#exampleModal"
+                          *ngIf="!successSubmit"
+                        >
+                          Yes
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+                          data-dismiss="modal"
+                          *ngIf="successSubmit"
+                          (click)="Return()"
+                        >
+                          OK
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
+      </div>
+    </div>
+  </div>
 </form>

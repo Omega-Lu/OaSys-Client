@@ -1,7 +1,7 @@
-export interface Debtor{
+export interface Debtor {
   customeR_ACCOUNT_ID: number;
   accounT_STATUS_ID: number;
-  provincE_ID: number
+  provincE_ID: number;
   name: string;
   surname: string;
   email: string;
