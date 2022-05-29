@@ -41,10 +41,11 @@ export class NavComponent implements OnInit {
   addProductType: boolean = false;
   searchProductType: boolean = false;
   maintainProductType: boolean = false;
+  navName: string = 'LANDING PAGE';
 
   back() {
     this.landingPage = true;
-
+    this.navName = 'LANDING PAGE';
     console.log('back to Landing ' + this.landingPage);
 
     this.addEmployee = false;
@@ -70,7 +71,7 @@ export class NavComponent implements OnInit {
     this.maintainWarningType = false;
     this.maintainSupplier = false;
     this.maintainProduct = false;
-    this.maintainCustomerAccount= false;
+    this.maintainCustomerAccount = false;
     this.addProductCategory = false;
     this.searchProductCategory = false;
     this.maintainProductCategory = false;
@@ -79,7 +80,7 @@ export class NavComponent implements OnInit {
     this.maintainProductType = false;
   }
   //constructor(private accountService: AccountService) {}
-  constructor(){
+  constructor() {
     this.loggedIn = true;
   }
   ngOnInit(): void {}
