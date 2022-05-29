@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <form style="height: 530px; margin-right: 0px">
+    <h4 class="text-dark">Search Employee</h4>
+    <div class="search-container" style="margin-right: 0px; margin-left: 300px">
+      <input
+        class="form-control search-input"
+        type="text"
+        name="search-bar"
+        placeholder="Search..."
+        style="width: 320px; margin-right: 0px; margin-left: 400px"
+       [(ngModel)]="searchText"
+      (keyup)="Search()"
+      /><button class="btn btn-light search-btn" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>&nbsp;Name</th>
+            <th>Surname</th>
+            <th>Contact Number</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let debtor of debtors">
+            <td>{{ debtor.name }}</td>
+            <td>{{ debtor.surname }}</td>
+            <td>{{ employee.contacT_NUMBER }}</td>
+            <td><button
+              class="btn btn-primary"
+              type="button"
+              style="border-color:
+              var(--bs-orange);background:
+              var(--bs-orange);"
+
+              (click)="s">Edit</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      style="
+        --bs-warning: #f6c23e;
+        --bs-warning-rgb: 246, 194, 62;
+        background: var(--bs-orange);
+        margin-left: 10px;
+      "
+      (click)="Return()"
+    >
+      Back
+    </button>
+  </form>
+</div>
+

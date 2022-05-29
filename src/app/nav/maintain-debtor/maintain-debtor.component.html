@@ -1,0 +1,160 @@
+<div class="container-fluid">
+  <app-update-debtor
+    *ngIf="updateDebtor"
+    [debtor]="debtor"
+    (return)="back()"
+  ></app-update-debtor>
+  <form style="height: 530px; margin-right: 0px" *ngIf="!updateDebtor">
+    <h4 class="text-dark">Maintain Debtor</h4>
+    <div class="search-container">
+      <i class="fas fa-search text-primary"></i
+      ><input
+        type="search"
+        name="Search"
+        style="padding-bottom: 0%; margin-bottom: 2%"
+        placeholder="Search..."
+        [(ngModel)]="searchText"
+        (input)="Search()"
+      />
+    </div>
+    <!--<div class="container">
+        <div class="container" style="margin-right: 0px; margin-left: 300px">
+            <i class="fa fa-search"></i><input
+              class="form-control search-input"
+              type="text"
+              name="search-bar"
+              placeholder="Searchdd..."
+              style="width: 320px; margin-right: 0px; margin-left: 400px"
+            />
+            <button class="btn btn-light search-btn" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+    </div>-->
+    <!-- <button class="btn btn-light search-btn" type="button">
+          <i class="fa fa-search"></i>
+        </button> -->
+    <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>&nbsp;Name</th>
+            <th>Surname</th>
+            <th>Contact Number</th>
+            <!-- <th>ID Number</th> -->
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let debtor of debtors">
+            <td>{{ debtor.name }}</td>
+            <td>{{ debtor.surname }}</td>
+            <td>{{ debtor.contacT_NUMBER }}</td>
+            <!-- <td>0412345678954</td> -->
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-orange)"
+                (click)="updateDebtor = true; populateForm(debtor)"
+              >
+                Edit
+              </button>
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="background: var(--bs-red)"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                (click)="deletee(debtor.debtoR_ID)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      (click)="back()"
+      style="
+        --bs-warning: #f6c23e;
+        --bs-warning-rgb: 246, 194, 62;
+        background: var(--bs-orange);
+        margin-left: 10px;
+        margin-top: 20px;
+      "
+    >
+      Back
+    </button>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="!successDelete"
+            >
+              Are You Sure You Would Like To Delete This Debtor
+            </h5>
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              *ngIf="successDelete"
+            >
+              Debtor Successfully Deleted
+            </h5>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              *ngIf="!successDelete"
+            >
+              No
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              name="deleteDebtor"
+              data-target="#exampleModal"
+              *ngIf="!successDelete"
+              (click)="successDelete = true; deleteDebtor()"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-dismiss="modal"
+              *ngIf="successDelete"
+              (click)="back()"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

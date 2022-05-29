@@ -37,6 +37,10 @@ import { SearchProductComponent } from './nav/search-product/search-product.comp
 import { AddProductComponent } from './nav/add-product/add-product.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
+import { AddDebtorComponent } from './nav/add-debtor/add-debtor.component';
+import { SearchDebtorComponent } from './nav/search-debtor/search-debtor.component';
+import { MaintainDebtorComponent } from './nav/maintain-debtor/maintain-debtor.component';
+import { UpdateDebtorComponent } from './nav/maintain-debtor/update-debtor/update-debtor.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -73,6 +77,10 @@ const appRoutes: Routes = [
     SearchProductComponent,
     AddProductComponent,
     LoginComponent,
+    AddDebtorComponent,
+    SearchDebtorComponent,
+    MaintainDebtorComponent,
+    UpdateDebtorComponent,
   ],
   imports: [
     BrowserModule,

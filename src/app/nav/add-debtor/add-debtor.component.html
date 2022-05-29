@@ -1,0 +1,208 @@
+<form
+  style="
+    width: 750px;
+    margin-right: 0px;
+    margin-left: 5px;
+    height: 850px;
+    border-right-color: rgb(8, 15, 67);
+    --bs-light: #f8f9fc;
+    --bs-light-rgb: 248, 249, 252;
+  "
+  #form="ngForm"
+  (ngSubmit)="onSubmit()"
+>
+  <h4
+    style="
+      margin-right: 750px;
+      color: rgb(0, 0, 0);
+      width: 241px;
+      margin-left: 0px;
+    "
+  >
+    Debtor
+  </h4>
+  <h5 style="color: rgb(0, 0, 0); margin-right: 480px; height: 27px">
+    Add Debtor
+  </h5>
+  <div class="container">
+    <div class="row">
+      <div
+        class="col-md-6"
+        style="
+          height: 200px;
+          color: rgb(0, 0, 0);
+          border-bottom-color: var(--bs-red);
+        "
+      >
+        <label class="form-label" style="margin-right: 650px; margin-left: 20px;">Name:</label>
+        <input
+          class="form-control"
+          name="debtorName"
+          type="text"
+          style="width: 300px; margin-right: 50px; margin-left: 20px"
+          [(ngModel)]="debtor.name"
+          (click)="nameValidate()"
+          (keyup)="nameValidate()"
+        />
+        <div *ngIf="!nDetails" style="color: Red">Invalid Details</div>
+        <label class="form-label" style="margin-right: 300px; margin-left: 20px;">Surname:</label
+          ><input
+            class="form-control"
+            type="text"
+            required
+            name="debtorSurname"
+            style="width: 300px; margin-right: -500px; margin-left: 20px"
+            [(ngModel)]="debtor.surname"
+            (click)="surnameValidate()"
+            (keyup)="surnameValidate()"
+          />
+          <div *ngIf="!sDetails" style="color: Red">Invalid Details</div>
+
+          <label class="form-label" style="margin-right: 1200px; width: 130px; margin-left: 20px;"
+          >Contact Number: </label
+        ><style></style>+27<input
+          class="form-control"
+          type="text"
+          required
+          name="debtorNumber"
+          required
+          minlength="9"
+          maxlength="9"
+          style="margin-left: 20px; width: 300px"
+          [(ngModel)]="debtor.contacT_NUMBER"
+        />
+        <div *ngIf="!cnDetails" style="color: Red">Invalid Details</div>
+
+        <div class="container">
+          <div class="row" style="height: 100px">
+            <div class="col-md-6 text-dark" style="height: 100px">
+              <label class="form-label" style="margin-right: 250px">Email</label
+              ><input
+                class="form-control"
+                name="debtorEmail"
+                type="text"
+                required
+                style="width: 300px;"
+                [(ngModel)]="debtor.email"
+                (click)="emailValidate()"
+                (keyup)="emailValidate()"
+              />
+              <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
+
+      </div>
+      <div class="container">
+        <div class="row" style="height: 100px">
+          <div class="col-md-6 text-dark" style="height: 100px">
+            <label class="form-label" style="margin-right: 20px">Credit Limit</label
+            ><input
+              class="form-control"
+              name="debtorLimit"
+              type="text"
+              required
+              style="width: 300px; padding-left: 20px;"
+              [(ngModel)]="debtor.crediT_LIMIT"
+            />
+            <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
+
+    </div>
+  </div>
+
+        <div class="form-group">
+          <span>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="Return()"
+              style="
+                border-right-color: var(--bs-orange);
+                background: var(--bs-orange);
+                margin-right: 30px;
+                margin-top: 10px;
+              "
+            >
+              Cancel
+            </button>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              style="
+                border-right-color: var(--bs-orange);
+                background: var(--bs-orange);
+                margin-right: 0px;
+                margin-top: 10px;
+              "
+              *ngIf="nDetails && sDetails && eDetails && cnDetails"
+            >
+              Save
+            </button>
+          </span>
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5
+                    class="modal-title"
+                    id="exampleModalLabel"
+                    *ngIf="!successSubmit"
+                  >
+                    Are You Sure You Would Like To Add A New Debtor
+                  </h5>
+                  <h5
+                    class="modal-title"
+                    id="exampleModalLabel"
+                    *ngIf="successSubmit"
+                  >
+                    Debtor Successfully Added
+                  </h5>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                    *ngIf="!successSubmit"
+                  >
+                    No
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    data-target="#exampleModal"
+                    *ngIf="!successSubmit"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    data-dismiss="modal"
+                    *ngIf="successSubmit"
+                    (click)="Return()"
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+</form>
+
