@@ -14,6 +14,7 @@ export class MaintainProductComponent implements OnInit {
   updateProduct: boolean = false;
   successDelete: boolean = false;
 
+
   products: Product[] = [];
   product: Product;
 
@@ -65,4 +66,5 @@ export class MaintainProductComponent implements OnInit {
   back(){
     this.return.emit('false');
   }
+
 }

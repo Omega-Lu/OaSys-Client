@@ -9,12 +9,11 @@
   #form="ngForm"
   (ngSubmit)="onSubmit()"
 >
+  <h1 style="color: rgb(0, 0, 0); margin-left: 10px">Add Supplier</h1>
+  <div class="container-fluid">
+    <h3 class="text-dark mb-1"></h3>
+  </div>
 
-<h1 style="color: rgb(0, 0, 0); margin-left: 10px">Add Supplier</h1>
-<div class="container-fluid">
-  <h3 class="text-dark mb-1"></h3>
-</div>
-   
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Name:</label
   ><input
@@ -38,7 +37,10 @@
     type="text"
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="supplier.vaT_NUMBER"
+    (click)="Vatvalidate()"
+    (keyup)="Vatvalidate()"
   />
+  <div *ngIf="!vdetails" style="color: Red">Invalid Details</div>
 
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Contact Number:</label
@@ -49,7 +51,10 @@
     type="text"
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="supplier.contacT_NUMBER"
+    (click)="Contactvalidate()"
+    (keyup)="Contactvalidate()"
   />
+  <div *ngIf="!cdetails" style="color: Red">Invalid Details</div>
 
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Alternate Contact Number:</label
@@ -60,7 +65,10 @@
     type="text"
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="supplier.alT_NUMBER"
+    (click)="Altvalidate()"
+    (keyup)="Altvalidate()"
   />
+  <div *ngIf="!adetails" style="color: Red">Invalid Details</div>
 
   <label class="form-label" style="margin-left: 10px; color: rgb(0, 0, 0)"
     >Email:</label
@@ -102,7 +110,7 @@
           margin-right: 0px;
           margin-top: 10px;
         "
-        *ngIf="details && edetails"
+        *ngIf="details && edetails && vdetails && cdetails && adetails"
       >
         Save
       </button>

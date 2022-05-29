@@ -21,6 +21,9 @@ export class UpdateProductComponent implements OnInit {
   categorySelected: boolean = false;
   successSubmit: boolean = false;
 
+  cdetails: boolean = true;
+  sdetails: boolean = true;
+
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
 
@@ -100,5 +103,21 @@ export class UpdateProductComponent implements OnInit {
     });
     console.log(this.productTypes);
     this.categorySelected = true;
+  }
+
+  Costvalidate() {
+    if (this.product.cosT_PRICE < 1) {
+      this.cdetails = false;
+    } else {
+      this.cdetails = true;
+    }
+  }
+
+  Sellvalidate() {
+    if (this.product.sellinG_PRICE < 1) {
+      this.sdetails = false;
+    } else {
+      this.sdetails = true;
+    }
   }
 }

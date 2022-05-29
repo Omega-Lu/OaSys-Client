@@ -45,6 +45,46 @@
               ><span class="text-warning" (click)="back()">Dashboard</span></a
             >
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickEmployee(); navName = 'Employee'"
+                >Employee</span
+              ></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickSupplier(); navName = 'Supplier'"
+                >Supplier</span
+              ></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickProduct(); navName = 'Product'"
+                >Product</span
+              ></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickDebtor(); navName = 'Debtor'"
+                >Debtor</span
+              ></a
+            >
+          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#"
 
@@ -226,7 +266,7 @@
             ></div>
           </div>
           <h3 class="text-dark mb-0"></h3>
-          <div class="card">
+          <div class="card" *ngIf="employee">
             <div class="card-header">
               <h5
                 class="mb-0"
@@ -241,7 +281,7 @@
               </h5>
             </div>
           </div>
-          <div class="card-group">
+          <div class="card-group" *ngIf="employee">
             <div class="card">
               <div
                 class="card-body"
@@ -255,8 +295,11 @@
                   class="btn"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="addEmployee = true; landingPage = false;
-                  navName = 'Employee';"
+                  (click)="
+                    addEmployee = true;
+                    landingPage = false;
+                    navName = 'Employee'
+                  "
                 >
                   Add employee
                 </button>
@@ -273,8 +316,11 @@
                   class="btn"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="addEmployeeType = true; landingPage = false;
-                  navName = 'Employee';"
+                  (click)="
+                    addEmployeeType = true;
+                    landingPage = false;
+                    navName = 'Employee'
+                  "
                 >
                   Add employee type
                 </button>
@@ -293,8 +339,11 @@
                   class="btn"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="searchEmployee = true; landingPage = false;
-                  navName = 'Employee';"
+                  (click)="
+                    searchEmployee = true;
+                    landingPage = false;
+                    navName = 'Employee'
+                  "
                 >
                   Search employee
                 </button>
@@ -311,8 +360,11 @@
                   class="btn"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="searchEmployeeType = true; landingPage = false;
-                  navName = 'Employee';"
+                  (click)="
+                    searchEmployeeType = true;
+                    landingPage = false;
+                    navName = 'Employee'
+                  "
                 >
                   Search employee type
                 </button>
@@ -331,8 +383,11 @@
                   class="btn"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="maintainEmployee = true; landingPage = false;
-                  navName = 'Employee';"
+                  (click)="
+                    maintainEmployee = true;
+                    landingPage = false;
+                    navName = 'Employee'
+                  "
                 >
                   Maintain employee
                 </button>
@@ -349,15 +404,18 @@
                   class="btn"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="maintainEmployeeType = true; landingPage = false;
-                  navName = 'Employee';"
+                  (click)="
+                    maintainEmployeeType = true;
+                    landingPage = false;
+                    navName = 'Employee'
+                  "
                 >
                   Maintain employee type
                 </button>
               </div>
             </div>
           </div>
-          <div id="content-1" style="color: var(--bs-indigo)">
+          <div id="content-1" style="color: var(--bs-indigo)" *ngIf="employee">
             <div class="container-fluid">
               <div
                 class="d-sm-flex justify-content-between align-items-center mb-4"
@@ -393,8 +451,11 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="addWageRate = true; landingPage = false;
-                    navName = 'WAGE RATE';"
+                    (click)="
+                      addWageRate = true;
+                      landingPage = false;
+                      navName = 'WAGE RATE'
+                    "
                   >
                     Add wage rate
                   </button>
@@ -413,8 +474,11 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="searchWageRate = true; landingPage = false;
-                    navName = 'WAGE RATE';"
+                    (click)="
+                      searchWageRate = true;
+                      landingPage = false;
+                      navName = 'WAGE RATE'
+                    "
                   >
                     Search wage rate
                   </button>
@@ -433,8 +497,11 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="maintainWageRate = true; landingPage = false;
-                    navName = 'WAGE RATE';"
+                    (click)="
+                      maintainWageRate = true;
+                      landingPage = false;
+                      navName = 'WAGE RATE'
+                    "
                   >
                     Maintain wage rate
                   </button>
@@ -442,7 +509,7 @@
               </div>
             </div>
           </div>
-          <div id="content-2" style="color: var(--bs-indigo)">
+          <div id="content-2" style="color: var(--bs-indigo)" *ngIf="employee">
             <div class="container-fluid">
               <div
                 class="d-sm-flex justify-content-between align-items-center mb-4"
@@ -478,8 +545,11 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="addWarning = true; landingPage = false;
-                    navName = 'WARNINGS';"
+                    (click)="
+                      addWarning = true;
+                      landingPage = false;
+                      navName = 'WARNINGS'
+                    "
                   >
                     Add warning
                   </button>
@@ -498,8 +568,11 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="searchWarning = true; landingPage = false;
-                    navName = 'WARNINGS';"
+                    (click)="
+                      searchWarning = true;
+                      landingPage = false;
+                      navName = 'WARNINGS'
+                    "
                   >
                     Search warning
                   </button>
@@ -518,8 +591,11 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="maintainWarning = true; landingPage = false;
-                    navName = 'WARNINGS';"
+                    (click)="
+                      maintainWarning = true;
+                      landingPage = false;
+                      navName = 'WARNINGS'
+                    "
                   >
                     Maintain warning
                   </button>
@@ -527,7 +603,7 @@
               </div>
             </div>
           </div>
-          <div class="card-group">
+          <div class="card-group" *ngIf="employee">
             <div class="card">
               <div
                 class="card-body"
@@ -541,8 +617,11 @@
                   class="btn link-dark"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="addWarningType = true; landingPage = false;
-                  navName = 'WARNINGS';"
+                  (click)="
+                    addWarningType = true;
+                    landingPage = false;
+                    navName = 'WARNINGS'
+                  "
                 >
                   Add warning type
                 </button>
@@ -561,8 +640,11 @@
                   class="btn link-dark"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="searchWarningType = true; landingPage = false;
-                  navName = 'WARNINGS';"
+                  (click)="
+                    searchWarningType = true;
+                    landingPage = false;
+                    navName = 'WARNINGS'
+                  "
                 >
                   Search warning type
                 </button>
@@ -581,8 +663,11 @@
                   class="btn link-dark"
                   type="button"
                   style="color: rgb(0, 0, 0)"
-                  (click)="maintainWarningType = true; landingPage = false;
-                  navName = 'WARNINGS';"
+                  (click)="
+                    maintainWarningType = true;
+                    landingPage = false;
+                    navName = 'WARNINGS'
+                  "
                 >
                   Maintain warning type
                 </button>
@@ -596,7 +681,7 @@
               ></div>
             </div>
             <h3 class="text-dark mb-0"></h3>
-            <div class="card">
+            <div class="card" *ngIf="supplier">
               <div class="card-header">
                 <h5
                   class="mb-0"
@@ -611,7 +696,7 @@
                 </h5>
               </div>
             </div>
-            <div class="card-group">
+            <div class="card-group" *ngIf="supplier">
               <div class="card">
                 <div
                   class="card-body"
@@ -625,8 +710,7 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="addSupplier = true; landingPage = false;
-                    navName = 'SUPPLIER';"
+                    (click)="addSupplier = true; landingPage = false"
                   >
                     Add Supplier
                   </button>
@@ -645,8 +729,7 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="searchSupplier = true; landingPage = false;
-                    navName = 'SUPPLIER';"
+                    (click)="searchSupplier = true; landingPage = false"
                   >
                     Search Supplier
                   </button>
@@ -665,15 +748,14 @@
                     class="btn"
                     type="button"
                     style="color: rgb(0, 0, 0)"
-                    (click)="maintainSupplier = true; landingPage = false;
-                    navName = 'SUPPLIER';"
+                    (click)="maintainSupplier = true; landingPage = false"
                   >
                     Maintain Supplier
                   </button>
                 </div>
               </div>
             </div>
-            <div id="content-2" style="color: var(--bs-indigo)">
+            <div id="content-2" style="color: var(--bs-indigo)" *ngIf="product">
               <div class="container-fluid">
                 <div
                   class="d-sm-flex justify-content-between align-items-center mb-4"
@@ -695,7 +777,7 @@
                   </h5>
                 </div>
               </div>
-              <div class="card-group" (click)="navName = 'PRODUCTS'">
+              <div class="card-group">
                 <div class="card">
                   <div
                     class="card-body"
@@ -712,11 +794,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="
-                        addProduct = true;
-                        landingPage = false;
-                        navName = 'PRODUCTS';
-                      "
+                      (click)="addProduct = true; landingPage = false"
                     >
                       Add Product
                     </button>
@@ -738,8 +816,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="searchProduct = true; landingPage = false;
-                      navName = 'PRODUCTS';"
+                      (click)="searchProduct = true; landingPage = false"
                     >
                       Search Product
                     </button>
@@ -761,12 +838,27 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="maintainProduct = true; landingPage = false;
-                      navName = 'PRODUCTS';"
+                      (click)="maintainProduct = true; landingPage = false"
                     >
                       Maintain Product
                     </button>
                   </div>
+                </div>
+              </div>
+              <hr>
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="mb-0"
+                    style="
+                      --bs-primary: #3c404d;
+                      --bs-primary-rgb: 60, 64, 77;
+                      color: rgb(0, 0, 0);
+                      font-weight: bold;
+                    "
+                  >
+                    Product Category
+                  </h5>
                 </div>
               </div>
               <div class="card-group">
@@ -786,8 +878,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="addProductCategory = true; landingPage = false;
-                      navName = 'PRODUCTS';"
+                      (click)="addProductCategory = true; landingPage = false"
                     >
                       Add Product Category
                     </button>
@@ -810,8 +901,7 @@
                       type="button"
                       style="color: rgb(0, 0, 0)"
                       (click)="
-                        searchProductCategory = true; landingPage = false;
-                        navName = 'PRODUCTS';
+                        searchProductCategory = true; landingPage = false
                       "
                     >
                       Search Product Category
@@ -835,13 +925,28 @@
                       type="button"
                       style="color: rgb(0, 0, 0)"
                       (click)="
-                        maintainProductCategory = true; landingPage = false;
-                        navName = 'PRODUCTS';
+                        maintainProductCategory = true; landingPage = false
                       "
                     >
                       Maintain Product Category
                     </button>
                   </div>
+                </div>
+              </div>
+              <hr/>
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="mb-0"
+                    style="
+                      --bs-primary: #3c404d;
+                      --bs-primary-rgb: 60, 64, 77;
+                      color: rgb(0, 0, 0);
+                      font-weight: bold;
+                    "
+                  >
+                    Product Type
+                  </h5>
                 </div>
               </div>
               <div class="card-group">
@@ -861,8 +966,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="addProductType = true; landingPage = false;
-                      navName = 'PRODUCTS';"
+                      (click)="addProductType = true; landingPage = false"
                     >
                       Add Product Type
                     </button>
@@ -884,8 +988,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="searchProductType = true; landingPage = false;
-                      navName = 'PRODUCTS';"
+                      (click)="searchProductType = true; landingPage = false"
                     >
                       Search Product Type
                     </button>
@@ -907,8 +1010,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="maintainProductType = true; landingPage = false;
-                      navName = 'PRODUCTS';"
+                      (click)="maintainProductType = true; landingPage = false"
                     >
                       Maintain Product Type
                     </button>
@@ -916,7 +1018,7 @@
                 </div>
               </div>
             </div>
-            <div id="content-2" style="color: var(--bs-indigo)">
+            <div id="content-2" style="color: var(--bs-indigo)" *ngIf="debtor">
               <div class="container-fluid">
                 <div
                   class="d-sm-flex justify-content-between align-items-center mb-4"
@@ -955,8 +1057,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="addCustomerAccount = true; landingPage = false;
-                      navName = 'Debtor';"
+                      (click)="addCustomerAccount = true; landingPage = false"
                     >
                       Add Debtor
                     </button>
@@ -979,8 +1080,7 @@
                       type="button"
                       style="color: rgb(0, 0, 0)"
                       (click)="
-                        searchCustomerAccount = true; landingPage = false;
-                        navName = 'Debtor';
+                        searchCustomerAccount = true; landingPage = false
                       "
                     >
                       Search Debtor
@@ -1004,8 +1104,7 @@
                       type="button"
                       style="color: rgb(0, 0, 0)"
                       (click)="
-                        maintainCustomerAccount = true; landingPage = false;
-                        navName = 'Debtor';
+                        maintainCustomerAccount = true; landingPage = false
                       "
                     >
                       Maintain Debtor

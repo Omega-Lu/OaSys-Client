@@ -5,7 +5,7 @@ import { SupplierService } from 'src/app/_services/supplier.service';
 @Component({
   selector: 'app-update-supplier',
   templateUrl: './update-supplier.component.html',
-  styleUrls: ['./update-supplier.component.css']
+  styleUrls: ['./update-supplier.component.css'],
 })
 export class UpdateSupplierComponent implements OnInit {
   @Input() supplier: Supplier;
@@ -16,27 +16,25 @@ export class UpdateSupplierComponent implements OnInit {
   cdetails: boolean = true;
   adetails: boolean = true;
   edetails: boolean = true;
-  successSubmit : boolean = false;
+  successSubmit: boolean = false;
 
-  constructor(private supplierService: SupplierService) { }
+  constructor(private supplierService: SupplierService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
-    this.supplierService.updateSupplier(this.supplier)
-    .subscribe( response => {
+    this.supplierService.updateSupplier(this.supplier).subscribe((response) => {
       console.log(response);
-    })
+    });
     this.successSubmit = true;
   }
 
   namevalidate() {
     var matches = this.supplier.name.match(/\d+/g);
     if (matches != null) {
-     this.details = false;
+      this.details = false;
     } else if (this.supplier.name == '') {
-     this.details = false;
+      this.details = false;
     } else {
       this.details = true;
     }
@@ -44,10 +42,37 @@ export class UpdateSupplierComponent implements OnInit {
 
   emailvalidate() {
     if (this.supplier.email == '') {
-        this.edetails = false;
-       } else {
-         this.edetails = true;
-       }
-     }
+      this.edetails = false;
+    } else {
+      this.edetails = true;
+    }
+  }
 
+  Contactvalidate() {
+    if (this.supplier.contacT_NUMBER < 1) {
+      this.cdetails = false;
+    } else {
+      this.cdetails = true;
+    }
+  }
+
+  Vatvalidate() {
+    if (this.supplier.vaT_NUMBER < 1) {
+      this.vdetails = false;
+    } else {
+      this.vdetails = true;
+    }
+  }
+
+  Altvalidate() {
+    if (this.supplier.alT_NUMBER < 1) {
+      this.adetails = false;
+    } else {
+      this.adetails = true;
+    }
+  }
+
+  Return() {
+    this.return.emit('false');
+  }
 }

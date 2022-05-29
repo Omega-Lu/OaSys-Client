@@ -91,9 +91,7 @@
             "
             [(ngModel)]="product.producT_CATEGORY_ID"
             required
-            (input)="
-              categorySelect($event.target.value);
-            "
+            (input)="categorySelect($event.target.value)"
           >
             <option
               value=" {{ productCategory.producT_CATEGORY_ID }} "
@@ -157,7 +155,10 @@
           style="width: 138.5px"
           required
           [(ngModel)]="product.cosT_PRICE"
+          (click)="Costvalidate()"
+          (keyup)="Costvalidate()"
         />
+        <div *ngIf="!cdetails" style="color: Red">Invalid Details</div>
       </div>
       <div
         class="col-md-6"
@@ -173,7 +174,10 @@
           style="width: 138.5px"
           required
           [(ngModel)]="product.sellinG_PRICE"
+          (click)="Sellvalidate()"
+          (keyup)="Sellvalidate()"
         />
+        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
       </div>
       <div
         class="col-md-6"
@@ -220,7 +224,7 @@
           margin-right: 0px;
           margin-top: 10px;
         "
-        *ngIf="details && pdetails"
+        *ngIf="details && pdetails && cdetails && sdetails"
       >
         Save
       </button>

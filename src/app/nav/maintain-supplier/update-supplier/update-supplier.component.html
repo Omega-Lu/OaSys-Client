@@ -53,7 +53,10 @@
           required
           minlength="13"
           maxlength="13"
+          (click)="Vatvalidate()"
+          (keyup)="Vatvalidate()"
         />
+        <div *ngIf="!vdetails" style="color: Red">Invalid Details</div>
 
         <label class="form-label" style="margin-right: 1200px; width: 130px"
           >Contact Number: </label
@@ -67,7 +70,10 @@
           maxlength="9"
           style="margin-left: 10px; width: 300px"
           [(ngModel)]="supplier.contacT_NUMBER"
+          (click)="Contactvalidate()"
+          (keyup)="Contactvalidate()"
         />
+        <div *ngIf="!cdetails" style="color: Red">Invalid Details</div>
 
         <label class="form-label" style="margin-right: 1200px; width: 300px"
           >Alternate Contact Number: </label
@@ -81,7 +87,10 @@
           maxlength="9"
           style="margin-left: 10px; width: 300px"
           [(ngModel)]="supplier.alT_NUMBER"
+          (click)="Altvalidate()"
+          (keyup)="Altvalidate()"
         />
+        <div *ngIf="!adetails" style="color: Red">Invalid Details</div>
 
         <label class="form-label" style="margin-right: 650px">Email:</label
         ><input

@@ -13,6 +13,7 @@ export class AddProductTypeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
   details: boolean = true;
+  cdetails: boolean = false;
 
   successSubmit: boolean = false;
 
@@ -41,6 +42,10 @@ export class AddProductTypeComponent implements OnInit {
         console.log(response);
       });
     this.successSubmit = true;
+  }
+
+  categoryValidate(){
+    this.cdetails = true;
   }
 
   getAllProductCategories() {

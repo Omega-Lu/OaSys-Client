@@ -26,6 +26,7 @@
             border-right-color: var(--bs-orange);
           "
           [(ngModel)]="productType.producT_CATEGORY_ID"
+          (input)="categoryValidate()"
         >
           <option
             value=" {{ productCategory.producT_CATEGORY_ID }} "
@@ -34,10 +35,11 @@
             {{ productCategory.categorY_NAME }}
           </option>
         </select>
+        <div *ngIf="!cdetails" style="color: Red">Category Required</div>
       </div>
     </div>
     <div class="row">
-      <label class="form-label" style="margin-right: 650px"
+      <label class="form-label" style="margin-right: 650px; padding-top: 10px"
         >Product Type Name:</label
       >
       <input
@@ -77,7 +79,7 @@
             margin-right: 0px;
             margin-top: 10px;
           "
-          *ngIf="details"
+          *ngIf="details && cdetails"
         >
           Save
         </button>

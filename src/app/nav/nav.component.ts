@@ -43,9 +43,14 @@ export class NavComponent implements OnInit {
   maintainProductType: boolean = false;
   navName: string = 'LANDING PAGE';
 
+  employee: boolean = true;
+  supplier: boolean = false;
+  product: boolean = false;
+  debtor: boolean = false;
+
   back() {
     this.landingPage = true;
-    this.navName = 'LANDING PAGE';
+    //this.navName = 'LANDING PAGE';
     console.log('back to Landing ' + this.landingPage);
 
     this.addEmployee = false;
@@ -83,6 +88,39 @@ export class NavComponent implements OnInit {
   constructor() {
     this.loggedIn = true;
   }
+
+  clickEmployee() {
+    this.back();
+    this.employee = true;
+    this.product = false;
+    this.debtor = false;
+    this.supplier = false;
+  }
+
+  clickSupplier() {
+    this.back();
+    this.employee = false;
+    this.product = false;
+    this.debtor = false;
+    this.supplier = true;
+  }
+
+  clickProduct() {
+    this.back();
+    this.employee = false;
+    this.product = true;
+    this.debtor = false;
+    this.supplier = false;
+  }
+
+  clickDebtor() {
+    this.back();
+    this.employee = false;
+    this.product = false;
+    this.debtor = true;
+    this.supplier = false;
+  }
+
   ngOnInit(): void {}
 
   // login() {

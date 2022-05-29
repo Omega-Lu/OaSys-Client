@@ -1,6 +1,43 @@
-<h1>&nbsp;Add Product Type</h1>
+<h1>&nbsp;Update Product Type</h1>
 <div class="container-fluid">
   <form #form="ngForm" (ngSubmit)="onSubmit()">
+    <div class="col">
+      <label class="form-label" style="margin-right: 650px"
+        >Product Category:</label
+      >
+      <div
+        class="dropdown"
+        style="
+          width: 336px;
+          height: 75px;
+          margin: 46px 0px -19px 2px;
+          margin-right: 0px;
+          margin-top: 1px;
+          margin-bottom: -19px;
+          margin-left: 2px;
+        "
+      >
+        <select
+          name="productCategory"
+          id="productCategory"
+          class="btn btn-primary"
+          style="
+            background: var(--bs-orange);
+            border-right-color: var(--bs-orange);
+          "
+          [(ngModel)]="productType.producT_CATEGORY_ID"
+          (input)="categoryValidate()"
+        >
+          <option
+            value="{{ productCategory.producT_CATEGORY_ID }}"
+            *ngFor="let productCategory of productCategories"
+          >
+            {{ productCategory.categorY_NAME }}
+          </option>
+        </select>
+        <div *ngIf="!cdetails" style="color: Red">Category Required</div>
+      </div>
+    </div>
     <div class="row">
       <label class="form-label" style="margin-right: 650px"
         >Product Type Name:</label
@@ -109,4 +146,3 @@
     </div>
   </form>
 </div>
-
