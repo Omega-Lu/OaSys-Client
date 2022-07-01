@@ -15,6 +15,7 @@ export class AddEployeeComponent implements OnInit {
   edetails: boolean = true;
   adetails: boolean = true;
   successSubmit : boolean = false;
+  something: any;
 
   employee: Employee = {
     employeE_ID: 0,
