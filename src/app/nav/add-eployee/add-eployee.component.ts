@@ -7,14 +7,13 @@ import { EmployeeService } from 'src/app/_services/employee.service';
   templateUrl: './add-eployee.component.html',
 })
 export class AddEployeeComponent implements OnInit {
-
   @Output() return = new EventEmitter<string>();
   details: boolean = true;
   sdetails: boolean = true;
   tdetails: boolean = true;
   edetails: boolean = true;
   adetails: boolean = true;
-  successSubmit : boolean = false;
+  successSubmit: boolean = false;
   something: any;
 
   employee: Employee = {
@@ -32,7 +31,6 @@ export class AddEployeeComponent implements OnInit {
     address: '',
   };
 
-
   constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {}
@@ -47,9 +45,9 @@ export class AddEployeeComponent implements OnInit {
   namevalidate() {
     var matches = this.employee.name.match(/\d+/g);
     if (matches != null) {
-     this.details = false;
+      this.details = false;
     } else if (this.employee.name == '') {
-     this.details = false;
+      this.details = false;
     } else {
       this.details = true;
     }
@@ -58,17 +56,17 @@ export class AddEployeeComponent implements OnInit {
   survalidate() {
     var matches = this.employee.surname.match(/\d+/g);
     if (matches != null) {
-     this.sdetails = false;
+      this.sdetails = false;
     } else if (this.employee.surname == '') {
-     this.sdetails = false;
+      this.sdetails = false;
     } else {
       this.sdetails = true;
     }
   }
 
   emailvalidate() {
- if (this.employee.email == '') {
-     this.edetails = false;
+    if (this.employee.email == '') {
+      this.edetails = false;
     } else {
       this.edetails = true;
     }
@@ -77,17 +75,17 @@ export class AddEployeeComponent implements OnInit {
   titlevalidate() {
     var matches = this.employee.title.match(/\d+/g);
     if (matches != null) {
-     this.tdetails = false;
+      this.tdetails = false;
     } else if (this.employee.title == '') {
-     this.tdetails = false;
+      this.tdetails = false;
     } else {
       this.tdetails = true;
     }
   }
 
   addressvalidate() {
-  if (this.employee.address == '') {
-     this.adetails = false;
+    if (this.employee.address == '') {
+      this.adetails = false;
     } else {
       this.adetails = true;
     }
