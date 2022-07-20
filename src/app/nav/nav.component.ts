@@ -101,6 +101,13 @@ export class NavComponent implements OnInit {
     this.maintainProductType = false;
     this.maintainDebtor = false;
     this.createSupplierOrder = false;
+    this.searchSupplierOrder = false;
+    this.receiveSupplierOrder = false;
+    this.completeStocktake = false;
+    this.reorderList = false;
+    this.reorderList = false;
+    this.returnSupplierOrder = false;
+    this.writeOff = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {

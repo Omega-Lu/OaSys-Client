@@ -22,7 +22,7 @@ export class AppComponent implements OnInit{
   userservice :UserService;
 
   constructor(private http: HttpClient, private formBuilder: FormBuilder) {
-    this.loggedIn = false;
+    this.loggedIn = true;
     console.log(this.loggedIn);
   }
 

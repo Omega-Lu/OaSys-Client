@@ -1,1 +1,83 @@
-<p>search-supplier-order works!</p>
+<form
+  style="
+    height: 530px;
+    margin-right: 0px;
+    color: var(--bs-dark);
+    --bs-body-color: black;
+    width: 800px;
+  "
+>
+  <h4 class="text-dark">Search Supplier Order</h4>
+  <div class="search-container" style="margin-right: 0px; margin-left: 300px">
+    <input
+      class="form-control search-input"
+      type="text"
+      name="search-bar"
+      placeholder="Search supplier"
+      style="width: 320px; margin-right: 0px; margin-left: 120px"
+    /><button class="btn btn-light search-btn" type="button">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+  <div
+    class="table-responsive text-dark"
+    style="
+      height: 200px;
+      color: var(--bs-dark);
+      --bs-dark: black;
+      --bs-dark-rgb: 0, 0, 0;
+    "
+  >
+    <table class="table">
+      <thead>
+        <tr>
+          <th> Supplier Name</th>
+          <th>Contact Number</th>
+          <th>Date Placed</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Energade</td>
+          <td>0781249462</td>
+          <td>08/09/2022</td>
+          <td>Placed</td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr></tr>
+        <tr></tr>
+        <tr>
+          <td>Coca-Cola</td>
+          <td>0606784593</td>
+          <td>12/09/2022<br /></td>
+          <td>Received</td>
+        </tr>
+        <tr>
+          <td>Simba</td>
+          <td>0727820965</td>
+          <td>15/09/2022</td>
+          <td>Placed</td>
+        </tr>
+        <tr></tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    (click)="Return()"
+    class="btn btn-primary"
+    type="button"
+    style="
+      --bs-warning: #f6c23e;
+      --bs-warning-rgb: 246, 194, 62;
+      background: var(--bs-orange);
+      margin-left: 10px;
+      width: 70px;
+      border-color: var(--bs-orange);
+      margin-top: 0px;
+    "
+  >
+    Back
+  </button>
+</form>

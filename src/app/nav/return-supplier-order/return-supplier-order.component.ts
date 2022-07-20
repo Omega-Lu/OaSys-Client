@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-return-supplier-order',
   templateUrl: './return-supplier-order.component.html',
-  styleUrls: ['./return-supplier-order.component.css']
+  styleUrls: ['./return-supplier-order.component.css'],
 })
 export class ReturnSupplierOrderComponent implements OnInit {
+  @Output() return = new EventEmitter<string>();
+  constructor() {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  Return() {
+    this.return.emit('false');
   }
-
 }

@@ -268,6 +268,31 @@
             *ngIf="maintainDebtor"
             (return)="back()"
           ></app-maintain-debtor>
+          <app-create-supplier-order
+            *ngIf="createSupplierOrder"
+            (return)="back()"
+          ></app-create-supplier-order>
+          <app-search-supplier-order
+            *ngIf="searchSupplierOrder"
+            (return)="back()"
+          ></app-search-supplier-order>
+          <app-receive-supplier-order
+            *ngIf="receiveSupplierOrder"
+            (return)="back()"
+          ></app-receive-supplier-order>
+          <app-complete-stocktake
+            *ngIf="completeStocktake"
+            (return)="back()"
+          ></app-complete-stocktake>
+          <app-reorder-list
+            *ngIf="reorderList"
+            (return)="back()"
+          ></app-reorder-list>
+          <app-return-supplier-order
+            *ngIf="returnSupplierOrder"
+            (return)="back()"
+          ></app-return-supplier-order>
+          <app-write-off *ngIf="writeOff" (return)="back()"></app-write-off>
         </div>
 
         <div *ngIf="landingPage">
@@ -1122,6 +1147,7 @@
             </div>
           </div>
           <div class="card" *ngIf="supplierOrder">
+            <!-- Supplier Order-->
             <div class="card-header">
               <h5
                 class="mb-0"
@@ -1239,7 +1265,7 @@
                   type="button"
                   style="color: rgb(0, 0, 0)"
                   (click)="
-                    receiveOrder = true;
+                    receiveSupplierOrder = true;
                     landingPage = false;
                     navName = 'Receiver Order'
                   "
@@ -1260,7 +1286,7 @@
                   type="button"
                   style="color: rgb(0, 0, 0)"
                   (click)="
-                    returnOrder = true;
+                    returnSupplierOrder = true;
                     landingPage = false;
                     navName = 'Return Order'
                   "
@@ -1268,6 +1294,27 @@
                   Return Order
                 </button>
               </div>
+            </div>
+          </div>
+          <hr />
+          <div class="card" *ngIf="supplierOrder">
+            <!-- Write off-->
+            <div class="card-header">
+              <h5
+                class="mb-0"
+                style="
+                  --bs-primary: #3c404d;
+                  --bs-primary-rgb: 60, 64, 77;
+                  color: rgb(0, 0, 0);
+                  font-weight: bold;
+                "
+              >
+                Write Off Inventory
+              </h5>
+            </div>
+          </div>
+          <div class="card-group" *ngIf="supplierOrder">
+            <div class="card">
               <div
                 class="card-body"
                 style="border: 2px solid var(--bs-gray-900)"
@@ -1281,9 +1328,7 @@
                   type="button"
                   style="color: rgb(0, 0, 0)"
                   (click)="
-                    writeOff = true;
-                    landingPage = false;
-                    navName = 'Write Off'
+                    writeOff = true; landingPage = false; navName = 'Write Off'
                   "
                 >
                   Write Off
