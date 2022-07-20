@@ -51,6 +51,13 @@ import { MaintainProductCategoryComponent } from './nav/maintain-product-categor
 import { UpdateProductCategoryComponent } from './nav/maintain-product-category/update-product-category/update-product-category.component';
 import { UpdateProductComponent } from './nav/maintain-product/update-product/update-product.component';
 import { UpdateProductTypeComponent } from './nav/maintain-product-type/update-product-type/update-product-type.component';
+import { CreateSupplierOrderComponent } from './nav/create-supplier-order/create-supplier-order.component';
+import { ReceiveSupplierOrderComponent } from './nav/receive-supplier-order/receive-supplier-order.component';
+import { ReorderListComponent } from './nav/reorder-list/reorder-list.component';
+import { ReturnSupplierOrderComponent } from './nav/return-supplier-order/return-supplier-order.component';
+import { SearchSupplierOrderComponent } from './nav/search-supplier-order/search-supplier-order.component';
+import { CompleteStocktakeComponent } from './nav/complete-stocktake/complete-stocktake.component';
+import { WriteOffComponent } from './nav/write-off/write-off.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -101,6 +108,13 @@ const appRoutes: Routes = [
     UpdateProductCategoryComponent,
     UpdateProductComponent,
     UpdateProductTypeComponent,
+    CreateSupplierOrderComponent,
+    ReceiveSupplierOrderComponent,
+    ReorderListComponent,
+    ReturnSupplierOrderComponent,
+    SearchSupplierOrderComponent,
+    CompleteStocktakeComponent,
+    WriteOffComponent,
   ],
   imports: [
     BrowserModule,

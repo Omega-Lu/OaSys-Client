@@ -85,6 +85,16 @@
               ></a
             >
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickSupplierOrder(); navName = 'Supplier Order'"
+                >Supplier Order</span
+              ></a
+            >
+          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#"
 
@@ -249,16 +259,15 @@
             *ngIf="maintainProductType"
             (return)="back()"
           ></app-maintain-product-type>
-          <app-add-debtor
-            *ngIf="addDebtor"
-            (return)="back()">
-          </app-add-debtor>
+          <app-add-debtor *ngIf="addDebtor" (return)="back()"> </app-add-debtor>
           <app-search-debtor
-          *ngIf="searchDebtor"
-          (return)="back()"></app-search-debtor>
+            *ngIf="searchDebtor"
+            (return)="back()"
+          ></app-search-debtor>
           <app-maintain-debtor
-          *ngIf="maintainDebtor"
-          (return)="back()"></app-maintain-debtor>
+            *ngIf="maintainDebtor"
+            (return)="back()"
+          ></app-maintain-debtor>
         </div>
 
         <div *ngIf="landingPage">
@@ -847,7 +856,7 @@
                   </div>
                 </div>
               </div>
-              <hr>
+              <hr />
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -935,7 +944,7 @@
                   </div>
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -1111,7 +1120,177 @@
                 </div>
               </div>
             </div>
-           </div>
+          </div>
+          <div class="card" *ngIf="supplierOrder">
+            <div class="card-header">
+              <h5
+                class="mb-0"
+                style="
+                  --bs-primary: #3c404d;
+                  --bs-primary-rgb: 60, 64, 77;
+                  color: rgb(0, 0, 0);
+                  font-weight: bold;
+                "
+              >
+                Supplier Order
+              </h5>
+            </div>
+          </div>
+          <div class="card-group" *ngIf="supplierOrder">
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-plus text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    createSupplierOrder = true;
+                    landingPage = false;
+                    navName = 'Create Supplier Order'
+                  "
+                >
+                  Create Supplier Order
+                </button>
+              </div>
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-plus text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    completeStocktake = true;
+                    landingPage = false;
+                    navName = 'Complete Stocktake'
+                  "
+                >
+                  Complete Stocktake
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-search text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    searchSupplierOrder = true;
+                    landingPage = false;
+                    navName = 'Search Supplier Order'
+                  "
+                >
+                  Search Supplier Order
+                </button>
+              </div>
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-search text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    reorderList = true;
+                    landingPage = false;
+                    navName = 'ReOrder List'
+                  "
+                >
+                  Reorder List
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-pencil-alt text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    receiveOrder = true;
+                    landingPage = false;
+                    navName = 'Receiver Order'
+                  "
+                >
+                  Receive Order
+                </button>
+              </div>
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-pencil-alt text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    returnOrder = true;
+                    landingPage = false;
+                    navName = 'Return Order'
+                  "
+                >
+                  Return Order
+                </button>
+              </div>
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-pencil-alt text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    writeOff = true;
+                    landingPage = false;
+                    navName = 'Write Off'
+                  "
+                >
+                  Write Off
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <footer class="bg-white sticky-footer">

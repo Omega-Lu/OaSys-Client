@@ -44,6 +44,13 @@ export class NavComponent implements OnInit {
   addProductType: boolean = false;
   searchProductType: boolean = false;
   maintainProductType: boolean = false;
+  createSupplierOrder: boolean = false;
+  receiveSupplierOrder: boolean = false;
+  returnSupplierOrder: boolean = false;
+  completeStocktake: boolean = false;
+  reorderList: boolean = false;
+  searchSupplierOrder: boolean = false;
+  writeOff: boolean = false;
   navName: string = 'LANDING PAGE';
 
   employee: boolean = true;
@@ -51,6 +58,7 @@ export class NavComponent implements OnInit {
   product: boolean = false;
   debtor: boolean = false;
   maintainDebtor: boolean = false;
+  supplierOrder: boolean = false;
 
 
 
@@ -92,6 +100,7 @@ export class NavComponent implements OnInit {
     this.searchProductType = false;
     this.maintainProductType = false;
     this.maintainDebtor = false;
+    this.createSupplierOrder = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {
@@ -104,6 +113,7 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = false;
     this.supplier = false;
+    this.supplierOrder = false;
   }
 
   clickSupplier() {
@@ -112,6 +122,7 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = false;
     this.supplier = true;
+    this.supplierOrder = false;
   }
 
   clickProduct() {
@@ -120,6 +131,7 @@ export class NavComponent implements OnInit {
     this.product = true;
     this.debtor = false;
     this.supplier = false;
+    this.supplierOrder = false;
   }
 
   clickDebtor() {
@@ -128,6 +140,17 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = true;
     this.supplier = false;
+    this.supplierOrder = false;
+  }
+
+  clickSupplierOrder() {
+    this.back();
+    this.employee = false;
+    this.product = false;
+    this.debtor = false;
+    this.supplier = false;
+    this.supplierOrder = true;
+
   }
 
   ngOnInit(): void {}
