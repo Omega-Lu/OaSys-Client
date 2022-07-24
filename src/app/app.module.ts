@@ -60,7 +60,8 @@ import { CompleteStocktakeComponent } from './nav/complete-stocktake/complete-st
 import { WriteOffComponent } from './nav/write-off/write-off.component';
 import { ApplyForCreditComponent } from './nav/apply-for-credit/apply-for-credit.component';
 import { ViewDebtorsAccountComponent } from './nav/view-debtors-account/view-debtors-account.component';
-import { ApproveCreditComponent } from './approve-credit/approve-credit.component';
+import { ApproveCreditComponent } from './nav/credit-application/approve-credit/approve-credit.component';
+import { CreditApplicationComponent } from './nav/credit-application/credit-application.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -121,6 +122,7 @@ const appRoutes: Routes = [
     ApplyForCreditComponent,
     ViewDebtorsAccountComponent,
     ApproveCreditComponent,
+    CreditApplicationComponent,
   ],
   imports: [
     BrowserModule,

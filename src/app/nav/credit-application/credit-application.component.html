@@ -1,0 +1,64 @@
+
+<div class="container-fluid">
+  <app-approve-credit
+  *ngIf="approveCredit"
+  [debtor]="debtor"
+  (return)="back"
+  ></app-approve-credit>
+    <h3 class="text-dark mb-1">Select an application that you would like to review</h3>
+</div><i class="fas fa-search"></i><input type="search" placeholder="Search Account by Name" style="width: 224.5px;" />
+<form style="width: 898px;height: 446px;">
+    <div class="table-responsive" style="width: 896px;margin-top: 46px;margin-left: 16px;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname </th>
+                    <th> Contact Number</th>
+                    <th style="width: 207.891px;"></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let debtor of debtors">
+                    <td>{{debtor.name}}</td>
+                    <td>{{debtor.surname}}</td>
+                    <td>{{debtor.contacT_NUMBER}}</td>
+                    <td><button class="btn btn-primary" type="button" style="margin-left: 0px;background: var(--bs-orange);height: 34px;width: 86px;"><i class="far fa-eye"></i> View</button></td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let debtor of debtors">
+                  <td>{{debtor.name}}</td>
+                  <td>{{debtor.surname}}</td>
+                  <td>{{debtor.contacT_NUMBER}}</td>
+                    <td><button class="btn btn-primary"
+                      (click)="approveCredit = true; populateForm(debtor)"
+                      type="button"
+                      style="background: var(--bs-orange);">
+                      <i class="far fa-eye"></i>
+
+                      View 
+
+                    </button></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr></tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="btn btn-primary"
+    (click)="back()"
+    type="button"
+    style="margin-left: 384px;
+    background: var(--bs-orange);
+    height: 41px;
+    width: 83.7188px;"
+    >
+
+    Back
+
+  </button>
+</form>

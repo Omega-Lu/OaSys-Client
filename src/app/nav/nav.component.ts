@@ -53,6 +53,7 @@ export class NavComponent implements OnInit {
   writeOff: boolean = false;
   applyForCredit: boolean = false;
   approveCredit: boolean = false;
+  creditApplication: boolean = false;
   viewDebtorsAccount: boolean = false;
   navName: string = 'LANDING PAGE';
 
@@ -114,6 +115,7 @@ export class NavComponent implements OnInit {
     this.writeOff = false;
     this.applyForCredit = false;
     this.approveCredit = false;
+    this.creditApplication = false;
     this.viewDebtorsAccount = false;
   }
   //constructor(private accountService: AccountService) {}
