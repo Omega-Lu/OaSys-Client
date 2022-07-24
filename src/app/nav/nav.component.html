@@ -95,6 +95,7 @@
               ></a
             >
           </li>
+
           <!-- <li class="nav-item">
             <a class="nav-link" href="#"
 
@@ -292,7 +293,18 @@
             *ngIf="returnSupplierOrder"
             (return)="back()"
           ></app-return-supplier-order>
-          <app-write-off *ngIf="writeOff" (return)="back()"></app-write-off>
+          <app-write-off *ngIf="writeOff" (return)="back()"
+          ></app-write-off>
+          <app-apply-for-credit
+            *ngIf="applyForCredit"
+            (return)="back()">
+          </app-apply-for-credit>
+          <app-approve-credit
+          *ngIf="approveCredit"
+          (return)="back()"></app-approve-credit>
+          <app-view-debtors-account
+          *ngIf="viewDebtorsAccount"
+          (return)="back()"></app-view-debtors-account>
         </div>
 
         <div *ngIf="landingPage">
@@ -1144,6 +1156,92 @@
                   </div>
                 </div>
               </div>
+              <hr>
+
+              <!-- Credit Application For Debtor -->
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="mb-0"
+                    style="
+                      --bs-primary: #3c404d;
+                      --bs-primary-rgb: 60, 64, 77;
+                      color: rgb(0, 0, 0);
+                      font-weight: bold;
+                    "
+                  >
+                    Credit Application
+                  </h5>
+                </div>
+              </div>
+              <div class="card-group">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="applyForCredit = true; landingPage = false"
+                    >
+                      Apply For Credit
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="applyForCredit = true; landingPage = false"
+                    >
+                      Approve Credit
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="viewDebtorsAccount = true; landingPage = false"
+                    >
+                      View Debtors Account
+                    </button>
+                  </div>
+                </div>
+                </div>
             </div>
           </div>
           <div class="card" *ngIf="supplierOrder">

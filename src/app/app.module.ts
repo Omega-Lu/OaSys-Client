@@ -58,6 +58,9 @@ import { ReturnSupplierOrderComponent } from './nav/return-supplier-order/return
 import { SearchSupplierOrderComponent } from './nav/search-supplier-order/search-supplier-order.component';
 import { CompleteStocktakeComponent } from './nav/complete-stocktake/complete-stocktake.component';
 import { WriteOffComponent } from './nav/write-off/write-off.component';
+import { ApplyForCreditComponent } from './nav/apply-for-credit/apply-for-credit.component';
+import { ViewDebtorsAccountComponent } from './nav/view-debtors-account/view-debtors-account.component';
+import { ApproveCreditComponent } from './approve-credit/approve-credit.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -115,6 +118,9 @@ const appRoutes: Routes = [
     SearchSupplierOrderComponent,
     CompleteStocktakeComponent,
     WriteOffComponent,
+    ApplyForCreditComponent,
+    ViewDebtorsAccountComponent,
+    ApproveCreditComponent,
   ],
   imports: [
     BrowserModule,

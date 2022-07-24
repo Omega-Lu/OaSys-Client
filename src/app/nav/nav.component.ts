@@ -51,6 +51,9 @@ export class NavComponent implements OnInit {
   reorderList: boolean = false;
   searchSupplierOrder: boolean = false;
   writeOff: boolean = false;
+  applyForCredit: boolean = false;
+  approveCredit: boolean = false;
+  viewDebtorsAccount: boolean = false;
   navName: string = 'LANDING PAGE';
 
   employee: boolean = true;
@@ -59,6 +62,7 @@ export class NavComponent implements OnInit {
   debtor: boolean = false;
   maintainDebtor: boolean = false;
   supplierOrder: boolean = false;
+
 
 
 
@@ -108,6 +112,9 @@ export class NavComponent implements OnInit {
     this.reorderList = false;
     this.returnSupplierOrder = false;
     this.writeOff = false;
+    this.applyForCredit = false;
+    this.approveCredit = false;
+    this.viewDebtorsAccount = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {
@@ -121,6 +128,8 @@ export class NavComponent implements OnInit {
     this.debtor = false;
     this.supplier = false;
     this.supplierOrder = false;
+    this.applyForCredit = false;
+
   }
 
   clickSupplier() {
@@ -130,6 +139,8 @@ export class NavComponent implements OnInit {
     this.debtor = false;
     this.supplier = true;
     this.supplierOrder = false;
+    this.applyForCredit = false;
+
   }
 
   clickProduct() {
@@ -138,6 +149,7 @@ export class NavComponent implements OnInit {
     this.product = true;
     this.debtor = false;
     this.supplier = false;
+    this.applyForCredit = false;
     this.supplierOrder = false;
   }
 
@@ -156,7 +168,9 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = false;
     this.supplier = false;
+    this.applyForCredit = false;
     this.supplierOrder = true;
+
 
   }
 
