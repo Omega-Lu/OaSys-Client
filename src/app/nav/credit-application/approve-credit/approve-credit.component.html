@@ -33,11 +33,32 @@ height: 596px;">
   style="width: 512px;" />
     <div class="container">
         <div class="row" style="margin-top: 19px;">
-            <div class="col-md-6">
-                <p>Province:</p>
-                <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" style="color: var(--bs-light);background: var(--bs-orange);margin-top: -11px;">Dropdown </button>
-                    <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
-                </div>
+                <div class="col-md-6">
+                  <p style="color: rgb(2, 3, 7)" style="margin-bottom: 0px !important">
+                    Province:
+                  </p>
+                <select
+          name="productCategory"
+          id="productCategory"
+          class="btn btn-primary"
+          style="
+            background: var(--bs-orange);
+            border-right-color: var(--bs-orange);
+          "
+          [(ngModel)]="debtor.provincE_ID"
+          required
+          (input)="categorySelect($event.target.value)"
+        >
+          <option value="1">Gauteng</option>
+          <option value="2">Northen Cape</option>
+          <option value="3">North-West</option>
+          <option value="4">Mpumalanga</option>
+          <option value="5">Limpopo</option>
+          <option value="6">Western Cape</option>
+          <option value="7">Eastern Cape</option>
+          <option value="8">KwaZulu-Natal</option>
+          <option value="9">Free State</option>
+        </select>
             </div>
             <div class="col-md-6">
                 <p>City:</p>

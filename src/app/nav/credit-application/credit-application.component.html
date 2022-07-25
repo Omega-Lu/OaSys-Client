@@ -20,11 +20,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let debtor of debtors">
-                    <td>{{debtor.name}}</td>
+                <tr >
+                    <td>Koketso</td>
                     <td>{{debtor.surname}}</td>
                     <td>{{debtor.contacT_NUMBER}}</td>
-                    <td><button class="btn btn-primary" type="button" style="margin-left: 0px;background: var(--bs-orange);height: 34px;width: 86px;"><i class="far fa-eye"></i> View</button></td>
+                    <td>
+                      <button class="btn btn-primary"
+                      (click)="approveCredit = true; populateForm(debtor)"
+                      type="button"
+                      style="margin-left: 0px;background: var(--bs-orange);
+                      height: 34px;
+                      width: 86px;"><i class="far fa-eye"></i> View</button></td>
                     <td></td>
                 </tr>
                 <tr *ngFor="let debtor of debtors">

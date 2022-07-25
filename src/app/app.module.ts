@@ -62,6 +62,8 @@ import { ApplyForCreditComponent } from './nav/apply-for-credit/apply-for-credit
 import { ViewDebtorsAccountComponent } from './nav/view-debtors-account/view-debtors-account.component';
 import { ApproveCreditComponent } from './nav/credit-application/approve-credit/approve-credit.component';
 import { CreditApplicationComponent } from './nav/credit-application/credit-application.component';
+import { SearchSaleComponent } from './nav/search-sale/search-sale.component';
+import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -123,6 +125,8 @@ const appRoutes: Routes = [
     ViewDebtorsAccountComponent,
     ApproveCreditComponent,
     CreditApplicationComponent,
+    SearchSaleComponent,
+    ViewSaleComponent,
   ],
   imports: [
     BrowserModule,
