@@ -4,24 +4,23 @@ import { Observable } from 'rxjs';
 import { Rate } from '../models/rate.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RateService {
+  model: any;
 
-  model : any;
+  baseUrl = 'https://localhost:7113/api/Rate';
 
-  baseUrl = 'https://localhost:7113/api/Rate'
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  //get all employees
-  getAllEmployees(): Observable<Rate[]>{
+  //get all rates
+  getAllEmployees(): Observable<Rate[]> {
     this.model = this.http.get<Rate[]>(this.baseUrl);
     return this.http.get<Rate[]>(this.baseUrl);
-
   }
 
-  addEmployee(rate : Rate): Observable<Rate> {
+  //add a rates
+  addEmployee(rate: Rate): Observable<Rate> {
     return this.http.post<Rate>(this.baseUrl, rate);
   }
 
@@ -29,8 +28,7 @@ export class RateService {
     return this.http.delete<Rate>(this.baseUrl + '/' + id);
   }
 
-  updateEmployee(rate: Rate): Observable<Rate>{
-    return this.http.put<Rate>(this.baseUrl + '/' + rate.ratE_ID, rate)
+  updateEmployee(rate: Rate): Observable<Rate> {
+    return this.http.put<Rate>(this.baseUrl + '/' + rate.ratE_ID, rate);
   }
-
 }

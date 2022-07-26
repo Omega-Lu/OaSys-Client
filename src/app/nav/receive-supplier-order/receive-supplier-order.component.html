@@ -1,17 +1,18 @@
 <form
   class="text-dark"
   style="
-    width: 720px;
+    width: 1000px;
     height: 500px;
     margin-top: 10px;
     margin-right: 30px;
     margin-left: 30px;
     border-color: var(--bs-orange);
   "
+  *ngIf="!boolReceive"
 >
   <h1 style="width: 500px">Receive Supplier Order</h1>
-  <div class="table-responsive">
-    <table class="table">
+  <div class="table-responsive" style="height: 500px !important">
+    <table class="table" style="height: 500px !important">
       <thead>
         <tr>
           <th>OrderID</th>
@@ -20,10 +21,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>12345</td>
-          <td>Supercast</td>
-          <td>2022/05/05</td>
+        <tr *ngFor="let dynamic of dynamicArray">
+          <td>{{ dynamic.OrderID }}</td>
+          <td>{{ dynamic.SupplierName }}</td>
+          <td>{{ dynamic.DatePlaced }}</td>
           <td>
             <button
               class="btn btn-primary"
@@ -32,23 +33,7 @@
                 background: var(--bs-orange);
                 border-color: var(--bs-orange);
               "
-            >
-              Receive Order
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>67890</td>
-          <td>Sasko</td>
-          <td>2022/06/06</td>
-          <td>
-            <button
-              class="btn btn-primary"
-              type="button"
-              style="
-                background: var(--bs-orange);
-                border-color: var(--bs-orange);
-              "
+              (click)="boolReceive = true; populateForm(dynamic.OrderID)"
             >
               Receive Order
             </button>
@@ -64,9 +49,14 @@
     style="
       background: var(--bs-orange);
       border-color: var(--bs-orange);
-      margin-left: 10px;
+      margin: 20px;
     "
   >
     Back
   </button>
 </form>
+<app-receive-order
+  *ngIf="boolReceive"
+  [order] = "order"
+  (return)="back()"
+></app-receive-order>

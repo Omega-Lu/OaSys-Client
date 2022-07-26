@@ -1,4 +1,5 @@
 <form
+  *ngIf="!createSupplierOrder"
   class="text-dark"
   style="
     width: 720px;
@@ -17,9 +18,9 @@
       name="search-bar"
       placeholder="Search..."
       style="width: 300px"
-    /><button style="margin-top: 6px;" class="btn btn-light search-btn" type="button">
-      <i class="fa fa-search"></i>
-    </button>
+      [(ngModel)]="searchText"
+      (input)="Search()"
+    />
   </div>
   <div class="table-responsive">
     <table class="table">
@@ -31,35 +32,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Supercast</td>
-          <td>0867583924</td>
-          <td>sup@gmail.com</td>
+        <tr *ngFor="let supplier of suppliers">
+          <td>{{ supplier.name }}</td>
+          <td>0{{ supplier.contacT_NUMBER }}</td>
+          <td>{{ supplier.email }}</td>
+          <!-- <td>0412345678954</td> -->
           <td>
             <button
               class="btn btn-primary"
               type="button"
-              style="
-                background: var(--bs-orange);
-                border-color: var(--bs-orange);
-              "
-            >
-              Create Order
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Sasko</td>
-          <td>0764756888</td>
-          <td>Sas@gmail.com</td>
-          <td>
-            <button
-              class="btn btn-primary"
-              type="button"
-              style="
-                background: var(--bs-orange);
-                border-color: var(--bs-orange);
-              "
+              style="background: var(--bs-orange)"
+              (click)="createSupplierOrder = true; populateForm(supplier)"
             >
               Create Order
             </button>
@@ -81,3 +64,8 @@
     Back
   </button>
 </form>
+<app-supplier-order
+  *ngIf="createSupplierOrder"
+  (return)="back()"
+  [supplier]="supplier"
+></app-supplier-order>
