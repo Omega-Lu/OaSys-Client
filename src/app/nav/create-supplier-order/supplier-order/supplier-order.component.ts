@@ -29,7 +29,7 @@ export class SupplierOrderComponent implements OnInit {
 
   productType: ProductType;
   productTypes: ProductType[] = [];
-  productTemp: ProductType[] = [];
+  productTypesTemp: ProductType[] = [];
 
   product: Product;
   products: Product[] = [];
@@ -42,6 +42,8 @@ export class SupplierOrderComponent implements OnInit {
   typeSelected: boolean = false;
   productSelected: boolean = false;
   activateQuantity: boolean = true;
+  completeQuantity: boolean = true;
+  completeSelection: boolean = true;
 
   something: number;
   ordered: boolean = false;
@@ -82,6 +84,7 @@ export class SupplierOrderComponent implements OnInit {
     this.getAllProductTypes();
     this.getAllProducts();
     this.getAllOrders();
+    this.sleep(100);
   }
 
   getAllProductCategories() {
@@ -95,14 +98,14 @@ export class SupplierOrderComponent implements OnInit {
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTemp = response;
+      this.productTypes = response;
       console.log(this.productTypes);
     });
   }
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
-      this.productsTemp = response;
+      this.products = response;
       console.log(this.productsTemp);
     });
   }
@@ -120,44 +123,56 @@ export class SupplierOrderComponent implements OnInit {
   }
 
   async categorySelect(id: number) {
-    this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTemp = response;
-      console.log(this.productTypes);
-    });
-    this.productTypes = this.productTemp.filter((productType) => {
+    this.typeSelected = false;
+    $('#typeID').val('-1');
+    this.activateQuantity = true;
+    $('#nameID').val('-1');
+    $('#quantityID').val('');
+
+    this.productTypesTemp = this.productTypes;
+    console.log(this.productTypes);
+    this.productTypesTemp = this.productTypesTemp.filter((productType) => {
       console.log(productType.producT_CATEGORY_ID == id);
       return productType.producT_CATEGORY_ID == id;
     });
-    console.log(this.productTypes);
+    console.log('the selected product types from the category are');
+    console.log(this.productTypesTemp);
     this.categorySelected = true;
   }
 
   async typeSelect(id: number) {
-    this.productService.getAllProducts().subscribe((response) => {
-      this.productsTemp = response;
-      console.log(this.products);
-    });
-    this.products = this.productsTemp.filter((product) => {
+    $('#nameID').val('-1');
+    this.activateQuantity = true;
+    $('#quantityID').val('');
+
+    this.productsTemp = this.products;
+    console.log(id);
+    this.productsTemp = this.productsTemp.filter((product) => {
       console.log(product.producT_TYPE_ID == id);
       return product.producT_TYPE_ID == id;
     });
-    console.log(this.products);
+    console.log('the selected products from the product types are');
+    console.log(this.productsTemp);
     this.typeSelected = true;
   }
 
-  prevType(x: number) {
-    if (x != -1) {
-      this.typeSelect(x);
+  nameSelect() {
+    $('#quantityID').val('');
+    this.completeSelection = true;
+  }
+
+  quantityVali() {
+    if (this.quantity > 0) {
+      this.completeQuantity = true;
+    } else {
+      this.completeQuantity = false;
     }
   }
 
-  prodnameClear() {
-    console.log(this.pID);
-    this.products = null;
-    if (Number($('#typeID').val()) != -1) {
-      console.log('dit werk');
-      this.typeSelect(Number($('#typeID').val()));
-    }
+  sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
   }
 
   dynamicArray = [];
@@ -167,25 +182,29 @@ export class SupplierOrderComponent implements OnInit {
   pID: number;
 
   addProduct() {
-    const categoryText = $('#categoryID option:selected').text();
-    const typeText = $('#typeID option:selected').text();
-    const nameText = $('#nameID option:selected').text();
-    // const clone = node.cloneNode(true);
-    // document.getElementById('bodyElement').append(clone);
-    // $('#productElement').clone(true, true).appendTo('#bodyElement');
-    console.log(categoryText);
-    console.log(typeText);
-    console.log(nameText);
-    console.log(this.quantity);
-    this.ordered = true;
+    if (this.activateQuantity == true) {
+      this.completeSelection = false;
+    } else if (this.quantity < 1 || this.quantity == null) {
+      this.completeQuantity = false;
+    } else {
+      const categoryText = $('#categoryID option:selected').text();
+      const typeText = $('#typeID option:selected').text();
+      const nameText = $('#nameID option:selected').text();
 
-    this.dynamicArray.push({
-      category: categoryText,
-      type: typeText,
-      name: nameText,
-      quantity: this.quantity,
-      productIDnumber: this.pID,
-    });
+      console.log(categoryText);
+      console.log(typeText);
+      console.log(nameText);
+      console.log(this.quantity);
+
+      this.dynamicArray.push({
+        category: categoryText,
+        type: typeText,
+        name: nameText,
+        quantity: this.quantity,
+        productIDnumber: this.pID,
+      });
+      this.ordered = true;
+    }
   }
 
   onSubmit() {

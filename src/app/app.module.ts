@@ -60,6 +60,7 @@ import { CompleteStocktakeComponent } from './nav/complete-stocktake/complete-st
 import { WriteOffComponent } from './nav/write-off/write-off.component';
 import { SupplierOrderComponent } from './nav/create-supplier-order/supplier-order/supplier-order.component';
 import { ReceiveOrderComponent } from './nav/receive-supplier-order/receive-order/receive-order.component';
+import { ReturnOrderComponent } from './nav/return-supplier-order/return-order/return-order.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -119,6 +120,7 @@ const appRoutes: Routes = [
     WriteOffComponent,
     SupplierOrderComponent,
     ReceiveOrderComponent,
+    ReturnOrderComponent,
   ],
   imports: [
     BrowserModule,

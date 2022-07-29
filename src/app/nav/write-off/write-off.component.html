@@ -9,31 +9,156 @@
     border-color: var(--bs-orange);
   "
 >
-  <h1 style="width: 500px">Write Off Product</h1>
-  <label
-    class="form-label"
-    style="
-      height: 30px;
-      margin-right: 20px;
-      margin-left: 0px;
-      font-size: 21px;
-      margin-top: 30px;
-    "
-    >Please add products to be written-Off</label
-  ><button
-    class="btn btn-primary"
-    type="button"
-    style="
-      margin-left: 300px;
-      background: var(--bs-orange);
-      border-color: var(--bs-orange);
-    "
-  >
-    Add product
-  </button>
+  <h1 style="width: 500px">Please add products to be written-Off</h1>
+
   <div
     class="table-responsive"
-    style="height: 150px; margin-top: 20px; width: 800px"
+    style="height: 150px; margin-top: 20px; width: 900px"
+  >
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product Category</th>
+          <th>Product type</th>
+          <th>Product Name</th>
+          <th>Reason</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody id="bodyElement">
+        <tr id="productElement">
+          <td>
+            <select
+              id="categoryID"
+              class="btn"
+              name="PCategory"
+              style="
+                background: var(--bs-gray-100);
+                border-color: var(--bs-orange);
+                color: var(--bs-orange);
+              "
+              (input)="categorySelect($event.target.value)"
+            >
+              <option value="-1" disabled selected>Product Category</option>
+              <option
+                id="categoryOption"
+                value=" {{ productCategory.producT_CATEGORY_ID }} "
+                *ngFor="let productCategory of productCategories"
+              >
+                {{ productCategory.categorY_NAME }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <select
+              id="typeID"
+              class="btn"
+              name="PType"
+              style="
+                background: var(--bs-gray-100);
+                border-color: var(--bs-orange);
+                color: var(--bs-orange);
+              "
+              [disabled]="!categorySelected"
+              (input)="typeSelect($event.target.value)"
+            >
+              <option value="-1" disabled selected>Product Type</option>
+              <option
+                id="typeOption"
+                value=" {{ productTypeTemp.producT_TYPE_ID }} "
+                *ngFor="let productTypeTemp of productTypesTemp"
+              >
+                {{ productTypeTemp.typE_NAME }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <select
+              id="nameID"
+              class="btn"
+              name="PName"
+              style="
+                background: var(--bs-gray-100);
+                border-color: var(--bs-orange);
+                color: var(--bs-orange);
+              "
+              [disabled]="!typeSelected"
+              (input)="
+                activateReason = false; pID = $event.target.value; nameSelect()
+              "
+            >
+              <option value="-1" disabled selected>Product Name</option>
+              <option
+                id="nameOption"
+                value=" {{ productsTemp.producT_ID }} "
+                *ngFor="let product of productsTemp"
+                (click)="pID = product.producT_ID"
+              >
+                {{ product.producT_NAME }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <select
+              id="reasonID"
+              class="btn"
+              name="PCategory"
+              style="
+                background: var(--bs-gray-100);
+                border-color: var(--bs-orange);
+                color: var(--bs-orange);
+              "
+              [disabled]="activateReason"
+              (input)="activateQuantity = false; reasonSelect()"
+            >
+              <option value="-1" disabled selected>Reason</option>
+              <option value="Expired">Expired</option>
+              <option value="Damaged">Damaged</option>
+            </select>
+          </td>
+          <td>
+            <input
+              id="quantityID"
+              [disabled]="activateQuantity"
+              class="form-control"
+              type="number"
+              name="inputQuantity"
+              style="width: 100px"
+              [(ngModel)]="quantity"
+              (click)="quantityVali()"
+            />
+          </td>
+        </tr>
+        <tr></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="width: 900px">
+    <i style="color: red" [hidden]="completeSelection"
+      >Please Complete the product selection</i
+    >
+    <i style="color: red" [hidden]="completeQuantity"
+      >Quantity must be more than 0</i
+    >
+    <i style="color: red" [hidden]="completeQuantity"
+      >Quantity must be less than the quantity on hand</i
+    >
+    <button
+      class="btn btn-primary"
+      type="button"
+      style="
+        background: var(--bs-orange);
+        border-color: var(--bs-orange);
+        float: right;
+      "
+      (click)="addProduct()"
+    >
+      Add product
+    </button>
+  </div>
+  <div
+    class="table-responsive"
+    style="height: 150px; margin-top: 70px; margin-bottom: 50px; width: 900px"
   >
     <table class="table">
       <thead>
@@ -46,98 +171,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                type="button"
-                style="
-                  background: var(--bs-gray-100);
-                  border-color: var(--bs-orange);
-                  color: var(--bs-orange);
-                "
-              >
-                Product Category
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Alcohol</a
-                ><a class="dropdown-item" href="#">Hardware</a
-                ><a class="dropdown-item" href="#">Soft drinks</a>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                type="button"
-                style="
-                  background: var(--bs-white);
-                  border-color: var(--bs-orange);
-                  color: var(--bs-orange);
-                "
-              >
-                Product type
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">screws</a
-                ><a class="dropdown-item" href="#">Pipes</a
-                ><a class="dropdown-item" href="#">Cables</a>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                type="button"
-                style="
-                  background: var(--bs-gray-100);
-                  border-color: var(--bs-orange);
-                  color: var(--bs-orange);
-                "
-              >
-                Product name
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Kaufmann</a
-                ><a class="dropdown-item" href="#">Tolsen</a
-                ><a class="dropdown-item" href="#">Brentwood</a>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                type="button"
-                style="
-                  background: var(--bs-gray-100);
-                  color: var(--bs-orange);
-                  border-color: var(--bs-orange);
-                "
-              >
-                Reason 
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Expired</a
-                ><a class="dropdown-item" href="#">Theft</a
-                ><a class="dropdown-item" href="#">Damaged</a>
-              </div>
-            </div>
-          </td>
-          <td>
-            <input class="form-control" type="number" style="width: 100px" />
-          </td>
+        <tr *ngIf="!booloff">
+          No products have added yet
+        </tr>
+        <tr *ngFor="let dynamic of dynamicArray; let i = index">
+          <td>{{ dynamic.category }}</td>
+          <td>{{ dynamic.type }}</td>
+          <td>{{ dynamic.name }}</td>
+          <td>{{ dynamic.reason }}</td>
+          <td>{{ dynamic.quantity }}</td>
         </tr>
         <tr></tr>
       </tbody>
@@ -153,6 +195,7 @@
       margin-bottom: 0px;
       margin-top: 0px;
     "
+    (click)="WriteOff()"
   >
     Write off</button
   ><button
@@ -166,6 +209,7 @@
       margin-bottom: 0px;
       margin-top: 0px;
     "
+    (click)="Return()"
   >
     Back
   </button>

@@ -34,13 +34,10 @@
                 color: var(--bs-orange);
               "
               (input)="categorySelect($event.target.value)"
-              (click)="prodnameClear()"
-
             >
               <option value="" disabled selected>Product Category</option>
               <option
                 id="categoryOption"
-                (click)="counterType()"
                 value=" {{ productCategory.producT_CATEGORY_ID }} "
                 *ngFor="let productCategory of productCategories"
               >
@@ -60,13 +57,12 @@
               "
               [disabled]="!categorySelected"
               (input)="typeSelect($event.target.value)"
-              (click)="prevType($event.target.value)"
             >
               <option value="-1" disabled selected>Product Type</option>
               <option
                 id="typeOption"
                 value=" {{ productType.producT_TYPE_ID }} "
-                *ngFor="let productType of productTypes"
+                *ngFor="let productType of productTypesTemp"
               >
                 {{ productType.typE_NAME }}
               </option>
@@ -83,14 +79,14 @@
                 color: var(--bs-orange);
               "
               [disabled]="!typeSelected"
-              (input)="activateQuantity = false; pID = $event.target.value"
+              (input)="activateQuantity = false; pID = $event.target.value; nameSelect()"
             >
-              <option value="default" disabled selected>Product Name</option>
+              <option value="-1" disabled selected>Product Name</option>
               <option
                 id="nameOption"
                 value=" {{ product.producT_ID }} "
-                *ngFor="let product of products"
-                (click) = "pID= product.producT_ID"
+                *ngFor="let product of productsTemp"
+                (click)="pID = product.producT_ID"
               >
                 {{ product.producT_NAME }}
               </option>
@@ -98,6 +94,7 @@
           </td>
           <td>
             <input
+              (click)="quantityVali()"
               id="quantityID"
               [disabled]="activateQuantity"
               class="form-control"
@@ -112,6 +109,12 @@
       </tbody>
     </table>
   </div>
+  <i style="color: red" [hidden]="completeSelection"
+    >Please Complete the product selection</i
+  >
+  <i style="color: red" [hidden]="completeQuantity"
+    >Quantity must be more than 0</i
+  >
   <button
     class="btn btn-primary"
     type="button"

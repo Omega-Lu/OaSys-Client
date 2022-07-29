@@ -10,17 +10,6 @@
   "
 >
   <h1 style="width: 500px">Receive Supplier Order</h1>
-  <label
-    class="form-label"
-    style="
-      height: 30px;
-      margin-right: 20px;
-      margin-left: 0px;
-      font-size: 21px;
-      margin-top: 30px;
-    "
-    >Please tick the received products</label
-  >
   <div class="table-responsive" style="height: 300px; margin-top: 30px">
     <table class="table">
       <thead>
@@ -38,16 +27,21 @@
           <td>{{ dynamic.ProductName }}</td>
           <td>
             <input
+              (click)="quantityVali($event.target.value)"
               class="form-control"
               type="number"
               style="width: 100px"
               value="{{ dynamic.Quantity }}"
+              [(ngModel)]="dynamic.Quantity"
+              [ngModelOptions]="{ standalone: true }"
             />
           </td>
         </tr>
-        <tr></tr>
       </tbody>
     </table>
+    <i style="color: red" [hidden]="completeQuantity"
+      >Quantity can only be equal to or more than 0</i
+    >
   </div>
   <button
     class="btn btn-primary"

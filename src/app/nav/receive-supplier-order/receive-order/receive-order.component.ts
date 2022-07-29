@@ -39,6 +39,10 @@ export class ReceiveOrderComponent implements OnInit {
   productCategories: ProductCategory[] = [];
   productCategoriesTemp: ProductCategory[] = [];
 
+  quantity: number;
+
+  completeQuantity: boolean = true;
+
   dynamicArray = [];
   tempArray = [];
 
@@ -168,55 +172,59 @@ export class ReceiveOrderComponent implements OnInit {
     });
   }
 
-  ReceiveOrder() {
-    for (let index = 0; index < this.dynamicArray.length; index++) {
-      const element = this.dynamicArray[index];
-
-      // console.log('dynamic array');
-      // console.log(element);
-      this.getAllProducts();
-      this.sleep(52);
-
-      this.productsTemp = this.products;
-
-      // console.log('products');
-      // console.log(this.productsTemp);
-      this.productsTemp = this.productsTemp.filter((product) => {
-        console.log(product.producT_ID == element.productID);
-        return product.producT_ID == element.productID;
-      });
-
-      // console.log('after filter');
-      // console.log(this.productsTemp);
-
-      // console.log('receive order');
-      // console.log(this.productsTemp[0]);
-
-      console.log('updates product');
-      this.product = this.productsTemp[0];
-      this.product.quantitY_ON_HAND =
-        this.product.quantitY_ON_HAND + element.Quantity;
-      this.productService.updateProduct(this.product).subscribe((response) => {
-        console.log(response);
-      });
+  quantityVali(quan: number) {
+    if (quan >= 0) {
+      this.completeQuantity = true;
+    } else {
+      this.completeQuantity = false;
     }
+  }
 
-    console.log('before order status filter');
+  ReceiveOrder() {
+    if (this.completeQuantity == true) {
+      for (let index = 0; index < this.dynamicArray.length; index++) {
+        const element = this.dynamicArray[index];
 
-    this.orderStatusses = this.orderStatusses.filter((orderStatus) => {
-      console.log(orderStatus.orderID == this.order.orderID);
-      return orderStatus.orderID == this.order.orderID;
-    });
+        if (element.Quantity > 0) {
+          this.getAllProducts();
+          this.sleep(52);
 
-    console.log(this.orderStatusses[0]);
-    console.log('before order status filter');
+          this.productsTemp = this.products;
 
-    this.orderStatus = this.orderStatusses[0];
-    this.orderStatus.description = 'Received';
-    this.orderStatusService
-      .updateOrderStatus(this.orderStatus)
-      .subscribe((response) => {
-        console.log(response);
-      });
+          this.productsTemp = this.productsTemp.filter((product) => {
+            console.log(product.producT_ID == element.productID);
+            return product.producT_ID == element.productID;
+          });
+
+          console.log('updates product');
+          this.product = this.productsTemp[0];
+          this.product.quantitY_ON_HAND =
+            this.product.quantitY_ON_HAND + element.Quantity;
+          this.productService
+            .updateProduct(this.product)
+            .subscribe((response) => {
+              console.log(response);
+            });
+
+          console.log('before order status filter');
+
+          this.orderStatusses = this.orderStatusses.filter((orderStatus) => {
+            console.log(orderStatus.orderID == this.order.orderID);
+            return orderStatus.orderID == this.order.orderID;
+          });
+
+          console.log(this.orderStatusses[0]);
+          console.log('before order status filter');
+
+          this.orderStatus = this.orderStatusses[0];
+          this.orderStatus.description = 'Received';
+          this.orderStatusService
+            .updateOrderStatus(this.orderStatus)
+            .subscribe((response) => {
+              console.log(response);
+            });
+        }
+      }
+    }
   }
 }

@@ -19,7 +19,7 @@
       font-size: 21px;
       margin-top: 30px;
     "
-    >Please add products to be reordered</label
+    >Manually add products to be reordered</label
   ><button
     class="btn btn-primary"
     type="button"
@@ -28,10 +28,18 @@
       background: var(--bs-orange);
       border-color: var(--bs-orange);
     "
+    (click)="addProduct()"
   >
     Add product
   </button>
-  <div class="table-responsive" style="height: 150px; margin-top: 30px">
+  <i style="color: red; float: right" [hidden]="addQuan"
+    >Quantity can only be more than 0</i
+  >
+  <i style="color: red; float: right" [hidden]="addComplete"
+    >Complete the product selection</i
+  >
+
+  <div class="" style="height: 115px; margin-top: 30px">
     <table class="table">
       <thead>
         <tr>
@@ -42,80 +50,137 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr id="productElement">
           <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                type="button"
-                style="
-                  background: var(--bs-gray-100);
-                  border-color: var(--bs-orange);
-                  color: var(--bs-orange);
-                "
+            <select
+              id="categoryID"
+              class="btn"
+              name="PCategory"
+              style="
+                background: var(--bs-gray-100);
+                border-color: var(--bs-orange);
+                color: var(--bs-orange);
+              "
+              (input)="categorySelect($event.target.value)"
+            >
+              <option value="" disabled selected>Product Category</option>
+              <option
+                id="categoryOption"
+                value=" {{ productCategory.producT_CATEGORY_ID }} "
+                *ngFor="let productCategory of productCategories"
               >
-                Product Category
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Alcohol</a
-                ><a class="dropdown-item" href="#">Hardware</a
-                ><a class="dropdown-item" href="#">Soft drinks</a>
-              </div>
-            </div>
+                {{ productCategory.categorY_NAME }}
+              </option>
+            </select>
           </td>
           <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                type="button"
-                style="
-                  background: var(--bs-white);
-                  border-color: var(--bs-orange);
-                  color: var(--bs-orange);
-                "
+            <select
+              id="typeID"
+              class="btn"
+              name="PType"
+              style="
+                background: var(--bs-gray-100);
+                border-color: var(--bs-orange);
+                color: var(--bs-orange);
+              "
+              [disabled]="!categorySelected"
+              (input)="typeSelect($event.target.value)"
+            >
+              <option value="-1" disabled selected>Product Type</option>
+              <option
+                id="typeOption"
+                value=" {{ productType.producT_TYPE_ID }} "
+                *ngFor="let productType of productTypesTemp2"
               >
-                Product type
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">screws</a
-                ><a class="dropdown-item" href="#">Pipes</a
-                ><a class="dropdown-item" href="#">Cables</a>
-              </div>
-            </div>
+                {{ productType.typE_NAME }}
+              </option>
+            </select>
           </td>
           <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                type="button"
-                style="
-                  background: var(--bs-gray-100);
-                  border-color: var(--bs-orange);
-                  color: var(--bs-orange);
-                "
+            <select
+              id="nameID"
+              class="btn"
+              name="PName"
+              style="
+                background: var(--bs-gray-100);
+                border-color: var(--bs-orange);
+                color: var(--bs-orange);
+              "
+              [disabled]="!typeSelected"
+              (input)="
+                activateQuantity = false;
+                pID = $event.target.value;
+                nameSelect()
+              "
+            >
+              <option value="-1" disabled selected>Product Name</option>
+              <option
+                id="nameOption"
+                value=" {{ product.producT_ID }} "
+                *ngFor="let product of productsTemp2"
+                (click)="pID = product.producT_ID"
               >
-                Product name
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Kaufmann</a
-                ><a class="dropdown-item" href="#">Tolsen</a
-                ><a class="dropdown-item" href="#">Brentwood</a>
-              </div>
-            </div>
+                {{ product.producT_NAME }}
+              </option>
+            </select>
           </td>
           <td>
-            <input class="form-control" type="number" style="width: 100px" />
+            <input
+              (click)="addQuantityVali($event.target.value)"
+              id="quantityID"
+              [disabled]="activateQuantity"
+              class="form-control"
+              type="number"
+              [(ngModel)]="quantity"
+              name="inputQuantity"
+              style="width: 100px"
+            />
           </td>
         </tr>
-        <tr></tr>
       </tbody>
     </table>
+  </div>
+  <div
+    class="table-responsive"
+    style="height: 350px; margin-top: 10px; margin-bottom: 10px"
+  >
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product Category</th>
+          <th>Product type</th>
+          <th>Product Name</th>
+          <th>Quantity on Hand</th>
+          <th>ReOrder Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dynamic of dynamicArray">
+          <td>{{ dynamic.CategoryName }}</td>
+          <td>{{ dynamic.TypeName }}</td>
+          <td>{{ dynamic.ProductName }}</td>
+          <td style="text-align: center;">
+            {{ dynamic.QuanHand }}
+          </td>
+          <td>
+            <input
+              (click)="quantityVali($event.target.value)"
+              class="form-control"
+              type="number"
+              style="width: 100px"
+              value="{{ dynamic.Quantity }}"
+              [(ngModel)]="dynamic.Quantity"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <i style="color: red" [hidden]="completeQuantity"
+      >Quantity can only be equal to or more than 0</i
+    >
   </div>
   <button
     class="btn btn-primary"
