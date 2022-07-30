@@ -168,7 +168,7 @@
               <div class="row" style="height: 100px">
                 <div class="text-dark" style="height: 100px">
                   <label
-                  
+
                     class="form-label"
                     style="margin-right: 20px; padding-top: 16px; width: 100;"
                     >Credit Limit (R)</label
@@ -183,99 +183,99 @@
                   <div *ngIf="!eDetails" style="color: Red">
                     Invalid Details
                   </div>
-                </div>
-              </div>
 
-              <div class="form-group">
-                <span>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    (click)="Return()"
-                    style="
-                      border-right-color: var(--bs-orange);
-                      background: var(--bs-orange);
-                      margin-right: 30px;
-                      margin-top: 10px;
-                    "
+                <div class="form-group">
+                  <span>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="Return()"
+                      style="
+                        border-right-color: var(--bs-orange);
+                        background: var(--bs-orange);
+                        margin-right: 30px;
+                        margin-top: 10px;
+                      "
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                      style="
+                        border-right-color: var(--bs-orange);
+                        background: var(--bs-orange);
+                        margin-right: 0px;
+                        margin-top: 10px;
+                      "
+                      *ngIf="nDetails && sDetails && eDetails && cnDetails"
+                    >
+                      Save
+                    </button>
+                  </span>
+                  <div
+                    class="modal fade"
+                    id="exampleModal"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    data-toggle="modal"
-                    data-target="#exampleModal"
-                    style="
-                      border-right-color: var(--bs-orange);
-                      background: var(--bs-orange);
-                      margin-right: 0px;
-                      margin-top: 10px;
-                    "
-                    *ngIf="nDetails && sDetails && eDetails && cnDetails"
-                  >
-                    Save
-                  </button>
-                </span>
-                <div
-                  class="modal fade"
-                  id="exampleModal"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5
-                          class="modal-title"
-                          id="exampleModalLabel"
-                          *ngIf="!successSubmit"
-                        >
-                          Are You Sure You Would Like To Add A New Debtor
-                        </h5>
-                        <h5
-                          class="modal-title"
-                          id="exampleModalLabel"
-                          *ngIf="successSubmit"
-                        >
-                          Debtor Successfully Added
-                        </h5>
-                      </div>
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5
+                            class="modal-title"
+                            id="exampleModalLabel"
+                            *ngIf="!successSubmit"
+                          >
+                            Are You Sure You Would Like To Add A New Application
+                          </h5>
+                          <h5
+                            class="modal-title"
+                            id="exampleModalLabel"
+                            *ngIf="successSubmit"
+                          >
+                            Application Successfully Added
+                          </h5>
+                        </div>
 
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-dismiss="modal"
-                          *ngIf="!successSubmit"
-                        >
-                          No
-                        </button>
-                        <button
-                          type="submit"
-                          class="btn btn-primary"
-                          data-target="#exampleModal"
-                          *ngIf="!successSubmit"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          data-toggle="modal"
-                          data-target="#exampleModal"
-                          data-dismiss="modal"
-                          *ngIf="successSubmit"
-                          (click)="Return()"
-                        >
-                          OK
-                        </button>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                            *ngIf="!successSubmit"
+                          >
+                            No
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                            data-target="#exampleModal"
+                            *ngIf="!successSubmit"
+                          >
+                            Yes
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                            data-dismiss="modal"
+                            *ngIf="successSubmit"
+                            (click)="Return()"
+                          >
+                            OK
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+              </div>
+              </div>
+              </div>
               </div>
             </div>
           </div>

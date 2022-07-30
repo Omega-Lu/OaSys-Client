@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {MatTableModule} from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -64,6 +66,8 @@ import { ApproveCreditComponent } from './nav/credit-application/approve-credit/
 import { CreditApplicationComponent } from './nav/credit-application/credit-application.component';
 import { SearchSaleComponent } from './nav/search-sale/search-sale.component';
 import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.component';
+import { MakeSaleComponent } from './nav/make-sale/make-sale.component';
+import { MatFormField } from '@angular/material/form-field';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -127,6 +131,7 @@ const appRoutes: Routes = [
     CreditApplicationComponent,
     SearchSaleComponent,
     ViewSaleComponent,
+    MakeSaleComponent,
   ],
   imports: [
     BrowserModule,
@@ -135,6 +140,8 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     FormsModule,
     MatTableModule,
+    MatFormFieldModule,
+    MatSelectModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
 

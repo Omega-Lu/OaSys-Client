@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Debtor } from '../../models/debtor.model';
 import { DebtorService } from '../../_services/debtor.service';
+import { CreditApplication } from 'src/app/models/Credit-application.model';
+import { CreditApplicationService } from '../../_services/credit-application.service';
 
 @Component({
   selector: 'app-credit-application',
@@ -9,26 +11,43 @@ import { DebtorService } from '../../_services/debtor.service';
 })
 export class CreditApplicationComponent implements OnInit {
   @Output() return = new EventEmitter<string>()
-  debtors: Debtor[] = []
-  debtor: Debtor;
+  creditApplications: CreditApplication[] = []
+  creditApplication: CreditApplication;
   searchText : any = ''
   model: any;
+  categorySelected: boolean = false;
+  nameDetails: boolean = true;
+  surnameDetails: boolean = true;
+  emailDetails: boolean = true;
+  contactDetails: boolean = true;
+  creditDetails: boolean = true;
+  provinceDetails: boolean = true;
+
+  Gauteng: boolean = false;
+  Northen: boolean = false;
+  NorthWest: boolean = false;
+  Mpumalanga: boolean = false;
+  Limpopo: boolean = false;
+  Western: boolean = false;
+  Eastern: boolean = false;
+  KwaZulu: boolean = false;
+  State: boolean = false;
   approveCredit: boolean = false;
 
-  constructor(private debtorService: DebtorService) { }
+  constructor(private creditApplicationService: CreditApplicationService) { }
 
   ngOnInit(): void {
-    this.getAllDebtors();
+    this.getAllCreditApplications();
   }
 
-  populateForm(debtor: Debtor){
-    this.debtor = debtor
+  populateForm(creditApplication: CreditApplication){
+    this.creditApplication = creditApplication
   }
 
-  getAllDebtors(){
-    this.debtorService.getAllDebtors().subscribe((response) => {
-      this.debtors = response;
-      console.log(this.debtor);
+  getAllCreditApplications(){
+    this.creditApplicationService.getAllCreditApplications().subscribe((response) => {;
+      this.creditApplications = response;
+      console.log(this.creditApplication);
     })
   }
 
@@ -36,19 +55,92 @@ export class CreditApplicationComponent implements OnInit {
       if(this.searchText !== ""){
         let searchValue = this.searchText
         console.log(searchValue);
-        this.debtors = this.debtors.filter((debtor) =>{
-          console.log(debtor.name.match(searchValue));
-          return debtor.name.match(searchValue)
+        this.creditApplications = this.creditApplications.filter((creditApplication) =>{
+          console.log(creditApplication.name.match(searchValue));
+          return creditApplication.name.match(searchValue)
         });
-        console.log(this.debtor)
+        console.log(this.creditApplication)
       }
       else{
-        this.getAllDebtors();
+        this.getAllCreditApplications();
       }
   }
 
-  back(){
+  namevalidate() {
+    var matches = this.creditApplication.name.match(/\d+/g);
+    if (matches != null) {
+     this.nameDetails = false;
+    } else if (this.creditApplication.name == '') {
+     this.nameDetails = false;
+    } else {
+      this.nameDetails = true;
+    }
+  }
+
+  survalidate() {
+    var matches = this.creditApplication.surname.match(/\d+/g);
+    if (matches != null) {
+     this.surnameDetails = false;
+    } else if (this.creditApplication.surname == '') {
+     this.surnameDetails = false;
+    } else {
+      this.surnameDetails = true;
+    }
+  }
+
+  emailvalidate() {
+ if (this.creditApplication.email == '') {
+     this.emailDetails = false;
+    } else {
+      this.emailDetails = true;
+    }
+  }
+
+
+
+  Return() {
     this.return.emit('false');
   }
 
+  categorySelect(id: number) {
+    console.log(id);
+    this.categorySelected = true;
+    console.log(this.categorySelected);
+    this.Gauteng = false;
+    this.Northen = false;
+    this.NorthWest = false;
+    this.Mpumalanga = false;
+    this.Limpopo = false;
+    this.Western = false;
+    this.Eastern = false;
+    this.KwaZulu = false;
+    this.State = false;
+    if (id == 1) {
+      this.Gauteng = true;
+    }
+    if (id == 2) {
+      this.Northen = true;
+    }
+    if (id == 3) {
+      this.NorthWest = true;
+    }
+    if (id == 4) {
+      this.Mpumalanga = true;
+    }
+    if (id == 5) {
+      this.Limpopo = true;
+    }
+    if (id == 6) {
+      this.Western = true;
+    }
+    if (id == 7) {
+      this.Eastern = true;
+    }
+    if (id == 8) {
+      this.KwaZulu = true;
+    }
+    if (id == 9) {
+      this.State = true;
+    }
+  }
 }

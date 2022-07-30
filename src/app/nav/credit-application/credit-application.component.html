@@ -20,8 +20,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr >
-                    <td>Koketso</td>
+                <tr *ngFor="let debtor of creditApplications">
+                    <td>{{debtor.name}}</td>
                     <td>{{debtor.surname}}</td>
                     <td>{{debtor.contacT_NUMBER}}</td>
                     <td>
@@ -33,12 +33,12 @@
                       width: 86px;"><i class="far fa-eye"></i> View</button></td>
                     <td></td>
                 </tr>
-                <tr *ngFor="let debtor of debtors">
+                <tr *ngFor="let debtor of creditApplications">
                   <td>{{debtor.name}}</td>
                   <td>{{debtor.surname}}</td>
                   <td>{{debtor.contacT_NUMBER}}</td>
                     <td><button class="btn btn-primary"
-                      (click)="approveCredit = true; populateForm(debtor)"
+                      (click)="approveCredit = true; populateForm(creditApplication)"
                       type="button"
                       style="background: var(--bs-orange);">
                       <i class="far fa-eye"></i>
@@ -56,7 +56,7 @@
         </table>
     </div>
     <button class="btn btn-primary"
-    (click)="back()"
+    (click)="Return()"
     type="button"
     style="margin-left: 384px;
     background: var(--bs-orange);

@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Debtor } from '../../../models/debtor.model';
+import { CreditApplication } from '../../../models/Credit-application.model';
 
 @Component({
   selector: 'app-approve-credit',
@@ -8,7 +9,7 @@ import { Debtor } from '../../../models/debtor.model';
 })
 export class ApproveCreditComponent implements OnInit {
 
-  @Input() debtor: Debtor
+  @Input() creditApplication: CreditApplication
   @Output() return = new EventEmitter<string>();
   nDetails: boolean = true;
   sDetails: boolean = true;

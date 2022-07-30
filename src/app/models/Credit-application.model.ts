@@ -5,5 +5,6 @@ export class CreditApplication{
   name: string;
   surname: string;
   email: string;
+  crediT_LIMIT: number
   contacT_NUMBER: number;
 }

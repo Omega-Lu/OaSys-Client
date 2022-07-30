@@ -55,15 +55,16 @@ export class NavComponent implements OnInit {
   approveCredit: boolean = false;
   creditApplication: boolean = false;
   viewDebtorsAccount: boolean = false;
+  maintainDebtor: boolean = false;
   viewSale: boolean = false;
+  makeSale: boolean = false;
   navName: string = 'LANDING PAGE';
 
   employee: boolean = true;
   supplier: boolean = false;
   product: boolean = false;
   debtor: boolean = false;
-  maintainDebtor: boolean = false;
-  supplierOrder: boolean = false;
+  sale: boolean = false;
 
 
 
@@ -119,6 +120,7 @@ export class NavComponent implements OnInit {
     this.creditApplication = false;
     this.viewDebtorsAccount = false;
     this.viewSale = false;
+    this.makeSale = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {
@@ -131,9 +133,7 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = false;
     this.supplier = false;
-    this.supplierOrder = false;
-    this.applyForCredit = false;
-
+    this.sale = false;
   }
 
   clickSupplier() {
@@ -142,8 +142,7 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = false;
     this.supplier = true;
-    this.supplierOrder = false;
-    this.applyForCredit = false;
+    this.sale = false;
 
   }
 
@@ -153,8 +152,7 @@ export class NavComponent implements OnInit {
     this.product = true;
     this.debtor = false;
     this.supplier = false;
-    this.applyForCredit = false;
-    this.supplierOrder = false;
+    this.sale = false;
   }
 
   clickDebtor() {
@@ -163,7 +161,7 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = true;
     this.supplier = false;
-    this.supplierOrder = false;
+    this.sale = false;
   }
 
   clickSupplierOrder() {
@@ -172,10 +170,17 @@ export class NavComponent implements OnInit {
     this.product = false;
     this.debtor = false;
     this.supplier = false;
-    this.applyForCredit = false;
-    this.supplierOrder = true;
+    this.sale = false;
 
 
+  }
+  clickSales(){
+    this.back();
+    this.employee = false;
+    this.product = false;
+    this.debtor = false;
+    this.supplier = false;
+    this.sale = true;
   }
 
   ngOnInit(): void {}
