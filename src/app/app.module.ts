@@ -61,13 +61,14 @@ import { SearchSupplierOrderComponent } from './nav/search-supplier-order/search
 import { CompleteStocktakeComponent } from './nav/complete-stocktake/complete-stocktake.component';
 import { WriteOffComponent } from './nav/write-off/write-off.component';
 import { ApplyForCreditComponent } from './nav/apply-for-credit/apply-for-credit.component';
-import { ViewDebtorsAccountComponent } from './nav/view-debtors-account/view-debtors-account.component';
+import { ViewDebtorsAccountComponent } from './nav/search-debtor-account/view-debtors-account/view-debtors-account.component';
 import { ApproveCreditComponent } from './nav/credit-application/approve-credit/approve-credit.component';
 import { CreditApplicationComponent } from './nav/credit-application/credit-application.component';
 import { SearchSaleComponent } from './nav/search-sale/search-sale.component';
 import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.component';
 import { MakeSaleComponent } from './nav/make-sale/make-sale.component';
 import { MatFormField } from '@angular/material/form-field';
+import { SearchDebtorAccountComponent } from './nav/search-debtor-account/search-debtor-account.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -132,6 +133,7 @@ const appRoutes: Routes = [
     SearchSaleComponent,
     ViewSaleComponent,
     MakeSaleComponent,
+    SearchDebtorAccountComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,271 @@
+
+<div class="container-fluid">
+  <h3 class="text-dark mb-1">View Debtors Account  </h3>
+</div>
+<form style="width: 811px;
+margin-left: 67px;
+height: 596px;"
+
+#form="ngForm"
+(ngSubmit)="onSubmit()">
+<div class="container">
+  <div class="row">
+    <div
+      class="col-md-6"
+      style="
+        height: 200px;
+        color: rgb(0, 0, 0);
+        border-bottom-color: var(--bs-red);
+      "
+      >
+      <label class="form-label" style="margin-right: 650px; margin-left: 20px"
+      >Name:</label
+    >
+  <input class="form-control"
+  type="text"
+  style="width: 504px;
+  height: 39px;
+  margin-top: -13px;"
+  required
+  [(ngModel)]="creditApplication.name"
+   (click)="nameValidate()"
+   (keyup)="nameValidate()"
+  />
+  <p style=
+  "margin: 4px 0px 20px;
+  margin-bottom: 20px;margin-top: 6px;
+  height: 25px;"
+  >Surname:</p>
+  <input class="form-control"
+  type="text"
+  style="width: 512px;
+  margin: -2px;
+  margin-top: -16px;"
+  required
+  [(ngModel)]="creditApplication.surname"
+  (click)="surnameValidate()"
+  (keyup)="surnameValidate()"/>
+
+  <p>Contact number:</p>
+  <input class="form-control"
+  type="text"
+  style="width: 512px;"
+  required
+  name="debtorNumber"
+          required
+          minlength="9"
+          maxlength="9"
+          style="margin-left: 20px; width: 300px"
+          [(ngModel)]="debtor.contacT_NUMBER"/>
+  <p>Email:</p>
+  <input class="form-control"
+  type="text"
+  style="width: 512px;"
+  required
+  [(ngModel)]="debtor.email"
+  (click)="emailValidate()"
+  (keyup)="emailValidate()"/>
+
+  <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
+  <div class="container">
+      <div class="row"
+      style="margin-top: 19px;">
+      <div class="container" style="margin-top: 21px; margin-bottom: 7px">
+        <div
+          class="row"
+          style="height: 136px; margin-bottom: -3px; margin-top: -13px"
+        >
+          <div class="col-md-6">
+            <p
+              style="color: rgb(2, 3, 7)"
+              style="margin-bottom: 0px !important"
+            >
+              Province:
+            </p>
+            <select
+              name="productCategory"
+              id="productCategory"
+              class="btn btn-primary"
+              style="
+                background: var(--bs-orange);
+                border-right-color: var(--bs-orange);
+              "
+              [(ngModel)]="debtor.provincE_ID"
+              required
+              (input)="categorySelect($event.target.value)"
+            >
+              <option value="1">Gauteng</option>
+              <option value="2">Northen Cape</option>
+              <option value="3">North-West</option>
+              <option value="4">Mpumalanga</option>
+              <option value="5">Limpopo</option>
+              <option value="6">Western Cape</option>
+              <option value="7">Eastern Cape</option>
+              <option value="8">KwaZulu-Natal</option>
+              <option value="9">Free State</option>
+            </select>
+            <div class="col-md-6" *ngIf="categorySelected">
+              <p
+                style="color: rgb(2, 3, 7)"
+                style="margin-bottom: 0px !important; margin-top: 15px"
+              >
+                City:
+              </p>
+              <select
+                name="productCategor"
+                id="productCategor"
+                class="btn btn-primary"
+                style="
+                  background: var(--bs-orange);
+                  border-right-color: var(--bs-orange);
+                  padding-bottom: 10px;
+                "
+              >
+                <option value="1" *ngIf="Gauteng">Pretoria</option>
+                <option value="2" *ngIf="Gauteng">Johannesburg</option>
+                <option value="2" *ngIf="Gauteng">Centurion</option>
+                <option value="2" *ngIf="Gauteng">Alexandra</option>
+                <option value="2" *ngIf="Gauteng">Lenasia</option>
+                <option value="2" *ngIf="Gauteng">Midrand</option>
+                <option value="2" *ngIf="Gauteng">Roodepoort</option>
+                <option value="2" *ngIf="Gauteng">Sandton</option>
+                <option value="2" *ngIf="Gauteng">Soweto</option>
+                <option value="2" *ngIf="Gauteng">Mshongo</option>
+                <option value="3" *ngIf="NorthWest">Brits</option>
+                <option value="4" *ngIf="NorthWest">Rustenburg</option>
+                <option value="5" *ngIf="Mpumalanga">Tabazimbi</option>
+                <option value="6" *ngIf="Mpumalanga">Mkloho</option>
+                <option value="7" *ngIf="Limpopo">Zanene</option>
+                <option value="8" *ngIf="Limpopo">Mghto</option>
+                <option value="9" *ngIf="Western">Mossel Bay</option>
+                <option value="5" *ngIf="Western">Cape Town</option>
+                <option value="6" *ngIf="Eastern">East London</option>
+                <option value="7" *ngIf="Eastern">Port Elizabeth</option>
+                <option value="8" *ngIf="KwaZulu">Durban</option>
+                <option value="9" *ngIf="KwaZulu">Natal</option>
+                <option value="5" *ngIf="State">Bloemfontein</option>
+                <option value="5" *ngIf="State">Bethlehem</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+  <div class="container">
+    <div class="row" style="height: 100px">
+      <div class="text-dark" style="height: 100px">
+        <label
+
+          class="form-label"
+          style="margin-right: 20px; padding-top: 16px; width: 100;"
+          >Credit Limit (R)</label
+        ><input
+          class="form-control"
+          name="debtorLimit"
+          type="text"
+          required
+          style="width: 300px; padding-left: 20px"
+          [(ngModel)]="debtor.crediT_LIMIT"
+        />
+      </div>
+    </div>
+          <div class="col-md-6">
+              <p>Amount Owing:</p>
+              <input class="form-control"
+              type="text"
+              required
+              style="width: 300px; padding-left: 20px"
+              [(ngModel)]="debtor.amounT_OWING"/>
+          </div>
+      </div>
+  </div>
+  <button class="btn btn-primary"
+  type="button"
+  style="margin-top: 15px;
+  background: var(--bs-gray-900);
+  margin-right: 1px;
+  margin-left: 564px;"
+  data-toggle="modal"
+  data-target="#exampleModal"
+  *ngIf="nDetails && sDetails && eDetails && cnDetails"
+
+  >Capture Payment
+
+</button>
+<div
+class="modal fade"
+id="exampleModal"
+tabindex="-1"
+role="dialog"
+aria-labelledby="exampleModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5
+        class="modal-title"
+        id="exampleModalLabel"
+        *ngIf="!successSubmit"
+      >
+        Are You Sure You Would Like To Approve This Application
+      </h5>
+      <h5
+        class="modal-title"
+        id="exampleModalLabel"
+        *ngIf="successSubmit"
+      >
+        Application Approved
+      </h5>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+        *ngIf="!successSubmit"
+      >
+        No
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        data-target="#exampleModal"
+        *ngIf="!successSubmit"
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#exampleModal"
+        data-dismiss="modal"
+        *ngIf="successSubmit"
+        (click)="Return()"
+      >
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+  <button class="btn btn-primary"
+  (click)="Return()"
+  type="button"
+  style="margin-top: 10px;
+  margin-right: 9px;
+  margin-left: 13px;
+  background: var(--bs-gray-900);"
+
+  >Back
+
+</button>
+</div>
+</div>
+</div>
+</form>
+
+

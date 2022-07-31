@@ -21,16 +21,16 @@ export class CreditApplicationService{
     return this.http.get<CreditApplication[]>(this.baseUrl)
   }
 
-  addCreditApplication(creditApplication: CreditApplication): Observable<CreditApplication> {
-    return this.http.post<CreditApplication>(this.baseUrl, creditApplication);
+  addCreditApplication(CreditApplication: CreditApplication): Observable<CreditApplication> {
+    return this.http.post<CreditApplication>(this.baseUrl, CreditApplication);
   }
 
   deleteCustomerAccount(id: number): Observable<CreditApplication> {
     return this.http.delete<CreditApplication>(this.baseUrl + '/' + id);
   }
 
-  updateCustomerAccount(creditApplication: CreditApplication): Observable<CreditApplication>{
-    return this.http.put<CreditApplication>(this.baseUrl + '/' + creditApplication.customeR_ACCOUNT_ID, creditApplication)
+  updateCustomerAccount(CreditApplication: CreditApplication): Observable<CreditApplication>{
+    return this.http.put<CreditApplication>(this.baseUrl + '/' + CreditApplication.customeR_ACCOUNT_ID, CreditApplication)
   }
 
 }

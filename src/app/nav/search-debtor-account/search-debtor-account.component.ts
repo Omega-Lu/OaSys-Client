@@ -5,19 +5,16 @@ import { CreditApplication } from 'src/app/models/Credit-application.model';
 import { CreditApplicationService } from '../../_services/credit-application.service';
 
 @Component({
-  selector: 'app-credit-application',
-  templateUrl: './credit-application.component.html',
-  styleUrls: ['./credit-application.component.css']
+  selector: 'app-search-debtor-account',
+  templateUrl: './search-debtor-account.component.html',
+  styleUrls: ['./search-debtor-account.component.css']
 })
-export class CreditApplicationComponent implements OnInit {
+export class SearchDebtorAccountComponent implements OnInit {
   @Output() return = new EventEmitter<string>()
   creditApplications: CreditApplication[] = []
   creditApplication: CreditApplication;
   searchText : any = ''
   model: any;
-  deleteNumber : any;
-  successDelete : boolean = false;
-  delete : boolean = false;
   categorySelected: boolean = false;
   nameDetails: boolean = true;
   surnameDetails: boolean = true;

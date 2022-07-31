@@ -1,10 +1,5 @@
 
 <div class="container-fluid">
-  <app-approve-credit
-  *ngIf="approveCredit"
-  [creditApplication]="creditApplication"
-  (return)="back"
-  ></app-approve-credit>
   <app-view-debtors-account
   *ngIf="viewDebtorsAccount"
   [creditApplication]="creditApplication"
@@ -31,10 +26,10 @@ style="width: 224.5px;" />
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let creditApplication of creditApplications">
-                    <td>{{creditApplication.name}}</td>
-                    <td>{{creditApplication.surname}}</td>
-                    <td>{{creditApplication.contacT_NUMBER}}</td>
+                <tr *ngFor="let debtor of creditApplications">
+                    <td>{{debtor.name}}</td>
+                    <td>{{debtor.surname}}</td>
+                    <td>{{debtor.contacT_NUMBER}}</td>
                     <td>
                       <button class="btn btn-primary"
                       (click)="approveCredit = true; populateForm(creditApplication)"
@@ -44,10 +39,10 @@ style="width: 224.5px;" />
                       width: 86px;"><i class="far fa-eye"></i> View</button></td>
                     <td></td>
                 </tr>
-                <tr *ngFor="let creditApplication of creditApplications">
-                  <td>{{creditApplication.name}}</td>
-                  <td>{{creditApplication.surname}}</td>
-                  <td>{{creditApplication.contacT_NUMBER}}</td>
+                <tr *ngFor="let debtor of creditApplications">
+                  <td>{{debtor.name}}</td>
+                  <td>{{debtor.surname}}</td>
+                  <td>{{debtor.contacT_NUMBER}}</td>
                     <td><button class="btn btn-primary"
                       (click)="approveCredit = true; populateForm(creditApplication)"
                       type="button"
@@ -79,3 +74,4 @@ style="width: 224.5px;" />
 
   </button>
 </form>
+

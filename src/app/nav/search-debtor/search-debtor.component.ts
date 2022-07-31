@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DebtorService } from '../../_services/debtor.service';
 import { Debtor } from '../../models/debtor.model';
+import { CreditApplicationService } from '../../_services/credit-application.service';
+import { CreditApplication } from '../../models/Credit-application.model';
 
 @Component({
   selector: 'app-search-debtor',
@@ -10,13 +12,21 @@ import { Debtor } from '../../models/debtor.model';
 export class SearchDebtorComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
   debtors: Debtor[] = [];
+  creditApplications: CreditApplication[] = []
   searchText: string = '';
-  constructor(private debtorService: DebtorService) {}
+  constructor(private debtorService: DebtorService, private creditApplicationService : CreditApplicationService) {}
 
   ngOnInit(): void {
     this.getAllDebtors();
+    this.getAllCreditApplications();
   }
 
+  getAllCreditApplications(){
+    this.creditApplicationService.getAllCreditApplications().subscribe((response)=>{
+      this.creditApplications = response;
+      console.log(this.creditApplications)
+    })
+  }
   getAllDebtors() {
     this.debtorService.getAllDebtors().subscribe((response) => {
       this.debtors = response;

@@ -311,9 +311,9 @@
           <app-credit-application
           *ngIf="creditApplication"
           (return)="back()"></app-credit-application>
-          <app-view-debtors-account
-          *ngIf="viewDebtorsAccount"
-          (return)="back()"></app-view-debtors-account>
+          <app-search-debtor-account
+          *ngIf="searchDebtorAccount"
+          (return)="back()"></app-search-debtor-account>
           <app-make-sale
           *ngIf="makeSale"
           (return)="back()"></app-make-sale>
@@ -1247,7 +1247,7 @@
                       class="btn"
                       type="button"
                       style="color: rgb(0, 0, 0)"
-                      (click)="viewDebtorsAccount = true; landingPage = false"
+                      (click)="creditApplication = true; landingPage = false"
                     >
                       View Debtors Account
                     </button>

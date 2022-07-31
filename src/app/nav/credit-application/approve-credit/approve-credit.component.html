@@ -19,7 +19,7 @@ height: 596px;"
     (click)="nameValidate()"
     (keyup)="nameValidate()"/>
 
-    <div *ngIf="!nameDetails" style="color: Red">Invalid Details</div>
+    <div *ngIf="!nDetails" style="color: Red">Invalid Details</div>
 
   <p style="margin: 4px 0px 20px;
     margin-bottom: 20px;
@@ -34,7 +34,7 @@ height: 596px;"
   (click)="surnameValidate()"
   (keyup)="surnameValidate()"/>
 
-  <div *ngIf="!surnameDetails" style="color: Red">Invalid Details</div>
+  <div *ngIf="!sDetails" style="color: Red">Invalid Details</div>
 
   <p>Contact number:</p>
   <input class="form-control"
@@ -48,7 +48,7 @@ height: 596px;"
           style="margin-left: 20px; width: 300px"
           [(ngModel)]="creditApplication.contacT_NUMBER"/>
 
-          <div *ngIf="!contactDetails" style="color: Red">Invalid Details</div>
+          <div *ngIf="!cnDetails" style="color: Red">Invalid Details</div>
 
   <p>Email:</p>
   <input class="form-control"
@@ -58,7 +58,7 @@ height: 596px;"
   (click)="emailValidate()"
   (keyup)="emailValidate()"/>
 
-  <div *ngIf="!emailDetails" style="color: Red">Invalid Details</div>
+  <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
     <div class="container">
         <div class="row" style="margin-top: 19px;">
             <div class="col-md-6">
@@ -159,9 +159,6 @@ height: 596px;"
                       style="width: 300px; padding-left: 20px"
                       [(ngModel)]="creditApplication.crediT_LIMIT"
                     />
-                    <div *ngIf="!creditDetails" style="color: Red">
-                      Invalid Details
-                    </div>
                   </div>
                 </div>
                 <p style="margin-top: 4px;">Reason for applying:</p>
@@ -194,7 +191,7 @@ height: 596px;"
                         margin-right: 0px;
                         margin-top: 10px;
                       "
-                      *ngIf="nameDetails && surnameDetails && emailDetails && contactDetails"
+                      *ngIf="nDetails && sDetails && eDetails && cnDetails"
                     >
                       Approve
                     </button>

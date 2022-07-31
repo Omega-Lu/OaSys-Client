@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Debtor } from '../../../models/debtor.model';
 import { CreditApplication } from '../../../models/Credit-application.model';
+import { CreditApplicationService } from '../../../_services/credit-application.service';
+
 
 @Component({
   selector: 'app-approve-credit',
@@ -30,10 +32,68 @@ export class ApproveCreditComponent implements OnInit {
   categorySelected: boolean = false;
 
   successSubmit : boolean = false;
-  constructor() { }
+  constructor(private creditApplicationService: CreditApplicationService) { }
 
   ngOnInit(): void {
   }
+
+  onSubmit(){
+    this.creditApplicationService.addCreditApplication(this.creditApplication).subscribe((response) => {
+      console.log(response);
+    });
+    this.successSubmit = true;
+  }
+
+  populateForm(creditApplication : CreditApplication){
+    this.creditApplication = creditApplication;
+  }
+
+  nameValidate(){
+    var matches = this.creditApplication.name.match(/\d+/g)
+    if (matches != null) {
+      this.nDetails = false;
+    }else if (this.creditApplication.name == '') {
+      this.nDetails = false;
+    }else{
+      this.nDetails = true;
+    }
+  }
+
+    surnameValidate() {
+      var matches = this.creditApplication.surname.match(/\d+/g);
+      if (matches != null) {
+        this.sDetails = false;
+      } else if (this.creditApplication.surname == '') {
+        this.sDetails = false;
+      } else {
+        this.sDetails = true;
+      }
+    }
+
+    emailValidate() {
+      if (this.creditApplication.email == '') {
+        this.eDetails = false;
+      } else {
+        this.eDetails = true;
+      }
+    }
+
+    Contactvalidate() {
+      if (this.creditApplication.contacT_NUMBER < 1) {
+        this.cnDetails = false;
+      } else {
+        this.cnDetails = true;
+      }
+    }
+
+    Provalidate() {
+      if (this.creditApplication.provincE_ID < 1) {
+        this.aDetails = false;
+      } else {
+        this.aDetails = true;
+      }
+    }
+
 
   Return(){
 
