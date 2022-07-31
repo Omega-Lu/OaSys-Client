@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SaleService } from '../../_services/sale.service';
 import { Product } from '../../models/product.model';
 import { Sale } from '../../models/sale.model';
@@ -6,6 +6,7 @@ import { ProductService } from '../../_services/product.service';
 import { FormGroup } from '@angular/forms';
 import { ProductCategoryService } from '../../_services/product-category.service';
 import { elementAt } from 'rxjs';
+import { ProductTypeService } from '../../_services/product-type.service';
 
 @Component({
   selector: 'app-make-sale',
@@ -13,10 +14,16 @@ import { elementAt } from 'rxjs';
   styleUrls: ['./make-sale.component.css']
 })
 export class MakeSaleComponent implements OnInit {
-
+  @Input() sale: Sale
   @Output() return = new EventEmitter<string>()
 
-  Product: any = []
+  product: Product;
+  products: Product[] = []
+  searchText : string = ''
+
+
+
+  /*Product: any = []
   product: Product;
   dataSource: any = [];
   products:any = [];
@@ -24,24 +31,46 @@ export class MakeSaleComponent implements OnInit {
   totalAmount : number;
   responseMessage:any;
   manageOrderForm: any = FormGroup
-  public productList : any;
+  public productList : any;*/
 
   constructor(private saleService : SaleService,
     private productService: ProductService,
-    private productCategoryService: ProductCategoryService
+    private productCategoryService: ProductCategoryService,
+    private productTypeService: ProductTypeService
     ) { }
 
   ngOnInit(): void {
-    this.saleService.getProduct().subscribe((res)=>{
+
+    this.getAllProducts()
+
+
+    /*this.saleService.getProduct().subscribe((res)=>{
       this.product = res;
       this.totalAmount = this.saleService.getTotalPrice();
+    })*/
+  }
+
+  getAllProducts(){
+    this.productService.getAllProducts().subscribe((response)=>{
+      this.products = response;
+      console.log(this.products)
     })
   }
 
-  sendData(event: any) {
-    console.log(event.target.value);
-  }
+  Search() {
+    if(this.searchText !== ""){
+      let searchValue = this.searchText
+      console.log(searchValue);
+      this.products = this.products.filter((product) =>{
+        console.log(product.producT_NAME.match(searchValue));
+        return product.producT_NAME.match(searchValue);
 
+            });
+          }
+    else {
+      this.getAllProducts();
+    }
+  }
   /*getProducts(event:any){
     this.productService.getAllProducts().subscribe((response:any) =>{
       this.products = response;

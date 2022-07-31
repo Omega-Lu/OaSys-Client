@@ -1,1 +1,48 @@
-<p>view-sale works!</p>
+
+<div class="container-fluid">
+  <form style="height: 530px; margin-right: 0px">
+    <h3 class="text-dark mb-4">View Sale</h3>
+<div class="container" style="height: 394px;" *ngFor="let sale of sales">
+  <label class="form-label">{{sale.Sale_ID}} </label>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr *ngFor="let product of products">
+                    <th>{{product.producT_NAME}}</th>
+                    <th>{{product.QuantitY}} </th>
+                    <th style="width: 120.953px;">{{product.cosT_PRICE}}</th>
+                    <th>{{product.sellinG_PRICE}}</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="height: 65px;width: 503px;margin-left: 814px;margin-top: 40px;" *ngFor="let sale of sales">
+      <label class="form-label"
+      style="font-size: 36px;font-weight: bold;"
+      >{{sale.price}}
+    </label></div>
+</div>
+<div style="height: 55px;width: 426px;margin-left: 792px;">
+  <button class="btn btn-primary"
+  type="button"
+  style="margin-left: 163px;width: 74.7109px;
+  background: var(--bs-yellow);
+  border-color: var(--bs-yellow);"
+
+  >Back
+
+</button>
+<button class="btn btn-primary"
+type="button"
+style="margin-left: 22px;
+border-color: var(--bs-yellow);
+background: var(--bs-yellow);"
+
+>Return Sale
+
+</button>
+</div>
+</form>
+</div>
+
+

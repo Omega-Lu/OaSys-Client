@@ -59,6 +59,7 @@ export class NavComponent implements OnInit {
   maintainDebtor: boolean = false;
   viewSale: boolean = false;
   makeSale: boolean = false;
+  ReturnSale: boolean = false;
 
   navName: string = 'LANDING PAGE';
 
@@ -124,6 +125,7 @@ export class NavComponent implements OnInit {
     this.searchDebtorAccount = false;
     this.viewSale = false;
     this.makeSale = false;
+    this.ReturnSale = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {

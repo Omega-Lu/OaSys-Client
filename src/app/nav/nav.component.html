@@ -317,6 +317,12 @@
           <app-make-sale
           *ngIf="makeSale"
           (return)="back()"></app-make-sale>
+          <app-return-sale
+          *ngIf="ReturnSale"
+          (return)="back()"></app-return-sale>
+          <app-view-sale
+          *ngIf="viewSale"
+          (return)="back()"></app-view-sale>
         </div>
 
         <div *ngIf="landingPage">
@@ -1494,6 +1500,52 @@
               </button>
             </div>
           </div>
+          <div class="card">
+            <div
+              class="card-body"
+              style="border: 2px solid var(--bs-gray-900)"
+            >
+              <i
+                class="fas fa-plus text-warning"
+                style="
+                  --bs-warning: #ff7a00;
+                  --bs-warning-rgb: 255, 122, 0;
+                "
+              ></i
+              ><button
+                class="btn"
+                type="button"
+                [routerLinkActive]="makeSale"
+                style="color: rgb(0, 0, 0)"
+                (click)="ReturnSale = true; landingPage = false"
+              >
+                Return Sale
+              </button>
+            </div>
+          </div>
+          <div class="card">
+            <div
+              class="card-body"
+              style="border: 2px solid var(--bs-gray-900)"
+            >
+              <i
+                class="fas fa-plus text-warning"
+                style="
+                  --bs-warning: #ff7a00;
+                  --bs-warning-rgb: 255, 122, 0;
+                "
+              ></i
+              ><button
+                class="btn"
+                type="button"
+                [routerLinkActive]="viewSale"
+                style="color: rgb(0, 0, 0)"
+                (click)="viewSale = true; landingPage = false"
+              >
+                View Sale
+              </button>
+              </div>
+            </div>
         </div>
       </div>
     </div>

@@ -69,6 +69,8 @@ import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.compone
 import { MakeSaleComponent } from './nav/make-sale/make-sale.component';
 import { MatFormField } from '@angular/material/form-field';
 import { SearchDebtorAccountComponent } from './nav/search-debtor-account/search-debtor-account.component';
+import { MakePaymentComponent } from './nav/make-payment/make-payment.component';
+import { ReturnSaleComponent } from './nav/return-sale/return-sale.component';
 
 const appRoutes: Routes = [
   {path: "nav", component: NavComponent}
@@ -134,6 +136,8 @@ const appRoutes: Routes = [
     ViewSaleComponent,
     MakeSaleComponent,
     SearchDebtorAccountComponent,
+    MakePaymentComponent,
+    ReturnSaleComponent,
   ],
   imports: [
     BrowserModule,

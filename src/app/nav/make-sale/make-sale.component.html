@@ -1,61 +1,109 @@
-             <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Make Sale</h3>
-                    <div class="card shadow"></div>
-                </div>
-                <div class="container" style="height: 394px;">
-                  <label class="form-label">Product barcode: </label>
-                  <input type="text"
-                  name="search-box"
-                  (keyup)="sendData($event)" />
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 97.195px;"></th>
-                                    <th>Product Name</th>
-                                    <th>Quantity </th>
-                                    <th style="width: 120.953px;">Price excl. VAT</th>
-                                    <th>Total price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                              <form [formGroup]="manageOrderForm">
-                                <tr *ngFor="let product of products">
-                                    <select formControlName="product" (selectionchange)="getProducts($event.value)")>
-                                      <option *ngFor="let product of products" [value]="product">{{product.producT_NAME}}</option>
-                                    </select>
-                                    <td>{{item.producT_NAME}} </td>
-                                    <td><input type="number" style="width: 65.5px;" />{{item.quantitY}}</td>
-                                    <td>{{item.price}}</td>
-                                    <td>{{item.price * item.quantitY}}</td>
-                                </tr>
+<form
+  class="text-dark"
+  style="
+    width: 720px;
+    height: 500px;
+    margin-top: 10px;
+    margin-right: 30px;
+    margin-left: 30px;
+    border-color: var(--bs-orange);
+  "
+>
 
-                                <tr>
-                                    <td><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style="color: var(--bs-red);">
-                                            <path d="M8 11C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H16C16.5523 13 17 12.5523 17 12C17 11.4477 16.5523 11 16 11H8Z" fill="currentColor"></path>
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" fill="currentColor"></path>
-                                        </svg></td>
-                                    <td>330ml Sprite</td>
-                                    <td><input type="number" style="width: 67.5px;" /></td>
-                                    <td>24.55</td>
-                                    <td>30.00</td>
-                                </tr>
-                              </form>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div style="height: 40px;width: 358px;margin-left: 604px;margin-bottom: 0px;"><label class="form-label">Subtotal: R</label><input type="number" /></div>
-                    <div style="height: 65px;width: 503px;margin-left: 535px;margin-top: 40px;">
-                      <label class="form-label">TOTAL: </label>
-                      <input type="number"
-                      style="height: 42px;width: 275.5px;" />
-                    </div>
-                    <button class="btn btn-primary"
-                    type="button"
-                    style="background: var(--bs-orange);border-color: var(--bs-orange);"
-                    (click)="Return()"
-                    >Back
+<div class="container-fluid">
+    <h3 class="text-dark mb-4">Make Sale</h3>
+    <div class="card shadow"></div>
+</div>
+<div class="container" style="height: 394px;">
+  <label class="form-label">Product barcode: </label>
+  <input type="text"
+  name="search-product"
+  onkeyup="search()"/>
+  <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 97.195px;"></th>
+                <th>Product Name</th>
+                <th>Quantity </th>
+                <th style="width: 120.953px;">Price excl. VAT</th>
+                <th>Total price</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sale of products">
+            <td>{{sale.ProducT_NAME}}</td>
+            <td>{{sale.quantitY}}</td>
+            <td>{{sale.price}}</td>
+            <td>{{sale.quantitY * sale.price}}</td>
+          </tr>
+          </tbody>
+          <div style="height: 40px;width: 358px;margin-left: 604px;margin-bottom: 0px;">
+            <label class="form-label">Subtotal: R</label>
+            <input type="number" /></div>
+            <div style="height: 65px;width: 503px;margin-left: 535px;margin-top: 40px;">
+            <label class="form-label">TOTAL: </label>
+      <input type="number"
+      style="height: 42px;width: 275.5px;" />
+    </div>
+  <div>
+    <button class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange);border-color: var(--bs-orange);"
+    (click)="Return()"
+    >Back
 
-                  </button>
-                </div>
+  </button>
+</div>
+    <!--<div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 97.195px;"></th>
+                    <th>Product Name</th>
+                    <th>Quantity </th>
+                    <th style="width: 120.953px;">Price excl. VAT</th>
+                    <th>Total price</th>
+                </tr>
+            </thead>
+            <tbody>
+              <form [formGroup]="manageOrderForm">
+                <tr *ngFor="let product of products">
+                    <select formControlName="product" (selectionchange)="getProducts($event.value)")>
+                      <option *ngFor="let product of products" [value]="product">{{product.producT_NAME}}</option>
+                    </select>
+                    <td>{{item.producT_NAME}} </td>
+                    <td><input type="number" style="width: 65.5px;" />{{item.quantitY}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.price * item.quantitY}}</td>
+                </tr>
+
+                <tr>
+                    <td><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style="color: var(--bs-red);">
+                            <path d="M8 11C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H16C16.5523 13 17 12.5523 17 12C17 11.4477 16.5523 11 16 11H8Z" fill="currentColor"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" fill="currentColor"></path>
+                        </svg></td>
+                    <td>330ml Sprite</td>
+                    <td><input type="number" style="width: 67.5px;" /></td>
+                    <td>24.55</td>
+                    <td>30.00</td>
+                </tr>
+              </form>
+            </tbody>
+        </table>
+    </div>
+    <div style="height: 40px;width: 358px;margin-left: 604px;margin-bottom: 0px;"><label class="form-label">Subtotal: R</label><input type="number" /></div>
+    <div style="height: 65px;width: 503px;margin-left: 535px;margin-top: 40px;">
+      <label class="form-label">TOTAL: </label>
+      <input type="number"
+      style="height: 42px;width: 275.5px;" />
+    </div>
+    <button class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange);border-color: var(--bs-orange);"
+    (click)="Return()"
+    >Back
+
+  </button>
+</div>-->
 
