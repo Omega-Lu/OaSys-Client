@@ -1,41 +1,65 @@
-
-
-
-
-            <div class="container-fluid">
-                <h3 class="text-dark mb-4">Return Sale</h3>
-                <div class="card shadow"></div>
-            </div>
-            <div class="container" style="height: 394px;"><label class="form-label">Sale ID 123456</label>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th style="width: 97.195px;"></th>
-                                <th>Product Name</th>
-                                <th>Quantity </th>
-                                <th style="width: 120.953px;">Price excl. VAT</th>
-                                <th>Total price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox" /></td>
-                                <td>330ml Coke </td>
-                                <td><input type="number" style="width: 65.5px;" /></td>
-                                <td>12.25</td>
-                                <td>15.00</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" /></td>
-                                <td>330ml Sprite</td>
-                                <td><input type="number" style="width: 67.5px;" /></td>
-                                <td>24.55</td>
-                                <td>30.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div style="height: 65px;width: 503px;margin-left: 535px;margin-top: 40px;"><label class="form-label">AMOUNT RETURNED: </label><input type="number" style="height: 42px;width: 275.5px;" /></div>
-            </div><button class="btn btn-primary" type="button" style="margin-left: 990px;background: var(--bs-orange);border-color: var(--bs-orange);">Return Sale</button>
-
+<div class="container-fluid">
+  <h3 class="text-dark mb-4">Return Sale</h3>
+  <div class="card shadow"></div>
+</div>
+<div class="container" style="height: 394px">
+  <label class="form-label">Sale ID 123456</label>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width: 97.195px"></th>
+          <th>Product Name</th>
+          <th>Quantity </th>
+          <th style="width: 120.953px">Price excl. VAT</th>
+          <th>Total price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td>330ml Coke </td>
+          <td><input type="number" style="width: 65.5px" /></td>
+          <td>12.25</td>
+          <td>15.00</td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td>330ml Sprite</td>
+          <td><input type="number" style="width: 67.5px" /></td>
+          <td>24.55</td>
+          <td>30.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="height: 65px; width: 503px; margin-left: 535px; margin-top: 40px">
+    <label class="form-label">AMOUNT RETURNED: </label
+    ><input type="number" style="height: 42px; width: 275.5px" />
+  </div>
+</div>
+<div>
+  <button
+    class="btn btn-primary"
+    type="button"
+    (click)="Return()"
+    style="
+      margin-left: 120px;
+      background: var(--bs-orange);
+      border-color: var(--bs-orange);
+    "
+  >
+    Back
+  </button>
+  <button
+    class="btn btn-primary"
+    type="button"
+    style="
+      margin-left: 90px;
+      background: var(--bs-orange);
+      border-color: var(--bs-orange);
+    "
+  >
+    Return Sale
+  </button>
+</div>

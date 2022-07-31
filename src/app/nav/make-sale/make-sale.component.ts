@@ -1,3 +1,4 @@
+import { SaleProduct } from './../../models/SaleProduct.model';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SaleService } from '../../_services/sale.service';
 import { Product } from '../../models/product.model';
@@ -17,9 +18,29 @@ export class MakeSaleComponent implements OnInit {
   @Input() sale: Sale
   @Output() return = new EventEmitter<string>()
 
-  product: Product;
   products: Product[] = []
   searchText : string = ''
+  successSubmit : boolean = false;
+  activeQuantity: boolean = false;
+
+  Product: Product = {
+    producT_ID: 0,
+    producT_NAME: '',
+    producT_CATEGORY_ID: 0,
+    producT_DESCRIPTION: '',
+    producT_TYPE_ID: 0,
+    quantitY_ON_HAND: 0,
+    cosT_PRICE: 0,
+    sellinG_PRICE: 0,
+    reordeR_LIMIT: 0
+
+  }
+
+  saleProduct: SaleProduct = {
+    SaleID: 0,
+  ProductID: 0,
+  Quantity: 0,
+  }
 
 
 
