@@ -1,74 +1,64 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { User } from './models/user.model';
 import { UserService } from './_services/user.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
-  details : boolean = true;
-  username : string = '';
-  password : string = '';
-  sdetails : boolean = true;
+export class AppComponent implements OnInit {
+  details: boolean = true;
+  username: string = '';
+  password: string = '';
+  sdetails: boolean = true;
+
   user: User;
   users: User[] = [];
+  usersTemp: User[] = [];
+
   title = 'OaSys';
   loggedIn: boolean;
   loginForm: FormGroup;
-  userservice :UserService;
 
-  constructor(private http: HttpClient, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService) {
     this.loggedIn = false;
     console.log(this.loggedIn);
   }
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-        username: ['', Validators.required],
-        password: ['', Validators.required]
-    })
-    //this.getUsers();
-
-   // throw new Error('Method not implemented.');
-
+    this.getUsers();
   }
 
   login() {
+    this.usersTemp = this.users;
+    console.log('by login');
+    console.log(this.username);
 
-    if(this.username != 'admin'){
+    this.usersTemp = this.usersTemp.filter((user) => {
+      console.log(user.username == this.username);
+      return user.username == this.username;
+    });
+
+    console.log(this.usersTemp);
+
+    if (this.usersTemp.length == 0) {
       this.details = false;
-    } else if (this.password != 'admin') {
-      this.sdetails = false;
-    } else{
-      console.log(this.loggedIn);
-      this.loggedIn = true;
+    } else {
+      this.details = true;
+      if (this.usersTemp[0].useR_PASSWORD == this.password) {
+        this.loggedIn = true;
+      } else {
+        this.sdetails = false;
+      }
     }
-
-
-
-    //console.log(this.user.username);
-
-    //console.log(this.loggedIn);
   }
 
-  // Search() {
-  //   if(this.user.username !== ""){
-  //      let searchValue = this.user.username
-  //      console.log(searchValue);
-  //     this.users = this.users.filter((user) =>{
-  //        console.log(user.username.match(this.user.username));
-  //        return this.user.username.match(searchValue);
-
-  //            });
-  //           console.log(this.user);
-  //          }
-  //    else {
-  //      this.userservice.getAllEmployees();
-  //    }
-  //  }
-
+  getUsers() {
+    this.userService.getAllUsers().subscribe((response) => {
+      this.users = response;
+      console.log(response);
+    });
+  }
 }
