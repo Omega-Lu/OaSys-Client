@@ -41,6 +41,7 @@ export class UpdateProductComponent implements OnInit {
     console.log(this.product);
     this.getAllProductCategories();
     this.getAllProductTypes();
+    this.categorySelect(this.product.producT_CATEGORY_ID);
   }
 
   getAllProductCategories() {

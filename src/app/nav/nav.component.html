@@ -95,6 +95,16 @@
               ></a
             >
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickSale(); navName = 'Sale'"
+                >Sale</span
+              ></a
+            >
+          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#"
 
@@ -293,6 +303,23 @@
             (return)="back()"
           ></app-return-supplier-order>
           <app-write-off *ngIf="writeOff" (return)="back()"></app-write-off>
+          <app-apply-for-credit
+            *ngIf="applyForCredit"
+            (return)="back()"
+          ></app-apply-for-credit>
+          <app-view-debtor-account
+            *ngIf="viewDebtorAccount"
+            (return)="back()"
+          ></app-view-debtor-account>
+          <app-approve-credit
+            *ngIf="approveCredit"
+            (return)="back()"
+          ></app-approve-credit>
+          <app-make-sale *ngIf="makeSale" (return)="back()"></app-make-sale>
+          <app-search-sale
+            *ngIf="searchSale || returnSale"
+            (return)="back()"
+          ></app-search-sale>
         </div>
 
         <div *ngIf="landingPage">
@@ -302,6 +329,94 @@
             ></div>
           </div>
           <h3 class="text-dark mb-0"></h3>
+          <div id="content-1" style="color: var(--bs-indigo)" *ngIf="sale">
+            <div class="container-fluid">
+              <div
+                class="d-sm-flex justify-content-between align-items-center mb-4"
+              ></div>
+            </div>
+            <h3 class="text-dark mb-0"></h3>
+            <div class="card">
+              <div class="card-header">
+                <h5
+                  class="mb-0"
+                  style="
+                    --bs-primary: #3c404d;
+                    --bs-primary-rgb: 60, 64, 77;
+                    color: rgb(0, 0, 0);
+                    font-weight: bold;
+                  "
+                >
+                  Sale
+                </h5>
+              </div>
+            </div>
+            <div class="card-group">
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-plus text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="
+                      makeSale = true; landingPage = false; navName = 'Sale'
+                    "
+                  >
+                    Make Sale
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-search text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="
+                      searchSale = true; landingPage = false; navName = 'Sale'
+                    "
+                  >
+                    Search Sale
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-body"
+                  style="border: 2px solid var(--bs-gray-900)"
+                >
+                  <i
+                    class="fas fa-pencil-alt text-warning"
+                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                  ></i
+                  ><button
+                    class="btn"
+                    type="button"
+                    style="color: rgb(0, 0, 0)"
+                    (click)="
+                      returnSale = true; landingPage = false; navName = 'Sale'
+                    "
+                  >
+                    Return Sale
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="card" *ngIf="employee">
             <div class="card-header">
               <h5
@@ -1140,6 +1255,91 @@
                       (click)="maintainDebtor = true; landingPage = false"
                     >
                       Maintain Debtor
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <h3 class="text-dark mb-0"></h3>
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="mb-0"
+                    style="
+                      --bs-primary: #3c404d;
+                      --bs-primary-rgb: 60, 64, 77;
+                      color: rgb(0, 0, 0);
+                      font-weight: bold;
+                    "
+                  >
+                    Credit Application
+                  </h5>
+                </div>
+              </div>
+              <div class="card-group">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-plus text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="applyForCredit = true; landingPage = false"
+                    >
+                      Apply For Credit
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-search text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="approveCredit = true; landingPage = false"
+                    >
+                      Approve Credit
+                    </button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="viewDebtorAccount = true; landingPage = false"
+                    >
+                      View Debtor Account
                     </button>
                   </div>
                 </div>

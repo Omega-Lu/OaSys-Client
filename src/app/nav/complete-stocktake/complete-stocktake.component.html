@@ -87,7 +87,9 @@
       margin-bottom: 10px;
       margin-left: 10px;
     "
-    (click)="completeStock()"
+    [disabled]="!completeQuantity"
+    data-toggle="modal"
+    data-target="#exampleModal"
   >
     Complete Stock take</button
   ><button
@@ -105,3 +107,36 @@
     Back
   </button>
 </form>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Stocktake Completed Successfully
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+          (click)="completeStock(); Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

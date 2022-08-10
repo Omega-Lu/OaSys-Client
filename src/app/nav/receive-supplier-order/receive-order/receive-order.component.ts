@@ -41,6 +41,7 @@ export class ReceiveOrderComponent implements OnInit {
 
   quantity: number;
 
+  successSubmit: boolean = false;
   completeQuantity: boolean = true;
 
   dynamicArray = [];

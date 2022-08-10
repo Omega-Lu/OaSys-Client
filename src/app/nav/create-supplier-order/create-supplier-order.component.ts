@@ -57,6 +57,6 @@ export class CreateSupplierOrderComponent implements OnInit {
 
   back() {
     this.createSupplierOrder = false;
+    this.return.emit('false');
   }
-
 }

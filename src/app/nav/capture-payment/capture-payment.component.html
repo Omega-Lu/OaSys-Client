@@ -1,0 +1,142 @@
+<div class="container-fluid">
+  <h1 class="text-dark mb-4">Payment </h1>
+  <div class="card shadow"></div>
+
+  <div class="container" style="padding-bottom: 30px">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label" style="font-size: 21px; font-weight: bold"
+          >Payment Method: </label
+        >
+        <div class="" style="margin-left: 3px">
+          <select
+            id="paymentID"
+            class="btn"
+            name="payment"
+            style="
+              background: var(--bs-gray-100);
+              border-color: var(--bs-orange);
+              color: var(--bs-orange);
+            "
+            (input)="ReasonSelected($event.target.value)"
+          >
+            <option value="-1" disabled selected>Method</option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" style="font-size: 21px; font-weight: bold"
+          >Customer account: </label
+        >
+        <div style="width: 194px">
+          {{ customerAccount.name }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="height: 50px; margin-bottom: 0px; margin-top: 13px">
+    <label class="form-label" style="font-weight: bold; font-size: 24px"
+      >Amount tendered: R </label
+    ><input
+      type="number"
+      style="height: 30px"
+      [(ngModel)]="amount"
+      (input)="InputAmount()"
+    />
+    <div [hidden]="amountBigger">
+      <p style="color: red">
+        Amount Cannot be more than Credit Limit, Increase Credit Limit First
+      </p>
+    </div>
+    <div [hidden]="amountZero">
+      <p style="color: red">Amount Cannot be less than 1</p>
+    </div>
+  </div>
+  <div style="height: 58px; margin-bottom: 0px; margin-top: 10px">
+    <label class="form-label" style="font-weight: bold; font-size: 35px"
+      >Change: </label
+    ><input
+      type="number"
+      style="height: 50px"
+      [(ngModel)]="change"
+      disabled="true"
+    />
+  </div>
+  <button
+    class="btn btn-primary"
+    type="button"
+    style="
+      margin-left: 806px;
+      background: var(--bs-yellow);
+      border-color: var(--bs-yellow);
+    "
+    data-toggle="modal"
+    data-target="#captureModal"
+    [disabled]="!firstScreen || !amountBigger || !amountZero"
+  >
+    Capture payment  </button
+  ><button
+    class="btn btn-primary"
+    type="button"
+    style="margin-right: 0px; margin-left: 19px; background: var(--bs-orange)"
+    (click)="Return()"
+  >
+    Back
+  </button>
+</div>
+
+<div
+  class="modal fade"
+  id="captureModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="captureModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="captureModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like Capture This Payment
+        </h5>
+        <h5 class="modal-title" id="captureModalLabel" *ngIf="successSubmit">
+          Payment Successfully Captured
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#captureModal"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+          (click)="capturePayment(); Return()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#captureModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

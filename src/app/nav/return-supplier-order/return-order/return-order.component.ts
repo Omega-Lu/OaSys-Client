@@ -19,7 +19,6 @@ import { SupplierOrderReturnService } from 'src/app/_services/supplierOrderRetur
 import { ProductOrderReturn } from 'src/app/models/productOrderReturn.model';
 import { ProductOrderReturnService } from 'src/app/_services/productOrderReturn.service';
 import * as $ from 'jquery';
-import { elementAt } from 'rxjs';
 
 @Component({
   selector: 'app-return-order',
@@ -78,6 +77,7 @@ export class ReturnOrderComponent implements OnInit {
   zeroQuan: boolean = true;
   quanArray = [];
   reasonComplete: boolean = true;
+  successSubmit: boolean = false;
 
   constructor(
     private orderProductService: OrderProductService,

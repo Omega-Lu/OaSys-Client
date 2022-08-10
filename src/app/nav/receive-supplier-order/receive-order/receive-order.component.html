@@ -39,6 +39,8 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <div>
     <i style="color: red" [hidden]="completeQuantity"
       >Quantity can only be equal to or more than 0</i
     >
@@ -51,7 +53,9 @@
       border-color: var(--bs-orange);
       margin-right: 0px;
     "
-    (click)="ReceiveOrder()"
+    [disabled]="!completeQuantity"
+    data-toggle="modal"
+    data-target="#exampleModal"
   >
     Recieve</button
   ><button
@@ -67,3 +71,56 @@
     Back
   </button>
 </form>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like Receive This Supplier Order
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Order Successfully Received
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="ReceiveOrder(); successSubmit = true"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

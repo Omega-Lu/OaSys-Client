@@ -1,0 +1,109 @@
+<div class="container" style="height: 394px">
+  <h1 class="text-dark mb-4">View Sale</h1>
+  <label class="form-label">Sale {{ sale.saleID }}</label>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Quantity </th>
+          <th style="width: 120.953px">Price excl. VAT</th>
+          <th>Total price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dynamic of dynamicArray">
+          <td>{{ dynamic.name }}</td>
+          <td>{{ dynamic.quantity }}</td>
+          <td>R{{ dynamic.price }}</td>
+          <td>R{{ dynamic.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="height: 65px; width: 503px; margin-left: 814px; margin-top: 40px">
+    <label class="form-label" style="font-size: 36px; font-weight: bold"
+      >TOTAL: R {{ sale.total }}</label
+    >
+  </div>
+  <div style="height: 55px; width: 426px; margin-left: 792px">
+    <button
+      class="btn btn-primary"
+      type="button"
+      style="
+        margin-left: 163px;
+        width: 74.7109px;
+        background: var(--bs-yellow);
+        border-color: var(--bs-yellow);
+      "
+      (click)="Return()"
+    >
+      Back</button
+    ><button
+      class="btn btn-primary"
+      type="button"
+      style="
+        margin-left: 22px;
+        border-color: var(--bs-yellow);
+        background: var(--bs-yellow);
+      "
+      data-toggle="modal"
+      data-target="#exampleModal"
+    >
+      Return Sale
+    </button>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Return This Sale
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Sale Successfully Returned
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="ReturnSale(); successSubmit = true"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

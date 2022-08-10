@@ -159,7 +159,7 @@
           <td>{{ dynamic.CategoryName }}</td>
           <td>{{ dynamic.TypeName }}</td>
           <td>{{ dynamic.ProductName }}</td>
-          <td style="text-align: center;">
+          <td style="text-align: center">
             {{ dynamic.QuanHand }}
           </td>
           <td>
@@ -191,6 +191,9 @@
       margin-right: 0px;
       margin-left: 10px;
     "
+    [disabled]="!completeQuantity"
+    data-toggle="modal"
+    data-target="#exampleModal"
   >
     Print</button
   ><button
@@ -206,3 +209,36 @@
     Back
   </button>
 </form>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          ReOrder List Successfully printed
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

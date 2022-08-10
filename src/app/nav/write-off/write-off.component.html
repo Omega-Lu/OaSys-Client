@@ -140,7 +140,7 @@
     <i style="color: red" [hidden]="completeQuantity"
       >Quantity must be more than 0</i
     >
-    <i style="color: red" [hidden]="completeQuantity"
+    <i style="color: red" [hidden]="QuanOnHand"
       >Quantity must be less than the quantity on hand</i
     >
     <button
@@ -195,7 +195,9 @@
       margin-bottom: 0px;
       margin-top: 0px;
     "
-    (click)="WriteOff()"
+    [disabled]="!completeSelection || !completeQuantity || !QuanOnHand"
+    data-toggle="modal"
+    data-target="#exampleModal"
   >
     Write off</button
   ><button
@@ -214,3 +216,56 @@
     Back
   </button>
 </form>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Write Off These Products
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Products Written-Off Successfully
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="WriteOff(); successSubmit = true"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

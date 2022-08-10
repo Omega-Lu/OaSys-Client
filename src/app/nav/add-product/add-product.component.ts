@@ -39,6 +39,7 @@ export class AddProductComponent implements OnInit {
     cosT_PRICE: 0,
     sellinG_PRICE: 0,
     reordeR_LIMIT: 0,
+    barcode: '',
   };
 
   constructor(

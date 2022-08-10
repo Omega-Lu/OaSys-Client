@@ -53,7 +53,11 @@ export class ReceiveSupplierOrderComponent implements OnInit {
     for (let i = 0; i < this.orders.length; i++) {
       console.log('for begin');
       const element = this.orders[i];
+      console.log('this is the order of index ' + i);
+      console.log(element);
       this.orderStatussesTemp = this.orderStatusses;
+      console.log('this is the order status of index ' + i);
+      console.log(this.orderStatussesTemp);
       this.orderStatussesTemp = this.orderStatussesTemp.filter(
         (orderStatus) => {
           console.log(orderStatus.orderID == element.orderID);
@@ -112,6 +116,7 @@ export class ReceiveSupplierOrderComponent implements OnInit {
 
   back() {
     this.boolReceive = false;
+    this.return.emit('false');
   }
 
   populateForm(i: number) {

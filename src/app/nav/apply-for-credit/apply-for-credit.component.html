@@ -1,0 +1,300 @@
+<form
+  style="
+    width: 750px;
+    margin-right: 0px;
+    margin-left: 5px;
+    height: 850px;
+    border-right-color: rgb(8, 15, 67);
+    --bs-light: #f8f9fc;
+    --bs-light-rgb: 248, 249, 252;
+  "
+  #form="ngForm"
+  (ngSubmit)="onSubmit()"
+>
+  <h1 style="color: rgb(0, 0, 0); margin-right: 480px; height: 27px">
+    Apply For Credit
+  </h1>
+  <div class="container">
+    <div class="row">
+      <div
+        class="col-md-6"
+        style="
+          height: 200px;
+          color: rgb(0, 0, 0);
+          border-bottom-color: var(--bs-red);
+        "
+      >
+        <label class="form-label" style="margin-right: 650px; margin-left: 20px"
+          >Name:</label
+        >
+        <input
+          class="form-control"
+          name="creditApplicationName"
+          type="text"
+          style="width: 300px; margin-right: 50px; margin-left: 20px"
+          [(ngModel)]="customerApplication.name"
+          (click)="nameValidate()"
+          (keyup)="nameValidate()"
+        />
+        <div *ngIf="!nameDetails" style="color: Red">Invalid Details</div>
+        <label class="form-label" style="margin-right: 300px; margin-left: 20px"
+          >Surname:</label
+        ><input
+          class="form-control"
+          type="text"
+          required
+          name="creditApplicationSurname"
+          style="width: 300px; margin-right: -500px; margin-left: 20px"
+          [(ngModel)]="customerApplication.surname"
+          (click)="surnameValidate()"
+          (keyup)="surnameValidate()"
+        />
+        <div *ngIf="!surnameDetails" style="color: Red">Invalid Details</div>
+
+        <label
+          class="form-label"
+          style="margin-right: 1200px; width: 130px; margin-left: 20px"
+          >Contact Number: </label
+        ><style></style>+27<input
+          class="form-control"
+          type="text"
+          required
+          name="debtorNumber"
+          required
+          minlength="9"
+          maxlength="9"
+          style="margin-left: 20px; width: 300px"
+          [(ngModel)]="customerApplication.contactNumber"
+          (input)="Contactvalidate()"
+        />
+        <div *ngIf="!contactDetails" style="color: Red">Invalid Details</div>
+
+        <div class="container">
+          <div class="row" style="height: 100px">
+            <div class="col-md-6 text-dark" style="height: 75px">
+              <label class="form-label" style="margin-right: 250px">Email</label
+              ><input
+                class="form-control"
+                name="creditApplicationEmail"
+                type="text"
+                required
+                style="width: 300px"
+                [(ngModel)]="customerApplication.email"
+                (click)="emailValidate()"
+                (keyup)="emailValidate()"
+              />
+            </div>
+            <div *ngIf="!emailDetails" style="color: Red">Invalid Details</div>
+            <div class="container" style="margin-top: 21px; margin-bottom: 7px">
+              <div
+                class="row"
+                style="height: 136px; margin-bottom: -3px; margin-top: -13px"
+              >
+                <div class="col-md-6">
+                  <p
+                    style="color: rgb(2, 3, 7)"
+                    style="margin-bottom: 0px !important"
+                  >
+                    Province:
+                  </p>
+                  <select
+                    name="productCategory"
+                    id="productCategory"
+                    class="btn btn-primary"
+                    style="
+                      background: var(--bs-orange);
+                      border-right-color: var(--bs-orange);
+                    "
+                    [(ngModel)]="customerApplication.provinceID"
+                    required
+                    (input)="categorySelect($event.target.value); Provalidate($event.target.value)"
+                  >
+                    <option value="1">Gauteng</option>
+                    <option value="2">Northen Cape</option>
+                    <option value="3">North-West</option>
+                    <option value="4">Mpumalanga</option>
+                    <option value="5">Limpopo</option>
+                    <option value="6">Western Cape</option>
+                    <option value="7">Eastern Cape</option>
+                    <option value="8">KwaZulu-Natal</option>
+                    <option value="9">Free State</option>
+                  </select>
+                  <div *ngIf="!provinceDetails" style="color: Red">
+                    Please select a Province
+                  </div>
+                  <div class="col-md-6" *ngIf="categorySelected">
+                    <p
+                      style="color: rgb(2, 3, 7)"
+                      style="margin-bottom: 0px !important; margin-top: 15px"
+                    >
+                      City:
+                    </p>
+                    <select
+                      name="productCategor"
+                      id="productCategor"
+                      class="btn btn-primary"
+                      style="
+                        background: var(--bs-orange);
+                        border-right-color: var(--bs-orange);
+                        padding-bottom: 10px;
+                      "
+                    >
+                      <option value="1" *ngIf="Gauteng">Pretoria</option>
+                      <option value="2" *ngIf="Gauteng">Johannesburg</option>
+                      <option value="2" *ngIf="Gauteng">Centurion</option>
+                      <option value="2" *ngIf="Gauteng">Alexandra</option>
+                      <option value="2" *ngIf="Gauteng">Lenasia</option>
+                      <option value="2" *ngIf="Gauteng">Midrand</option>
+                      <option value="2" *ngIf="Gauteng">Roodepoort</option>
+                      <option value="2" *ngIf="Gauteng">Sandton</option>
+                      <option value="2" *ngIf="Gauteng">Soweto</option>
+                      <option value="2" *ngIf="Gauteng">Mshongo</option>
+                      <option value="3" *ngIf="NorthWest">Brits</option>
+                      <option value="4" *ngIf="NorthWest">Rustenburg</option>
+                      <option value="5" *ngIf="Mpumalanga">Tabazimbi</option>
+                      <option value="6" *ngIf="Mpumalanga">Mkloho</option>
+                      <option value="7" *ngIf="Limpopo">Zanene</option>
+                      <option value="8" *ngIf="Limpopo">Mghto</option>
+                      <option value="9" *ngIf="Western">Mossel Bay</option>
+                      <option value="5" *ngIf="Western">Cape Town</option>
+                      <option value="6" *ngIf="Eastern">East London</option>
+                      <option value="7" *ngIf="Eastern">Port Elizabeth</option>
+                      <option value="8" *ngIf="KwaZulu">Durban</option>
+                      <option value="9" *ngIf="KwaZulu">Natal</option>
+                      <option value="5" *ngIf="State">Bloemfontein</option>
+                      <option value="5" *ngIf="State">Bethlehem</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row" style="height: 100px">
+                <div class="text-dark" style="height: 100px">
+                  <label
+                    class="form-label"
+                    style="margin-right: 20px; padding-top: 16px; width: 100"
+                    >Credit Limit (R)</label
+                  ><input
+                    class="form-control"
+                    name="debtorLimit"
+                    type="text"
+                    required
+                    style="width: 300px; padding-left: 20px"
+                    [(ngModel)]="customerApplication.creditLimit"
+                    (input)="creditValidate()"
+                    (click)="creditValidate()"
+                  />
+                  <div *ngIf="!creditDetails" style="color: Red">
+                    Credit Limit must be more than 0
+                  </div>
+
+                  <div class="form-group">
+                    <span>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="Return()"
+                        style="
+                          border-right-color: var(--bs-orange);
+                          background: var(--bs-orange);
+                          margin-right: 30px;
+                          margin-top: 10px;
+                        "
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        data-toggle="modal"
+                        data-target="#exampleModal"
+                        style="
+                          border-right-color: var(--bs-orange);
+                          background: var(--bs-orange);
+                          margin-right: 0px;
+                          margin-top: 10px;
+                        "
+                        [disabled]="
+                          !nameDetails ||
+                          !surnameDetails ||
+                          !emailDetails ||
+                          !contactDetails ||
+                          !creditDetails ||
+                          !startOfScreen
+                        "
+                      >
+                        Save
+                      </button>
+                    </span>
+                    <div
+                      class="modal fade"
+                      id="exampleModal"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5
+                              class="modal-title"
+                              id="exampleModalLabel"
+                              *ngIf="!successSubmit"
+                            >
+                              Are You Sure You Would Like To Add A New
+                              Application
+                            </h5>
+                            <h5
+                              class="modal-title"
+                              id="exampleModalLabel"
+                              *ngIf="successSubmit"
+                            >
+                              Application Successfully Added
+                            </h5>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-dismiss="modal"
+                              *ngIf="!successSubmit"
+                            >
+                              No
+                            </button>
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                              data-target="#exampleModal"
+                              *ngIf="!successSubmit"
+                              (click)="onSubmit();"
+                            >
+                              Yes
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              data-toggle="modal"
+                              data-target="#exampleModal"
+                              data-dismiss="modal"
+                              *ngIf="successSubmit"
+                              (click)="Return()"
+                            >
+                              OK
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

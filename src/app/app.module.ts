@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
-import {MatTableModule} from '@angular/material/table';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -61,10 +66,17 @@ import { WriteOffComponent } from './nav/write-off/write-off.component';
 import { SupplierOrderComponent } from './nav/create-supplier-order/supplier-order/supplier-order.component';
 import { ReceiveOrderComponent } from './nav/receive-supplier-order/receive-order/receive-order.component';
 import { ReturnOrderComponent } from './nav/return-supplier-order/return-order/return-order.component';
+import { ApplyForCreditComponent } from './nav/apply-for-credit/apply-for-credit.component';
+import { ApproveCreditComponent } from './nav/approve-credit/approve-credit.component';
+import { ViewDebtorAccountComponent } from './nav/view-debtor-account/view-debtor-account.component';
+import { ViewCreditAccountComponent } from './nav/approve-credit/view-credit-account/view-credit-account.component';
+import { ViewApprovedAccountsComponent } from './nav/view-debtor-account/view-approved-accounts/view-approved-accounts.component';
+import { MakeSaleComponent } from './nav/make-sale/make-sale.component';
+import { SearchSaleComponent } from './nav/search-sale/search-sale.component';
+import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.component';
+import { CapturePaymentComponent } from './nav/capture-payment/capture-payment.component';
 
-const appRoutes: Routes = [
-  {path: "nav", component: NavComponent}
-]
+const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
 
 @NgModule({
   declarations: [
@@ -121,6 +133,15 @@ const appRoutes: Routes = [
     SupplierOrderComponent,
     ReceiveOrderComponent,
     ReturnOrderComponent,
+    ApplyForCreditComponent,
+    ApproveCreditComponent,
+    ViewDebtorAccountComponent,
+    ViewCreditAccountComponent,
+    ViewApprovedAccountsComponent,
+    MakeSaleComponent,
+    SearchSaleComponent,
+    ViewSaleComponent,
+    CapturePaymentComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,10 +151,9 @@ const appRoutes: Routes = [
     FormsModule,
     MatTableModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
-
+    RouterModule.forRoot(appRoutes),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

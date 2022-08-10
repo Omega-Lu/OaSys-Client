@@ -179,6 +179,18 @@
         />
         <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
       </div>
+      <div style="margin: 34px 0px 0px; margin-top: -4px; width: 208px">
+        <p style="margin-top: 7px; color: rgb(3, 3, 4)">Product Barcode</p>
+        <input
+          class="form-control"
+          name="barcode"
+          type="text"
+          style="width: 138.5px"
+          required
+          [(ngModel)]="product.barcode"
+        />
+        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+      </div>
       <div
         class="col-md-6"
         style="margin: 34px 0px 0px; margin-top: -4px; width: 208px"

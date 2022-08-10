@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 //import { AccountService } from '../_services/account.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -52,6 +51,12 @@ export class NavComponent implements OnInit {
   searchSupplierOrder: boolean = false;
   writeOff: boolean = false;
   navName: string = 'LANDING PAGE';
+  applyForCredit: boolean = false;
+  approveCredit: boolean = false;
+  viewDebtorAccount: boolean = false;
+  makeSale: boolean = false;
+  searchSale: boolean = false;
+  returnSale: boolean = false;
 
   employee: boolean = true;
   supplier: boolean = false;
@@ -59,8 +64,7 @@ export class NavComponent implements OnInit {
   debtor: boolean = false;
   maintainDebtor: boolean = false;
   supplierOrder: boolean = false;
-
-
+  sale: boolean = false;
 
   back() {
     this.landingPage = true;
@@ -108,6 +112,12 @@ export class NavComponent implements OnInit {
     this.reorderList = false;
     this.returnSupplierOrder = false;
     this.writeOff = false;
+    this.viewDebtorAccount = false;
+    this.applyForCredit = false;
+    this.approveCredit = false;
+    this.makeSale = false;
+    this.searchSale = false;
+    this.returnSale = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {
@@ -121,6 +131,7 @@ export class NavComponent implements OnInit {
     this.debtor = false;
     this.supplier = false;
     this.supplierOrder = false;
+    this.sale = false;
   }
 
   clickSupplier() {
@@ -130,6 +141,7 @@ export class NavComponent implements OnInit {
     this.debtor = false;
     this.supplier = true;
     this.supplierOrder = false;
+    this.sale = false;
   }
 
   clickProduct() {
@@ -139,6 +151,7 @@ export class NavComponent implements OnInit {
     this.debtor = false;
     this.supplier = false;
     this.supplierOrder = false;
+    this.sale = false;
   }
 
   clickDebtor() {
@@ -148,6 +161,7 @@ export class NavComponent implements OnInit {
     this.debtor = true;
     this.supplier = false;
     this.supplierOrder = false;
+    this.sale = false;
   }
 
   clickSupplierOrder() {
@@ -157,7 +171,17 @@ export class NavComponent implements OnInit {
     this.debtor = false;
     this.supplier = false;
     this.supplierOrder = true;
+    this.sale = false;
+  }
 
+  clickSale() {
+    this.back();
+    this.employee = false;
+    this.product = false;
+    this.debtor = false;
+    this.supplier = false;
+    this.supplierOrder = false;
+    this.sale = true;
   }
 
   ngOnInit(): void {}

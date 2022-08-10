@@ -1,0 +1,71 @@
+<form style="width: 898px; height: 446px" *ngIf="!approveCredit">
+  <div class="container-fluid">
+    <h3 class="text-dark mb-1">
+      Select an application that you would like to review
+    </h3>
+  </div>
+  <input
+    class="form-control search-input"
+    type="text"
+    name="search-bar"
+    placeholder="Search..."
+    style="width: 320px; margin-right: 0px; margin-left: 400px"
+    [(ngModel)]="searchText"
+    (keyup)="Search()"
+  />
+  <div
+    class="table-responsive"
+    style="width: 896px; margin-top: 46px; margin-left: 16px"
+  >
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Surname </th>
+          <th> Contact Number</th>
+          <th style="width: 207.891px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customerApplication of customerApplicationsTemp">
+          <td>{{ customerApplication.name }}</td>
+          <td>{{ customerApplication.surname }}</td>
+          <td>0{{ customerApplication.contactNumber }}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              (click)="approveCredit = true; populateForm(customerApplication)"
+              type="button"
+              style="
+                margin-left: 0px;
+                background: var(--bs-orange);
+                height: 34px;
+                width: 86px;
+              "
+            >
+              <i class="far fa-eye"></i> View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    class="btn btn-primary"
+    (click)="Return()"
+    type="button"
+    style="
+      margin-left: 384px;
+      background: var(--bs-orange);
+      height: 41px;
+      width: 83.7188px;
+    "
+  >
+    Back
+  </button>
+</form>
+<app-view-credit-account
+  *ngIf="approveCredit"
+  [customerApplication]="customerApplication"
+  (return)="back()"
+></app-view-credit-account>

@@ -105,6 +105,7 @@ export class ReturnSupplierOrderComponent implements OnInit {
 
   back() {
     this.boolReturn = false;
+    this.return.emit('false');
   }
 
   Return() {

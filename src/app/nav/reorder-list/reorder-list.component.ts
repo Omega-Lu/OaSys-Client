@@ -36,6 +36,7 @@ export class ReorderListComponent implements OnInit {
   pID: number;
   quantity: number;
 
+  successSubmit: boolean = false;
   completeQuantity: boolean = true;
   activateQuantity: boolean = true;
   addQuan: boolean = true;

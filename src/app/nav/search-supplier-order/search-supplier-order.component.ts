@@ -5,9 +5,7 @@ import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/_services/order.service';
 import { OrderStatus } from 'src/app/models/orderStatus.model';
 import { OrderStatusService } from 'src/app/_services/orderStatus.service';
-import { TemplatePortal } from '@angular/cdk/portal';
 import { __await } from 'tslib';
-import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-search-supplier-order',
@@ -17,12 +15,15 @@ import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
 export class SearchSupplierOrderComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  suppliersTemp: Supplier[] = [];
   suppliers: Supplier[] = [];
   supplier: Supplier;
 
+  ordersTemp: Order[] = [];
   orders: Order[] = [];
   order: Order;
 
+  orderStatussesTemp: OrderStatus[] = [];
   orderStatusses: OrderStatus[] = [];
   orderStatus: OrderStatus;
 
@@ -81,27 +82,29 @@ export class SearchSupplierOrderComponent implements OnInit {
     for (let i = 0; i < this.orders.length; i++) {
       console.log('for begin');
       const element = this.orders[i];
-      this.getAllSuppliers();
-      await this.sleep(75);
-      this.suppliers = this.suppliers.filter((supplier) => {
+      this.suppliersTemp = this.suppliers;
+      this.suppliersTemp = this.suppliersTemp.filter((supplier) => {
         console.log(supplier.supplieR_ID == element.supplierID);
         return supplier.supplieR_ID == element.supplierID;
       });
-      this.getAllOrderStatusses();
-      await this.sleep(75);
-      this.orderStatusses = this.orderStatusses.filter((orderStatus) => {
-        console.log(orderStatus.orderID == element.orderID);
-        return orderStatus.orderID == element.orderID;
-      });
+      this.orderStatussesTemp = this.orderStatusses;
+      this.orderStatussesTemp = this.orderStatussesTemp.filter(
+        (orderStatus) => {
+          console.log(orderStatus.orderID == element.orderID);
+          return orderStatus.orderID == element.orderID;
+        }
+      );
 
-      this.dynamicArray.push({
-        SupplierName: this.suppliers[0].name,
-        ContactNumber: this.suppliers[0].contacT_NUMBER,
-        DatePlaced: element.datePlaced,
-        Status: this.orderStatusses[0].description,
-      });
-      console.log('for klaar');
-      this.tempArray = this.dynamicArray;
+      if (this.orderStatussesTemp[0].description == 'Placed') {
+        this.dynamicArray.push({
+          SupplierName: this.suppliersTemp[0].name,
+          ContactNumber: this.suppliersTemp[0].contacT_NUMBER,
+          DatePlaced: element.datePlaced,
+          Status: this.orderStatussesTemp[0].description,
+        });
+        console.log('for klaar');
+        this.tempArray = this.dynamicArray;
+      }
     }
   }
 

@@ -28,6 +28,7 @@ export class CompleteStocktakeComponent implements OnInit {
   productCategories: ProductCategory[] = [];
   productCategoriesTemp: ProductCategory[] = [];
 
+  successSubmit: boolean = false;
   populateTable: boolean = false;
   completeQuantity: boolean = true;
 
@@ -164,9 +165,11 @@ export class CompleteStocktakeComponent implements OnInit {
           });
       }
       this.stocktake.date = new Date().toString();
-      this.stocktakeService.addStocktake(this.stocktake).subscribe((response) =>{
-        console.log(response);
-      })
+      this.stocktakeService
+        .addStocktake(this.stocktake)
+        .subscribe((response) => {
+          console.log(response);
+        });
     }
   }
 
