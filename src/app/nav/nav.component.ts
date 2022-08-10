@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-//import { AccountService } from '../_services/account.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -185,18 +183,6 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
-  // login() {
-  //   this.accountService.login(this.model).subscribe(response =>
-  //   {
-  //     console.log(response);
-  //     this.loggedIn = false;
-  //   }, error =>
-  //   {
-  //     console.log(error);
-
-  //   })
-  // }
 
   logout() {
     this.loggedIn = false;
