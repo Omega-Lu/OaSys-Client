@@ -5,6 +5,7 @@ import { ProductType } from 'src/app/models/Product-Type.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductTypeService } from 'src/app/_services/product-type.service';
+import { AuditLogComponent } from 'src/app/audit-log/audit-log.component';
 
 @Component({
   selector: 'app-add-product',
@@ -28,6 +29,7 @@ export class AddProductComponent implements OnInit {
   productType: ProductType;
   productTypes: ProductType[] = [];
   productTemp: ProductType[] = [];
+
 
   product: Product = {
     producT_ID: 0,

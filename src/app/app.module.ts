@@ -75,6 +75,7 @@ import { MakeSaleComponent } from './nav/make-sale/make-sale.component';
 import { SearchSaleComponent } from './nav/search-sale/search-sale.component';
 import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.component';
 import { CapturePaymentComponent } from './nav/capture-payment/capture-payment.component';
+import { AuditLogComponent } from './audit-log/audit-log.component';
 
 const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
 
@@ -142,6 +143,7 @@ const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
     SearchSaleComponent,
     ViewSaleComponent,
     CapturePaymentComponent,
+    AuditLogComponent,
   ],
   imports: [
     BrowserModule,
