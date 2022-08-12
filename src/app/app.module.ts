@@ -80,6 +80,7 @@ import { SalesReportComponent } from './nav/sales-report/sales-report.component'
 import { DebtorsReportComponent } from './nav/debtors-report/debtors-report.component';
 import { WageReportComponent } from './nav/wage-report/wage-report.component';
 import { StockReportComponent } from './nav/stock-report/stock-report.component';
+import { NgxPrintModule } from 'ngx-print';
 
 const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
 
@@ -162,6 +163,7 @@ const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
     MatTableModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
+    NgxPrintModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
