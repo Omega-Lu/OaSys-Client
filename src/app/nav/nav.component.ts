@@ -55,6 +55,10 @@ export class NavComponent implements OnInit {
   makeSale: boolean = false;
   searchSale: boolean = false;
   returnSale: boolean = false;
+  salesReport: boolean = false;
+  stockReport: boolean = false;
+  wageReport: boolean = false;
+  debtorsReport: boolean = false;
 
   employee: boolean = true;
   supplier: boolean = false;
@@ -63,6 +67,7 @@ export class NavComponent implements OnInit {
   maintainDebtor: boolean = false;
   supplierOrder: boolean = false;
   sale: boolean = false;
+  reports: boolean = false;
 
   back() {
     this.landingPage = true;
@@ -116,6 +121,10 @@ export class NavComponent implements OnInit {
     this.makeSale = false;
     this.searchSale = false;
     this.returnSale = false;
+    this.salesReport = false;
+    this.stockReport = false;
+    this.wageReport = false;
+    this.debtorsReport = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {
@@ -130,6 +139,7 @@ export class NavComponent implements OnInit {
     this.supplier = false;
     this.supplierOrder = false;
     this.sale = false;
+    this.reports = false;
   }
 
   clickSupplier() {
@@ -140,6 +150,7 @@ export class NavComponent implements OnInit {
     this.supplier = true;
     this.supplierOrder = false;
     this.sale = false;
+    this.reports = false;
   }
 
   clickProduct() {
@@ -150,6 +161,7 @@ export class NavComponent implements OnInit {
     this.supplier = false;
     this.supplierOrder = false;
     this.sale = false;
+    this.reports = false;
   }
 
   clickDebtor() {
@@ -160,6 +172,7 @@ export class NavComponent implements OnInit {
     this.supplier = false;
     this.supplierOrder = false;
     this.sale = false;
+    this.reports = false;
   }
 
   clickSupplierOrder() {
@@ -170,6 +183,7 @@ export class NavComponent implements OnInit {
     this.supplier = false;
     this.supplierOrder = true;
     this.sale = false;
+    this.reports = false;
   }
 
   clickSale() {
@@ -180,6 +194,18 @@ export class NavComponent implements OnInit {
     this.supplier = false;
     this.supplierOrder = false;
     this.sale = true;
+    this.reports = false;
+  }
+
+  clickReports() {
+    this.back();
+    this.reports = true;
+    this.employee = false;
+    this.product = false;
+    this.debtor = false;
+    this.supplier = false;
+    this.supplierOrder = false;
+    this.sale = false;
   }
 
   ngOnInit(): void {}

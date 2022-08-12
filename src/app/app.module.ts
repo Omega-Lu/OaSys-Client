@@ -76,6 +76,10 @@ import { SearchSaleComponent } from './nav/search-sale/search-sale.component';
 import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.component';
 import { CapturePaymentComponent } from './nav/capture-payment/capture-payment.component';
 import { AuditLogComponent } from './audit-log/audit-log.component';
+import { SalesReportComponent } from './nav/sales-report/sales-report.component';
+import { DebtorsReportComponent } from './nav/debtors-report/debtors-report.component';
+import { WageReportComponent } from './nav/wage-report/wage-report.component';
+import { StockReportComponent } from './nav/stock-report/stock-report.component';
 
 const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
 
@@ -144,6 +148,10 @@ const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
     ViewSaleComponent,
     CapturePaymentComponent,
     AuditLogComponent,
+    SalesReportComponent,
+    DebtorsReportComponent,
+    WageReportComponent,
+    StockReportComponent,
   ],
   imports: [
     BrowserModule,

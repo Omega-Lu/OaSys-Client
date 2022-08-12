@@ -40,11 +40,11 @@ export class SearchSaleComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.sleep(150);
+    this.dynamicArray = [];
     this.getAllPaymentTypes();
     this.getAllPayments();
     this.getAllSales();
-    await this.sleep(150);
+    await this.sleep(200);
 
     this.salesTemp = this.sales;
     this.paymentsTemp = this.payments;
@@ -53,21 +53,23 @@ export class SearchSaleComponent implements OnInit {
     for (let i = 0; i < this.salesTemp.length; i++) {
       const element = this.salesTemp[i];
 
-      this.paymentTypesTemp = this.paymentTypes;
+      let method;
 
-      this.paymentTypesTemp = this.paymentTypesTemp.filter((paymentType) => {
-        console.log(
-          paymentType.paymentTypeID == this.paymentsTemp[i].paymentTypeID
-        );
-        return paymentType.paymentTypeID == this.paymentsTemp[i].paymentTypeID;
-      });
+      if (this.paymentsTemp[i].paymentTypeID == 1) {
+        method = 'Cash';
+      } else if (this.paymentsTemp[i].paymentTypeID == 2) {
+        method = 'Card';
+      } else {
+        method = 'Credit';
+      }
 
       this.dynamicArray.push({
         saleID: element.saleID,
         date: element.date,
-        method: this.paymentTypesTemp[0].description,
+        method: method,
         total: element.total,
       });
+      console.log(this.dynamicArray);
     }
     this.TempArray = this.dynamicArray;
   }
@@ -81,6 +83,7 @@ export class SearchSaleComponent implements OnInit {
   getAllSales() {
     this.saleService.getAllSales().subscribe((response) => {
       this.sales = response;
+      console.log('this is all the sales');
       console.log(this.sales);
     });
   }
@@ -88,6 +91,7 @@ export class SearchSaleComponent implements OnInit {
   getAllPayments() {
     this.paymentService.getAllPayments().subscribe((response) => {
       this.payments = response;
+      console.log('this is all the payments');
       console.log(this.payments);
     });
   }
@@ -95,6 +99,7 @@ export class SearchSaleComponent implements OnInit {
   getAllPaymentTypes() {
     this.paymentTypeService.getAllPaymentTypes().subscribe((response) => {
       this.paymentTypes = response;
+      console.log('this is all the paymentTypes');
       console.log(this.paymentTypes);
     });
   }
@@ -139,5 +144,10 @@ export class SearchSaleComponent implements OnInit {
 
   Return() {
     this.return.emit('false');
+  }
+
+  back() {
+    this.viewSale = false;
+    this.ngOnInit();
   }
 }

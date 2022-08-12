@@ -1,6 +1,7 @@
 export interface AuditLog {
   auditLogID: number;
   userID: number;
-  fuctionUsed: string;
+  functionUsed: string;
   date: string;
+  month: string;
 }

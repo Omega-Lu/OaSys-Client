@@ -12,6 +12,10 @@ import { PaymentService } from 'src/app/_services/Payment.service';
 import { PaymentType } from 'src/app/models/PaymentType.model';
 import { PaymentTypeService } from 'src/app/_services/PaymentType.service';
 import * as $ from 'jquery';
+import { CurrentUser } from 'src/app/models/CurrentUser.model';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { AuditLog } from 'src/app/models/AuditLog.model';
 
 @Component({
   selector: 'app-make-sale',
@@ -65,6 +69,20 @@ export class MakeSaleComponent implements OnInit {
   products: Product[] = [];
   productsTemp: Product[] = [];
 
+  currentUser: CurrentUser;
+  currentUsers: CurrentUser[] = [];
+  currentUsersTemp: CurrentUser[] = [];
+
+  audit: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    functionUsed: 'Make Sale',
+    date: new Date().toString(),
+    month: '',
+  };
+  audits: AuditLog[] = [];
+  auditsTemp: AuditLog[] = [];
+
   searchText: string = '';
   barcodeProductName: string = '';
   saleQuantity: number = 1;
@@ -86,6 +104,9 @@ export class MakeSaleComponent implements OnInit {
   notEnough: boolean = true;
   moreThanOnHand: boolean = true;
 
+  monthInt: number = new Date().getMonth();
+  month: string;
+
   typeOfPaymentID: number;
 
   dynamicArray = [];
@@ -96,17 +117,61 @@ export class MakeSaleComponent implements OnInit {
     private saleService: SaleService,
     private saleProductService: SaleProductService,
     private paymentService: PaymentService,
-    private paymentTypeService: PaymentTypeService
+    private paymentTypeService: PaymentTypeService,
+    private auditLogService: AuditLogService,
+    private currentUserService: CurrentUserService
   ) {}
 
   async ngOnInit() {
     this.getAllProducts();
     this.getAllCustomerAccounts();
+    this.getAllCurrentUsers();
     await this.sleep(150);
+
     this.customerAccountsTemp = this.customerAccounts;
     console.log('this is the customer accounts temp array');
     console.log(this.customerAccountsTemp);
     await this.sleep(1000);
+
+    //set the current user
+    this.audit.userID = this.currentUsers[this.currentUsers.length - 1].userID;
+    this.sale.userID = this.currentUsers[this.currentUsers.length - 1].userID;
+
+    if (this.monthInt == 0) {
+      this.month = 'Jan';
+    } else if (this.monthInt == 1) {
+      this.month = 'Feb';
+    } else if (this.monthInt == 2) {
+      this.month = 'Mar';
+    } else if (this.monthInt == 3) {
+      this.month = 'Apr';
+    } else if (this.monthInt == 4) {
+      this.month = 'May';
+    } else if (this.monthInt == 5) {
+      this.month = 'Jun';
+    } else if (this.monthInt == 6) {
+      this.month = 'Jul';
+    } else if (this.monthInt == 7) {
+      this.month = 'Aug';
+    } else if (this.monthInt == 8) {
+      this.month = 'Sep';
+    } else if (this.monthInt == 9) {
+      this.month = 'Oct';
+    } else if (this.monthInt == 10) {
+      this.month = 'Nov';
+    } else if (this.monthInt == 11) {
+      this.month = 'Dec';
+    }
+
+    this.audit.month = this.month;
+  }
+
+  getAllCurrentUsers() {
+    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
+      this.currentUsers = response;
+      console.log('All current Users');
+      console.log(this.currentUsers);
+    });
   }
 
   async onSubmit() {
@@ -117,7 +182,7 @@ export class MakeSaleComponent implements OnInit {
 
     this.sale.date = new Date().toString();
     this.sale.total = this.totalAmount;
-    if ((this.typeOfPaymentID = 3)) {
+    if (this.typeOfPaymentID == 3) {
       let id = Number($('#customerAccountID option:selected').val());
       this.sale.customerAccountID = id;
     }
@@ -133,7 +198,8 @@ export class MakeSaleComponent implements OnInit {
     await this.sleep(500);
 
     //update customer account
-    if ((this.typeOfPaymentID = 3)) {
+
+    if (this.typeOfPaymentID == 3) {
       let id = Number($('#customerAccountID option:selected').val());
       this.customerAccountsTemp = this.customerAccounts;
       this.customerAccountsTemp = this.customerAccountsTemp.filter(
@@ -157,9 +223,10 @@ export class MakeSaleComponent implements OnInit {
     }
 
     this.salesTemp = this.sales;
-    let newSaleID = this.salesTemp[this.sales.length - 1].saleID + 1;
+    let newSaleID = this.salesTemp[this.sales.length - 1].saleID;
 
     //add payment
+
     this.payment.paymentTypeID = this.typeOfPaymentID;
     this.payment.date = new Date().toString();
     this.payment.amount = this.totalAmount;
@@ -197,12 +264,18 @@ export class MakeSaleComponent implements OnInit {
       this.product.quantitY_ON_HAND =
         this.product.quantitY_ON_HAND - element.quantity;
 
-      console.log('this is the New Product');
+      console.log('this is the New Product Quantity');
       console.log(this.product);
       this.productService.updateProduct(this.product).subscribe((response) => {
         console.log(response);
       });
     }
+
+    //adding to audit log
+    this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
+      console.log('entry into audit log');
+      console.log(response);
+    });
   }
 
   AmountEntered() {

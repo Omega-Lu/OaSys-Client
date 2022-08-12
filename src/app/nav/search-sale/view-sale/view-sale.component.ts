@@ -10,6 +10,10 @@ import { ProductService } from 'src/app/_services/product.service';
 import { Payment } from 'src/app/models/Payment.model';
 import { Return } from 'src/app/models/Return.model';
 import { ReturnService } from 'src/app/_services/Return.service';
+import { CurrentUser } from 'src/app/models/CurrentUser.model';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { AuditLog } from 'src/app/models/AuditLog.model';
 
 @Component({
   selector: 'app-view-sale',
@@ -46,8 +50,25 @@ export class ViewSaleComponent implements OnInit {
   products: Product[] = [];
   productsTemp: Product[] = [];
 
+  currentUser: CurrentUser;
+  currentUsers: CurrentUser[] = [];
+  currentUsersTemp: CurrentUser[] = [];
+
+  audit: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    functionUsed: 'Return Sale',
+    date: new Date().toString(),
+    month: '',
+  };
+  audits: AuditLog[] = [];
+  auditsTemp: AuditLog[] = [];
+
   dynamicArray = [];
   tempArray = [];
+
+  monthInt: number = new Date().getMonth();
+  month: string;
 
   successSubmit: boolean = false;
 
@@ -55,21 +76,55 @@ export class ViewSaleComponent implements OnInit {
     private saleReturnService: SaleReturnService,
     private saleProductService: SaleProductService,
     private returnService: ReturnService,
-    private productService: ProductService
+    private productService: ProductService,
+    private auditLogService: AuditLogService,
+    private currentUserService: CurrentUserService
   ) {}
 
   async ngOnInit() {
+    if (this.monthInt == 0) {
+      this.month = 'Jan';
+    } else if (this.monthInt == 1) {
+      this.month = 'Feb';
+    } else if (this.monthInt == 2) {
+      this.month = 'Mar';
+    } else if (this.monthInt == 3) {
+      this.month = 'Apr';
+    } else if (this.monthInt == 4) {
+      this.month = 'May';
+    } else if (this.monthInt == 5) {
+      this.month = 'Jun';
+    } else if (this.monthInt == 6) {
+      this.month = 'Jul';
+    } else if (this.monthInt == 7) {
+      this.month = 'Aug';
+    } else if (this.monthInt == 8) {
+      this.month = 'Sep';
+    } else if (this.monthInt == 9) {
+      this.month = 'Oct';
+    } else if (this.monthInt == 10) {
+      this.month = 'Nov';
+    } else if (this.monthInt == 11) {
+      this.month = 'Dec';
+    }
+    this.audit.month = this.month;
+
     console.log('this selected sale  ');
     console.log(this.sale);
     console.log('this selected Payment  ');
     console.log(this.payment);
 
-    this.getAllReturns();
-    this.getAllSaleProducts();
-    this.getAllSaleReturns();
-    this.getAllProducts();
+    await this.getAllReturns();
+    await this.getAllSaleProducts();
+    await this.getAllSaleReturns();
+    await this.getAllProducts();
+    await this.getAllCurrentUsers();
     await this.sleep(250);
 
+    //set the current user
+    this.audit.userID = this.currentUsers[this.currentUsers.length - 1].userID;
+
+    //start dynamic array
     this.saleProductsTemp = this.saleProducts;
 
     this.saleProductsTemp = this.saleProductsTemp.filter((saleProduct) => {
@@ -107,7 +162,15 @@ export class ViewSaleComponent implements OnInit {
     }
   }
 
-  getAllReturns() {
+  async getAllCurrentUsers() {
+    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
+      this.currentUsers = response;
+      console.log('All current Users');
+      console.log(this.currentUsers);
+    });
+  }
+
+  async getAllReturns() {
     this.returnService.getAllReturns().subscribe((response) => {
       this.returns = response;
       console.log('all Returns  ');
@@ -115,7 +178,7 @@ export class ViewSaleComponent implements OnInit {
     });
   }
 
-  getAllSaleReturns() {
+  async getAllSaleReturns() {
     this.saleReturnService.getAllSaleReturns().subscribe((response) => {
       this.saleReturns = response;
       console.log('all sale returns  ');
@@ -123,7 +186,7 @@ export class ViewSaleComponent implements OnInit {
     });
   }
 
-  getAllSaleProducts() {
+  async getAllSaleProducts() {
     this.saleProductService.getAllSaleProducts().subscribe((response) => {
       this.saleProducts = response;
 
@@ -132,7 +195,7 @@ export class ViewSaleComponent implements OnInit {
     });
   }
 
-  getAllProducts() {
+  async getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
       this.products = response;
       console.log('all products');
@@ -159,7 +222,7 @@ export class ViewSaleComponent implements OnInit {
     this.return.date = new Date().toString();
 
     this.returnService.addReturn(this.return).subscribe((response) => {
-      console.log("new return");
+      console.log('new return');
       console.log(response);
     });
 
@@ -178,5 +241,11 @@ export class ViewSaleComponent implements OnInit {
         console.log('new sale return');
         console.log(response);
       });
+
+    //adding to audit log
+    this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
+      console.log('entry into audit log');
+      console.log(response);
+    });
   }
 }

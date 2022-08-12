@@ -9,7 +9,7 @@
 </div>
 
 <div class="container" style="height: 394px" *ngIf="!viewSale">
-  <div class="table-responsive">
+  <div class="table-responsive" style="height: 394px">
     <table class="table">
       <thead>
         <tr>
@@ -57,6 +57,6 @@
   *ngIf="viewSale"
   [sale]="sale"
   [payment]="payment"
-  (back)="Return()"
+  (back)="back()"
 >
 </app-view-sale>

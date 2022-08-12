@@ -104,6 +104,16 @@
               ></a
             >
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickReports(); navName = 'Reports'"
+                >Reports</span
+              ></a
+            >
+          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#"
 
@@ -319,6 +329,22 @@
             *ngIf="searchSale || returnSale"
             (return)="back()"
           ></app-search-sale>
+          <app-sales-report
+            (return)="back()"
+            *ngIf="salesReport"
+          ></app-sales-report>
+          <app-stock-report
+            (return)="back()"
+            *ngIf="stockReport"
+          ></app-stock-report>
+          <app-wage-report
+            (return)="back()"
+            *ngIf="wageReport"
+          ></app-wage-report>
+          <app-debtors-report
+            (return)="back()"
+            *ngIf="debtorsReport"
+          ></app-debtors-report>
         </div>
 
         <div *ngIf="landingPage">
@@ -328,7 +354,7 @@
             ></div>
           </div>
           <h3 class="text-dark mb-0"></h3>
-          <div id="content-1" style="color: var(--bs-indigo)" *ngIf="sale">
+          <div id="content-1" style="color: var(--bs-indigo)" *ngIf="reports">
             <div class="container-fluid">
               <div
                 class="d-sm-flex justify-content-between align-items-center mb-4"
@@ -346,73 +372,202 @@
                     font-weight: bold;
                   "
                 >
-                  Sale
+                  Reports
                 </h5>
               </div>
             </div>
             <div class="card-group">
-              <div class="card">
-                <div
-                  class="card-body"
-                  style="border: 2px solid var(--bs-gray-900)"
-                >
-                  <i
-                    class="fas fa-plus text-warning"
-                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-                  ></i
-                  ><button
-                    class="btn"
-                    type="button"
-                    style="color: rgb(0, 0, 0)"
-                    (click)="
-                      makeSale = true; landingPage = false; navName = 'Sale'
-                    "
+              <div class="row" style="width: 100%;">
+                <div class="card col-6">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
                   >
-                    Make Sale
-                  </button>
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        salesReport = true;
+                        landingPage = false;
+                        navName = 'Reports'
+                      "
+                    >
+                      Sales Report
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card col-6">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        debtorsReport = true;
+                        landingPage = false;
+                        navName = 'Reports'
+                      "
+                    >
+                      Debtor's Report
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div class="card">
-                <div
-                  class="card-body"
-                  style="border: 2px solid var(--bs-gray-900)"
-                >
-                  <i
-                    class="fas fa-search text-warning"
-                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-                  ></i
-                  ><button
-                    class="btn"
-                    type="button"
-                    style="color: rgb(0, 0, 0)"
-                    (click)="
-                      searchSale = true; landingPage = false; navName = 'Sale'
-                    "
+            </div>
+            <div class="card-group">
+              <div class="row" style="width: 100%;">
+                <div class="card col-6">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
                   >
-                    Search Sale
-                  </button>
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        wageReport = true;
+                        landingPage = false;
+                        navName = 'Reports'
+                      "
+                    >
+                      Wage Report
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card col-6">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        stockReport = true;
+                        landingPage = false;
+                        navName = 'Reports'
+                      "
+                    >
+                      Stock Report
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div class="card">
-                <div
-                  class="card-body"
-                  style="border: 2px solid var(--bs-gray-900)"
+            </div>
+          </div>
+          <div class="card" *ngIf="sale">
+            <div class="card-header">
+              <h5
+                class="mb-0"
+                style="
+                  --bs-primary: #3c404d;
+                  --bs-primary-rgb: 60, 64, 77;
+                  color: rgb(0, 0, 0);
+                  font-weight: bold;
+                "
+              >
+                Sale
+              </h5>
+            </div>
+          </div>
+          <div class="card-group" *ngIf="sale">
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-plus text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    makeSale = true; landingPage = false; navName = 'Sale'
+                  "
                 >
-                  <i
-                    class="fas fa-pencil-alt text-warning"
-                    style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-                  ></i
-                  ><button
-                    class="btn"
-                    type="button"
-                    style="color: rgb(0, 0, 0)"
-                    (click)="
-                      returnSale = true; landingPage = false; navName = 'Sale'
-                    "
-                  >
-                    Return Sale
-                  </button>
-                </div>
+                  Make Sale
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-search text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    searchSale = true; landingPage = false; navName = 'Sale'
+                  "
+                >
+                  Search Sale
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-body"
+                style="border: 2px solid var(--bs-gray-900)"
+              >
+                <i
+                  class="fas fa-pencil-alt text-warning"
+                  style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+                ></i
+                ><button
+                  class="btn"
+                  type="button"
+                  style="color: rgb(0, 0, 0)"
+                  (click)="
+                    returnSale = true; landingPage = false; navName = 'Sale'
+                  "
+                >
+                  Return Sale
+                </button>
               </div>
             </div>
           </div>
