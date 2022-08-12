@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   currentUser: CurrentUser = {
     id: 0,
     userID: 0,
+    username: '',
   };
   currentUsers: CurrentUser[] = [];
 
@@ -65,6 +66,7 @@ export class AppComponent implements OnInit {
         console.log('THe Current User ID');
         console.log(this.usersTemp[0].useR_ID);
         this.currentUser.userID = this.usersTemp[0].useR_ID;
+        this.currentUser.username = this.username;
         this.currentUserService
           .addCurrentUser(this.currentUser)
           .subscribe((response) => {
