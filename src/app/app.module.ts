@@ -81,6 +81,8 @@ import { DebtorsReportComponent } from './nav/debtors-report/debtors-report.comp
 import { WageReportComponent } from './nav/wage-report/wage-report.component';
 import { StockReportComponent } from './nav/stock-report/stock-report.component';
 import { NgxPrintModule } from 'ngx-print';
+import { CalculateWagesComponent } from './nav/calculate-wages/calculate-wages.component';
+import { CollectPayslipComponent } from './nav/collect-payslip/collect-payslip.component';
 
 const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
 
@@ -153,6 +155,8 @@ const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
     DebtorsReportComponent,
     WageReportComponent,
     StockReportComponent,
+    CalculateWagesComponent,
+    CollectPayslipComponent,
   ],
   imports: [
     BrowserModule,

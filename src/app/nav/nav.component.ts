@@ -59,6 +59,7 @@ export class NavComponent implements OnInit {
   stockReport: boolean = false;
   wageReport: boolean = false;
   debtorsReport: boolean = false;
+  calculateWages: boolean = false;
 
   employee: boolean = true;
   supplier: boolean = false;
@@ -125,6 +126,7 @@ export class NavComponent implements OnInit {
     this.stockReport = false;
     this.wageReport = false;
     this.debtorsReport = false;
+    this.calculateWages = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {
