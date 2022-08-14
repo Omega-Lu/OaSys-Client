@@ -49,7 +49,7 @@
             <tr *ngFor="let employee of dynamicArray">
               <td>{{ employee.name }}</td>
               <td>{{ employee.surname }}</td>
-              <td>R{{ employee.wage }}</td>
+              <td id="amountID">R{{ employee.wage }}</td>
             </tr>
           </tbody>
         </table>
@@ -86,12 +86,14 @@
       table: {
         border: 'solid 3px',
         'border-color': 'var(--bs-orange)',
-        'margin-top': '20px'
+        'margin-top': '20px',
+        width: '100%'
       },
       th: { border: 'solid 2px', 'border-color': 'black' },
       td: { border: 'solid 2px', 'border-color': 'black' },
       img: { 'margin-top': '-180px' },
-      '#totalWages': { 'margin-left': '0px' }
+      '#totalWages': { 'margin-left': '0px' },
+      '#amountID': { display: 'flex', 'justify-content': 'flex-end' }
     }"
     printSectionId="print-section"
     ngxPrint

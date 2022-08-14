@@ -13,7 +13,7 @@
       <div class="col-6">
         <label
           class="form-label"
-          style="font-size: 30px; color: black;; width: 600px"
+          style="font-size: 30px; color: black; width: 600px"
           >Debtors Report</label
         >
         <label class="form-label" style="margin-left: 20px"
@@ -49,13 +49,13 @@
             <td>{{ customer.customeR_ACCOUNT_ID }}</td>
             <td>{{ customer.name }}</td>
             <td>{{ customer.surname }}</td>
-            <td>R{{ customer.amounT_OWING }}</td>
+            <td id="amountID">R{{ customer.amounT_OWING }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <label class="form-label" style="margin-left: 250px"
-      >Total Amount Outstanding: R{{totalAmount}}</label
+    <label class="form-label" style="margin-left: 250px" id="totalID"
+      >Total Amount Outstanding: R{{ totalAmount }}</label
     >
   </div>
   <button
@@ -84,12 +84,19 @@
       table: {
         border: 'solid 3px',
         'border-color': 'var(--bs-orange)',
-        'margin-top': '20px'
+        'margin-top': '20px',
+        width: '100%'
       },
       th: { border: 'solid 2px', 'border-color': 'black' },
       td: { border: 'solid 2px', 'border-color': 'black' },
       img: { 'margin-top': '-180px' },
-      '#totalWages': { 'margin-left': '0px' }
+      '#totalWages': { 'margin-left': '0px' },
+      '#amountID': { display: 'flex', 'justify-content': 'flex-end' },
+      '#totalID': {
+        display: 'flex',
+        'justify-content': 'flex-end',
+        'margin-top': '30px'
+      }
     }"
     printSectionId="print-section"
     ngxPrint

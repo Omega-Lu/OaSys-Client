@@ -54,7 +54,7 @@
             <tr *ngFor="let product of productsTemp">
               <td>{{ product.producT_ID }}</td>
               <td>{{ product.producT_NAME }}</td>
-              <td>{{ product.quantitY_ON_HAND }}</td>
+              <td id="quantityID">{{ product.quantitY_ON_HAND }}</td>
             </tr>
           </tbody>
         </table>
@@ -87,11 +87,13 @@
       table: {
         border: 'solid 3px',
         'border-color': 'var(--bs-orange)',
-        'margin-top': '20px'
+        'margin-top': '20px',
+        width: '100%'
       },
       th: { border: 'solid 2px', 'border-color': 'black' },
       td: { border: 'solid 2px', 'border-color': 'black' },
-      img: { 'margin-top': '-180px' }
+      img: { 'margin-top': '-180px' },
+      '#quantityID': { display: 'flex', 'justify-content': 'flex-end' }
     }"
     printSectionId="print-section"
     ngxPrint
