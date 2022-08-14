@@ -188,7 +188,7 @@ export class MakeSaleComponent implements OnInit {
     }
 
     console.log('this is the sale');
-    console.log(this.sale);
+    //console.log(this.sale);
     this.saleService.addSale(this.sale).subscribe((response) => {
       console.log(response);
     });
@@ -214,7 +214,7 @@ export class MakeSaleComponent implements OnInit {
         this.customerAccount.amounT_OWING + this.totalAmount;
 
       console.log('this is the updated customer account');
-      console.log(this.customerAccount);
+      //console.log(this.customerAccount);
       this.customerAccountService
         .updateCustomerAccount(this.customerAccount)
         .subscribe((response) => {
@@ -233,7 +233,7 @@ export class MakeSaleComponent implements OnInit {
     this.payment.saleID = newSaleID;
 
     console.log('this is the payment');
-    console.log(this.payment);
+    //console.log(this.payment);
     this.paymentService.addPayment(this.payment).subscribe((response) => {
       console.log(response);
     });
@@ -253,7 +253,7 @@ export class MakeSaleComponent implements OnInit {
       this.saleProduct.quantity = element.quantity;
 
       console.log('this is the Sale Product');
-      console.log(this.saleProduct);
+     // console.log(this.saleProduct);
       this.saleProductService
         .addSaleProduct(this.saleProduct)
         .subscribe((response) => {
@@ -265,7 +265,7 @@ export class MakeSaleComponent implements OnInit {
         this.product.quantitY_ON_HAND - element.quantity;
 
       console.log('this is the New Product Quantity');
-      console.log(this.product);
+      //console.log(this.product);
       this.productService.updateProduct(this.product).subscribe((response) => {
         console.log(response);
       });
