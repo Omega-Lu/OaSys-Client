@@ -46,23 +46,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Luthando</td>
-              <td>Greene</td>
-              <td>4500.78</td>
-            </tr>
-            <tr>
-              <td>Thato</td>
-              <td>Lucky</td>
-              <td>7600</td>
+            <tr *ngFor="let employee of dynamicArray">
+              <td>{{ employee.name }}</td>
+              <td>{{ employee.surname }}</td>
+              <td>R{{ employee.wage }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
     <label class="form-label" id="totalWages" style="margin-left: 250px"
-      >Total Wages Paid (R): 12100.78</label
-    >
+      >Total Wages Paid: R{{ totalWageString }}
+    </label>
   </div>
 
   <button
