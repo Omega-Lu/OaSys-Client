@@ -70,7 +70,7 @@ export class WageReportComponent implements OnInit {
           if (x.empID == this.employeesTemp[0].employeE_ID) {
             let wageSome = Number(this.dynamicArray[i].wage);
             wageSome = wageSome + element.wageCollected;
-            this.dynamicArray[i].wage = wageSome;
+            this.dynamicArray[i].wage = wageSome.toFixed(2);
             this.exists = true;
             break;
           } else {

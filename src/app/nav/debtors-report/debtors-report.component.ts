@@ -22,6 +22,8 @@ export class DebtorsReportComponent implements OnInit {
   customerAccounts: CustomerAccount[] = [];
   customerAccountsTemp: CustomerAccount[] = [];
 
+  dynamicArray = [];
+
   totalAmount: number = 0;
 
   constructor(
@@ -38,6 +40,13 @@ export class DebtorsReportComponent implements OnInit {
     for (let i = 0; i < this.customerAccounts.length; i++) {
       const element = this.customerAccounts[i];
       this.totalAmount = this.totalAmount + element.amounT_OWING;
+
+      this.dynamicArray.push({
+        id: element.customeR_ACCOUNT_ID,
+        name: element.name,
+        surname: element.surname,
+        amount: element.amounT_OWING.toFixed(2),
+      });
     }
   }
 

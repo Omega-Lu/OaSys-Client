@@ -57,6 +57,7 @@ export class ViewSaleComponent implements OnInit {
   audit: AuditLog = {
     auditLogID: 0,
     userID: 0,
+    employeeID:0,
     functionUsed: 'Return Sale',
     date: new Date().toString(),
     month: '',

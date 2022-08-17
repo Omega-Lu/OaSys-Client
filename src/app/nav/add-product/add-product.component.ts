@@ -5,7 +5,10 @@ import { ProductType } from 'src/app/models/Product-Type.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductTypeService } from 'src/app/_services/product-type.service';
-import { AuditLogComponent } from 'src/app/audit-log/audit-log.component';
+import { CurrentUser } from 'src/app/models/CurrentUser.model';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { AuditLog } from 'src/app/models/AuditLog.model';
 
 @Component({
   selector: 'app-add-product',
@@ -25,11 +28,11 @@ export class AddProductComponent implements OnInit {
 
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
+  productCategoriesTemp: ProductCategory[] = [];
 
   productType: ProductType;
   productTypes: ProductType[] = [];
-  productTemp: ProductType[] = [];
-
+  productTypesTemp: ProductType[] = [];
 
   product: Product = {
     producT_ID: 0,
@@ -44,15 +47,53 @@ export class AddProductComponent implements OnInit {
     barcode: '',
   };
 
+  currentUser: CurrentUser;
+  currentUsers: CurrentUser[] = [];
+  currentUsersTemp: CurrentUser[] = [];
+
+  audit: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Add Product',
+    date: new Date().toString(),
+    month: '',
+  };
+  audits: AuditLog[] = [];
+  auditsTemp: AuditLog[] = [];
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
-    private productTypeService: ProductTypeService
+    private productTypeService: ProductTypeService,
+    private auditLogService: AuditLogService,
+    private currentUserService: CurrentUserService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.getAllProductCategories();
     this.getAllProductTypes();
+
+    await this.getAllCurrentUsers();
+    await this.sleep(500);
+    //set the current user
+    this.audit.userID = this.currentUsers[this.currentUsers.length - 1].userID;
+    this.audit.employeeID =
+      this.currentUsers[this.currentUsers.length - 1].employeeID;
+  }
+
+  async getAllCurrentUsers() {
+    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
+      this.currentUsers = response;
+      console.log('All current Users');
+      console.log(this.currentUsers);
+    });
+  }
+
+  async sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
   }
 
   getAllProductCategories() {
@@ -66,16 +107,23 @@ export class AddProductComponent implements OnInit {
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTemp = response;
+      this.productTypes = response;
       console.log(this.productTypes);
     });
   }
 
   onSubmit() {
     this.productService.addProduct(this.product).subscribe((response) => {
+      console.log('this is the new product');
       console.log(response);
     });
     this.successSubmit = true;
+
+    //adding to audit log
+    this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
+      console.log('entry into audit log');
+      console.log(response);
+    });
   }
 
   namevalidate() {
@@ -105,11 +153,8 @@ export class AddProductComponent implements OnInit {
   }
 
   async categorySelect(id: number) {
-    this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTemp = response;
-      console.log(this.productTypes);
-    });
-    this.productTypes = this.productTemp.filter((productType) => {
+    this.productTypesTemp = this.productTypes;
+    this.productTypesTemp = this.productTypesTemp.filter((productType) => {
       console.log(productType.producT_CATEGORY_ID == id);
       return productType.producT_CATEGORY_ID == id;
     });

@@ -76,6 +76,7 @@ export class MakeSaleComponent implements OnInit {
   audit: AuditLog = {
     auditLogID: 0,
     userID: 0,
+    employeeID: 0,
     functionUsed: 'Make Sale',
     date: new Date().toString(),
     month: '',
@@ -126,7 +127,7 @@ export class MakeSaleComponent implements OnInit {
     this.getAllProducts();
     this.getAllCustomerAccounts();
     this.getAllCurrentUsers();
-    await this.sleep(150);
+    await this.sleep(200);
 
     this.customerAccountsTemp = this.customerAccounts;
     console.log('this is the customer accounts temp array');
@@ -135,6 +136,8 @@ export class MakeSaleComponent implements OnInit {
 
     //set the current user
     this.audit.userID = this.currentUsers[this.currentUsers.length - 1].userID;
+    this.audit.employeeID =
+      this.currentUsers[this.currentUsers.length - 1].employeeID;
     this.sale.userID = this.currentUsers[this.currentUsers.length - 1].userID;
 
     if (this.monthInt == 0) {
@@ -253,7 +256,7 @@ export class MakeSaleComponent implements OnInit {
       this.saleProduct.quantity = element.quantity;
 
       console.log('this is the Sale Product');
-     // console.log(this.saleProduct);
+      // console.log(this.saleProduct);
       this.saleProductService
         .addSaleProduct(this.saleProduct)
         .subscribe((response) => {

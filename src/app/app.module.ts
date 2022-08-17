@@ -75,7 +75,6 @@ import { MakeSaleComponent } from './nav/make-sale/make-sale.component';
 import { SearchSaleComponent } from './nav/search-sale/search-sale.component';
 import { ViewSaleComponent } from './nav/search-sale/view-sale/view-sale.component';
 import { CapturePaymentComponent } from './nav/capture-payment/capture-payment.component';
-import { AuditLogComponent } from './audit-log/audit-log.component';
 import { SalesReportComponent } from './nav/sales-report/sales-report.component';
 import { DebtorsReportComponent } from './nav/debtors-report/debtors-report.component';
 import { WageReportComponent } from './nav/wage-report/wage-report.component';
@@ -83,6 +82,8 @@ import { StockReportComponent } from './nav/stock-report/stock-report.component'
 import { NgxPrintModule } from 'ngx-print';
 import { CalculateWagesComponent } from './nav/calculate-wages/calculate-wages.component';
 import { CollectPayslipComponent } from './nav/collect-payslip/collect-payslip.component';
+import { AuditLogComponent } from './nav/audit-log/audit-log.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
 
@@ -150,13 +151,13 @@ const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
     SearchSaleComponent,
     ViewSaleComponent,
     CapturePaymentComponent,
-    AuditLogComponent,
     SalesReportComponent,
     DebtorsReportComponent,
     WageReportComponent,
     StockReportComponent,
     CalculateWagesComponent,
     CollectPayslipComponent,
+    AuditLogComponent,
   ],
   imports: [
     BrowserModule,
@@ -168,6 +169,7 @@ const appRoutes: Routes = [{ path: 'nav', component: NavComponent }];
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     NgxPrintModule,
+    PdfViewerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

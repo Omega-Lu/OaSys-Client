@@ -114,6 +114,16 @@
               ></a
             >
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="clickAuditLog(); navName = 'Audit Log'"
+                >Audit Log</span
+              ></a
+            >
+          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#"
 
@@ -349,22 +359,62 @@
             (return)="back()"
             *ngIf="calculateWages"
           ></app-calculate-wages>
+          <app-audit-log
+            (return)="back()"
+            *ngIf="auditLogClick"
+          ></app-audit-log>
         </div>
 
         <div *ngIf="landingPage">
-          <div class="container-fluid">
-            <div
-              class="d-sm-flex justify-content-between align-items-center mb-4"
-            ></div>
-          </div>
-          <h3 class="text-dark mb-0"></h3>
-          <div id="content-1" style="color: var(--bs-indigo)" *ngIf="reports">
-            <div class="container-fluid">
-              <div
-                class="d-sm-flex justify-content-between align-items-center mb-4"
-              ></div>
+          <div id="content-1" style="color: var(--bs-indigo)" *ngIf="auditLog">
+            <div class="card">
+              <div class="card-header">
+                <h5
+                  class="mb-0"
+                  style="
+                    --bs-primary: #3c404d;
+                    --bs-primary-rgb: 60, 64, 77;
+                    color: rgb(0, 0, 0);
+                    font-weight: bold;
+                  "
+                >
+                  Audit Log
+                </h5>
+              </div>
             </div>
-            <h3 class="text-dark mb-0"></h3>
+            <div class="card-group">
+              <div class="row" style="width: 100%">
+                <div class="card col-6">
+                  <div
+                    class="card-body"
+                    style="border: 2px solid var(--bs-gray-900)"
+                  >
+                    <i
+                      class="fas fa-pencil-alt text-warning"
+                      style="
+                        --bs-warning: #ff7a00;
+                        --bs-warning-rgb: 255, 122, 0;
+                      "
+                    ></i
+                    ><button
+                      class="btn"
+                      type="button"
+                      style="color: rgb(0, 0, 0)"
+                      (click)="
+                        auditLogClick = true;
+                        landingPage = false;
+                        navName = 'Audit Log'
+                      "
+                    >
+                      View Audit Log
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="content-1" style="color: var(--bs-indigo)" *ngIf="reports">
             <div class="card">
               <div class="card-header">
                 <h5

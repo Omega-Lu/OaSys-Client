@@ -60,6 +60,7 @@ export class NavComponent implements OnInit {
   wageReport: boolean = false;
   debtorsReport: boolean = false;
   calculateWages: boolean = false;
+  auditLogClick: boolean = false;
 
   employee: boolean = true;
   supplier: boolean = false;
@@ -69,6 +70,7 @@ export class NavComponent implements OnInit {
   supplierOrder: boolean = false;
   sale: boolean = false;
   reports: boolean = false;
+  auditLog: boolean = false;
 
   back() {
     this.landingPage = true;
@@ -127,6 +129,7 @@ export class NavComponent implements OnInit {
     this.wageReport = false;
     this.debtorsReport = false;
     this.calculateWages = false;
+    this.auditLogClick = false;
   }
   //constructor(private accountService: AccountService) {}
   constructor() {
@@ -142,6 +145,7 @@ export class NavComponent implements OnInit {
     this.supplierOrder = false;
     this.sale = false;
     this.reports = false;
+    this.auditLog = false;
   }
 
   clickSupplier() {
@@ -153,6 +157,7 @@ export class NavComponent implements OnInit {
     this.supplierOrder = false;
     this.sale = false;
     this.reports = false;
+    this.auditLog = false;
   }
 
   clickProduct() {
@@ -164,6 +169,7 @@ export class NavComponent implements OnInit {
     this.supplierOrder = false;
     this.sale = false;
     this.reports = false;
+    this.auditLog = false;
   }
 
   clickDebtor() {
@@ -175,6 +181,7 @@ export class NavComponent implements OnInit {
     this.supplierOrder = false;
     this.sale = false;
     this.reports = false;
+    this.auditLog = false;
   }
 
   clickSupplierOrder() {
@@ -186,6 +193,7 @@ export class NavComponent implements OnInit {
     this.supplierOrder = true;
     this.sale = false;
     this.reports = false;
+    this.auditLog = false;
   }
 
   clickSale() {
@@ -197,6 +205,7 @@ export class NavComponent implements OnInit {
     this.supplierOrder = false;
     this.sale = true;
     this.reports = false;
+    this.auditLog = false;
   }
 
   clickReports() {
@@ -208,6 +217,19 @@ export class NavComponent implements OnInit {
     this.supplier = false;
     this.supplierOrder = false;
     this.sale = false;
+    this.auditLog = false;
+  }
+
+  clickAuditLog() {
+    this.back();
+    this.reports = false;
+    this.employee = false;
+    this.product = false;
+    this.debtor = false;
+    this.supplier = false;
+    this.supplierOrder = false;
+    this.sale = false;
+    this.auditLog = true;
   }
 
   ngOnInit(): void {}

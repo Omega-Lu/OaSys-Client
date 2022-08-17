@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <form
   class="text-dark"
   style="
@@ -8,7 +10,7 @@
     margin-left: 30px;
   "
 >
-  <div id="print-section">
+  <div id="htmlData">
     <div class="row">
       <div class="col-6">
         <label
@@ -34,9 +36,31 @@
           width="200px"
           style="float: right"
         />
+        <select
+          id="categoryID"
+          class="btn"
+          name="PCategory"
+          style="
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+            float: right;
+            margin-top: 100px;
+          "
+          (input)="categorySelect($event.target.value)"
+        >
+          <option value="" disabled selected>Product Category</option>
+          <option
+            id="categoryOption"
+            value=" {{ productCategory.producT_CATEGORY_ID }} "
+            *ngFor="let productCategory of productCategories"
+          >
+            {{ productCategory.categorY_NAME }}
+          </option>
+        </select>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div
         class="table-responsive"
         style="margin-left: 20px"
@@ -59,8 +83,14 @@
           </tbody>
         </table>
       </div>
+    </div> -->
+    <div>
+      <div class="chart-container" style="width: 730px; height: 400px">
+        <canvas id="my-chart"> </canvas>
+      </div>
     </div>
   </div>
+  <img src="{{ PDF }}" alt="" />
   <button
     class="btn btn-warning"
     type="button"
@@ -97,6 +127,7 @@
     }"
     printSectionId="print-section"
     ngxPrint
+    (click)="print()"
   >
     Print
   </button>

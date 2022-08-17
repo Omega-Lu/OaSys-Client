@@ -55,7 +55,11 @@
         </table>
       </div>
     </div>
-    <label class="form-label" id="totalWages" style="margin-left: 250px"
+    <label
+      class="form-label"
+      id="totalWages"
+      style="margin-left: 250px"
+      id="totalID"
       >Total Wages Paid: R{{ totalWageString }}
     </label>
   </div>
@@ -93,7 +97,12 @@
       td: { border: 'solid 2px', 'border-color': 'black' },
       img: { 'margin-top': '-180px' },
       '#totalWages': { 'margin-left': '0px' },
-      '#amountID': { display: 'flex', 'justify-content': 'flex-end' }
+      '#amountID': { display: 'flex', 'justify-content': 'flex-end' },
+      '#totalID': {
+        display: 'flex',
+        'justify-content': 'flex-end',
+        'margin-top': '30px'
+      }
     }"
     printSectionId="print-section"
     ngxPrint

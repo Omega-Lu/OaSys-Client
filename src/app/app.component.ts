@@ -4,6 +4,8 @@ import { UserService } from './_services/user.service';
 import { FormGroup } from '@angular/forms';
 import { CurrentUser } from './models/CurrentUser.model';
 import { CurrentUserService } from './_services/CurrentUser.service';
+import { Employee } from './models/employee.model';
+import { EmployeeService } from './_services/employee.service';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +22,14 @@ export class AppComponent implements OnInit {
   users: User[] = [];
   usersTemp: User[] = [];
 
+  employee: Employee;
+  employees: Employee[] = [];
+  employeesTemp: Employee[] = [];
+
   currentUser: CurrentUser = {
     id: 0,
     userID: 0,
+    employeeID: 0,
     username: '',
   };
   currentUsers: CurrentUser[] = [];
@@ -35,7 +42,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    private employeeService: EmployeeService
   ) {
     this.loggedIn = false;
     console.log(this.loggedIn);
@@ -67,6 +75,7 @@ export class AppComponent implements OnInit {
         console.log(this.usersTemp[0].useR_ID);
         this.currentUser.userID = this.usersTemp[0].useR_ID;
         this.currentUser.username = this.username;
+        this.currentUser.employeeID = this.usersTemp[0].employeE_ID;
         this.currentUserService
           .addCurrentUser(this.currentUser)
           .subscribe((response) => {
@@ -82,7 +91,16 @@ export class AppComponent implements OnInit {
   getUsers() {
     this.userService.getAllUsers().subscribe((response) => {
       this.users = response;
+      console.log('this is all the users');
       console.log(response);
+    });
+  }
+
+  getEmployee() {
+    this.employeeService.getAllEmployees().subscribe((response) => {
+      this.employees = response;
+      console.log('this is all the employees');
+      console.log(this.employees);
     });
   }
 }
