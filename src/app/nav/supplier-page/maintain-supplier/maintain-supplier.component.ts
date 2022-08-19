@@ -31,7 +31,7 @@ export class MaintainSupplierComponent implements OnInit {
   deletee(delet : any){
     this.deletenumber = delet;
   }
-  
+
   getAllSuppliers() {
     this.supplierService.getAllSuppliers().subscribe((response) => {
       this.suppliers = response;
@@ -56,8 +56,8 @@ export class MaintainSupplierComponent implements OnInit {
       console.log(searchValue);
       this.suppliers = this.suppliers.filter((supplier) =>{
         console.log(supplier.name.match(searchValue));
-        return supplier.name.match(searchValue);  
-      
+        return supplier.name.match(searchValue);
+
 
             });
             console.log(this.supplier);
@@ -70,6 +70,6 @@ export class MaintainSupplierComponent implements OnInit {
   back(){
     this.return.emit('false');
   }
- 
+
 
 }

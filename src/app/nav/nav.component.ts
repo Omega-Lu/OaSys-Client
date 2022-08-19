@@ -17,7 +17,7 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.router.navigate(['/employee-page']);
+    this.router.navigate(['/landing-page']);
   }
 
   logout() {

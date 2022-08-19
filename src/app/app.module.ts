@@ -44,7 +44,7 @@ import { AddDebtorComponent } from './nav/debtor-page/add-debtor/add-debtor.comp
 import { SearchDebtorComponent } from './nav/debtor-page/search-debtor/search-debtor.component';
 import { MaintainDebtorComponent } from './nav/debtor-page/maintain-debtor/maintain-debtor.component';
 import { UpdateDebtorComponent } from './nav/debtor-page/maintain-debtor/update-debtor/update-debtor.component';
-import { UpdateSupplierComponent } from './nav/supplier-page/update-supplier/update-supplier.component';
+import { UpdateSupplierComponent } from './nav/supplier-page/maintain-supplier/update-supplier/update-supplier.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AddProductCategoryComponent } from './nav/product-page/add-product-category/add-product-category.component';
@@ -156,6 +156,7 @@ const appRoutes: Routes = [
   { path: 'sale-page', component: SalePageComponent },
   { path: 'supplier-page', component: SupplierPageComponent },
   { path: 'reports-page', component: ReportsPageComponent },
+  { path: 'landing-page', component: EmployeePageComponent },
 ];
 
 @NgModule({
