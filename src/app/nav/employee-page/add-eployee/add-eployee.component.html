@@ -1,0 +1,257 @@
+<form
+  style="
+    width: 750px;
+    margin-right: 0px;
+    margin-left: 5px;
+    height: 850px;
+    border-right-color: rgb(8, 15, 67);
+    --bs-light: #f8f9fc;
+    --bs-light-rgb: 248, 249, 252;
+  "
+  #form="ngForm"
+  (ngSubmit)="onSubmit()"
+>
+  <h1
+    style="
+      margin-right: 750px;
+      color: rgb(0, 0, 0);
+      width: 241px;
+      margin-left: 0px;
+    "
+  >
+    ADD EMPLOYEE
+  </h1>
+  <h5 style="color: rgb(0, 0, 0); margin-right: 480px; height: 27px">
+    New Employee Details:
+  </h5>
+  <div class="container">
+    <div class="row">
+      <div
+        class="col-md-6"
+        style="
+          height: 200px;
+          color: rgb(0, 0, 0);
+          border-bottom-color: var(--bs-red);
+        "
+      >
+        <label class="form-label" style="margin-right: 650px">Name:</label>
+        <input
+          class="form-control"
+          name="emplyeeName"
+          type="text"
+          style="width: 300px; margin-right: 50px; margin-left: 10px"
+          [(ngModel)]="employee.name"
+          (click)="namevalidate()"
+          (keyup)="namevalidate()"
+        />
+        <div *ngIf="!details" style="color: Red">Invalid Details</div>
+
+        <label class="form-label" style="margin-right: 650px; width: 180px"
+          >SA ID/Passport number:</label
+        >
+        <input
+          class="form-control"
+          name="employeeIdNumber"
+          type="text"
+          style="width: 300px; margin-right: 50px; margin-left: 10px"
+          [(ngModel)]="employee.employeE_ID_NUMBER"
+          required
+          minlength="13"
+          maxlength="13"
+          (click)="ValidatePassport($event.target.value)"
+          (keyup)="ValidatePassport($event.target.value)"
+        />
+        <div *ngIf="!passportVal" style="color: Red">Invalid ID Number</div>
+        <label class="form-label" style="margin-right: 650px; width: 180px"
+          >TITLE:</label
+        >
+        <select
+          id="titleID"
+          class="btn"
+          style="
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+          "
+          name="employeeTitle"
+          (input)="titlevalidate($event.target.value)"
+        >
+          <option value="-1" disabled selected>Select a Title</option>
+          <option value="Mr">Mr</option>
+          <option value="Ms">Ms</option>
+        </select>
+        <div *ngIf="!tdetails" style="color: Red">Select a Title</div>
+      </div>
+      <div
+        class="col-md-6"
+        style="
+          box-shadow: 0px 0px rgb(242, 243, 248), 0px 0px var(--bs-purple);
+          color: rgb(0, 0, 0);
+        "
+      >
+        <label class="form-label" style="margin-right: 300px">Surname:</label
+        ><input
+          class="form-control"
+          type="text"
+          required
+          name="emplyeeSurname"
+          style="width: 300px; margin-right: -500px; margin-left: 10px"
+          [(ngModel)]="employee.surname"
+          (click)="survalidate()"
+          (keyup)="survalidate()"
+        />
+        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+
+        <label class="form-label" style="margin-right: 1200px; width: 130px"
+          >Contact Number:
+        </label>
+        <div class="input-group prefix" style="width: 91.5%">
+          <span
+            class="input-group-addon"
+            style="display: flex; justify-content: center; align-items: center"
+            >+27</span
+          >
+          <input
+            class="form-control"
+            type="tel"
+            required
+            name="emplyeeNumber"
+            placeholder=""
+            required
+            minlength="9"
+            maxlength="9"
+            style="margin-left: 10px"
+            [(ngModel)]="employee.contacT_NUMBER"
+            (click)="contactNumVal($event.target.value)"
+            (keyup)="contactNumVal($event.target.value)"
+          />
+        </div>
+        <div *ngIf="!numberVal" style="color: Red">Invalid Contact Number</div>
+        <label class="form-label" style="margin-right: 650px">Email:</label
+        ><input
+          class="form-control"
+          type="email"
+          required
+          name="emplyeeEmail"
+          style="width: 300px; margin-left: 10px"
+          [(ngModel)]="employee.email"
+          (click)="emailvalidate($event.target.value)"
+          (keyup)="emailvalidate($event.target.value)"
+        />
+        <div *ngIf="!edetails" style="color: Red">Invalid Details</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="text-dark" style="height: 100px">
+        <label class="form-label" style="margin-right: 250px">Address:</label
+        ><input
+          class="form-control"
+          name="employeeAddress"
+          type="text"
+          required
+          style="width: 674px"
+          [(ngModel)]="employee.address"
+          (click)="addressvalidate()"
+          (keyup)="addressvalidate()"
+        />
+        <div *ngIf="!adetails" style="color: Red">Invalid Details</div>
+      </div>
+    </div>
+    <div *ngIf="exists" style="color: Red">
+      An Employee With This Contact Number OR ID Number Already Exists
+    </div>
+    <div class="form-group">
+      <span>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="Return()"
+          style="
+            border-right-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 30px;
+            margin-top: 10px;
+          "
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          style="
+            border-right-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 0px;
+            margin-top: 10px;
+          "
+          [disabled]="
+            !details ||
+            !sdetails ||
+            !tdetails ||
+            !edetails ||
+            !adetails ||
+            exists
+          "
+          (pointerover)="FormValidate()"
+          (mouseover)="FormValidate()"
+        >
+          Save
+        </button>
+      </span>
+    </div>
+  </div>
+</form>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Add A New Employee
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Employee Successfully Added
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

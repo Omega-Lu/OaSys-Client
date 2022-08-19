@@ -1,0 +1,7 @@
+h5 {
+  --bs-primary: #3c404d;
+  --bs-primary-rgb: 60, 64, 77;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  font-size: large;
+}

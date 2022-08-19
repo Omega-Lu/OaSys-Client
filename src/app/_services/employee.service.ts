@@ -4,24 +4,22 @@ import { Observable } from 'rxjs';
 import { Employee } from '../models/employee.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EmployeeService {
+  model: any;
 
-  model : any;
+  baseUrl = 'https://localhost:7113/api/Employee';
 
-  baseUrl = 'https://localhost:7113/api/Employee'
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   //get all employees
-  getAllEmployees(): Observable<Employee[]>{
+  getAllEmployees(): Observable<Employee[]> {
     this.model = this.http.get<Employee[]>(this.baseUrl);
-    return this.http.get<Employee[]>(this.baseUrl);
-
+    return this.model;
   }
 
-  addEmployee(employee : Employee): Observable<Employee> {
+  addEmployee(employee: Employee): Observable<Employee> {
     return this.http.post<Employee>(this.baseUrl, employee);
   }
 
@@ -29,8 +27,11 @@ export class EmployeeService {
     return this.http.delete<Employee>(this.baseUrl + '/' + id);
   }
 
-  updateEmployee(employee: Employee): Observable<Employee>{
-    return this.http.put<Employee>(this.baseUrl + '/' + employee.employeE_ID, employee)
+  updateEmployee(employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(
+      this.baseUrl + '/' + employee.employeE_ID,
+      employee
+    );
   }
 
 }

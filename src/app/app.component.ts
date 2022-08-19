@@ -6,6 +6,7 @@ import { CurrentUser } from './models/CurrentUser.model';
 import { CurrentUserService } from './_services/CurrentUser.service';
 import { Employee } from './models/employee.model';
 import { EmployeeService } from './_services/employee.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +44,8 @@ export class AppComponent implements OnInit {
   constructor(
     private userService: UserService,
     private currentUserService: CurrentUserService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private route: Router
   ) {
     this.loggedIn = false;
     console.log(this.loggedIn);
@@ -70,7 +72,6 @@ export class AppComponent implements OnInit {
     } else {
       this.details = true;
       if (this.usersTemp[0].useR_PASSWORD == this.password) {
-        this.loggedIn = true;
         console.log('THe Current User ID');
         console.log(this.usersTemp[0].useR_ID);
         this.currentUser.userID = this.usersTemp[0].useR_ID;
@@ -82,6 +83,7 @@ export class AppComponent implements OnInit {
             console.log('this is the current user');
             console.log(response);
           });
+        this.loggedIn = true;
       } else {
         this.sdetails = false;
       }
