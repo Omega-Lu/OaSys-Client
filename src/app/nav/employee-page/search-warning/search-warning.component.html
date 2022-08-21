@@ -33,11 +33,11 @@
             </tr>
           </thead>
           <tbody>
-              <tr *ngFor="let warning of warnings">
-                  <td>{{warning.employeE_ID}}</td>
-                  <td>{{warning.warininG_NAME}}</td>
-                  <td>{{warning.reason}}</td>
-              </tr>
+            <tr *ngFor="let element of dynamicArray">
+              <td>{{ element.name }}</td>
+              <td>{{ element.warningName }}</td>
+              <td>{{ element.reason }}</td>
+            </tr>
           </tbody>
           <tfoot>
             <tr></tr>
@@ -47,11 +47,11 @@
     </div>
   </div>
   <button
-  class="btn btn-primary"
-  type="button"
-  style="background: var(--bs-orange); margin-left: 10px"
-  (click)="Return()"
->
-  Back
-</button>
+    class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange); margin-left: 10px"
+    routerLink="/employee-page"
+  >
+    Back
+  </button>
 </div>

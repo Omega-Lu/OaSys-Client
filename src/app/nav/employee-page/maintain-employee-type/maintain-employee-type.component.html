@@ -1,6 +1,11 @@
 <div class="container-fluid">
-  <app-update-employee-type *ngIf="updateEmployeeType" [employeetype] = "employeetype"></app-update-employee-type>
-  <h3 class="text-dark mb-1" *ngIf="!updateEmployeeType">Maintain Employee Type</h3>
+  <app-update-employee-type
+    *ngIf="updateEmployeeType"
+    [employeetype]="employeetype"
+  ></app-update-employee-type>
+  <h3 class="text-dark mb-1" *ngIf="!updateEmployeeType">
+    Maintain Employee Type
+  </h3>
 </div>
 <form
   style="
@@ -13,16 +18,16 @@
   "
   *ngIf="!updateEmployeeType"
 >
-<div class="search-container">
+  <div class="search-container">
     <i class="fas fa-search text-primary"></i
     ><input
       type="search"
       style="padding-bottom: 0%; margin-bottom: 2%"
       placeholder="Search..."
-      [(ngModel)]="searchText" 
-      (input) ="Search()"
+      [(ngModel)]="searchText"
+      (input)="Search()"
     />
-</div>
+  </div>
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -32,7 +37,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody></tbody>
       <tbody>
         <tr *ngFor="let employeetype of employeetypes">
           <td>{{ employeetype.positioN_NAME }}</td>
@@ -67,6 +72,7 @@
     class="btn btn-primary"
     type="button"
     style="background: var(--bs-orange); margin-left: 10px"
+    routerLink="/employee-page"
   >
     Back
   </button>

@@ -1,63 +1,162 @@
-<h1>&nbsp;Add Warning</h1>
-<div class="container-fluid">
-  <label
-    class="form-label"
-    style="
-      margin: 1%;
-      font-weight: bold;
-      margin-top: 0%;
-      font-size: 19px;
-      padding-right: 0;
-      padding-left: 0%;
-    "
+<div class="container-fluid" style="margin-left: 1%">
+  <h1>Add Warning</h1>
+  <label class="form-label" style="margin-left: 1%; font-weight: bold"
     >Add a new warning:</label
   >
-</div>
-<form #form="ngForm" (ngSubmit)="onSubmit()">
-  <label
-    class="form-label"
-    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
-    >Employee name:</label
-  >
-  <div class="container" style="margin-left: 3%">
-    <input
-      type="text"
-      style="padding-right: 0"
-      name="warningEmployee"
-      [(ngModel)]="warning.employeE_ID"
-    />
-  </div>
-  <label
-    class="form-label"
-    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
-    >Warning name:</label
-  >
-  <div class="container" style="margin-left: 3%">
-    <input
-      type="text"
-      style="padding-right: 0"
-      name="warningName"
-      [(ngModel)]="warning.warininG_NAME"
-    />
-  </div>
-  <label
-    class="form-label"
-    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
-    >Reason:</label
-  >
-  <div class="container" style="margin-left: 3%">
-    <label class="form-label"> </label
-    ><label class="form-label"
-      ><input
+
+  <form #form="ngForm" style="margin-left: 2%">
+    <div class="row">
+      <label class="form-label">Employee name:</label>
+      <select
+        name="employeeName"
+        id="employeeNameID"
+        class="btn btn-primary"
+        style="
+          background: var(--bs-gray-100);
+          border-color: var(--bs-orange);
+          color: var(--bs-orange);
+          width: 250px;
+        "
+        [(ngModel)]="warning.employeE_ID"
+        (click)="validateEmployee()"
+        (input)="validateEmployee()"
+      >
+        <option disabled selected value="Employee Name">Employee Name</option>
+        <option
+          *ngFor="let employee of employees"
+          value="{{ employee.employeE_ID }}"
+        >
+          {{ employee.name }}
+        </option>
+      </select>
+      <div *ngIf="!validEmployee" style="color: Red">
+        Select An Employee Name
+      </div>
+    </div>
+    <div class="row">
+      <label class="form-label">Warning name:</label>
+      <select
+        name="warningName"
+        id="warningNameID"
+        class="btn btn-primary"
+        style="
+          background: var(--bs-gray-100);
+          border-color: var(--bs-orange);
+          color: var(--bs-orange);
+          width: 250px;
+        "
+        [(ngModel)]="warning.warininG_NAME"
+        (click)="validateWarning()"
+        (input)="validateWarning()"
+      >
+        <option disabled selected value="Warning Name">Warning Name</option>
+        <option
+          *ngFor="let warning of warningTypes"
+          value="{{ warning.description }}"
+        >
+          {{ warning.description }}
+        </option>
+      </select>
+      <div *ngIf="!validWarning" style="color: Red">Select A Warning Name</div>
+    </div>
+    <div class="row">
+      <label class="form-label">Reason:</label>
+
+      <textarea
         type="text"
-        placeholder=""
+        placeholder="Reason For Warning"
         name="warningReason"
         [(ngModel)]="warning.reason"
-    /></label>
+        style="width: 250px; height: 100px"
+        rows="3"
+        cols="30"
+        (keyup)="validateReason()"
+      ></textarea>
+      <div *ngIf="!validReason" style="color: Red">Invalid Reason</div>
+    </div>
+    <div style="margin-top: 20px">
+      <button
+        type="button"
+        class="btn btn-primary"
+        routerLink="/employee-page"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 30px;
+          margin-top: 10px;
+        "
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-top: 10px;
+        "
+        data-toggle="modal"
+        data-target="#exampleModal"
+        (pointerover)="FormValidate()"
+        (mouseover)="FormValidate()"
+        [disabled]="!validEmployee || !validWarning || !validReason"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Add A New Wage Rate
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Wage Rate Successfully Added
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          routerLink="/employee-page"
+        >
+          OK
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="container" style="margin-left: 3%">
-    <button class="btn btn-primary" type="submit" style="margin-top: 7%">
-      Add
-    </button>
-  </div>
-</form>
+</div>

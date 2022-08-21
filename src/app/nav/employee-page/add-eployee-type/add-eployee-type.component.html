@@ -8,8 +8,9 @@
     height: 200px;
     margin-left: 80px;
     margin-bottom: 0px;
-    margin-top: 50px;"
-    #form="ngForm" (ngSubmit)="onSubmit()"
+    margin-top: 50px;
+  "
+  #form="ngForm"
 >
   <header></header>
   <h4 style="color: rgb(0, 0, 0); margin-left: 10px">
@@ -23,18 +24,78 @@
     type="text"
     style="margin-left: 10px; width: 400px"
     [(ngModel)]="employeetype.positioN_NAME"
-    (click)="namevalidate()"
     (keyup)="namevalidate()"
-  />        <div *ngIf="!details" style="color: Red;">
-    Invalid Details
-  </div>
-  <!-- <button class="btn btn-primary" (click)="Return()">Cancel</button> -->
+  />
+  <div *ngIf="!details" style="color: Red">Invalid Details</div>
+  <button
+    class="btn btn-primary"
+    style="background: var(--bs-orange); margin-top: 20px; margin-left: 10px"
+    routerLink="/employee-page"
+  >
+    Back
+  </button>
   <button
     class="btn btn-primary"
     type="submit"
-    style="background: var(--bs-orange); margin-top: 20px; margin-left: 10px"
-    *ngIf="details"
+    style="background: var(--bs-orange); margin-top: 20px; margin-left: 30px"
+    [disabled]="!details"
+    (pointerover)="namevalidate()"
+    data-toggle="modal"
+    data-target="#exampleModal"
   >
     Save
   </button>
 </form>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Add A New Employee Type
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Employee Type Successfully Added
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          routerLink="/employee-page"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

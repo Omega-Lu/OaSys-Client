@@ -24,7 +24,6 @@ export class AddEployeeComponent implements OnInit {
   something: any;
 
   // import validation
-
   validate: ValidationServicesComponent = new ValidationServicesComponent();
 
   employee: Employee = {
@@ -127,8 +126,8 @@ export class AddEployeeComponent implements OnInit {
   onSubmit() {
     this.employeeService.addEmployee(this.employee).subscribe((response) => {
       console.log(response);
+      this.successSubmit = true;
     });
-    this.successSubmit = true;
   }
 
   titlevalidate(title) {

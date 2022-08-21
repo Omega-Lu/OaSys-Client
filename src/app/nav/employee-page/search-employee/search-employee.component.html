@@ -8,8 +8,8 @@
         name="search-bar"
         placeholder="Search..."
         style="width: 320px; margin-right: 0px; margin-left: 400px"
-       [(ngModel)]="searchText"
-      (keyup)="Search()"
+        [(ngModel)]="searchText"
+        (keyup)="Search()"
       /><button class="btn btn-light search-btn" type="button">
         <i class="fa fa-search"></i>
       </button>
@@ -44,8 +44,9 @@
         --bs-warning-rgb: 246, 194, 62;
         background: var(--bs-orange);
         margin-left: 10px;
+        margin-top: 20px;
       "
-      (click)="Return()"
+      routerLink="/employee-page"
     >
       Back
     </button>

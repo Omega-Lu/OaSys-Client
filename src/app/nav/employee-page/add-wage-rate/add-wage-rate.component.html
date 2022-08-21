@@ -1,43 +1,134 @@
-<h1>&nbsp;Add wage rate</h1>
-<div class="container-fluid">
+<div class="container">
+  <h1>Add wage rate</h1>
   <label
     class="form-label"
-    style="
-      margin: 1%;
-      font-weight: bold;
-      margin-top: 0%;
-      font-size: 19px;
-      padding-right: 0;
-      padding-left: 0%;
-    "
+    style="margin-left: 1%; font-weight: bold; font-size: large"
     >New wage rate details:</label
   >
-</div>
-<form
-#form="ngForm" (ngSubmit)="onSubmit()"
->
-  <label
-    class="form-label"
-    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
-    >Wage rate name:</label
-  >
-  <div class="container" style="margin-left: 3%">
-    <input type="text" style="padding-right: 0" name="rateName" [(ngModel)]="rate.ratE_NAME"/>
-  </div>
-  <label
-    class="form-label"
-    style="margin: 1%; margin-top: 3%; padding-right: 0; padding-left: 2%"
-    >Wage rate(R/h):</label
-  >
-  <div class="container" style="margin-left: 3%">
-    <label class="form-label"> </label
-    ><label class="form-label"
-      ><input type="number" placeholder="Rand" name="rate" [(ngModel)]="rate.ratE_AMOUNT"/>/h
-    </label>
-  </div>
-  <div class="container" style="margin-left: 3%">
-    <button class="btn btn-primary" type="submit" style="margin-top: 7%">
-      Add
+
+  <form #form="ngForm" style="margin-left: 1%">
+    <div class="row" style="margin-left: 1%">
+      <label class="form-label">Wage rate name:</label>
+      <select
+        name="WageName"
+        id="WageNameID"
+        class="btn btn-primary"
+        style="
+          background: var(--bs-gray-100);
+          border-color: var(--bs-orange);
+          color: var(--bs-orange);
+          width: 250px;
+        "
+        [(ngModel)]="rate.ratE_NAME"
+        (click)="validateRateName()"
+      >
+        <option disabled selected value="Select A Name">Select A Name</option>
+        <option
+          value="{{ type.positioN_NAME }}"
+          *ngFor="let type of employeeTypes"
+        >
+          {{ type.positioN_NAME }}
+        </option>
+      </select>
+      <div *ngIf="!validRateName" style="color: Red">Please Select A Name</div>
+    </div>
+    <div class="row" style="margin-left: 1%">
+      <label class="form-label">Wage rate(R/h):</label>
+      <input
+        type="number"
+        placeholder="Rand"
+        name="rate"
+        [(ngModel)]="rate.ratE_AMOUNT"
+        (input)="validateMoney()"
+        style="width: 250px"
+      />/h
+      <div *ngIf="!validMoney" style="color: Red">Invalid Wage Rate</div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      routerLink="/employee-page"
+      style="
+        border-right-color: var(--bs-orange);
+        background: var(--bs-orange);
+        margin-right: 30px;
+        margin-top: 10px;
+      "
+    >
+      Cancel
     </button>
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-toggle="modal"
+      data-target="#exampleModal"
+      style="
+        border-right-color: var(--bs-orange);
+        background: var(--bs-orange);
+        margin-right: 0px;
+        margin-top: 10px;
+      "
+      data-toggle="modal"
+      data-target="#exampleModal"
+      [disabled]="!validMoney || !validRateName"
+      (pointerover)="FormValidate()"
+      (mouseover)="FormValidate()"
+    >
+      Save
+    </button>
+  </form>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Add A New Wage Rate
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Wage Rate Successfully Added
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          routerLink="/employee-page"
+        >
+          OK
+        </button>
+      </div>
+    </div>
   </div>
-</form>
+</div>

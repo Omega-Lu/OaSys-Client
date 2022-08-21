@@ -45,14 +45,20 @@
                  <i class="fas fa-trash-alt text-danger"
                   style="padding-left: 10%"
                   (click)="deleteEmployee(warning.warninG_ID)"
-                ></i> 
+                ></i>
               </tr>
           </tbody>
-          <tfoot>
-            <tr></tr>
-          </tfoot>
         </table>
       </div>
     </div>
   </div>
+
+  <button
+  class="btn btn-primary"
+  type="button"
+  style="background: var(--bs-orange); margin-top: 20px"
+  routerLink="/employee-page"
+>
+  Back
+</button>
 </div>

@@ -1,31 +1,105 @@
-<h1>&nbsp;Add Warning type</h1>
 <div class="container-fluid">
+  <h1>Add Warning type</h1>
   <label
     class="form-label"
-    style="
-      margin: 1%;
-      font-weight: bold;
-      margin-top: 0%;
-      font-size: 19px;
-      padding-right: 0;
-      padding-left: 0%;
-    "
+    style="margin: 1%; font-weight: bold; font-size: 19px"
     >Add a new warning type:</label
   >
-</div>
-<form #form="ngForm" (ngSubmit)="onSubmit()">
-  <label
-    class="form-label"
-    style="margin: 1%; margin-top: 0%; padding-right: 0; padding-left: 2%"
-    >Warning Type Name:</label
-  >
-  <div class="container" style="margin-left: 3%">
-    <input type="text" style="padding-right: 0" name="warningTypeName" [(ngModel)]="warningType.description"/>
-  </div>
 
-  <div class="container" style="margin-left: 3%">
-    <button class="btn btn-primary" type="submit" style="margin-top: 7%">
-      Add
-    </button>
+  <form #form="ngForm" style="margin-left: 1%">
+    <div class="row" style="margin-left: 1%">
+      <label class="form-label">Warning Type Name:</label>
+      <input
+        type="text"
+        name="warningTypeName"
+        style="width: 250px"
+        [(ngModel)]="warningType.description"
+        (keyup)="validateName()"
+      />
+      <div *ngIf="!validWarning" style="color: Red">
+        Invalid Warning Type Name
+      </div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <button
+        type="button"
+        class="btn btn-primary"
+        routerLink="/employee-page"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 30px;
+        "
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        style="
+          border-right-color: var(--bs-orange);
+          background: var(--bs-orange);
+        "
+        data-toggle="modal"
+        data-target="#exampleModal"
+        [disabled]="!validWarning"
+        (mouseover)="validateName()"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Add A New Warning Type
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Warning Type Successfully Added
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          routerLink="/employee-page"
+        >
+          OK
+        </button>
+      </div>
+    </div>
   </div>
-</form>
+</div>

@@ -17,23 +17,6 @@
         (input)="Search()"
       />
     </div>
-    <!-- <div class="container">
-        <div class="container" style="margin-right: 0px; margin-left: 300px">
-            <i class="fa fa-search"></i><input
-              class="form-control search-input"
-              type="text"
-              name="search-bar"
-              placeholder="Searchdd..."
-              style="width: 320px; margin-right: 0px; margin-left: 400px"
-            />
-            <button class="btn btn-light search-btn" type="button">
-              <i class="fa fa-search"></i>
-            </button> 
-          </div>
-    </div> -->
-    <!-- <button class="btn btn-light search-btn" type="button">
-          <i class="fa fa-search"></i>
-        </button> -->
     <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
       <table class="table">
         <thead>
@@ -85,7 +68,7 @@
     <button
       class="btn btn-primary"
       type="button"
-      (click)="back()"
+      routerLink="/employee-page"
       style="
         --bs-warning: #f6c23e;
         --bs-warning-rgb: 246, 194, 62;
@@ -150,7 +133,7 @@
               data-target="#exampleModal"
               data-dismiss="modal"
               *ngIf="successDelete"
-              (click)="back()"
+              routerLink="/employee-page"
             >
               OK
             </button>

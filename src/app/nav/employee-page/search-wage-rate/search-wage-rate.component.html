@@ -3,9 +3,12 @@
 </h3>
 <div class="container">
   <i class="fas fa-search text-primary"></i
-  ><input type="search" style="padding-bottom: 0%; margin-bottom: 2%" 
+  ><input
+    type="search"
+    style="padding-bottom: 0%; margin-bottom: 2%"
     [(ngModel)]="searchText"
-    (input)="Search()"/>
+    (input)="Search()"
+  />
 </div>
 <div class="container-fluid">
   <div class="card shadow">
@@ -23,31 +26,28 @@
           <thead>
             <tr>
               <th>Wage rate name</th>
-              <th>Amount (R/h)</th>
+              <th>Amount</th>
             </tr>
           </thead>
           <tbody>
-              <tr *ngFor="let rate of rates">
-                  <td>{{rate.ratE_NAME}}</td>
-                  <td>{{rate.ratE_AMOUNT}}</td>
-              </tr>
+            <tr *ngFor="let rate of rates">
+              <td>{{ rate.ratE_NAME }}</td>
+              <td>R{{ rate.ratE_AMOUNT }}/h</td>
+            </tr>
           </tbody>
           <tfoot>
             <tr></tr>
           </tfoot>
         </table>
       </div>
-
     </div>
- 
   </div>
   <button
-  class="btn btn-primary"
-  type="button"
-  style="background: var(--bs-orange); margin-left: 10px"
-  (click)="Return()"
+    class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange); margin-top: 20px"
+    routerLink="/employee-page"
   >
-  Back
+    Back
   </button>
 </div>
-

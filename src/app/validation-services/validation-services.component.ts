@@ -52,4 +52,14 @@ export class ValidationServicesComponent implements OnInit {
       return false;
     }
   }
+
+  regexMoney = /^[0-9]+(\.[0-9]?[0-9])?$/;
+
+  ValidateMoney(money): boolean {
+    if (this.regexMoney.test(money)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
