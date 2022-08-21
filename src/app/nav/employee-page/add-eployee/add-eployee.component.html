@@ -41,10 +41,9 @@
           type="text"
           style="width: 300px; margin-right: 50px; margin-left: 10px"
           [(ngModel)]="employee.name"
-          (click)="namevalidate()"
-          (keyup)="namevalidate()"
+          (input)="ValidateName()"
         />
-        <div *ngIf="!details" style="color: Red">Invalid Details</div>
+        <div *ngIf="!details" style="color: Red">Invalid Name Details</div>
 
         <label class="form-label" style="margin-right: 650px; width: 180px"
           >SA ID/Passport number:</label
@@ -58,8 +57,7 @@
           required
           minlength="13"
           maxlength="13"
-          (click)="ValidatePassport($event.target.value)"
-          (keyup)="ValidatePassport($event.target.value)"
+          (keyup)="ValidateIDNumber()"
         />
         <div *ngIf="!passportVal" style="color: Red">Invalid ID Number</div>
         <label class="form-label" style="margin-right: 650px; width: 180px"
@@ -80,7 +78,7 @@
           <option value="Mr">Mr</option>
           <option value="Ms">Ms</option>
         </select>
-        <div *ngIf="!tdetails" style="color: Red">Select a Title</div>
+        <div *ngIf="!tdetails" style="color: Red">Please Select a Title</div>
       </div>
       <div
         class="col-md-6"
@@ -97,10 +95,9 @@
           name="emplyeeSurname"
           style="width: 300px; margin-right: -500px; margin-left: 10px"
           [(ngModel)]="employee.surname"
-          (click)="survalidate()"
-          (keyup)="survalidate()"
+          (keyup)="ValidateSurname()"
         />
-        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!sdetails" style="color: Red">Invalid Surname Details</div>
 
         <label class="form-label" style="margin-right: 1200px; width: 130px"
           >Contact Number:
@@ -122,8 +119,7 @@
             maxlength="9"
             style="margin-left: 10px"
             [(ngModel)]="employee.contacT_NUMBER"
-            (click)="contactNumVal($event.target.value)"
-            (keyup)="contactNumVal($event.target.value)"
+            (keyup)="ValidateContactNumber()"
           />
         </div>
         <div *ngIf="!numberVal" style="color: Red">Invalid Contact Number</div>
@@ -135,10 +131,9 @@
           name="emplyeeEmail"
           style="width: 300px; margin-left: 10px"
           [(ngModel)]="employee.email"
-          (click)="emailvalidate($event.target.value)"
-          (keyup)="emailvalidate($event.target.value)"
+          (keyup)="ValidateEmail()"
         />
-        <div *ngIf="!edetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!edetails" style="color: Red">Invalid Email</div>
       </div>
     </div>
     <div class="row">
@@ -151,10 +146,9 @@
           required
           style="width: 674px"
           [(ngModel)]="employee.address"
-          (click)="addressvalidate()"
           (keyup)="addressvalidate()"
         />
-        <div *ngIf="!adetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!adetails" style="color: Red">Invalid Address</div>
       </div>
     </div>
     <div *ngIf="exists" style="color: Red">
@@ -165,7 +159,7 @@
         <button
           type="button"
           class="btn btn-primary"
-          (click)="Return()"
+          routerLink="/employee-page"
           style="
             border-right-color: var(--bs-orange);
             background: var(--bs-orange);
@@ -237,6 +231,7 @@
           class="btn btn-primary"
           data-target="#exampleModal"
           *ngIf="!successSubmit"
+          (click)="onSubmit()"
         >
           Yes
         </button>
@@ -247,7 +242,7 @@
           data-target="#exampleModal"
           data-dismiss="modal"
           *ngIf="successSubmit"
-          (click)="Return()"
+          routerLink="/employee-page"
         >
           OK
         </button>

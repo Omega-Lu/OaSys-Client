@@ -168,9 +168,8 @@
               <div class="row" style="height: 100px">
                 <div class="text-dark" style="height: 100px">
                   <label
-                  
                     class="form-label"
-                    style="margin-right: 20px; padding-top: 16px; width: 100;"
+                    style="margin-right: 20px; padding-top: 16px; width: 100"
                     >Credit Limit (R)</label
                   ><input
                     class="form-control"
@@ -191,7 +190,7 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="Return()"
+                    routerLink="/debtor-page"
                     style="
                       border-right-color: var(--bs-orange);
                       background: var(--bs-orange);
@@ -268,7 +267,7 @@
                           data-target="#exampleModal"
                           data-dismiss="modal"
                           *ngIf="successSubmit"
-                          (click)="Return()"
+                          routerLink="/debtor-page"
                         >
                           OK
                         </button>

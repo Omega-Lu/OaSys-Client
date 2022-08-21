@@ -83,7 +83,7 @@
     <button
       class="btn btn-primary"
       type="button"
-      (click)="back()"
+      routerLink="/debtor-page"
       style="
         --bs-warning: #f6c23e;
         --bs-warning-rgb: 246, 194, 62;
@@ -148,7 +148,7 @@
               data-target="#exampleModal"
               data-dismiss="modal"
               *ngIf="successDelete"
-              (click)="back()"
+              routerLink="/debtor-page"
             >
               OK
             </button>

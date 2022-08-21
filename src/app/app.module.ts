@@ -91,6 +91,7 @@ import { DebtorPageComponent } from './nav/debtor-page/debtor-page.component';
 import { SalePageComponent } from './nav/sale-page/sale-page.component';
 import { ReportsPageComponent } from './nav/reports-page/reports-page.component';
 import { AuditLogPageComponent } from './nav/audit-log-page/audit-log-page.component';
+import { ValidationServicesComponent } from './validation-services/validation-services.component';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -237,6 +238,7 @@ const appRoutes: Routes = [
     SalePageComponent,
     ReportsPageComponent,
     AuditLogPageComponent,
+    ValidationServicesComponent,
   ],
   imports: [
     BrowserModule,

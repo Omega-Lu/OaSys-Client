@@ -1,9 +1,8 @@
 export interface Employee {
   employeE_ID: number;
   employeE_ID_NUMBER: number;
-  provincE_ID: number;
   employeE_TYPE_ID: number;
-  employeestatusid: number;
+  employeE_STATUS_ID: number;
   warninG_ID: number;
   name: string;
   surname: string;
