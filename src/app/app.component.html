@@ -99,3 +99,27 @@
   (return)="Back()"
   [username]="username"
 ></app-nav>
+<app-nav-cashier
+  *ngIf="loginCashier"
+  [loggedIn]="loggedIn"
+  (return)="Back()"
+  [username]="username"
+></app-nav-cashier>
+<app-nav-employee
+  *ngIf="loginEmployee"
+  [loggedIn]="loggedIn"
+  (return)="Back()"
+  [username]="username"
+></app-nav-employee>
+<app-nav-general-manager
+  *ngIf="loginGM"
+  [loggedIn]="loggedIn"
+  (return)="Back()"
+  [username]="username"
+></app-nav-general-manager>
+<app-nav-hr
+  *ngIf="loginHR"
+  [loggedIn]="loggedIn"
+  (return)="Back()"
+  [username]="username"
+></app-nav-hr>

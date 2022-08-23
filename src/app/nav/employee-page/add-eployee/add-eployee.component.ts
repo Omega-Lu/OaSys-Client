@@ -2,6 +2,11 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+import { EmployeeType } from 'src/app/models/employee-type.model';
+import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/_services/user.service';
+import * as $ from 'jQuery';
 
 @Component({
   selector: 'app-add-eployee',
@@ -9,6 +14,8 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 })
 export class AddEployeeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
+
+  //validation booleans
   details: boolean = true;
   sdetails: boolean = true;
   tdetails: boolean = true;
@@ -17,15 +24,24 @@ export class AddEployeeComponent implements OnInit {
   numberVal: boolean = true;
   passportVal: boolean = true;
 
+  validRole: boolean = true;
+  validType: boolean = true;
+
   exists: boolean = false;
 
   screenStart: boolean = true;
   successSubmit: boolean = false;
   something: any;
 
+  employeeType: EmployeeType;
+  employeeTypes: EmployeeType[] = [];
+
+  employeeSelected: boolean = false;
+
   // import validation
   validate: ValidationServicesComponent = new ValidationServicesComponent();
 
+  //employee models
   employee: Employee = {
     employeE_ID: 0,
     employeE_ID_NUMBER: 0,
@@ -39,16 +55,31 @@ export class AddEployeeComponent implements OnInit {
     email: '',
     address: '',
   };
-
   employees: Employee[] = [];
 
-  constructor(private employeeService: EmployeeService) {}
+  //user models
+  user: User = {
+    useR_ID: 0,
+    useR_ROLE_ID: 0,
+    employeE_ID: 0,
+    useR_STATUS_ID: 0,
+    username: '',
+    useR_PASSWORD: '',
+  };
+  users: User[] = [];
+
+  constructor(
+    private employeeService: EmployeeService,
+    private employeeTypeService: EmployeeTypeService,
+    private userService: UserService
+  ) {}
 
   async ngOnInit() {
     this.employee.contacT_NUMBER = 0;
     this.employee.employeE_ID_NUMBER = 0;
 
     await this.getAllEmployees();
+    await this.getAllEmployeeTypes();
   }
 
   async getAllEmployees() {
@@ -56,6 +87,14 @@ export class AddEployeeComponent implements OnInit {
       this.employees = response;
       console.log('this is all the employees');
       console.log(this.employees);
+    });
+  }
+
+  async getAllEmployeeTypes() {
+    this.employeeTypeService.getAllEmployees().subscribe((response) => {
+      this.employeeTypes = response;
+      console.log('this is all the employee types');
+      console.log(this.employeeTypes);
     });
   }
 
@@ -81,6 +120,12 @@ export class AddEployeeComponent implements OnInit {
     //validate title
     this.titlevalidate(this.employee.title);
 
+    //validate employee role
+    this.roleValidate();
+
+    //validate employee type
+    this.typeValidate();
+
     //validate if employee with id or contact number exists
     for (let index = 0; index < this.employees.length; index++) {
       const element = this.employees[index];
@@ -98,9 +143,7 @@ export class AddEployeeComponent implements OnInit {
   }
 
   ValidateName() {
-    console.log(this.employee.name);
     this.details = this.validate.ValidateString(this.employee.name);
-    console.log(this.details);
   }
 
   ValidateSurname() {
@@ -124,20 +167,32 @@ export class AddEployeeComponent implements OnInit {
   }
 
   onSubmit() {
+    let empID;
     this.employeeService.addEmployee(this.employee).subscribe((response) => {
+      console.log('this is the new Employee');
       console.log(response);
-      this.successSubmit = true;
+      empID = response.employeE_ID;
+      this.user.employeE_ID = empID;
+      this.user.username = this.employee.name + '-' + this.employee.surname;
+      this.user.useR_PASSWORD = Math.random().toString(36).slice(-8);
+
+      console.log('this is the new user');
+      console.log(this.user);
+      this.userService.addUser(this.user).subscribe((response) => {
+        console.log('this is the new user');
+        console.log(response);
+        this.successSubmit = true;
+      })
+
     });
   }
 
   titlevalidate(title) {
     if (title == '-1' || title == '') {
       this.tdetails = false;
-      console.log('title is invalid');
     } else {
       this.tdetails = true;
       this.employee.title = title;
-      console.log('title is valid');
     }
   }
 
@@ -146,6 +201,27 @@ export class AddEployeeComponent implements OnInit {
       this.adetails = false;
     } else {
       this.adetails = true;
+    }
+  }
+
+  roleValidate() {
+    if ($('#employeeRoleID option:selected').val() == '0') {
+      this.validRole = false;
+    } else {
+      this.validRole = true;
+    }
+  }
+
+  typeValidate() {
+    if (this.employeeSelected == true) {
+      if ($('#employeeTypeID option:selected').val() == '0') {
+        this.validType = false;
+      } else {
+        this.validType = true;
+        if ($('#employeeTypeID option:selected').val() == '1002') {
+          this.user.useR_ROLE_ID = 3;
+        } else this.user.useR_ROLE_ID = 4;
+      }
     }
   }
 

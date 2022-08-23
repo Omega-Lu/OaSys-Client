@@ -92,6 +92,10 @@ import { SalePageComponent } from './nav/sale-page/sale-page.component';
 import { ReportsPageComponent } from './nav/reports-page/reports-page.component';
 import { AuditLogPageComponent } from './nav/audit-log-page/audit-log-page.component';
 import { ValidationServicesComponent } from './validation-services/validation-services.component';
+import { NavEmployeeComponent } from './nav-employee/nav-employee.component';
+import { NavGeneralManagerComponent } from './nav-general-manager/nav-general-manager.component';
+import { NavCashierComponent } from './nav-cashier/nav-cashier.component';
+import { NavHRComponent } from './nav-hr/nav-hr.component';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -160,6 +164,10 @@ const appRoutes: Routes = [
   { path: 'reports-page', component: ReportsPageComponent },
   { path: 'landing-page', component: EmployeePageComponent },
   { path: 'update-employee', component: UpdateEmployeeComponent },
+  { path: 'nav-employee', component: NavEmployeeComponent },
+  { path: 'nav-cashier', component: NavCashierComponent },
+  { path: 'nav-general-manager', component: NavGeneralManagerComponent },
+  { path: 'nav-hr', component: NavHRComponent },
 ];
 
 @NgModule({
@@ -241,6 +249,10 @@ const appRoutes: Routes = [
     ReportsPageComponent,
     AuditLogPageComponent,
     ValidationServicesComponent,
+    NavEmployeeComponent,
+    NavGeneralManagerComponent,
+    NavCashierComponent,
+    NavHRComponent,
   ],
   imports: [
     BrowserModule,

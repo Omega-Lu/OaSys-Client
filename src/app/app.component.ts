@@ -41,7 +41,12 @@ export class AppComponent implements OnInit {
 
   loggedIn: boolean = false;
 
+  //login access
   loginAdmin: boolean = false;
+  loginGM: boolean = false;
+  loginCashier: boolean = false;
+  loginHR: boolean = false;
+  loginEmployee: boolean = false;
 
   loginForm: FormGroup;
 
