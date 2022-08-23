@@ -1,4 +1,3 @@
-<app-nav *ngIf="loggedIn"></app-nav>
 <div class="container" *ngIf="!loggedIn">
   <div class="row justify-content-center">
     <div class="col-9">
@@ -94,4 +93,9 @@
   </div>
 </div>
 
-<app-audit-log *ngIf="userID" [userID]="userID"></app-audit-log>
+<app-nav
+  *ngIf="loginAdmin"
+  [loggedIn]="loggedIn"
+  (return)="Back()"
+  [username]="username"
+></app-nav>

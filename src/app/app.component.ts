@@ -38,17 +38,20 @@ export class AppComponent implements OnInit {
   userID: number;
 
   title = 'OaSys';
-  loggedIn: boolean;
+
+  loggedIn: boolean = false;
+
+  loginAdmin: boolean = false;
+
   loginForm: FormGroup;
 
   constructor(
     private userService: UserService,
     private currentUserService: CurrentUserService,
     private employeeService: EmployeeService,
-    private route: Router
+    private router: Router
   ) {
-    this.loggedIn = false;
-    console.log(this.loggedIn);
+    this.router.navigate(['/app']);
   }
 
   ngOnInit() {
@@ -82,10 +85,10 @@ export class AppComponent implements OnInit {
           .subscribe((response) => {
             console.log('this is the current user');
             console.log(response);
+            this.loggedIn = true;
+            this.loginLevel();
           });
-        this.loggedIn = true;
       } else {
-        this.sdetails = false;
       }
     }
   }
@@ -104,5 +107,14 @@ export class AppComponent implements OnInit {
       console.log('this is all the employees');
       console.log(this.employees);
     });
+  }
+
+  loginLevel() {
+    this.loginAdmin = true;
+    this.router.navigate(['/nav']);
+  }
+
+  Back() {
+    this.loggedIn = false;
   }
 }

@@ -1,9 +1,6 @@
-<h3 class="text-dark" style="padding-top: 3%; padding-left: 3%">
-  Search warning type
-</h3>
 <div class="container">
-  <i class="fas fa-search text-primary"></i
-  ><input
+  <h1>Search warning type</h1>
+  <input
     type="search"
     style="padding-bottom: 0%; margin-bottom: 2%"
     placeholder="Search..."
@@ -12,37 +9,23 @@
   />
 </div>
 <div class="container-fluid">
-  <h3 class="text-dark mb-4"></h3>
-  <div class="card shadow">
-    <div class="card-header py-3">
-      <p class="text-primary m-0 fw-bold">Warning type info</p>
-    </div>
-    <div class="card-body">
-      <div
-        class="table-responsive table mt-2"
-        id="dataTable"
-        role="grid"
-        aria-describedby="dataTable_info"
-      >
-        <table class="table my-0" id="dataTable">
-          <thead>
-            <tr>
-              <th style="margin-right: 0%; width: 24%">Warning type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let warningtype of warningtypes">
-              <td>
-                {{ warningtype.description }}
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr></tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
+  <div
+    class="table-responsive"
+  >
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Warning type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let warningtype of warningtypes">
+          <td>
+            {{ warningtype.description }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <button
     class="btn btn-primary"

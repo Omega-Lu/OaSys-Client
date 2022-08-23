@@ -1,12 +1,4 @@
-<head>
-  <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-  />
-  <title>OaSys</title>
-</head>
-<body id="page-top">
+<body id="page-top" *ngIf="loggedIn">
   <div id="wrapper">
     <nav
       class="navbar navbar-light align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
@@ -43,11 +35,7 @@
               routerLink="/supplier-page"
               (click)="navName = 'Supplier'"
               ><i class="fas fa-tachometer-alt text-dark"></i
-              ><span
-                class="text-warning"
-
-                >Supplier</span
-              ></a
+              ><span class="text-warning">Supplier</span></a
             >
           </li>
           <li class="nav-item">
@@ -56,11 +44,7 @@
               routerLink="/product-page"
               (click)="navName = 'Product'"
               ><i class="fas fa-tachometer-alt text-dark"></i
-              ><span
-                class="text-warning"
-
-                >Product</span
-              ></a
+              ><span class="text-warning">Product</span></a
             >
           </li>
           <li class="nav-item">
@@ -69,11 +53,7 @@
               routerLink="/debtor-page"
               (click)="navName = 'Debtor'"
               ><i class="fas fa-tachometer-alt text-dark"></i
-              ><span
-                class="text-warning"
-
-                >Debtor</span
-              ></a
+              ><span class="text-warning">Debtor</span></a
             >
           </li>
           <li class="nav-item">
@@ -82,11 +62,7 @@
               routerLink="/sale-page"
               (click)="navName = 'Sale'"
               ><i class="fas fa-tachometer-alt text-dark"></i
-              ><span
-                class="text-warning"
-
-                >Sale</span
-              ></a
+              ><span class="text-warning">Sale</span></a
             >
           </li>
           <li class="nav-item">
@@ -95,11 +71,7 @@
               routerLink="/reports-page"
               (click)="navName = 'Reports'"
               ><i class="fas fa-tachometer-alt text-dark"></i
-              ><span
-                class="text-warning"
-
-                >Reports</span
-              ></a
+              ><span class="text-warning">Reports</span></a
             >
           </li>
           <li class="nav-item">
@@ -133,17 +105,28 @@
               {{ navName }}
             </h1>
             <ul class="navbar-nav flex-nowrap ms-auto">
+              <li
+                class="nav-item dropdown no-arrow"
+                style="margin-top: 17px"
+                (click)="logout()"
+                routerLink="/app"
+              >
+                <div class="nav-item dropdown no-arrow">
+                  <a>
+                    <span class="d-none d-lg-inline me-2 text-gray-600 small">
+                      LogOut
+                    </span>
+                  </a>
+                </div>
+              </li>
               <div class="d-none d-sm-block topbar-divider"></div>
               <li class="nav-item dropdown no-arrow">
                 <div class="nav-item dropdown no-arrow">
-                  <a
-                    class="dropdown-toggle nav-link"
-                    aria-expanded="false"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    ><span class="d-none d-lg-inline me-2 text-gray-600 small"
-                      >Admin</span
-                    ><img
+                  <a>
+                    <span class="d-none d-lg-inline me-2 text-gray-600 small">
+                      {{ username }}
+                    </span>
+                    <img
                       class="border rounded-circle img-profile"
                       src="assets/img/avatars/avatar1.jpeg"
                   /></a>
@@ -153,7 +136,7 @@
           </div>
         </nav>
         <div class="pl-3">
-          <router-outlet ></router-outlet>
+          <router-outlet></router-outlet>
         </div>
       </div>
       <footer class="bg-white sticky-footer">
@@ -164,8 +147,5 @@
         </div>
       </footer>
     </div>
-    <a class="border rounded d-inline scroll-to-top" href="#page-top"
-      ><i class="fas fa-angle-up"></i
-    ></a>
   </div>
 </body>

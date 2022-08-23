@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
 
@@ -11,21 +18,24 @@ export class MaintainEmployeeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
   employees: Employee[] = [];
   employee: Employee;
-  successDelete : boolean = false;
+  successDelete: boolean = false;
   model: any;
-  delete : boolean = false;
+  delete: boolean = false;
   searchText: any = '';
   updateEmployee: boolean = false;
-  lekke : any;
-  deletenumber : any;
+  lekke: any;
+  deletenumber: any;
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(
+    private employeeService: EmployeeService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getAllEmployees();
   }
 
-  deletee(delet : any){
+  deletee(delet: any) {
     this.deletenumber = delet;
   }
 
@@ -37,35 +47,36 @@ export class MaintainEmployeeComponent implements OnInit {
   }
 
   deleteEmployee() {
-    this.employeeService.deleteEmployee(this.deletenumber).subscribe((response) => {
-      this.getAllEmployees();
-      console.log(this.employees);
-    });
+    this.employeeService
+      .deleteEmployee(this.deletenumber)
+      .subscribe((response) => {
+        this.getAllEmployees();
+        console.log(this.employees);
+      });
   }
 
-  populateForm(employee : Employee){
+  populateForm(employee: Employee) {
     this.employee = employee;
+    //this.router.navigate(['/update-employee']);
   }
 
   Search() {
-    if(this.searchText !== ""){
-      let searchValue = this.searchText
+    if (this.searchText !== '') {
+      let searchValue = this.searchText;
       console.log(searchValue);
-      this.employees = this.employees.filter((employee) =>{
+      this.employees = this.employees.filter((employee) => {
         console.log(employee.name.match(searchValue));
-        return employee.name.match(searchValue);  
-      
-            });
-            console.log(this.employee);
-          }
-    else {
+        return employee.name.match(searchValue);
+      });
+      console.log(this.employee);
+    } else {
       this.getAllEmployees();
     }
   }
 
-  back(){
+  back() {
+    this.updateEmployee = false;
     this.return.emit('false');
+    this.getAllEmployees();
   }
-
-
 }

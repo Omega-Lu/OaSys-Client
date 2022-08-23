@@ -1,9 +1,7 @@
-<h3 class="text-dark" style="padding-top: 3%; padding-left: 3%">
-  Search warning
-</h3>
+
 <div class="container">
-  <i class="fas fa-search text-primary"></i
-  ><input
+  <h1>Search warning</h1>
+  <input
     type="search"
     style="padding-bottom: 0%; margin-bottom: 2%"
     placeholder="Search..."
@@ -12,39 +10,23 @@
   />
 </div>
 <div class="container-fluid">
-  <h3 class="text-dark mb-4"></h3>
-  <div class="card shadow">
-    <div class="card-header py-3">
-      <p class="text-primary m-0 fw-bold">Warning info</p>
-    </div>
-    <div class="card-body">
-      <div
-        class="table-responsive table mt-2"
-        id="dataTable"
-        role="grid"
-        aria-describedby="dataTable_info"
-      >
-        <table class="table my-0" id="dataTable">
-          <thead>
-            <tr>
-              <th style="margin-right: 0%; width: 24%">Employee Name</th>
-              <th>Warning Name</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let element of dynamicArray">
-              <td>{{ element.name }}</td>
-              <td>{{ element.warningName }}</td>
-              <td>{{ element.reason }}</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr></tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Employee Name</th>
+          <th>Warning Name</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let element of dynamicArray">
+          <td>{{ element.name }}</td>
+          <td>{{ element.warningName }}</td>
+          <td>{{ element.reason }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <button
     class="btn btn-primary"

@@ -5,15 +5,20 @@ import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 @Component({
   selector: 'app-maintain-employee-type',
   templateUrl: './maintain-employee-type.component.html',
-  styleUrls: ['./maintain-employee-type.component.css']
+  styleUrls: ['./maintain-employee-type.component.css'],
 })
 export class MaintainEmployeeTypeComponent implements OnInit {
   employeetypes: EmployeeType[] = [];
   employeetype: EmployeeType;
+
   model: any;
   searchText: any = '';
   updateEmployeeType: boolean = false;
-  lekke : any;
+
+  lekke: any;
+
+  successDelete: boolean = false;
+  IDDelete: any;
 
   constructor(private employeeService: EmployeeTypeService) {}
 
@@ -24,37 +29,42 @@ export class MaintainEmployeeTypeComponent implements OnInit {
   getAllEmployees() {
     this.employeeService.getAllEmployees().subscribe((response) => {
       this.employeetypes = response;
+      console.log('this is all the employee types');
       console.log(this.employeetypes);
     });
   }
 
-  deleteEmployee(id: number) {
-    console.log(id);
-    this.employeeService.deleteEmployee(id).subscribe((response) => {
+  deleteEmployeeType() {
+    this.employeeService.deleteEmployee(this.IDDelete).subscribe((response) => {
       this.getAllEmployees();
       console.log(this.employeetypes);
     });
   }
 
-  populateForm(employeetype : EmployeeType){
+  populateForm(employeetype: EmployeeType) {
     this.employeetype = employeetype;
   }
 
+  deleteID(id) {
+    this.IDDelete = id;
+  }
+
   Search() {
-    if(this.searchText !== ""){
-      let searchValue = this.searchText
+    if (this.searchText !== '') {
+      let searchValue = this.searchText;
       console.log(searchValue);
-      this.employeetypes = this.employeetypes.filter((employeetype) =>{
+      this.employeetypes = this.employeetypes.filter((employeetype) => {
         console.log(employeetype.positioN_NAME.match(searchValue));
-        return employeetype.positioN_NAME.match(searchValue);  
-      
-            });
-            console.log(this.employeetype);
-          }
-    else {
+        return employeetype.positioN_NAME.match(searchValue);
+      });
+      console.log(this.employeetype);
+    } else {
       this.getAllEmployees();
     }
   }
 
-
+  back() {
+    this.updateEmployeeType = false;
+    this.getAllEmployees();
+  }
 }

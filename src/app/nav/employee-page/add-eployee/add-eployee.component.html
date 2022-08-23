@@ -7,23 +7,12 @@
     border-right-color: rgb(8, 15, 67);
     --bs-light: #f8f9fc;
     --bs-light-rgb: 248, 249, 252;
+    margin-left: 1%;
   "
   #form="ngForm"
-  (ngSubmit)="onSubmit()"
 >
-  <h1
-    style="
-      margin-right: 750px;
-      color: rgb(0, 0, 0);
-      width: 241px;
-      margin-left: 0px;
-    "
-  >
-    ADD EMPLOYEE
-  </h1>
-  <h5 style="color: rgb(0, 0, 0); margin-right: 480px; height: 27px">
-    New Employee Details:
-  </h5>
+  <h1>Add Employee</h1>
+  <h2>New Employee Details:</h2>
   <div class="container">
     <div class="row">
       <div
@@ -123,6 +112,7 @@
           />
         </div>
         <div *ngIf="!numberVal" style="color: Red">Invalid Contact Number</div>
+
         <label class="form-label" style="margin-right: 650px">Email:</label
         ><input
           class="form-control"
@@ -186,7 +176,9 @@
             !tdetails ||
             !edetails ||
             !adetails ||
-            exists
+            exists ||
+            !numberVal ||
+            !passportVal
           "
           (pointerover)="FormValidate()"
           (mouseover)="FormValidate()"

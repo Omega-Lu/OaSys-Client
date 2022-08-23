@@ -1,46 +1,29 @@
-<h3 class="text-dark mb-4" style="padding-top: 3%; padding-left: 3%">
-  Search wage rate
-</h3>
 <div class="container">
-  <i class="fas fa-search text-primary"></i
-  ><input
+  <h1>Search wage rate</h1>
+  <input
     type="search"
+    placeholder="Wage Rate Name..."
     style="padding-bottom: 0%; margin-bottom: 2%"
     [(ngModel)]="searchText"
     (input)="Search()"
   />
 </div>
 <div class="container-fluid">
-  <div class="card shadow">
-    <div class="card-header py-3">
-      <p class="text-primary m-0 fw-bold">Wage rates Info</p>
-    </div>
-    <div class="card-body">
-      <div
-        class="table-responsive table mt-2"
-        id="dataTable"
-        role="grid"
-        aria-describedby="dataTable_info"
-      >
-        <table class="table my-0" id="dataTable">
-          <thead>
-            <tr>
-              <th>Wage rate name</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let rate of rates">
-              <td>{{ rate.ratE_NAME }}</td>
-              <td>R{{ rate.ratE_AMOUNT }}/h</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr></tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Wage rate name</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rate of rates">
+          <td>{{ rate.ratE_NAME }}</td>
+          <td>R{{ rate.ratE_AMOUNT }}/h</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <button
     class="btn btn-primary"

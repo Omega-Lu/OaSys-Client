@@ -1,41 +1,104 @@
-<h2 style="color: rgb(0, 0, 0); margin-left: 10px">
-    Update Employee Type
-  </h2>
-  <div class="container-fluid"><h3 class="text-dark mb-1"></h3></div>
-  <form
+<form #form="ngForm">
+  <h1>Update Employee Type</h1>
+  <h2 style="margin-left: 1%">Update Employee Type Details:</h2>
+  <label class="form-label" style="margin-left: 1%">Position Name:</label>
+  <input
+    class="form-control"
+    type="text"
+    name="position"
+    style="margin-left: 10px; width: 400px"
+    placeholder="{{ employeetype.positioN_NAME }}"
+    [(ngModel)]="employeetype.positioN_NAME"
+    (keyup)="validateString()"
+    (input)="validateString()"
+  />
+  <div *ngIf="!validName" style="color: Red">Invalid Position Name</div>
+  <button
+    type="button"
+    class="btn btn-primary"
+    routerLink="/maintain-employee"
     style="
-      width: 450px;
-      height: 200px;
-      margin-left: 80px;
-      margin-bottom: 0px;
-      margin-top: 50px;
+      border-right-color: var(--bs-orange);
+      background: var(--bs-orange);
+      margin-right: 30px;
+      margin-top: 20px;
     "
-    #form="ngForm" (ngSubmit)="onSubmit()"
+    routerLink="/maintain-employee-type"
+    (click)="Return()"
   >
-    <header></header>
-    <h4 style="color: rgb(0, 0, 0); margin-left: 10px">
-      Update Employee Type Details:
-    </h4>
-    <label
-      class="form-label"
-      style="margin-left: 10px; color: rgb(0, 0, 0)"
-      >Position Name:</label
-    ><input
-      class="form-control"
-      type="text"
-      name="position"
-      style="margin-left: 10px; width: 400px"
-      placeholder= "{{employeetype.positioN_NAME}}"
-      [(ngModel)]= "employeetype.positioN_NAME"
-    /><button
-      class="btn btn-primary"
-      type="submit"
-      style="
-        background: var(--bs-orange);
-        margin-top: 20px;
-        margin-left: 10px;
-      "
-    >
-      Save
-    </button>
-  </form>
+    Cancel
+  </button>
+  <button
+    class="btn btn-primary"
+    type="button"
+    data-toggle="modal"
+    data-target="#updateEmployeeModal"
+    style="background: var(--bs-orange); margin-top: 20px; margin-left: 10px"
+    (mouseover)="validateString()"
+    [disabled]="!validName"
+  >
+    Update
+  </button>
+</form>
+
+<div
+  class="modal fade"
+  id="updateEmployeeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="updateEmployeeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="updateEmployeeModalLabel"
+          *ngIf="!successSubmit"
+        >
+          Are You Sure You Would Like To Update The Employee Type
+        </h5>
+        <h5
+          class="modal-title"
+          id="updateEmployeeModalLabel"
+          *ngIf="successSubmit"
+        >
+          Employee Type Successfully Updated
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#updateEmployeeModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#updateEmployeeModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          routerLink="/maintain-employee-type"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

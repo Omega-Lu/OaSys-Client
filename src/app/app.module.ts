@@ -95,6 +95,7 @@ import { ValidationServicesComponent } from './validation-services/validation-se
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
+  { path: 'app', component: AppComponent },
   { path: 'add-debtor', component: AddDebtorComponent },
   { path: 'add-employee', component: AddEployeeComponent },
   { path: 'add-employee-type', component: AddEployeeTypeComponent },
@@ -158,6 +159,7 @@ const appRoutes: Routes = [
   { path: 'supplier-page', component: SupplierPageComponent },
   { path: 'reports-page', component: ReportsPageComponent },
   { path: 'landing-page', component: EmployeePageComponent },
+  { path: 'update-employee', component: UpdateEmployeeComponent },
 ];
 
 @NgModule({
