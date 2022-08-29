@@ -1,48 +1,47 @@
 <div class="container-fluid">
-    <form style="height: 530px; margin-right: 0px">
-      <h1 class="text-dark">Search Product Category</h1>
-      <div class="search-container" style="margin-right: 0px; margin-left: 300px">
-        <input
-          class="form-control search-input"
-          type="text"
-          name="search-bar"
-          placeholder="Search..."
-          style="width: 320px; margin-right: 0px; margin-left: 400px"
-         [(ngModel)]="searchText"
+  <form style="height: 530px; margin-right: 0px">
+    <h1 class="text-dark">Search Product Category</h1>
+    <div class="search-container" style="margin-right: 0px; margin-left: 300px">
+      <input
+        class="form-control search-input"
+        type="text"
+        name="search-bar"
+        placeholder="Search..."
+        style="width: 320px; margin-right: 0px; margin-left: 400px"
+        [(ngModel)]="searchText"
         (keyup)="Search()"
-        /><button class="btn btn-light search-btn" type="button">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-      <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Product Category Name</th>
-              <th>&nbsp;Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let productCategory of productCategories">
-              <td>{{ productCategory.categorY_NAME }}</td>
-              <td>{{ productCategory.categorY_DESCRIPTION }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <button
-        class="btn btn-primary"
-        type="button"
-        style="
-          --bs-warning: #f6c23e;
-          --bs-warning-rgb: 246, 194, 62;
-          background: var(--bs-orange);
-          margin-left: 10px;
-        "
-        (click)="Return()"
-      >
-        Back
+      /><button class="btn btn-light search-btn" type="button">
+        <i class="fa fa-search"></i>
       </button>
-    </form>
-  </div>
-  
+    </div>
+    <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Category Name</th>
+            <th>&nbsp;Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let productCategory of productCategories">
+            <td>{{ productCategory.categorY_NAME }}</td>
+            <td>{{ productCategory.categorY_DESCRIPTION }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      style="
+        --bs-warning: #f6c23e;
+        --bs-warning-rgb: 246, 194, 62;
+        background: var(--bs-orange);
+        margin-left: 10px;
+      "
+      routerLink="/product-page"
+    >
+      Back
+    </button>
+  </form>
+</div>

@@ -11,7 +11,7 @@
   *ngIf="!boolReturn"
 >
   <h1 style="width: 500px">Return Supplier Order</h1>
-  <div class="table-responsive" style="height: 200px !important; width: 1000px;">
+  <div class="table-responsive" style="height: 200px !important; width: 1000px">
     <table class="table">
       <thead>
         <tr>
@@ -21,8 +21,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <tr *ngFor="let dynamic of dynamicArray">
+        <tr></tr>
+        <tr *ngFor="let dynamic of dynamicArray">
           <td>{{ dynamic.OrderID }}</td>
           <td>{{ dynamic.SupplierName }}</td>
           <td>{{ dynamic.DatePlaced }}</td>
@@ -44,7 +44,7 @@
     </table>
   </div>
   <button
-    (click)="Return()"
+    routerLink="/supplier-page"
     class="btn btn-primary"
     type="button"
     style="
@@ -58,8 +58,8 @@
 </form>
 <app-return-order
   *ngIf="boolReturn"
-  [order] = "order"
-  [supplier] = "supplier"
+  [order]="order"
+  [supplier]="supplier"
   (return)="back()"
 >
 </app-return-order>

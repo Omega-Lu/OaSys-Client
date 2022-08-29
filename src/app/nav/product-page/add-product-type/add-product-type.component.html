@@ -58,7 +58,7 @@
         <button
           type="button"
           class="btn btn-primary"
-          (click)="Return()"
+          routerLink="/product-page"
           style="
             border-right-color: var(--bs-orange);
             background: var(--bs-orange);
@@ -135,7 +135,7 @@
                 data-target="#exampleModal"
                 data-dismiss="modal"
                 *ngIf="successSubmit"
-                (click)="Return()"
+                routerLink="/product-page"
               >
                 OK
               </button>

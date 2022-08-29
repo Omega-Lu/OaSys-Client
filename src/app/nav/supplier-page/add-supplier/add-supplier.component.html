@@ -83,13 +83,12 @@
     (keyup)="emailvalidate()"
   />
   <div *ngIf="!edetails" style="color: Red">Invalid Details</div>
-  <!-- <button class="btn btn-primary" (click)="Return()">Cancel</button> -->
   <div class="form-group">
     <span>
       <button
         type="button"
         class="btn btn-primary"
-        (click)="Return()"
+        routerLink="/supplier-page"
         style="
           border-right-color: var(--bs-orange);
           background: var(--bs-orange);
@@ -166,7 +165,7 @@
               data-target="#exampleModal"
               data-dismiss="modal"
               *ngIf="successSubmit"
-              (click)="Return()"
+              routerLink="/supplier-page"
             >
               OK
             </button>

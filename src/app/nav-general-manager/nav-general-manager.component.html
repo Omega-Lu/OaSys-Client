@@ -1,1 +1,113 @@
-<p>nav-general-manager works!</p>
+<body id="page-top" *ngIf="loggedIn">
+  <div id="wrapper">
+    <nav
+      class="navbar navbar-light align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
+      style="background: rgb(0, 0, 0)"
+    >
+      <div class="container-fluid d-flex flex-column p-0">
+        <img
+          src="/assets/img/System%20Logo.png"
+          style="width: 100%; height: 71px"
+        />
+        <hr class="sidebar-divider my-0" />
+        <ul class="navbar-nav text-dark" id="accordionSidebar">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/product-page"
+              (click)="navName = 'Dashboard'"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span class="text-warning">Dashboard</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/supplier-page"
+              (click)="navName = 'Supplier'"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span class="text-warning">Supplier</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/product-page"
+              (click)="navName = 'Product'"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span class="text-warning">Product</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/sale-page"
+              (click)="navName = 'Sale'"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span class="text-warning">Sale</span></a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content">
+        <nav
+          class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top"
+        >
+          <div class="container-fluid">
+            <h1
+              style="
+                --bs-body-color: #000000;
+                --bs-dark: #000000;
+                --bs-dark-rgb: 0, 0, 0;
+                color: rgb(0, 0, 0);
+              "
+            >
+              {{ navName }}
+            </h1>
+            <ul class="navbar-nav flex-nowrap ms-auto">
+              <li
+                class="nav-item dropdown no-arrow"
+                style="margin-top: 17px"
+                (click)="logout()"
+                routerLink="/app"
+              >
+                <div class="nav-item dropdown no-arrow">
+                  <a>
+                    <span class="d-none d-lg-inline me-2 text-gray-600 small">
+                      LogOut
+                    </span>
+                  </a>
+                </div>
+              </li>
+              <div class="d-none d-sm-block topbar-divider"></div>
+              <li class="nav-item dropdown no-arrow">
+                <div class="nav-item dropdown no-arrow">
+                  <a>
+                    <span class="d-none d-lg-inline me-2 text-gray-600 small">
+                      {{ username }}
+                    </span>
+                    <img
+                      class="border rounded-circle img-profile"
+                      src="assets/img/avatars/avatar1.jpeg"
+                  /></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div class="pl-3">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+          <div class="text-center my-auto copyright">
+            <span>Oasys © Brand 2022</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>

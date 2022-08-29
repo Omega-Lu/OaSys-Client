@@ -81,7 +81,7 @@ import { WageReportComponent } from './nav/reports-page/wage-report/wage-report.
 import { StockReportComponent } from './nav/reports-page/stock-report/stock-report.component';
 import { NgxPrintModule } from 'ngx-print';
 import { CalculateWagesComponent } from './nav/employee-page/calculate-wages/calculate-wages.component';
-import { CollectPayslipComponent } from './nav/employee-page/collect-payslip/collect-payslip.component';
+import { CollectPayslipComponent } from './nav-cashier/employee-landing-page/collect-payslip/collect-payslip.component';
 import { AuditLogComponent } from './nav/audit-log-page/audit-log/audit-log.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { EmployeePageComponent } from './nav/employee-page/employee-page.component';
@@ -96,6 +96,9 @@ import { NavEmployeeComponent } from './nav-employee/nav-employee.component';
 import { NavGeneralManagerComponent } from './nav-general-manager/nav-general-manager.component';
 import { NavCashierComponent } from './nav-cashier/nav-cashier.component';
 import { NavHRComponent } from './nav-hr/nav-hr.component';
+import { EmployeeLandingPageComponent } from './nav-cashier/employee-landing-page/employee-landing-page.component';
+import { ClockInComponent } from './nav-employee/clock-in/clock-in.component';
+import { ClockOutComponent } from './nav-employee/clock-out/clock-out.component';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -168,6 +171,7 @@ const appRoutes: Routes = [
   { path: 'nav-cashier', component: NavCashierComponent },
   { path: 'nav-general-manager', component: NavGeneralManagerComponent },
   { path: 'nav-hr', component: NavHRComponent },
+  { path: 'employee-landing-page', component: EmployeeLandingPageComponent },
 ];
 
 @NgModule({
@@ -253,6 +257,9 @@ const appRoutes: Routes = [
     NavGeneralManagerComponent,
     NavCashierComponent,
     NavHRComponent,
+    EmployeeLandingPageComponent,
+    ClockInComponent,
+    ClockOutComponent,
   ],
   imports: [
     BrowserModule,

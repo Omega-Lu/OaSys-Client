@@ -68,7 +68,7 @@
         background: var(--bs-orange);
         margin-left: 10px;
       "
-      (click)="back()"
+      routerLink="/product-page"
     >
       Back
     </button>
@@ -126,7 +126,7 @@
               data-target="#exampleModal"
               data-dismiss="modal"
               *ngIf="successDelete"
-              (click)="back()"
+              routerLink="/product-page"
             >
               OK
             </button>

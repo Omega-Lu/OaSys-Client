@@ -35,7 +35,8 @@ export class AppComponent implements OnInit {
   };
   currentUsers: CurrentUser[] = [];
 
-  userID: number;
+  userID: number = 0;
+  userRoleID = 0;
 
   title = 'OaSys';
 
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit {
     private employeeService: EmployeeService,
     private router: Router
   ) {
+
     this.router.navigate(['/app']);
   }
 
@@ -91,6 +93,7 @@ export class AppComponent implements OnInit {
             console.log('this is the current user');
             console.log(response);
             this.loggedIn = true;
+            this.userRoleID = this.usersTemp[0].useR_ROLE_ID;
             this.loginLevel();
           });
       } else {
@@ -115,11 +118,31 @@ export class AppComponent implements OnInit {
   }
 
   loginLevel() {
-    this.loginAdmin = true;
-    this.router.navigate(['/nav']);
+    if (this.userRoleID == 3) {
+      this.loginCashier = true;
+      this.router.navigate(['/nav-cashier']);
+    }
+    if (this.userRoleID == 0) {
+      this.loginAdmin = true;
+      this.router.navigate(['/nav']);
+    }
+    if (this.userRoleID == 1) {
+      this.loginGM = true;
+      this.router.navigate(['/nav-general-manager']);
+    }
+    if (this.userRoleID == 2) {
+      this.loginHR = true;
+      this.router.navigate(['/nav-hr']);
+    }
+    if (this.userRoleID == 4) {
+      this.loginEmployee = true;
+      this.router.navigate(['/nav-employee']);
+    }
   }
 
   Back() {
+    window.location.reload();
     this.loggedIn = false;
+    this.router.navigate(['/app']);
   }
 }

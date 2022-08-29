@@ -93,7 +93,7 @@
   >
     Complete Stock take</button
   ><button
-    (click)="Return()"
+    routerLink="/product-page"
     class="btn btn-primary"
     type="button"
     style="
@@ -132,7 +132,8 @@
           data-target="#exampleModal"
           data-dismiss="modal"
           *ngIf="!successSubmit"
-          (click)="completeStock(); Return()"
+          (click)="completeStock()"
+          
         >
           OK
         </button>
