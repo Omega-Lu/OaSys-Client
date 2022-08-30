@@ -205,7 +205,6 @@ export class ViewCreditAccountComponent implements OnInit {
         .subscribe((response) => {
           console.log(response);
         });
-      this.successSubmit = true;
 
       this.customerAccount.accounT_STATUS_ID =
         this.customerApplication.accountStatusID;
@@ -221,6 +220,7 @@ export class ViewCreditAccountComponent implements OnInit {
         .addCustomerAccount(this.customerAccount)
         .subscribe((response) => {
           console.log(response);
+          this.successSubmit = true;
         });
     }
   }
@@ -232,25 +232,6 @@ export class ViewCreditAccountComponent implements OnInit {
   }
 
   async Decilne() {
-    // this.accountStatus.descrption = 'Declined';
-    //console.log('this account status ');
-    //console.log(this.accountStatus);
-
-    // this.accountStatusService
-    //   .addAccountStatus(this.accountStatus)
-    //   .subscribe((response) => {
-    //     console.log(response);
-    //   });
-
-    // await this.sleep(150);
-    // this.getAllAccountStatusses();
-    // await this.sleep(150);
-
-    // this.accountStatussesTemp = this.accountStatusses;
-    // //console.log('newest cusotmer account statusses    ');
-    // //console.log(this.accountStatussesTemp);
-
-    // this.accountStatussesTemp = this.accountStatusses;
 
     this.nameValidate();
     this.surnameValidate();

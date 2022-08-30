@@ -57,7 +57,6 @@ export class AppComponent implements OnInit {
     private employeeService: EmployeeService,
     private router: Router
   ) {
-
     this.router.navigate(['/app']);
   }
 
@@ -76,6 +75,7 @@ export class AppComponent implements OnInit {
     });
 
     console.log(this.usersTemp);
+    console.log('this is the usersTemp length ' + this.usersTemp.length);
 
     if (this.usersTemp.length == 0) {
       this.details = false;
@@ -97,6 +97,7 @@ export class AppComponent implements OnInit {
             this.loginLevel();
           });
       } else {
+        this.sdetails = false;
       }
     }
   }

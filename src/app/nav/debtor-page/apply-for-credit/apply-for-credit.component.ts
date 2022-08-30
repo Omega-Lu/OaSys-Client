@@ -177,8 +177,8 @@ export class ApplyForCreditComponent implements OnInit {
         .addCustomerApplication(this.customerApplication)
         .subscribe((response) => {
           console.log(response);
+          this.successSubmit = true;
         });
-      this.successSubmit = true;
     }
   }
 }

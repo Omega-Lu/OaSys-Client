@@ -33,8 +33,8 @@ export class AddSupplierComponent implements OnInit {
   onSubmit() {
     this.suppliierService.addSupplier(this.supplier).subscribe((response) => {
       console.log(response);
+      this.successSubmit = true;
     });
-    this.successSubmit = true;
   }
 
   namevalidate() {

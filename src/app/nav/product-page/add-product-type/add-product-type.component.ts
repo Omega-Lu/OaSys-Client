@@ -40,11 +40,11 @@ export class AddProductTypeComponent implements OnInit {
       .addProductType(this.productType)
       .subscribe((response) => {
         console.log(response);
+        this.successSubmit = true;
       });
-    this.successSubmit = true;
   }
 
-  categoryValidate(){
+  categoryValidate() {
     this.cdetails = true;
   }
 

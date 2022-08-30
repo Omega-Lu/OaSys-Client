@@ -38,6 +38,7 @@ export class MaintainWarningTypeComponent implements OnInit {
 
   populateForm(warningtype: WarningType) {
     this.warningtype = warningtype;
+    this.updateWarning = true;
   }
 
   Search() {

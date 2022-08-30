@@ -50,8 +50,8 @@ export class AddDebtorComponent implements OnInit {
   onSubmit() {
     this.debtorService.addAllDebtors(this.debtor).subscribe((response) => {
       console.log(response);
+      this.successSubmit = true;
     });
-    this.successSubmit = true;
   }
 
   nameValidate() {

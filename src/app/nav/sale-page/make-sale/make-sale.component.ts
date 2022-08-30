@@ -278,6 +278,7 @@ export class MakeSaleComponent implements OnInit {
     this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
       console.log('entry into audit log');
       console.log(response);
+      this.successSubmit = true;
     });
   }
 

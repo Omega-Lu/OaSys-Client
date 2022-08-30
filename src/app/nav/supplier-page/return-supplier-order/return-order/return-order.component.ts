@@ -397,6 +397,7 @@ export class ReturnOrderComponent implements OnInit {
             .addSupplierOrderReturn(this.supplierOrderReturn)
             .subscribe((response) => {
               console.log(response);
+               this.successSubmit = true;
             });
         }
       }

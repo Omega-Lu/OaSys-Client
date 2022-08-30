@@ -128,5 +128,6 @@ export class ReturnSupplierOrderComponent implements OnInit {
         console.log('supplier is gevind');
       }
     }
+    this.boolReturn = true;
   }
 }

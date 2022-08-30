@@ -80,6 +80,7 @@ export class CapturePaymentComponent implements OnInit {
       .updateCustomerAccount(this.customerAccount)
       .subscribe((response) => {
         console.log(response);
+        this.successSubmit = true;
       });
   }
 }

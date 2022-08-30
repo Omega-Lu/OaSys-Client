@@ -169,6 +169,7 @@ export class CompleteStocktakeComponent implements OnInit {
         .addStocktake(this.stocktake)
         .subscribe((response) => {
           console.log(response);
+          this.successSubmit = true;
         });
     }
   }

@@ -37,11 +37,13 @@ export class MaintainProductTypeComponent implements OnInit {
       .subscribe((response) => {
         this.deleteProductType();
         console.log(this.productType);
+        this.successDelete = true;
       });
   }
 
   populateForm(productType: ProductType) {
     this.productType = productType;
+    this.updateProductType = true;
   }
 
   getAllProductTypes() {

@@ -11,7 +11,6 @@ export class CreateSupplierOrderComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
   suppliers: Supplier[] = [];
   supplier: Supplier;
-  successDelete: boolean = false;
   model: any;
   delete: boolean = false;
   searchText: any = '';
@@ -35,6 +34,7 @@ export class CreateSupplierOrderComponent implements OnInit {
 
   populateForm(supplier: Supplier) {
     this.supplier = supplier;
+    this.createSupplierOrder = true;
   }
 
   Search() {

@@ -28,8 +28,8 @@ export class UpdateProductCategoryComponent implements OnInit {
       .updateProductCategory(this.productCategory)
       .subscribe((response) => {
         console.log(response);
+        this.successSubmit = true;
       });
-    this.successSubmit = true;
   }
 
   namevalidate() {

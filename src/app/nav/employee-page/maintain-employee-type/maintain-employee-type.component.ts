@@ -38,11 +38,13 @@ export class MaintainEmployeeTypeComponent implements OnInit {
     this.employeeService.deleteEmployee(this.IDDelete).subscribe((response) => {
       this.getAllEmployees();
       console.log(this.employeetypes);
+      this.successDelete = true;
     });
   }
 
   populateForm(employeetype: EmployeeType) {
     this.employeetype = employeetype;
+    this.updateEmployeeType = true;
   }
 
   deleteID(id) {

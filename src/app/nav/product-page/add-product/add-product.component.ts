@@ -116,8 +116,8 @@ export class AddProductComponent implements OnInit {
     this.productService.addProduct(this.product).subscribe((response) => {
       console.log('this is the new product');
       console.log(response);
+      this.successSubmit = true;
     });
-    this.successSubmit = true;
 
     //adding to audit log
     this.auditLogService.addAuditLog(this.audit).subscribe((response) => {

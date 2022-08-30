@@ -47,9 +47,8 @@ export class AddWageRateComponent implements OnInit {
   onSubmit() {
     this.rateService.addEmployee(this.rate).subscribe((response) => {
       console.log(response);
+      this.successSubmit = true;
     });
-
-    this.successSubmit = true;
   }
 
   getAllEmployeeTypes() {

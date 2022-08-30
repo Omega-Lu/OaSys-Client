@@ -63,8 +63,8 @@ export class UpdateProductComponent implements OnInit {
   onSubmit() {
     this.productService.updateProduct(this.product).subscribe((response) => {
       console.log(response);
+      this.successSubmit = true;
     });
-    this.successSubmit = true;
   }
 
   namevalidate() {

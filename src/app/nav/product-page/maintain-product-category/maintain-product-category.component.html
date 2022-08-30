@@ -37,7 +37,7 @@
                 type="button"
                 style="background: var(--bs-orange)"
                 (click)="
-                  updateProductCategory = true; populateForm(productCategory)
+                   populateForm(productCategory)
                 "
               >
                 Edit
@@ -115,7 +115,7 @@
               name="deleteempl"
               data-target="#exampleModal"
               *ngIf="!successDelete"
-              (click)="successDelete = true; deleteProductCategory()"
+              (click)="deleteProductCategory()"
             >
               Yes
             </button>

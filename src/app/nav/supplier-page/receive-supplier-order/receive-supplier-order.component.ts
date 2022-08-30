@@ -125,5 +125,6 @@ export class ReceiveSupplierOrderComponent implements OnInit {
       if (this.orders[index].orderID == i) this.order = this.orders[index];
       console.log('order is gevind');
     }
+    this.boolReceive = true;
   }
 }

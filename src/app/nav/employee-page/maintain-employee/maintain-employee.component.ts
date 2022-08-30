@@ -52,12 +52,14 @@ export class MaintainEmployeeComponent implements OnInit {
       .subscribe((response) => {
         this.getAllEmployees();
         console.log(this.employees);
+        this.successDelete = true;
       });
   }
 
   populateForm(employee: Employee) {
     this.employee = employee;
     //this.router.navigate(['/update-employee']);
+    this.updateEmployee = true;
   }
 
   Search() {

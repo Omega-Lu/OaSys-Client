@@ -32,7 +32,7 @@
                 type="button"
                 name="position"
                 style="background: var(--bs-orange)"
-                (click)="updateEmployeeType = true; populateForm(employeetype)"
+                (click)=" populateForm(employeetype)"
               >
                 Edit
               </button>
@@ -100,7 +100,7 @@
           name="deleteempl"
           data-target="#exampleModal"
           *ngIf="!successDelete"
-          (click)="successDelete = true; deleteEmployeeType()"
+          (click)=" deleteEmployeeType()"
         >
           Yes
         </button>

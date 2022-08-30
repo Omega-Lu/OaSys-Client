@@ -167,9 +167,8 @@ export class ViewApprovedAccountsComponent implements OnInit {
         .updateCustomerAccount(this.customerAccount)
         .subscribe((response) => {
           console.log(response);
+          this.successSubmit = true;
         });
-
-      this.successSubmit = true;
     }
   }
 

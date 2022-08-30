@@ -1,4 +1,3 @@
-
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DebtorService } from 'src/app/_services/debtor.service';
 import { Debtor } from 'src/app/models/debtor.model';
@@ -6,11 +5,9 @@ import { Debtor } from 'src/app/models/debtor.model';
 @Component({
   selector: 'app-update-debtor',
   templateUrl: './update-debtor.component.html',
-  styleUrls: ['./update-debtor.component.css']
+  styleUrls: ['./update-debtor.component.css'],
 })
 export class UpdateDebtorComponent implements OnInit {
-
-
   @Input() debtor: Debtor;
 
   @Output() return = new EventEmitter<string>();
@@ -32,27 +29,24 @@ export class UpdateDebtorComponent implements OnInit {
 
   categorySelected: boolean = false;
 
-  successSubmit : boolean = false;
-  constructor(private debtorService: DebtorService) { }
+  successSubmit: boolean = false;
+  constructor(private debtorService: DebtorService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
-    this.debtorService.updateDebtor(this.debtor)
-    .subscribe( response => {
+    this.debtorService.updateDebtor(this.debtor).subscribe((response) => {
       console.log(response);
-    })
-    this.successSubmit = true;
+      this.successSubmit = true;
+    });
   }
-
 
   namevalidate() {
     var matches = this.debtor.name.match(/\d+/g);
     if (matches != null) {
-     this.nDetails = false;
+      this.nDetails = false;
     } else if (this.debtor.name == '') {
-     this.nDetails = false;
+      this.nDetails = false;
     } else {
       this.nDetails = true;
     }
@@ -61,17 +55,17 @@ export class UpdateDebtorComponent implements OnInit {
   survalidate() {
     var matches = this.debtor.surname.match(/\d+/g);
     if (matches != null) {
-     this.sDetails = false;
+      this.sDetails = false;
     } else if (this.debtor.surname == '') {
-     this.sDetails = false;
+      this.sDetails = false;
     } else {
       this.sDetails = true;
     }
   }
 
   emailvalidate() {
- if (this.debtor.email == '') {
-     this.eDetails = false;
+    if (this.debtor.email == '') {
+      this.eDetails = false;
     } else {
       this.eDetails = true;
     }

@@ -40,7 +40,7 @@
                 class="btn btn-primary"
                 type="button"
                 style="background: var(--bs-orange)"
-                (click)="updateProduct = true; populateForm(product)"
+                (click)=" populateForm(product)"
               >
                 Edit
               </button>
@@ -117,7 +117,7 @@
               name="deleteempl"
               data-target="#exampleModal"
               *ngIf="!successDelete"
-              (click)="successDelete = true; deleteSupplier()"
+              (click)=" deleteSupplier()"
             >
               Yes
             </button>

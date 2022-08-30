@@ -238,6 +238,7 @@ export class SupplierOrderComponent implements OnInit {
         .addOrderProduct(this.orderProduct)
         .subscribe((response) => {
           console.log(response);
+          this.successSubmit = true;
         });
     }
   }

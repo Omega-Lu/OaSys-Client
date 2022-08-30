@@ -25,8 +25,9 @@ export class UpdateSupplierComponent implements OnInit {
   onSubmit() {
     this.supplierService.updateSupplier(this.supplier).subscribe((response) => {
       console.log(response);
+       this.successSubmit = true;
     });
-    this.successSubmit = true;
+
   }
 
   namevalidate() {

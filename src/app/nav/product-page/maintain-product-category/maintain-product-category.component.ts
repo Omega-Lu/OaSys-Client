@@ -36,12 +36,14 @@ export class MaintainProductCategoryComponent implements OnInit {
       .deleteProductCategory(this.deletenumber)
       .subscribe((response) => {
         this.getAllProductCategories();
-        console.log(this.productCategory);
+        console.log(response);
+        this.successDelete = true;
       });
   }
 
   populateForm(productCategory: ProductCategory) {
     this.productCategory = productCategory;
+    this.updateProductCategory = true;
   }
 
   getAllProductCategories() {

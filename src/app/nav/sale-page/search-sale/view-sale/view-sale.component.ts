@@ -57,7 +57,7 @@ export class ViewSaleComponent implements OnInit {
   audit: AuditLog = {
     auditLogID: 0,
     userID: 0,
-    employeeID:0,
+    employeeID: 0,
     functionUsed: 'Return Sale',
     date: new Date().toString(),
     month: '',
@@ -247,6 +247,7 @@ export class ViewSaleComponent implements OnInit {
     this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
       console.log('entry into audit log');
       console.log(response);
+      this.successSubmit = true;
     });
   }
 }

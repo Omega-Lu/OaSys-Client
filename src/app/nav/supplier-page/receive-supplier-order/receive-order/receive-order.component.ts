@@ -223,6 +223,7 @@ export class ReceiveOrderComponent implements OnInit {
             .updateOrderStatus(this.orderStatus)
             .subscribe((response) => {
               console.log(response);
+              this.successSubmit = true;
             });
         }
       }

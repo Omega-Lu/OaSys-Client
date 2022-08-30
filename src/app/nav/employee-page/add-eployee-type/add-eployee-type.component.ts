@@ -29,8 +29,8 @@ export class AddEployeeTypeComponent implements OnInit {
       .addEmployee(this.employeetype)
       .subscribe((response) => {
         console.log(response);
+        this.successSubmit = true;
       });
-    this.successSubmit = true;
   }
 
   namevalidate() {

@@ -240,22 +240,22 @@ export class WriteOffComponent implements OnInit {
 
       this.writeOff.date = new Date().toString();
       this.writeOff.reason = element.reason;
-      this.writeOffService
-        .addWriteOff(this.writeOff)
-        .subscribe((response) => {
-          console.log(response);
-        });
-
+      this.writeOffService.addWriteOff(this.writeOff).subscribe((response) => {
+        console.log(response);
+      });
 
       //product write off code
       this.productWriteOff.productID = element.productIDnumber;
       this.getAllProductWriteOffs();
       this.sleep(75);
-      this.productWriteOff.writeOffID = this.writeOffs[this.writeOffs.length -1].writeOffID + 1;
+      this.productWriteOff.writeOffID =
+        this.writeOffs[this.writeOffs.length - 1].writeOffID + 1;
       this.productWriteOff.quantity = element.quantity;
-      this.productWriteOffService.addProductWriteOff(this.productWriteOff).subscribe((response) => {
-        console.log(response);
-      })
+      this.productWriteOffService
+        .addProductWriteOff(this.productWriteOff)
+        .subscribe((response) => {
+          console.log(response);
+        });
 
       //product code stuff
       this.productsTemp = this.productsTemp.filter((product) => {
@@ -267,6 +267,7 @@ export class WriteOffComponent implements OnInit {
         this.product.quantitY_ON_HAND - element.quantity;
       this.productService.updateProduct(this.product).subscribe((response) => {
         console.log(response);
+        this.successSubmit = true;
       });
     }
   }

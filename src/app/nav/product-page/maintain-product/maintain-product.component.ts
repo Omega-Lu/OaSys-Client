@@ -14,7 +14,6 @@ export class MaintainProductComponent implements OnInit {
   updateProduct: boolean = false;
   successDelete: boolean = false;
 
-
   products: Product[] = [];
   product: Product;
 
@@ -28,7 +27,7 @@ export class MaintainProductComponent implements OnInit {
     this.getAllProducts();
   }
 
-  deletee(delet : any){
+  deletee(delet: any) {
     this.deletenumber = delet;
   }
 
@@ -40,14 +39,18 @@ export class MaintainProductComponent implements OnInit {
   }
 
   deleteSupplier() {
-    this.productService.deleteProduct(this.deletenumber).subscribe((response) => {
-      this.getAllProducts();
-      console.log(this.product);
-    });
+    this.productService
+      .deleteProduct(this.deletenumber)
+      .subscribe((response) => {
+        this.getAllProducts();
+        console.log(this.product);
+        this.successDelete = true;
+      });
   }
 
-  populateForm(product : Product){
+  populateForm(product: Product) {
     this.product = product;
+    this.updateProduct = true;
   }
 
   Search() {
@@ -63,8 +66,7 @@ export class MaintainProductComponent implements OnInit {
     }
   }
 
-  back(){
+  back() {
     this.return.emit('false');
   }
-
 }

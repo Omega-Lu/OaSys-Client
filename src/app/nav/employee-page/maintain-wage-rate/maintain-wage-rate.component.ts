@@ -38,6 +38,7 @@ export class MaintainWageRateComponent implements OnInit {
 
   populateForm(employeetype : Rate){
     this.rate = employeetype;
+    this.updateRate = true;
   }
 
   Search() {
@@ -46,8 +47,8 @@ export class MaintainWageRateComponent implements OnInit {
       console.log(searchValue);
       this.rates = this.rates.filter((rate) =>{
         console.log(rate.ratE_NAME.match(searchValue));
-        return rate.ratE_NAME.match(searchValue);  
-      
+        return rate.ratE_NAME.match(searchValue);
+
             });
             console.log(this.rate);
           }

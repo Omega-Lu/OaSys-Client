@@ -8,37 +8,38 @@ import { ProductCategoryService } from 'src/app/_services/product-category.servi
   styleUrls: ['./add-product-category.component.css'],
 })
 export class AddProductCategoryComponent implements OnInit {
-
   @Output() return = new EventEmitter<string>();
 
   details: boolean = true;
   sdetails: boolean = true;
 
-  successSubmit : boolean = false;
+  successSubmit: boolean = false;
 
   productCategory: ProductCategory = {
     producT_CATEGORY_ID: 0,
-    categorY_NAME: "",
-    categorY_DESCRIPTION: ""
-  }
+    categorY_NAME: '',
+    categorY_DESCRIPTION: '',
+  };
 
   constructor(private productCategoryService: ProductCategoryService) {}
 
   ngOnInit(): void {}
 
   onSubmit() {
-    this.productCategoryService.addProductCategory(this.productCategory).subscribe((response) => {
-      console.log(response);
-    });
-    this.successSubmit = true;
+    this.productCategoryService
+      .addProductCategory(this.productCategory)
+      .subscribe((response) => {
+        console.log(response);
+        this.successSubmit = true;
+      });
   }
 
   namevalidate() {
     var matches = this.productCategory.categorY_NAME.match(/\d+/g);
     if (matches != null) {
-     this.details = false;
+      this.details = false;
     } else if (this.productCategory.categorY_NAME == '') {
-     this.details = false;
+      this.details = false;
     } else {
       this.details = true;
     }
@@ -47,9 +48,9 @@ export class AddProductCategoryComponent implements OnInit {
   survalidate() {
     var matches = this.productCategory.categorY_DESCRIPTION.match(/\d+/g);
     if (matches != null) {
-     this.sdetails = false;
+      this.sdetails = false;
     } else if (this.productCategory.categorY_DESCRIPTION == '') {
-     this.sdetails = false;
+      this.sdetails = false;
     } else {
       this.sdetails = true;
     }
@@ -58,5 +59,4 @@ export class AddProductCategoryComponent implements OnInit {
   Return() {
     this.return.emit('false');
   }
-
 }
