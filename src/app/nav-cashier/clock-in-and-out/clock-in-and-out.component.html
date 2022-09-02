@@ -1,0 +1,134 @@
+<div class="card-group">
+  <div class="card" data-toggle="modal" data-target="#ClockInModal">
+    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+      <i
+        class="fas fa-plus text-warning"
+        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+      ></i
+      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+        Clock-In
+      </button>
+    </div>
+  </div>
+  <div class="card" data-toggle="modal" data-target="#ClockOutModal">
+    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+      <i
+        class="fas fa-search text-warning"
+        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+      ></i
+      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+        Clock-Out
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Clock In Modal -->
+<div
+  class="modal fade"
+  id="ClockInModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ClockInModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ClockInModalLabel" *ngIf="!successClockIn">
+          Are You Sure You Would Like Clock-In
+        </h5>
+        <h5 class="modal-title" id="ClockInModalLabel" *ngIf="successClockIn">
+          Successfully Clocked In At {{ currentTime }}
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successClockIn"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#ClockInModal"
+          *ngIf="!successClockIn"
+          (click)="ClockIn()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ClockInModal"
+          data-dismiss="modal"
+          *ngIf="successClockIn"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Clock Out Model  -->
+<div
+  class="modal fade"
+  id="ClockOutModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ClockOutModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="ClockOutModalLabel"
+          *ngIf="!successClockOut"
+        >
+          Are You Sure You Would Like Clock-Out
+        </h5>
+        <h5 class="modal-title" id="ClockOutModalLabel" *ngIf="successClockOut">
+          Successfully Clocked Out At {{ currentTime }}
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successClockOut"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#ClockOutModal"
+          *ngIf="!successClockOut"
+          (click)="ClockOut()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ClockOutModal"
+          data-dismiss="modal"
+          *ngIf="successClockOut"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

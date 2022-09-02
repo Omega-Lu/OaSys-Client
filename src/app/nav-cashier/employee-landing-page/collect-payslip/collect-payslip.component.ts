@@ -26,7 +26,6 @@ export class CollectPayslipComponent implements OnInit {
   employeehours: EmployeeHours = {
     employeeHoursID: 0,
     employeeID: 0,
-    wageID: 0,
     checkInTime: '',
     checkOutTime: '',
   };
@@ -38,7 +37,10 @@ export class CollectPayslipComponent implements OnInit {
     employeeID: 0,
     dateIssued: '',
     dateCollected: '',
-    wageCollected: 0,
+    wageCollected: '',
+    amount: 0,
+    hrApproved: '',
+    dateWorked: '',
   };
   wages: Wage[] = [];
   wagesTemp: Wage[] = [];
@@ -60,35 +62,29 @@ export class CollectPayslipComponent implements OnInit {
   }
 
   async collectWage() {
-    this.wage.employeeID = this.employee.employeE_ID;
-    this.wage.dateIssued = this.date.toString();
-    this.wage.dateCollected = new Date().toString();
-    this.wage.wageCollected = this.totalPay;
-
-    console.log('this is the new wage entry');
-    //console.log(this.wage);
-    this.wageService.addWage(this.wage).subscribe((response) => {
-      console.log(response);
-    });
-
-    await this.sleep(200);
-
-    this.employeehours.employeeID = this.employee.employeE_ID;
-    this.employeehours.checkInTime = this.timeIn.toString();
-    this.employeehours.checkOutTime = this.timeOut.toString();
-
-    await this.getAllWages();
-    await this.sleep(300);
-
-    this.employeehours.wageID = this.wages[this.wages.length - 1].wageID;
-
-    console.log('this is the new EmployeeHours Entry');
-    //console.log(this.employeehours);
-    this.employeeHoursService
-      .addEmployeeHours(this.employeehours)
-      .subscribe((response) => {
-        console.log(response);
-      });
+    // this.wage.employeeID = this.employee.employeE_ID;
+    // this.wage.dateIssued = this.date.toString();
+    // this.wage.dateCollected = new Date().toString();
+    // this.wage.wageCollected = this.totalPay;
+    // console.log('this is the new wage entry');
+    // //console.log(this.wage);
+    // this.wageService.addWage(this.wage).subscribe((response) => {
+    //   console.log(response);
+    // });
+    // await this.sleep(200);
+    // this.employeehours.employeeID = this.employee.employeE_ID;
+    // this.employeehours.checkInTime = this.timeIn.toString();
+    // this.employeehours.checkOutTime = this.timeOut.toString();
+    // await this.getAllWages();
+    // await this.sleep(300);
+    // this.employeehours.wageID = this.wages[this.wages.length - 1].wageID;
+    // console.log('this is the new EmployeeHours Entry');
+    // //console.log(this.employeehours);
+    // this.employeeHoursService
+    //   .addEmployeeHours(this.employeehours)
+    //   .subscribe((response) => {
+    //     console.log(response);
+    //   });
   }
 
   async getAllWages() {

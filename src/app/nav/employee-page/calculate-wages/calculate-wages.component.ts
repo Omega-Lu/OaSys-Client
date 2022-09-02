@@ -1,8 +1,12 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
+import { EmployeeType } from 'src/app/models/employee-type.model';
+import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { Rate } from 'src/app/models/rate.model';
 import { RateService } from 'src/app/_services/rate.service';
+import { Wage } from 'src/app/models/Wage.model';
+import { WageService } from 'src/app/_services/Wage.service';
 import * as $ from 'jquery';
 import { Time } from '@angular/common';
 
@@ -28,6 +32,12 @@ export class CalculateWagesComponent implements OnInit {
   rates: Rate[] = [];
   ratesTemp: Rate[] = [];
 
+  wage: Wage;
+  wages: Wage[] = [];
+
+  employeeType: EmployeeType;
+  employeeTypes: EmployeeType[] = [];
+  employeeTypesTemp: EmployeeType[] = [];
   collectPayslip: boolean = false;
 
   screenStart: boolean = true;
@@ -37,6 +47,7 @@ export class CalculateWagesComponent implements OnInit {
   timeInDisable: boolean = true;
   timeOutDisable: boolean = true;
   timeVal: boolean = true;
+  employeeSelected: boolean = false;
 
   dateWorked: Date = null;
 
@@ -50,19 +61,47 @@ export class CalculateWagesComponent implements OnInit {
 
   constructor(
     private rateService: RateService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private WageService: WageService,
+    private EmployeeTypeService: EmployeeTypeService
   ) {}
 
   async ngOnInit() {
     this.rate.ratE_NAME = '';
     await this.getEmployees();
     await this.getRates();
+    await this.getAllWages();
+    await this.getEmployeeTypes();
 
     this.employeesTemp = this.employees;
   }
 
   datePicked() {
     this.timeInDisable = false;
+  }
+
+  AddToTable() {
+    this.displayWages.push({
+      dateWorked: this.dateWorked,
+      wageName: this.rate.ratE_NAME,
+      totalPay: this.totalPay,
+    });
+  }
+
+  async getEmployeeTypes() {
+    this.EmployeeTypeService.getAllEmployees().subscribe((res) => {
+      this.employeeTypes = res;
+      console.log('this is all the employee types');
+      console.log(this.employeeTypes);
+    });
+  }
+
+  async getAllWages() {
+    this.WageService.getAllWages().subscribe((res) => {
+      this.wages = res;
+      console.log('this is all the wages');
+      console.log(this.wages);
+    });
   }
 
   ValTimeIN(time: Time) {
@@ -134,6 +173,7 @@ export class CalculateWagesComponent implements OnInit {
   }
 
   surnameOption(id: number) {
+    this.displayWages = [];
     this.employeesTemp = this.employees;
     this.employeesTemp = this.employeesTemp.filter((employee) => {
       console.log(employee.employeE_ID == id);
@@ -142,12 +182,35 @@ export class CalculateWagesComponent implements OnInit {
     this.employee = this.employeesTemp[0];
     console.log('This is the selected employee');
     console.log(this.employee);
+    this.populateTable();
     this.ratesTemp = this.rates;
     this.wageSelect = false;
     $('#rateID').val('-1');
   }
 
+  displayWages = [];
+
+  populateTable() {
+    this.employeeTypesTemp = this.employeeTypes.filter((type) => {
+      return type.employeE_TYPE_ID == this.employee.employeE_TYPE_ID;
+    });
+    for (let i = 0; i < this.wages.length; i++) {
+      const element = this.wages[i];
+
+      if (element.employeeID == this.employee.employeE_ID) {
+        this.displayWages.push({
+          date: element.dateWorked,
+          wageName: this.employeeTypesTemp[0].positioN_NAME,
+          totalPay: element.amount,
+        });
+      }
+    }
+    this.employeeSelected = true;
+  }
+
   nameSelect(name: string) {
+    this.displayWages = [];
+    this.employeeSelected = false;
     this.employeesTempSurname = this.employees;
     this.employeesTempSurname = this.employeesTempSurname.filter((employee) => {
       console.log(employee.name == name);

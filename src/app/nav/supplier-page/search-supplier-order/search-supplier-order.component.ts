@@ -39,39 +39,37 @@ export class SearchSupplierOrderComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.getAllOrderStatusses();
     await this.getAllOrders();
-    await this.getAllSuppliers();
-
-    await this.sleep(150);
-    console.log('voor for');
-    await this.forLoop();
-    console.log('na for');
-    console.log(this.orders.length);
   }
 
   Return() {
     this.return.emit('false');
   }
 
-  async getAllSuppliers() {
-    this.supplierService.getAllSuppliers().subscribe((response) => {
-      this.suppliers = response;
-      console.log(this.suppliers);
-    });
-  }
-
   async getAllOrders() {
     this.orderService.getAllOrders().subscribe((response) => {
       this.orders = response;
+      console.log('this is all the orders');
       console.log(this.orders);
+      this.getAllSuppliers();
+    });
+  }
+
+  async getAllSuppliers() {
+    this.supplierService.getAllSuppliers().subscribe((response) => {
+      this.suppliers = response;
+      console.log('this is all the suppliers');
+      console.log(this.suppliers);
+      this.getAllOrderStatusses();
     });
   }
 
   async getAllOrderStatusses() {
     this.orderStatusService.getAllOrderStatuss().subscribe((response) => {
       this.orderStatusses = response;
+      console.log('this is all the order statusses');
       console.log(this.orderStatusses);
+      this.forLoop();
     });
   }
 
@@ -80,17 +78,14 @@ export class SearchSupplierOrderComponent implements OnInit {
   async forLoop() {
     console.log(this.orders.length);
     for (let i = 0; i < this.orders.length; i++) {
-      console.log('for begin');
       const element = this.orders[i];
       this.suppliersTemp = this.suppliers;
       this.suppliersTemp = this.suppliersTemp.filter((supplier) => {
-        console.log(supplier.supplieR_ID == element.supplierID);
         return supplier.supplieR_ID == element.supplierID;
       });
       this.orderStatussesTemp = this.orderStatusses;
       this.orderStatussesTemp = this.orderStatussesTemp.filter(
         (orderStatus) => {
-          console.log(orderStatus.orderID == element.orderID);
           return orderStatus.orderID == element.orderID;
         }
       );
@@ -102,7 +97,6 @@ export class SearchSupplierOrderComponent implements OnInit {
           DatePlaced: element.datePlaced,
           Status: this.orderStatussesTemp[0].description,
         });
-        console.log('for klaar');
         this.tempArray = this.dynamicArray;
       }
     }

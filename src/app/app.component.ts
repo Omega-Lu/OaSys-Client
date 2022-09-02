@@ -7,6 +7,8 @@ import { CurrentUserService } from './_services/CurrentUser.service';
 import { Employee } from './models/employee.model';
 import { EmployeeService } from './_services/employee.service';
 import { Router } from '@angular/router';
+import '../assets/js/smtp.js';
+declare let Email:any;
 
 @Component({
   selector: 'app-root',
@@ -62,6 +64,16 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.getUsers();
+
+    // Email.send({
+    //   Host: 'smtp.elasticemail.com',
+    //   Username: 'oasys.infolutions@gmail.com',
+    //   Password: '6472A54EB8FB863EC2F2C1D10005742956DE',
+    //   To: 'armandsdp@gmail.com',
+    //   From: 'oasys.infolutions@gmail.com',
+    //   Subject: 'Test email from oasys system',
+    //   Body: 'This is the test body',
+    // }).then((message) => alert(message));
   }
 
   login() {

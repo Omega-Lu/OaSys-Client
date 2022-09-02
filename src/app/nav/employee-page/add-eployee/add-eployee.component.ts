@@ -7,6 +7,8 @@ import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/_services/user.service';
 import * as $ from 'jQuery';
+import '../../../../assets/js/smtp.js';
+declare let Email: any;
 
 @Component({
   selector: 'app-add-eployee',
@@ -181,9 +183,22 @@ export class AddEployeeComponent implements OnInit {
       this.userService.addUser(this.user).subscribe((response) => {
         console.log('this is the new user');
         console.log(response);
-        this.successSubmit = true;
-      })
 
+        //Send An Email With Username And PassWord
+        Email.send({
+          Host: 'smtp.elasticemail.com',
+          Username: 'oasys.infolutions@gmail.com',
+          Password: '6472A54EB8FB863EC2F2C1D10005742956DE',
+          To: this.employee.email,
+          From: 'oasys.infolutions@gmail.com',
+          Subject: 'Username And Password For OaSys System',
+          Body: `<h3>Your Username: </h3>
+                  <p>${this.user.username}</p>
+                  <h3>Your Password</h3>
+                  <p>${this.user.useR_PASSWORD}</p>`,
+        }).then((message) => console.log(message));
+        this.successSubmit = true;
+      });
     });
   }
 

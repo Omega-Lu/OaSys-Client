@@ -38,12 +38,6 @@ export class ReturnSupplierOrderComponent implements OnInit {
 
   async ngOnInit() {
     await this.getAllOrders();
-    await this.getAllSuppliers();
-    await this.getAllOrderStatusses();
-
-    await this.sleep(150);
-
-    await this.forLoop();
   }
 
   async forLoop() {
@@ -54,14 +48,14 @@ export class ReturnSupplierOrderComponent implements OnInit {
       this.orderStatussesTemp = this.orderStatusses;
       this.orderStatussesTemp = this.orderStatussesTemp.filter(
         (orderStatus) => {
-          console.log(orderStatus.orderID == element.orderID);
+
           return orderStatus.orderID == element.orderID;
         }
       );
       if (this.orderStatussesTemp[0].description == 'Received') {
         this.suppliersTemp = this.suppliers;
         this.suppliersTemp = this.suppliersTemp.filter((supplier) => {
-          console.log(supplier.supplieR_ID == element.supplierID);
+
           return supplier.supplieR_ID == element.supplierID;
         });
 
@@ -79,21 +73,27 @@ export class ReturnSupplierOrderComponent implements OnInit {
   getAllOrders() {
     this.orderService.getAllOrders().subscribe((response) => {
       this.orders = response;
+      console.log('this is all the orders');
       console.log(this.orders);
+      this.getAllSuppliers();
     });
   }
 
   getAllSuppliers() {
     this.supplierService.getAllSuppliers().subscribe((response) => {
       this.suppliers = response;
+      console.log('this is all the suppliers');
       console.log(this.suppliers);
+      this.getAllOrderStatusses();
     });
   }
 
   getAllOrderStatusses() {
     this.orderStatusService.getAllOrderStatuss().subscribe((response) => {
       this.orderStatusses = response;
+      console.log('this is all the order statusses');
       console.log(this.orderStatusses);
+      this.forLoop();
     });
   }
 

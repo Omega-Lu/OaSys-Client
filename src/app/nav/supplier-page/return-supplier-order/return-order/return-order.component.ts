@@ -67,7 +67,7 @@ export class ReturnOrderComponent implements OnInit {
     productID: 0,
     orderReturnID: 0,
     quantity: 0,
-    reason: '',
+    reason: '-1',
   };
 
   dynamicArray = [];
@@ -91,20 +91,14 @@ export class ReturnOrderComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.sleep(150);
     this.getAllOrderProducts();
-    this.getAllOrderStatusses();
-    this.getAllProducts();
-    this.getAllProductCategories();
-    this.getAllProductTypes();
-    this.getAllOrderReturns();
 
     console.log('Supplier detailssssssss');
     console.log(this.supplier);
     console.log(this.order);
+  }
 
-    await this.sleep(150);
-
+  displayTable() {
     this.orderProducts = this.orderProducts.filter((orderProduct) => {
       console.log(orderProduct.orderID == this.order.orderID);
       return orderProduct.orderID == this.order.orderID;
@@ -220,7 +214,6 @@ export class ReturnOrderComponent implements OnInit {
 
     if ($(id).val() == 'not' && inputQuantity > 0) {
       $(id).val('-1');
-      //$(id).text('Reason');
     }
     if (inputQuantity == 0) {
       $(id).val('not');
@@ -228,9 +221,7 @@ export class ReturnOrderComponent implements OnInit {
     console.log('nuwe een');
     console.log($(idsel).text());
     console.log($(id).val());
-    // if ($(id).val() == null) {
-    //   this.reasonComplete = false;
-    // }
+
     for (let index = 0; index < this.quanArray.length; index++) {
       const element = this.quanArray[index];
       if ($(id).val() == null) {
@@ -246,28 +237,28 @@ export class ReturnOrderComponent implements OnInit {
   getAllOrderProducts() {
     this.orderProductService.getAllOrderProducts().subscribe((response) => {
       this.orderProducts = response;
-      console.log(this.orderProducts);
+      this.getAllOrderStatusses();
     });
   }
 
   getAllOrderStatusses() {
     this.orderStatusService.getAllOrderStatuss().subscribe((response) => {
       this.orderStatusses = response;
-      console.log(this.orderStatusses);
+      this.getAllProducts();
     });
   }
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
       this.products = response;
-      console.log(this.products);
+      this.getAllProductTypes();
     });
   }
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
       this.productTypes = response;
-      console.log(this.productTypes);
+      this.getAllProductCategories();
     });
   }
 
@@ -276,14 +267,14 @@ export class ReturnOrderComponent implements OnInit {
       .getAllProductCategories()
       .subscribe((response) => {
         this.productCategories = response;
-        console.log(this.productCategories);
+        this.getAllOrderReturns();
       });
   }
 
   getAllOrderReturns() {
     this.orderReturnService.getAllOrderReturns().subscribe((response) => {
       this.orderReturns = response;
-      console.log(this.orderReturns);
+      this.displayTable();
     });
   }
 
@@ -397,7 +388,7 @@ export class ReturnOrderComponent implements OnInit {
             .addSupplierOrderReturn(this.supplierOrderReturn)
             .subscribe((response) => {
               console.log(response);
-               this.successSubmit = true;
+              this.successSubmit = true;
             });
         }
       }

@@ -72,8 +72,8 @@ export class WageReportComponent implements OnInit {
           const x = this.dynamicArray[i];
           if (x.empID == this.employeesTemp[0].employeE_ID) {
             let wageSome = Number(this.dynamicArray[i].wage);
-            wageSome = wageSome + element.wageCollected;
-            this.dynamicArray[i].wage = wageSome.toFixed(2);
+          //  wageSome = wageSome + element.wageCollected;
+          //  this.dynamicArray[i].wage = wageSome.toFixed(2);
             this.exists = true;
             break;
           } else {
@@ -85,12 +85,12 @@ export class WageReportComponent implements OnInit {
         this.dynamicArray.push({
           name: this.employeesTemp[0].name,
           surname: this.employeesTemp[0].surname,
-          wage: element.wageCollected.toFixed(2),
+        //  wage: element.wageCollected.toFixed(2),
           empID: element.employeeID,
         });
       }
 
-      this.totalWage = this.totalWage + element.wageCollected;
+    //  this.totalWage = this.totalWage + element.wageCollected;
     }
     this.totalWageString = this.totalWage.toFixed(2);
   }

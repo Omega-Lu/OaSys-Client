@@ -38,17 +38,11 @@ export class ReceiveSupplierOrderComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.getAllOrders();
-    await this.getAllSuppliers();
-    await this.getAllOrderStatusses();
-
-    await this.sleep(100);
-
-    await this.forLoop();
-    this.suppliersTemp = this.suppliers;
+    this.getAllOrders();
   }
 
   async forLoop() {
+    this.suppliersTemp = this.suppliers;
     console.log(this.orders.length);
     for (let i = 0; i < this.orders.length; i++) {
       console.log('for begin');
@@ -60,14 +54,14 @@ export class ReceiveSupplierOrderComponent implements OnInit {
       console.log(this.orderStatussesTemp);
       this.orderStatussesTemp = this.orderStatussesTemp.filter(
         (orderStatus) => {
-          console.log(orderStatus.orderID == element.orderID);
+
           return orderStatus.orderID == element.orderID;
         }
       );
       if (this.orderStatussesTemp[0].description == 'Placed') {
         this.suppliersTemp = this.suppliers;
         this.suppliersTemp = this.suppliersTemp.filter((supplier) => {
-          console.log(supplier.supplieR_ID == element.supplierID);
+
           return supplier.supplieR_ID == element.supplierID;
         });
 
@@ -90,21 +84,27 @@ export class ReceiveSupplierOrderComponent implements OnInit {
   getAllOrders() {
     this.orderService.getAllOrders().subscribe((response) => {
       this.orders = response;
+      console.log('this is all the orders');
       console.log(this.orders);
+      this.getAllSuppliers();
     });
   }
 
   getAllSuppliers() {
     this.supplierService.getAllSuppliers().subscribe((response) => {
       this.suppliers = response;
+      console.log('this is all the suppliers');
       console.log(this.suppliers);
+      this.getAllOrderStatusses();
     });
   }
 
   getAllOrderStatusses() {
     this.orderStatusService.getAllOrderStatuss().subscribe((response) => {
       this.orderStatusses = response;
+      console.log('this is all the order statusses');
       console.log(this.orderStatusses);
+      this.forLoop();
     });
   }
 

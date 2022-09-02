@@ -3,5 +3,8 @@ export interface Wage {
   employeeID: number;
   dateIssued: string;
   dateCollected: string;
-  wageCollected: number;
+  wageCollected: string;
+  amount: number;
+  hrApproved: string;
+  dateWorked: string;
 }

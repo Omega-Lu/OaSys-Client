@@ -21,7 +21,7 @@ export class ValidationServicesComponent implements OnInit {
     }
   }
 
-  regexContactNumber = /[1-9][0-9]{8}$/;
+  regexContactNumber = /^([1-9])[0-9]{8}$/;
 
   ValidateContactNumber(num): boolean {
     if (this.regexContactNumber.test(num)) {
@@ -57,6 +57,26 @@ export class ValidationServicesComponent implements OnInit {
 
   ValidateMoney(money): boolean {
     if (this.regexMoney.test(money)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  regexWholeNumber = /^\d*$/;
+
+  ValidateInteger(int): boolean {
+    if (this.regexWholeNumber.test(int)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  regexVatNumber = /^[4][0-9]{9}$/;
+
+  ValdiateVatNumber(vat): boolean {
+    if (this.regexVatNumber.test(vat)) {
       return true;
     } else {
       return false;

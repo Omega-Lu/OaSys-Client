@@ -57,15 +57,10 @@ export class ReceiveOrderComponent implements OnInit {
 
   async ngOnInit() {
     this.getAllOrderProducts();
-    this.getAllOrderStatusses();
-    this.getAllProducts();
-    this.getAllProductCategories();
-    this.getAllProductTypes();
+  }
 
-    await this.sleep(150);
-
+  displayToTable() {
     this.orderProducts = this.orderProducts.filter((orderProduct) => {
-      console.log(orderProduct.orderID == this.order.orderID);
       return orderProduct.orderID == this.order.orderID;
     });
 
@@ -77,20 +72,11 @@ export class ReceiveOrderComponent implements OnInit {
       this.productCategoriesTemp = this.productCategories;
 
       this.productsTemp = this.productsTemp.filter((product) => {
-        console.log(product.producT_ID == element.productID);
         return product.producT_ID == element.productID;
       });
 
-      console.log('Product ' + i);
-      console.log(this.productsTemp[0]);
-      console.log('awe');
-
       this.productCategoriesTemp = this.productCategoriesTemp.filter(
         (productCategory) => {
-          console.log(
-            productCategory.producT_CATEGORY_ID ==
-              this.productsTemp[0].producT_CATEGORY_ID
-          );
           return (
             productCategory.producT_CATEGORY_ID ==
             this.productsTemp[0].producT_CATEGORY_ID
@@ -98,22 +84,12 @@ export class ReceiveOrderComponent implements OnInit {
         }
       );
 
-      console.log('productCategoriesTemp ');
-      console.log(this.productCategoriesTemp);
-      console.log('awe');
-
       this.productTypesTemp = this.productTypesTemp.filter((productType) => {
-        console.log(
-          productType.producT_TYPE_ID == this.productsTemp[0].producT_TYPE_ID
-        );
         return (
           productType.producT_TYPE_ID == this.productsTemp[0].producT_TYPE_ID
         );
       });
 
-      console.log('productTypesTemp');
-      console.log(this.productTypesTemp);
-      console.log('awe');
 
       this.dynamicArray.push({
         CategoryName: this.productCategoriesTemp[0].categorY_NAME,
@@ -133,28 +109,36 @@ export class ReceiveOrderComponent implements OnInit {
   getAllOrderProducts() {
     this.orderProductService.getAllOrderProducts().subscribe((response) => {
       this.orderProducts = response;
+      console.log('this is all the order products');
       console.log(this.orderProducts);
+      this.getAllOrderStatusses();
     });
   }
 
   getAllOrderStatusses() {
     this.orderStatusService.getAllOrderStatuss().subscribe((response) => {
       this.orderStatusses = response;
+      console.log('this is all the order statusses');
       console.log(this.orderStatusses);
+      this.getAllProducts();
     });
   }
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
       this.products = response;
+      console.log('this is all the products');
       console.log(this.products);
+      this.getAllProductTypes();
     });
   }
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
       this.productTypes = response;
+      console.log('this is all the product types');
       console.log(this.productTypes);
+      this.getAllProductCategories();
     });
   }
 
@@ -163,7 +147,9 @@ export class ReceiveOrderComponent implements OnInit {
       .getAllProductCategories()
       .subscribe((response) => {
         this.productCategories = response;
+        console.log('this is all the product categoories');
         console.log(this.productCategories);
+        this.displayToTable();
       });
   }
 
@@ -187,46 +173,40 @@ export class ReceiveOrderComponent implements OnInit {
         const element = this.dynamicArray[index];
 
         if (element.Quantity > 0) {
-          this.getAllProducts();
-          this.sleep(52);
+          this.productService.getAllProducts().subscribe((response) => {
+            this.productsTemp = response;
 
-          this.productsTemp = this.products;
-
-          this.productsTemp = this.productsTemp.filter((product) => {
-            console.log(product.producT_ID == element.productID);
-            return product.producT_ID == element.productID;
-          });
-
-          console.log('updates product');
-          this.product = this.productsTemp[0];
-          this.product.quantitY_ON_HAND =
-            this.product.quantitY_ON_HAND + element.Quantity;
-          this.productService
-            .updateProduct(this.product)
-            .subscribe((response) => {
-              console.log(response);
+            this.productsTemp = this.productsTemp.filter((product) => {
+              return product.producT_ID == element.productID;
             });
 
-          console.log('before order status filter');
+            //update product quantity
 
-          this.orderStatusses = this.orderStatusses.filter((orderStatus) => {
-            console.log(orderStatus.orderID == this.order.orderID);
-            return orderStatus.orderID == this.order.orderID;
+            this.product = this.productsTemp[0];
+            this.product.quantitY_ON_HAND =
+              this.product.quantitY_ON_HAND + element.Quantity;
+            this.productService
+              .updateProduct(this.product)
+              .subscribe((response) => {
+                console.log('the new updated product');
+                console.log(response);
+              });
           });
-
-          console.log(this.orderStatusses[0]);
-          console.log('before order status filter');
-
-          this.orderStatus = this.orderStatusses[0];
-          this.orderStatus.description = 'Received';
-          this.orderStatusService
-            .updateOrderStatus(this.orderStatus)
-            .subscribe((response) => {
-              console.log(response);
-              this.successSubmit = true;
-            });
         }
       }
+      this.orderStatusses = this.orderStatusses.filter((orderStatus) => {
+        return orderStatus.orderID == this.order.orderID;
+      });
+
+      this.orderStatus = this.orderStatusses[0];
+      this.orderStatus.description = 'Received';
+      this.orderStatusService
+        .updateOrderStatus(this.orderStatus)
+        .subscribe((response) => {
+          console.log('the new product status');
+          console.log(response);
+          this.successSubmit = true;
+        });
     }
   }
 }

@@ -97,8 +97,7 @@ import { NavGeneralManagerComponent } from './nav-general-manager/nav-general-ma
 import { NavCashierComponent } from './nav-cashier/nav-cashier.component';
 import { NavHRComponent } from './nav-hr/nav-hr.component';
 import { EmployeeLandingPageComponent } from './nav-cashier/employee-landing-page/employee-landing-page.component';
-import { ClockInComponent } from './nav-employee/clock-in/clock-in.component';
-import { ClockOutComponent } from './nav-employee/clock-out/clock-out.component';
+import { ClockInAndOutComponent } from './nav-cashier/clock-in-and-out/clock-in-and-out.component';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -258,8 +257,7 @@ const appRoutes: Routes = [
     NavCashierComponent,
     NavHRComponent,
     EmployeeLandingPageComponent,
-    ClockInComponent,
-    ClockOutComponent,
+    ClockInAndOutComponent,
   ],
   imports: [
     BrowserModule,

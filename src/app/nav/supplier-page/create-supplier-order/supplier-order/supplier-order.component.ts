@@ -13,6 +13,7 @@ import { OrderStatus } from 'src/app/models/orderStatus.model';
 import { OrderStatusService } from 'src/app/_services/orderStatus.service';
 import { OrderProduct } from 'src/app/models/orderProduct.model';
 import { OrderProductService } from 'src/app/_services/orderProduct.service';
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 import * as $ from 'jquery';
 
 @Component({
@@ -68,6 +69,9 @@ export class SupplierOrderComponent implements OnInit {
     orderID: 0,
     quantity: 0,
   };
+
+  //use validation
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
 
   constructor(
     private productService: ProductService,
@@ -161,11 +165,11 @@ export class SupplierOrderComponent implements OnInit {
     this.completeSelection = true;
   }
 
-  quantityVali() {
-    if (this.quantity > 0) {
-      this.completeQuantity = true;
-    } else {
+  ValidateQuantity() {
+    if (this.quantity < 1) {
       this.completeQuantity = false;
+    } else {
+      this.completeQuantity = this.validate.ValidateInteger(this.quantity);
     }
   }
 
@@ -210,36 +214,39 @@ export class SupplierOrderComponent implements OnInit {
   onSubmit() {
     this.order.supplierID = this.supplier.supplieR_ID;
     this.order.datePlaced = new Date().toString();
-    console.log(this.order.datePlaced);
+
+    //add the new order
 
     this.orderService.addOrder(this.order).subscribe((response) => {
+      console.log('this is the new order');
       console.log(response);
-    });
+      this.orderStatus.orderID = response.orderID;
+      this.orderProduct.orderID = response.orderID;
 
-    this.getAllOrders();
-
-    this.orderStatus.orderID = this.orders[this.orders.length - 1].orderID + 1;
-    this.orderProduct.orderID = this.orders[this.orders.length - 1].orderID + 1;
-
-    this.orderStatusService
-      .addOrderStatus(this.orderStatus)
-      .subscribe((response) => {
-        console.log(response);
-      });
-
-    for (let i = 0; i < this.dynamicArray.length; i++) {
-      const element = this.dynamicArray[i];
-
-      this.orderProduct.productID = element.productIDnumber;
-
-      this.orderProduct.quantity = element.quantity;
-
-      this.orderProductService
-        .addOrderProduct(this.orderProduct)
+      // add the order status
+      this.orderStatusService
+        .addOrderStatus(this.orderStatus)
         .subscribe((response) => {
+          console.log('this is the new order status');
           console.log(response);
-          this.successSubmit = true;
         });
-    }
+
+      // add the order products
+      for (let i = 0; i < this.dynamicArray.length; i++) {
+        const element = this.dynamicArray[i];
+
+        this.orderProduct.productID = element.productIDnumber;
+
+        this.orderProduct.quantity = element.quantity;
+
+        this.orderProductService
+          .addOrderProduct(this.orderProduct)
+          .subscribe((response) => {
+            console.log('this is a product order');
+            console.log(response);
+            this.successSubmit = true;
+          });
+      }
+    });
   }
 }
