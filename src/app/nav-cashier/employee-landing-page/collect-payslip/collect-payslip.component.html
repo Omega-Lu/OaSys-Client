@@ -11,7 +11,7 @@
     "
   >
     <p style="margin-top: 35px; width: 152px; color: var(--bs-dark)">
-      Employee ID: {{ employee.employeE_ID }}
+
     </p>
     <p
       style="
@@ -21,7 +21,7 @@
         margin-top: -13px;
       "
     >
-      Employee: {{ employee.name }}
+
     </p>
     <p
       style="
@@ -31,7 +31,7 @@
         margin-top: -12px;
       "
     >
-      Wage ID: {{ rate.ratE_ID }}
+     
     </p>
   </div>
   <div style="height: 38px; margin-top: 26px">
@@ -48,42 +48,17 @@
         <thead>
           <tr>
             <th>Date</th>
-            <th>Time in </th>
-            <th>Time out </th>
             <th>Hours worked</th>
             <th>Wage rate</th>
             <th>Total pay</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <input
-                class="form-control"
-                type="date"
-                value="{{ date }}"
-                [disabled]="dis"
-              />
-            </td>
-            <td>
-              <input
-                class="form-control"
-                type="time"
-                value="{{ timeIn }}"
-                [disabled]="dis"
-              />
-            </td>
-            <td>
-              <input
-                class="form-control"
-                type="time"
-                value="{{ timeOut }}"
-                [disabled]="dis"
-              />
-            </td>
-            <td>{{ totalTimeString }}</td>
-            <td>{{ rate.ratE_AMOUNT }}</td>
-            <td>R{{ totalPayString }}</td>
+          <tr *ngFor="let dynamic of dynamicArray">
+            <td>{{ dynamic.date }}</td>
+            <td>{{ dynamic.hours }}</td>
+            <td>{{ dynamic.rate }}</td>
+            <td>{{ dynamic.pay }}</td>
           </tr>
           <tr></tr>
         </tbody>

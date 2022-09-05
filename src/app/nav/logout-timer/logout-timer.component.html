@@ -1,0 +1,234 @@
+<div class="container">
+  <div class="row">
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-toggle="modal"
+      data-target="#AddTimerModal"
+    >
+      Add Logout Timer
+    </button>
+  </div>
+  <div class="row">
+    <button class="btn btn-primary" type="button">View Logout Timer</button>
+  </div>
+  <div class="row">
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-toggle="modal"
+      data-target="#EditTimerModal"
+    >
+      Edit Logout Timer
+    </button>
+  </div>
+  <div class="row">
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-toggle="modal"
+      data-target="#DeleteTimerModal"
+    >
+      Delete Logout Timer
+    </button>
+  </div>
+</div>
+
+<!-- Modal Delete -->
+
+<div
+  class="modal fade"
+  id="DeleteTimerModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DeleteTimerLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="DeleteTimerLabel" *ngIf="!successDelete">
+          Delete Logout Timer?
+        </h2>
+        <h2 class="modal-title" id="DeleteTimerLabel" *ngIf="successDelete">
+          Logout Timer Successfully Deleted
+        </h2>
+      </div>
+      <div class="modal-body" *ngIf="!successDelete">
+        This action will delete the logout timer that is implemented in the
+        system. Are you sure you want to do this?
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successDelete"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-warning"
+          data-target="#DeleteTimerModal"
+          *ngIf="!successDelete"
+          (click)="deleteLogoutTimer(); successDelete = true"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#DeleteTimerModal"
+          data-dismiss="modal"
+          *ngIf="successDelete"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit -->
+
+<div
+  class="modal fade"
+  id="EditTimerModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditTimerLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="EditTimerLabel" *ngIf="!successEdit">
+          Edit Logout Timer?
+        </h2>
+        <h2 class="modal-title" id="EditTimerLabel" *ngIf="successEdit">
+          Time in Minutes
+        </h2>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="!successEdit">
+          This action will edit the logout timer that is implemented in the
+          system. Are you sure you want to do this?
+        </p>
+        <input
+          type="text"
+          class="form-control"
+          id="email"
+          placeholder="your@email.com"
+          (keyup)="ValidateTime()"
+          [(ngModel)]="time"
+          [ngModelOptions]="{ standalone: true }"
+          *ngIf="successEdit"
+        />
+        <p *ngIf="!validTime" style="color: red">Please Enter A Valid Time</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successEdit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-warning"
+          data-target="#EditTimerModal"
+          *ngIf="!successEdit"
+          (click)="successEdit = true"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#EditTimerModal"
+          data-dismiss="modal"
+          *ngIf="successEdit"
+          (click)="editLogoutTimer()"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Add -->
+
+<div
+  class="modal fade"
+  id="AddTimerModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="AddTimerLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="AddTimerLabel" *ngIf="!successAdd">
+          Add Logout Timer?
+        </h2>
+        <h2 class="modal-title" id="AddTimerLabel" *ngIf="successAdd">
+          Time in Minutes
+        </h2>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="!successEdit">
+          This action will add a logout timer that is implemented in the system.
+          Are you sure you want to do this?
+        </p>
+        <input
+          type="text"
+          class="form-control"
+          id="email"
+          placeholder="your@email.com"
+          (keyup)="ValidateTime()"
+          [(ngModel)]="time"
+          [ngModelOptions]="{ standalone: true }"
+          *ngIf="successAdd"
+        />
+        <p *ngIf="!validTime" style="color: red">Please Enter A Valid Time</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successAdd"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-warning"
+          data-target="#AddTimerModal"
+          *ngIf="!successAdd"
+          (click)="successAdd = true"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#AddTimerModal"
+          data-dismiss="modal"
+          *ngIf="successAdd"
+          (click)="addLogoutTimer()"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

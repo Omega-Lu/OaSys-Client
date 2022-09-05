@@ -73,109 +73,6 @@
         </option>
       </select>
     </div>
-    <p
-      style="
-        width: 328px;
-
-        margin-bottom: 34px;
-        margin-top: 10px;
-      "
-    >
-      Wage Rate:
-    </p>
-    <div
-      style="
-        margin: -61px;
-        margin-right: 2px;
-        margin-left: 4px;
-        margin-top: -34px;
-      "
-    >
-      <select
-        class="btn btn-primary"
-        type="button"
-        style="
-          color: var(--bs-orange);
-          background: var(--bs-gray-100);
-          border-color: var(--bs-orange);
-        "
-        [disabled]="wageSelect"
-        id="rateID"
-        (input)="wageOption($event.target.value)"
-      >
-        <option selected disabled value="-1">Wage Rate</option>
-        <option *ngFor="let rate of rates" value="{{ rate.ratE_ID }}">
-          {{ rate.ratE_NAME }}
-        </option>
-      </select>
-    </div>
-  </div>
-  <div style="height: 134px">
-    <div class="table-responsive" style="height: 132.5px">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time in </th>
-            <th>Time out </th>
-            <th>Hours worked</th>
-            <th>Wage rate</th>
-            <th>Total pay</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <input
-                class="form-control"
-                type="date"
-                [(ngModel)]="dateWorked"
-                [ngModelOptions]="{ standalone: true }"
-                [disabled]="tableDisable"
-                (input)="datePicked()"
-              />
-            </td>
-            <td>
-              <input
-                class="form-control"
-                type="time"
-                [(ngModel)]="timeIn"
-                [ngModelOptions]="{ standalone: true }"
-                (input)="ValTimeIN($event.target.value)"
-                [disabled]="timeInDisable"
-              />
-            </td>
-            <td>
-              <input
-                class="form-control"
-                type="time"
-                id="timeOutID"
-                [(ngModel)]="timeOut"
-                [ngModelOptions]="{ standalone: true }"
-                (input)="calculatePay($event.target.value)"
-                [disabled]="timeOutDisable"
-              />
-            </td>
-            <td>
-              {{ totalTimeString }}
-            </td>
-            <td>{{ rate.ratE_AMOUNT }}</td>
-            <td>R{{ totalPayString }}</td>
-            <td>
-              <button
-                class="btn btn-primary"
-                type="button"
-                style="margin-top: 3px; background: var(--bs-orange)"
-                (click)="AddToTable()"
-              >
-                Add
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
   <div class="table-responsive" style="height: 220px">
     <table class="table">
@@ -229,7 +126,7 @@
         border-color: var(--bs-orange);
       "
       (click)="finPay()"
-      [disabled]="screenStart"
+      [disabled]="!employeeSelected"
     >
       Finalise wage payment
     </button>

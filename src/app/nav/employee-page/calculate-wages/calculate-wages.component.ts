@@ -34,6 +34,7 @@ export class CalculateWagesComponent implements OnInit {
 
   wage: Wage;
   wages: Wage[] = [];
+  wagesTemp: Wage[] = [];
 
   employeeType: EmployeeType;
   employeeTypes: EmployeeType[] = [];
@@ -202,6 +203,7 @@ export class CalculateWagesComponent implements OnInit {
           date: element.dateWorked,
           wageName: this.employeeTypesTemp[0].positioN_NAME,
           totalPay: element.amount,
+          wageID: element.wageID,
         });
       }
     }
@@ -244,7 +246,18 @@ export class CalculateWagesComponent implements OnInit {
   }
 
   finPay() {
-    this.collectPayslip = true;
+    for (let i = 0; i < this.displayWages.length; i++) {
+      const element = this.displayWages[i];
+      this.wagesTemp = this.wages;
+      this.wagesTemp = this.wagesTemp.filter((wage) => {
+        return wage.wageID == element.wageID;
+      });
+      this.wagesTemp[0].hrApproved = 'true';
+      this.WageService.updateWage(this.wagesTemp[0]).subscribe((res) => {
+        console.log(' this is the new updated wages');
+        console.log(res);
+      });
+    }
   }
 
   back() {

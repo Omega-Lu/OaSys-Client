@@ -9,6 +9,8 @@ import { UserService } from 'src/app/_services/user.service';
 import * as $ from 'jQuery';
 import '../../../../assets/js/smtp.js';
 declare let Email: any;
+import * as bcrypt from 'bcryptjs';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-add-eployee',
@@ -70,11 +72,25 @@ export class AddEployeeComponent implements OnInit {
   };
   users: User[] = [];
 
+  //hashing
+  //bcrypt = require('bcrypt');
+  salt = 'YourSecretKeyForEncryption&DescryptionOasys';
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
     private userService: UserService
   ) {}
+
+  saltnHash(value: string): string {
+    return CryptoJS.AES.encrypt(value, this.salt.trim()).toString();
+  }
+
+  decrypt(textToDecrypt: string) {
+    return CryptoJS.AES.decrypt(textToDecrypt, this.salt.trim()).toString(
+      CryptoJS.enc.Utf8
+    );
+  }
 
   async ngOnInit() {
     this.employee.contacT_NUMBER = 0;
@@ -170,13 +186,18 @@ export class AddEployeeComponent implements OnInit {
 
   onSubmit() {
     let empID;
+
+    this.user.useR_PASSWORD = Math.random().toString(36).slice(-8);
+    let normalPass = this.user.useR_PASSWORD;
+    let encryptedText = this.saltnHash(this.user.useR_PASSWORD);
+    this.user.useR_PASSWORD = encryptedText;
+
     this.employeeService.addEmployee(this.employee).subscribe((response) => {
       console.log('this is the new Employee');
       console.log(response);
       empID = response.employeE_ID;
       this.user.employeE_ID = empID;
       this.user.username = this.employee.name + '-' + this.employee.surname;
-      this.user.useR_PASSWORD = Math.random().toString(36).slice(-8);
 
       console.log('this is the new user');
       console.log(this.user);
@@ -193,9 +214,9 @@ export class AddEployeeComponent implements OnInit {
           From: 'oasys.infolutions@gmail.com',
           Subject: 'Username And Password For OaSys System',
           Body: `<h3>Your Username: </h3>
-                  <p>${this.user.username}</p>
-                  <h3>Your Password</h3>
-                  <p>${this.user.useR_PASSWORD}</p>`,
+                <p>${this.user.username}</p>
+                <h3>Your Password</h3>
+                <p>${normalPass}</p>`,
         }).then((message) => console.log(message));
         this.successSubmit = true;
       });

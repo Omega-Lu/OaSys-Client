@@ -22,6 +22,9 @@
         ><input
           class="form-control"
           type="date"
+          id="fromDate"
+          [(ngModel)]="DateFrom"
+          [ngModelOptions]="{ standalone: true }"
           style="width: 200px; margin-left: 20px; margin-bottom: 20px"
         /><button
           class="btn btn-primary"
@@ -31,6 +34,7 @@
             border-color: var(--bs-orange);
             margin-left: 20px;
           "
+          (click)="createChart()"
         >
           Generate sales Report
         </button>
@@ -40,6 +44,9 @@
         ><input
           class="form-control"
           type="date"
+          id="toDate"
+          [(ngModel)]="DateTo"
+          [ngModelOptions]="{ standalone: true }"
           style="width: 200px; margin-left: 20px; margin-bottom: 20px"
         /><button
           class="btn btn-primary"
@@ -63,11 +70,7 @@
     >Time Generated:18:27</label
   >
   <div style="margin-left: 20px">
-    <canvas
-      height="350"
-      style="display: block; width: 700px; height: 350px"
-      width="700"
-    ></canvas>
+    <div id="chartContainer" style="height: 360px; width: 100%"></div>
   </div>
   <button
     class="btn btn-warning"

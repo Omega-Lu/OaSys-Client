@@ -85,6 +85,18 @@
               ></a
             >
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="navName = 'Settings'; logoutTimerDisplay = true"
+              ><i class="fas fa-tachometer-alt text-dark"></i
+              ><span
+                class="text-warning"
+                (click)="navName = 'Settings'; logoutTimerDisplay = true"
+                >Settings</span
+              ></a
+            >
+          </li>
         </ul>
       </div>
     </nav>
@@ -136,7 +148,11 @@
           </div>
         </nav>
         <div class="pl-3">
-          <router-outlet></router-outlet>
+          <router-outlet *ngIf="!logoutTimerDisplay"></router-outlet>
+          <app-logout-timer
+  *ngIf="logoutTimerDisplay"
+  (newItemEvent)="updateLogout($event)"
+></app-logout-timer>
         </div>
       </div>
       <footer class="bg-white sticky-footer">
@@ -149,3 +165,4 @@
     </div>
   </div>
 </body>
+
