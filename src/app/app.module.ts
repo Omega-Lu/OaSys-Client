@@ -125,7 +125,7 @@ const appRoutes: Routes = [
   { path: 'maintain-debtor', component: MaintainDebtorComponent },
   { path: 'maintain-employee', component: MaintainEmployeeComponent },
   { path: 'maintain-employee-type', component: MaintainEmployeeTypeComponent },
-  { path: 'maintain-product', component: MaintainProductCategoryComponent },
+  { path: 'maintain-product', component: MaintainProductComponent },
   {
     path: 'maintain-product-category',
     component: MaintainProductCategoryComponent,

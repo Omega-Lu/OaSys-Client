@@ -1,19 +1,20 @@
-<div class="container-fluid">
-  <app-update-employee
-    *ngIf="updateEmployee"
-    [employee]="employee"
-    (return)="back()"
-  ></app-update-employee>
+<app-update-employee
+  *ngIf="updateEmployee"
+  [employee]="employee"
+  (return)="back()"
+></app-update-employee>
 
+<div class="container-fluid" *ngIf="!updateEmployee">
   <h1>Maintain Employee</h1>
 
   <input
-    type="search"
-    name="Search"
-    style="padding-bottom: 0%; margin-bottom: 2%"
+    class="form-control search-input"
+    type="text"
+    name="search-bar"
     placeholder="Search..."
+    style="width: 320px"
     [(ngModel)]="searchText"
-    (input)="Search()"
+    (keyup)="Search()"
   />
 
   <div class="table-responsive" style="height: 450px">
@@ -25,6 +26,8 @@
           <th>Surname</th>
           <th>Contact Number</th>
           <th>ID Number</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -39,7 +42,7 @@
               class="btn btn-primary"
               type="button"
               style="background: var(--bs-orange)"
-              (click)=" populateForm(employee)"
+              (click)="populateForm(employee)"
             >
               Edit
             </button>
@@ -111,7 +114,7 @@
           name="deleteempl"
           data-target="#exampleModal"
           *ngIf="!successDelete"
-          (click)=" deleteEmployee()"
+          (click)="deleteEmployee()"
         >
           Yes
         </button>

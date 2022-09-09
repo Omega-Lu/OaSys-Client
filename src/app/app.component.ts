@@ -121,42 +121,46 @@ export class AppComponent implements OnInit {
   }
 
   login() {
-    this.usersTemp = this.users;
-    console.log('by login');
-    console.log(this.username);
+    // this.usersTemp = this.users;
+    // console.log('by login');
+    // console.log(this.username);
 
-    this.usersTemp = this.usersTemp.filter((user) => {
-      console.log(user.username == this.username);
-      return user.username == this.username;
-    });
+    // this.usersTemp = this.usersTemp.filter((user) => {
+    //   console.log(user.username == this.username);
+    //   return user.username == this.username;
+    // });
 
-    console.log(this.usersTemp);
-    console.log('this is the usersTemp length ' + this.usersTemp.length);
+    // console.log(this.usersTemp);
+    // console.log('this is the usersTemp length ' + this.usersTemp.length);
 
-    if (this.usersTemp.length == 0) {
-      this.details = false;
-    } else {
-      this.details = true;
-      let saledPass = this.decrypt(this.usersTemp[0].useR_PASSWORD);
-      if (saledPass == this.password) {
-        console.log('THe Current User ID');
-        console.log(this.usersTemp[0].useR_ID);
-        this.currentUser.userID = this.usersTemp[0].useR_ID;
-        this.currentUser.username = this.username;
-        this.currentUser.employeeID = this.usersTemp[0].employeE_ID;
-        this.currentUserService
-          .addCurrentUser(this.currentUser)
-          .subscribe((response) => {
-            console.log('this is the current user');
-            console.log(response);
-            this.loggedIn = true;
-            this.userRoleID = this.usersTemp[0].useR_ROLE_ID;
-            this.loginLevel();
-          });
-      } else {
-        this.sdetails = false;
-      }
-    }
+    // if (this.usersTemp.length == 0) {
+    //   this.details = false;
+    // } else {
+    //   this.details = true;
+    //   let saledPass = this.decrypt(this.usersTemp[0].useR_PASSWORD);
+    //   if (saledPass == this.password) {
+    //     console.log('THe Current User ID');
+    //     console.log(this.usersTemp[0].useR_ID);
+    //     this.currentUser.userID = this.usersTemp[0].useR_ID;
+    //     this.currentUser.username = this.username;
+    //     this.currentUser.employeeID = this.usersTemp[0].employeE_ID;
+    //     this.currentUserService
+    //       .addCurrentUser(this.currentUser)
+    //       .subscribe((response) => {
+    //         console.log('this is the current user');
+    //         console.log(response);
+    //         this.loggedIn = true;
+    //         this.userRoleID = this.usersTemp[0].useR_ROLE_ID;
+    //         this.loginLevel();
+    //       });
+    //   } else {
+    //     this.sdetails = false;
+    //   }
+    // }
+
+    this.userRoleID = 0;
+    this.loggedIn = true;
+    this.loginLevel();
   }
 
   getUsers() {

@@ -1,64 +1,69 @@
-<app-update-warning *ngIf="updateWarning" [warning] = "warning"></app-update-warning>
-<h3 class="text-dark" style="padding-top: 3%; padding-left: 3%" *ngIf="!updateWarning">
-  Maintain warning
-</h3>
-<div class="search container" *ngIf="!updateWarning">
-  <i class="fas fa-search text-primary"></i
-  ><input
-    type="search"
-    style="padding-bottom: 0%; margin-bottom: 2%"
-    placeholder="Search..."
-    [(ngModel)]="searchText"
-    (input)="Search()"
-  />
-</div>
+<app-update-warning
+  *ngIf="updateWarning"
+  [warning]="warning"
+></app-update-warning>
+
 <div class="container-fluid" *ngIf="!updateWarning">
-  <h3 class="text-dark mb-4"></h3>
-  <div class="card shadow">
-    <div class="card-header py-3">
-      <p class="text-primary m-0 fw-bold">Warning info</p>
-    </div>
-    <div class="card-body">
-      <div
-        class="table-responsive table mt-2"
-        id="dataTable"
-        role="grid"
-        aria-describedby="dataTable_info"
-      >
-        <table class="table my-0" id="dataTable">
-          <thead>
-            <tr>
-              <th>Warning Name</th>
-              <th>Reason</th>
-              <th style="margin-right: 0%; width: 24%">Employee Name</th>
-              <th>Update/Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-              <tr *ngFor="let warning of warnings">
-                  <td>{{warning.warininG_NAME}}</td>
-                  <td>{{warning.reason}}</td>
-                  <td>{{warning.employeE_ID}}</td>
-                 <i class="far fa-edit text-primary" style="padding-left: 0%"
-                 (click)=" populateForm(warning)"
-                 ></i>
-                 <i class="fas fa-trash-alt text-danger"
-                  style="padding-left: 10%"
-                  (click)="deleteEmployee(warning.warninG_ID)"
-                ></i>
-              </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <h1>Maintain warning</h1>
+  <input
+    class="form-control search-input"
+    type="text"
+    name="search-bar"
+    placeholder="Search..."
+    style="width: 320px"
+    [(ngModel)]="searchText"
+    (keyup)="Search()"
+  />
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Warning Name</th>
+          <th>Reason</th>
+          <th>Employee Name</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let warning of warnings">
+          <td>{{ warning.warininG_NAME }}</td>
+          <td>{{ warning.reason }}</td>
+          <td>{{ warning.employeE_ID }}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              style="background: var(--bs-orange)"
+              (click)="populateForm(warning)"
+            >
+              Edit
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              style="background: var(--bs-red)"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              (click)="deletee(warining.warninG_ID)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <button
-  class="btn btn-primary"
-  type="button"
-  style="background: var(--bs-orange); margin-top: 20px"
-  routerLink="/employee-page"
->
-  Back
-</button>
+    class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange); margin-top: 20px"
+    routerLink="/employee-page"
+  >
+    Back
+  </button>
 </div>

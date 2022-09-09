@@ -53,4 +53,8 @@ export class MaintainWarningTypeComponent implements OnInit {
       this.getAllEmployees();
     }
   }
+  back() {
+    this.updateWarning = false;
+    this.getAllEmployees();
+  }
 }

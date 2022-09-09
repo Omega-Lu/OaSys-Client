@@ -1,68 +1,67 @@
-<app-update-wage-rate *ngIf="updateRate" [rate]="rate"></app-update-wage-rate>
-<h3
-  class="text-dark mb-4"
-  style="padding-top: 3%; padding-left: 3%"
-  *ngIf="!updateRate"
->
-  Maintain wage rate
-</h3>
-<div class="container" *ngIf="!updateRate">
-  <i class="fas fa-search text-primary"></i
-  ><input
-    type="search"
-    style="padding-bottom: 0%; margin-bottom: 2%"
-    placeholder="Search..."
-  />
-</div>
+<app-update-wage-rate
+  *ngIf="updateRate"
+  [rate]="rate"
+  (return)="back()"
+></app-update-wage-rate>
+
 <div class="container-fluid" *ngIf="!updateRate">
-  <div class="card shadow">
-    <div class="card-header py-3">
-      <p class="text-primary m-0 fw-bold">Wage rates Info</p>
-    </div>
-    <div class="card-body">
-      <div
-        class="table-responsive table mt-2"
-        id="dataTable"
-        role="grid"
-        aria-describedby="dataTable_info"
-      >
-        <table class="table my-0" id="dataTable">
-          <thead>
-            <tr>
-              <th>Wage rate name</th>
-              <th>Amount (R/h)</th>
-              <th>Update/Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let rate of rates">
-              <td>{{ rate.ratE_NAME }}</td>
-              <td>{{ rate.ratE_AMOUNT }}</td>
-              <i
-                class="far fa-edit text-primary"
-                style="padding-left: 0%"
-                (click)=" populateForm(rate)"
-              ></i>
-              <i
-                class="fas fa-trash-alt text-danger"
-                style="padding-left: 10%"
-                (click)="deleteEmployee(rate.ratE_ID)"
-              ></i>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <h1>Maintain wage rate</h1>
+  <input
+    class="form-control search-input"
+    type="text"
+    name="search-bar"
+    placeholder="Search..."
+    style="width: 320px"
+    [(ngModel)]="searchText"
+    (keyup)="Search()"
+  />
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Wage rate name</th>
+          <th>Amount (/h)</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rate of rates">
+          <td>{{ rate.ratE_NAME }}</td>
+          <td>R{{ rate.ratE_AMOUNT }}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              style="background: var(--bs-orange)"
+              (click)="populateForm(rate)"
+            >
+              Edit
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              style="background: var(--bs-red)"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              (click)="deletee(rate.ratE_ID)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
   <button
-  class="btn btn-primary"
-  type="button"
-  style="background: var(--bs-orange); margin-top: 20px"
-  routerLink="/employee-page"
->
-  Back
-</button>
+    class="btn btn-primary"
+    type="button"
+    style="background: var(--bs-orange); margin-top: 20px"
+    routerLink="/employee-page"
+  >
+    Back
+  </button>
 </div>
-
-

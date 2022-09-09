@@ -2,6 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+import { EmployeeType } from 'src/app/models/employee-type.model';
+import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: 'app-update-employee',
@@ -22,8 +26,27 @@ export class UpdateEmployeeComponent implements OnInit {
   passportVal: boolean = true;
   successSubmit: boolean = false;
 
+  validRole: boolean = true;
+  validType: boolean = true;
+
+  employeeType: EmployeeType;
+  employeeTypes: EmployeeType[] = [];
+
+  employeeSelected: boolean = true;
+
   // import validation
   validate: ValidationServicesComponent = new ValidationServicesComponent();
+
+  //user models
+  user: User = {
+    useR_ID: 0,
+    useR_ROLE_ID: 0,
+    employeE_ID: 0,
+    useR_STATUS_ID: 0,
+    username: '',
+    useR_PASSWORD: '',
+  };
+  users: User[] = [];
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -115,5 +138,26 @@ export class UpdateEmployeeComponent implements OnInit {
 
   Return() {
     this.return.emit('false');
+  }
+
+  roleValidate() {
+    if ($('#employeeRoleID option:selected').val() == '0') {
+      this.validRole = false;
+    } else {
+      this.validRole = true;
+    }
+  }
+
+  typeValidate() {
+    if (this.employeeSelected == true) {
+      if ($('#employeeTypeID option:selected').val() == '0') {
+        this.validType = false;
+      } else {
+        this.validType = true;
+        if ($('#employeeTypeID option:selected').val() == '1002') {
+          this.user.useR_ROLE_ID = 3;
+        } else this.user.useR_ROLE_ID = 4;
+      }
+    }
   }
 }
