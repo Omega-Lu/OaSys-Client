@@ -1,15 +1,13 @@
-<h1>&nbsp;Add Product Category</h1>
 <div class="container-fluid">
-  <form #form="ngForm" (ngSubmit)="onSubmit()">
+  <h1>Add Product Category</h1>
+  <form #form="ngForm" (ngSubmit)="onSubmit()" style="margin-left: 1%">
     <div class="row">
-      <label class="form-label" style="margin-right: 650px"
-        >Product Category Name:</label
-      >
+      <label class="form-label">Product Category Name:</label>
       <input
         class="form-control"
         name="emplyeeName"
         type="text"
-        style="width: 300px; margin-right: 50px; margin-left: 10px"
+        style="width: 300px"
         [(ngModel)]="productCategory.categorY_NAME"
         (click)="namevalidate()"
         (keyup)="namevalidate()"
@@ -17,14 +15,12 @@
       <div *ngIf="!details" style="color: Red">Invalid Details</div>
     </div>
     <div class="row">
-      <label class="form-label" style="margin-right: 650px"
-        >Product Category Description:</label
-      >
+      <label class="form-label">Product Category Description:</label>
       <input
         class="form-control"
         name="emplyeeName"
         type="text"
-        style="width: 300px; margin-right: 50px; margin-left: 10px"
+        style="width: 300px"
         [(ngModel)]="productCategory.categorY_DESCRIPTION"
         (click)="survalidate()"
         (keyup)="survalidate()"
@@ -32,16 +28,15 @@
       <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
     </div>
     <div class="form-group">
-      <span>
+      <span style="margin-top: 10px">
         <button
           type="button"
           class="btn btn-primary"
           routerLink="/product-page"
           style="
-            border-right-color: var(--bs-orange);
+            border-color: var(--bs-orange);
             background: var(--bs-orange);
             margin-right: 30px;
-            margin-top: 10px;
           "
         >
           Cancel
@@ -52,10 +47,8 @@
           data-toggle="modal"
           data-target="#exampleModal"
           style="
-            border-right-color: var(--bs-orange);
+            border-color: var(--bs-orange);
             background: var(--bs-orange);
-            margin-right: 0px;
-            margin-top: 10px;
           "
           *ngIf="details && sdetails"
         >
@@ -85,7 +78,7 @@
                 id="exampleModalLabel"
                 *ngIf="successSubmit"
               >
-              Product Category Successfully Added
+                Product Category Successfully Added
               </h5>
             </div>
 

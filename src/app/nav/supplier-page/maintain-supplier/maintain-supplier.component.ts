@@ -73,5 +73,7 @@ export class MaintainSupplierComponent implements OnInit {
 
   back() {
     this.return.emit('false');
+    this.updateSupplier = false;
+    this.getAllSuppliers();
   }
 }

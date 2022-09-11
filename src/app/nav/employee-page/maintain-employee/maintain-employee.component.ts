@@ -58,7 +58,6 @@ export class MaintainEmployeeComponent implements OnInit {
 
   populateForm(employee: Employee) {
     this.employee = employee;
-    //this.router.navigate(['/update-employee']);
     this.updateEmployee = true;
   }
 

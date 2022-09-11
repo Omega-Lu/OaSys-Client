@@ -38,7 +38,7 @@ export class AddDebtorComponent implements OnInit {
     contacT_NUMBER: 0,
     crediT_LIMIT: 0,
     accounT_STATUS_ID: 0,
-    provincE_ID: 0,
+    provincE_ID: -1,
     amounT_OWING: 0,
     remindeR_MESSAGE: '',
   };

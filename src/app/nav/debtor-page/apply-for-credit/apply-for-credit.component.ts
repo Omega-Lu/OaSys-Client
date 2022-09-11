@@ -38,7 +38,7 @@ export class ApplyForCreditComponent implements OnInit {
     contactNumber: 0,
     creditLimit: 0,
     accountStatusID: 0,
-    provinceID: 0,
+    provinceID: -1,
     cityID: 0,
   };
 

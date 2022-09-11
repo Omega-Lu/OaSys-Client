@@ -13,7 +13,7 @@ export class AddProductTypeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
   details: boolean = true;
-  cdetails: boolean = false;
+  cdetails: boolean = true;
 
   successSubmit: boolean = false;
 
@@ -22,7 +22,7 @@ export class AddProductTypeComponent implements OnInit {
 
   productType: ProductType = {
     producT_TYPE_ID: 0,
-    producT_CATEGORY_ID: 0,
+    producT_CATEGORY_ID: -1,
     typE_NAME: '',
   };
 

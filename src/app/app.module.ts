@@ -175,6 +175,7 @@ const appRoutes: Routes = [
   { path: 'employee-landing-page', component: EmployeeLandingPageComponent },
   { path: 'forgot-reset-password', component: ForgotResetPasswordComponent },
   { path: 'logout-timer', component: LogoutTimerComponent },
+  { path: 'complete-stocktake', component: CompleteStocktakeComponent },
 ];
 
 @NgModule({

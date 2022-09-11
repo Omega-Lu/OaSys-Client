@@ -36,8 +36,8 @@ export class AddProductComponent implements OnInit {
 
   product: Product = {
     producT_ID: 0,
-    producT_CATEGORY_ID: 0,
-    producT_TYPE_ID: 0,
+    producT_CATEGORY_ID: -1,
+    producT_TYPE_ID: -1,
     producT_NAME: '',
     producT_DESCRIPTION: '',
     quantitY_ON_HAND: 0,

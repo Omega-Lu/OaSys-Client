@@ -17,6 +17,7 @@
           <th>OrderID</th>
           <th>Supplier Name</th>
           <th>Date Placed</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -32,7 +33,7 @@
                 background: var(--bs-orange);
                 border-color: var(--bs-orange);
               "
-              (click)=" populateForm(dynamic.OrderID)"
+              (click)="populateForm(dynamic.OrderID)"
             >
               Receive Order
             </button>
@@ -56,6 +57,6 @@
 </form>
 <app-receive-order
   *ngIf="boolReceive"
-  [order] = "order"
+  [order]="order"
   (return)="back()"
 ></app-receive-order>

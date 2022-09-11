@@ -52,7 +52,8 @@ export class ReceiveOrderComponent implements OnInit {
     private orderStatusService: OrderStatusService,
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
-    private productTypeService: ProductTypeService
+    private productTypeService: ProductTypeService,
+    private orderService: OrderService
   ) {}
 
   async ngOnInit() {
@@ -89,7 +90,6 @@ export class ReceiveOrderComponent implements OnInit {
           productType.producT_TYPE_ID == this.productsTemp[0].producT_TYPE_ID
         );
       });
-
 
       this.dynamicArray.push({
         CategoryName: this.productCategoriesTemp[0].categorY_NAME,

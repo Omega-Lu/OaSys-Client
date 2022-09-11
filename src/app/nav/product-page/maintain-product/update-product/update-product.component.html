@@ -1,158 +1,121 @@
-<p
-  style="
-    width: 996px;
-    color: rgb(4, 5, 11);
-    font-size: 23px;
-    margin-top: 0px;
-    margin-bottom: 6px;
-    margin-left: 6px;
-  "
->
-  ADD PRODUCTS:
-</p>
-<form
-  #form="ngForm"
-  (ngSubmit)="onSubmit()"
-  class="text-start"
-  style="height: 565px; width: 723px; margin-left: 20px; margin-top: 23px"
->
-  <div class="container">
+<div class="container-fluid">
+  <h1>Add Products:</h1>
+  <form
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
+    style="max-width: 800px; margin-left: 1%"
+  >
     <div class="row">
-      <h1
-        style="
-          width: 508px;
-          color: var(--bs-dark);
-          font-size: 19.880000000000006px;
-          font-weight: bold;
-          height: 7.8438000000000025px;
-        "
-      >
-        New products details:
-      </h1>
-      <p style="margin-top: 35px; width: 100%; color: var(--bs-dark)">
-        Product Name:
-      </p>
-      <input
-        class="form-control"
-        name="productname"
-        type="text"
-        style="margin-bottom: 5px; margin-top: -11px; width: 395px"
-        [(ngModel)]="product.producT_NAME"
-        (click)="namevalidate()"
-        (keyup)="namevalidate()"
-      />
-      <div *ngIf="!details" style="color: Red">Invalid Details</div>
+      <h2>New products details:</h2>
+      <div class="col">
+        <label class="form-label"> Product Name: </label>
+        <input
+          class="form-control"
+          name="productname"
+          id="productname"
+          type="text"
+          [(ngModel)]="product.producT_NAME"
+          (click)="namevalidate()"
+          (keyup)="namevalidate()"
+        />
+        <div *ngIf="!details" style="color: Red">Invalid Details</div>
+      </div>
+      <div class="col">
+        <label class="form-label"> Product Description: </label>
+        <input
+          class="form-control"
+          name="productDescription"
+          type="text"
+          [(ngModel)]="product.producT_DESCRIPTION"
+          (click)="survalidate()"
+          (keyup)="survalidate()"
+        />
+        <div *ngIf="!pdetails" style="color: Red">Invalid Details</div>
+      </div>
     </div>
     <div class="row">
-      <p style="width: 328px; color: var(--bs-gray-900); margin-bottom: 37px">
-        Product Description:
-      </p>
-      <input
-        class="form-control"
-        name="productDescription"
-        type="text"
-        style="width: 402px; margin-top: -30px; margin-bottom: 5px"
-        [(ngModel)]="product.producT_DESCRIPTION"
-        (click)="survalidate()"
-        (keyup)="survalidate()"
-      />
-      <div *ngIf="!pdetails" style="color: Red">Invalid Details</div>
-    </div>
-  </div>
-
-  <div class="container" style="margin-top: 21px; margin-bottom: 7px">
-    <div
-      class="row"
-      style="height: 136px; margin-bottom: -3px; margin-top: -13px"
-    >
-      <div class="col-md-6">
-        <p style="color: rgb(2, 3, 7)" style="margin-bottom: 0px !important">
+      <div class="col">
+        <label style="width: 100%" class="form-label">
           Product Category:
-        </p>
-        <div
-          class="dropdown"
+        </label>
+
+        <select
+          name="productCategory"
+          id="productCategory"
+          class="btn"
           style="
-            width: 336px;
-            height: 75px;
-            margin: 46px 0px -19px 2px;
-            margin-right: 0px;
-            margin-top: 1px;
-            margin-bottom: -19px;
-            margin-left: 2px;
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
           "
+          [(ngModel)]="product.producT_CATEGORY_ID"
+          required
+          (input)="categorySelect($event.target.value)"
         >
-          <select
-            name="productCategory"
-            id="productCategory"
-            class="btn btn-primary"
-            style="
-              background: var(--bs-orange);
-              border-right-color: var(--bs-orange);
-            "
-            [(ngModel)]="product.producT_CATEGORY_ID"
-            required
-            (input)="categorySelect($event.target.value)"
+          <option value="-1" selected disabled>Product Category</option>
+          <option
+            value=" {{ productCategory.producT_CATEGORY_ID }} "
+            *ngFor="let productCategory of productCategories"
           >
-            <option
-              value=" {{ productCategory.producT_CATEGORY_ID }} "
-              *ngFor="let productCategory of productCategories"
-            >
-              {{ productCategory.categorY_NAME }}
-            </option>
-          </select>
-        </div>
+            {{ productCategory.categorY_NAME }}
+          </option>
+        </select>
       </div>
-      <div class="col-md-6" *ngIf="categorySelected">
-        <p style="color: rgb(2, 3, 7)" style="margin-bottom: 0px !important">
-          Product type:
-        </p>
-        <div
-          class="dropdown"
+      <div class="col">
+        <label class="form-label" style="width: 100%"> Product type: </label>
+        <select
+          [disabled]="!categorySelected"
+          name="productType"
+          id="productType"
+          class="btn"
           style="
-            width: 336px;
-            height: 75px;
-            margin: 46px 0px -19px 2px;
-            margin-right: 0px;
-            margin-top: 1px;
-            margin-bottom: -19px;
-            margin-left: 2px;
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
           "
+          [(ngModel)]="product.producT_TYPE_ID"
         >
-          <select
-            name="productType"
-            id="productType"
-            class="btn btn-primary"
-            style="
-              background: var(--bs-orange);
-              border-right-color: var(--bs-orange);
-            "
-            [(ngModel)]="product.producT_TYPE_ID"
+          <option value="-1" selected disabled>Product Type</option>
+          <option
+            value=" {{ productType.producT_TYPE_ID }} "
+            *ngFor="let productType of productTypesTemp"
           >
-            <option
-              value=" {{ productType.producT_TYPE_ID }} "
-              *ngFor="let productType of productTypes"
-            >
-              {{ productType.typE_NAME }}
-            </option>
-          </select>
-        </div>
+            {{ productType.typE_NAME }}
+          </option>
+        </select>
       </div>
     </div>
-  </div>
-  <div class="container" style="margin-top: 39px">
-    <div class="row" style="margin-top: -13px; margin-right: -23px">
-      <div
-        class="col-md-6"
-        style="margin: 34px 0px 0px; margin-top: -4px; width: 205px"
-      >
-        <p style="margin-top: 7px; color: rgb(13, 13, 14)">
-          Product Cost Price:(R)
-        </p>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Product Re-Order Limit:</label>
+        <input
+          class="form-control"
+          name="reorder"
+          type="text"
+          required
+          [(ngModel)]="product.reordeR_LIMIT"
+        />
+        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+      </div>
+      <div class="col">
+        <label class="form-label">Product Barcode:</label>
+        <input
+          class="form-control"
+          name="barcode"
+          type="text"
+          required
+          [(ngModel)]="product.barcode"
+        />
+        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label"> Product Cost Price:(R) </label>
         <input
           class="form-control"
           name="costPrice"
           type="text"
-          style="width: 138.5px"
           required
           [(ngModel)]="product.cosT_PRICE"
           (click)="Costvalidate()"
@@ -160,18 +123,12 @@
         />
         <div *ngIf="!cdetails" style="color: Red">Invalid Details</div>
       </div>
-      <div
-        class="col-md-6"
-        style="margin: 34px 0px 0px; margin-top: -4px; width: 208px"
-      >
-        <p style="margin-top: 7px; color: rgb(3, 3, 4)">
-          Product Selling Price:(R)
-        </p>
+      <div class="col">
+        <label class="form-label"> Product Selling Price:(R) </label>
         <input
           class="form-control"
           name="sellingPrice"
           type="text"
-          style="width: 138.5px"
           required
           [(ngModel)]="product.sellinG_PRICE"
           (click)="Sellvalidate()"
@@ -179,126 +136,102 @@
         />
         <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
       </div>
-      <div style="margin: 34px 0px 0px; margin-top: -4px; width: 208px">
-        <p style="margin-top: 7px; color: rgb(3, 3, 4)">Product Barcode</p>
-        <input
-          class="form-control"
-          name="barcode"
-          type="text"
-          style="width: 138.5px"
-          required
-          [(ngModel)]="product.barcode"
-        />
-        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
-      </div>
-      <div
-        class="col-md-6"
-        style="margin: 34px 0px 0px; margin-top: -4px; width: 208px"
-      >
-        <div class="form-check" style="margin-top: 30px">
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-check">
           <input
             id="formCheck-1"
             class="form-check-input"
             type="checkbox"
-          /><label
-            class="form-check-label"
-            for="formCheck-1"
-            style="color: var(--bs-dark)"
-            >VAT</label
-          >
+          /><label class="form-label">VAT</label>
         </div>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <span>
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="Return()"
-        style="
-          border-right-color: var(--bs-orange);
-          background: var(--bs-orange);
-          margin-right: 30px;
-          margin-top: 10px;
-        "
-      >
-        Cancel
-      </button>
-      <button
-        class="btn btn-primary"
-        type="button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-        style="
-          border-right-color: var(--bs-orange);
-          background: var(--bs-orange);
-          margin-right: 0px;
-          margin-top: 10px;
-        "
-        *ngIf="details && pdetails"
-      >
-        Save
-      </button>
-    </span>
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5
-              class="modal-title"
-              id="exampleModalLabel"
-              *ngIf="!successSubmit"
-            >
-              Are You Sure You Would Like To Update The Product
-            </h5>
-            <h5
-              class="modal-title"
-              id="exampleModalLabel"
-              *ngIf="successSubmit"
-            >
-              Product Successfully Updated
-            </h5>
-          </div>
+    <div class="form-group">
+      <span>
+        <button
+          type="button"
+          class="btn btn-primary"
+          routerLink="/product-page"
+          style="
+            border-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 30px;
+            margin-top: 10px;
+          "
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          style="
+            border-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 0px;
+            margin-top: 10px;
+          "
+          *ngIf="details && pdetails && cdetails && sdetails"
+        >
+          Save
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
 
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-              *ngIf="!successSubmit"
-            >
-              No
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              data-target="#exampleModal"
-              *ngIf="!successSubmit"
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              data-dismiss="modal"
-              *ngIf="successSubmit"
-              (click)="Return()"
-            >
-              OK
-            </button>
-          </div>
-        </div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Add A New Product
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          Product Successfully Added
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          routerLink="/product-page"
+        >
+          OK
+        </button>
       </div>
     </div>
   </div>
-</form>
+</div>

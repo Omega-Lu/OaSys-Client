@@ -26,10 +26,11 @@ export class UpdateProductComponent implements OnInit {
 
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
+  productCategoriesTemp: ProductCategory[] = [];
 
   productType: ProductType;
   productTypes: ProductType[] = [];
-  productTemp: ProductType[] = [];
+  productTypesTemp: ProductType[] = [];
 
   constructor(
     private productService: ProductService,
@@ -55,7 +56,7 @@ export class UpdateProductComponent implements OnInit {
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTemp = response;
+      this.productTypesTemp = response;
       console.log(this.productTypes);
     });
   }
@@ -95,10 +96,10 @@ export class UpdateProductComponent implements OnInit {
 
   async categorySelect(id: number) {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTemp = response;
+      this.productTypesTemp = response;
       console.log(this.productTypes);
     });
-    this.productTypes = this.productTemp.filter((productType) => {
+    this.productTypes = this.productTypesTemp.filter((productType) => {
       console.log(productType.producT_CATEGORY_ID == id);
       return productType.producT_CATEGORY_ID == id;
     });

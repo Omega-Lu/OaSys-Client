@@ -1,214 +1,198 @@
-<form
-  class="text-dark"
-  style="
-    width: 720px;
-    height: 500px;
-    margin-top: 10px;
-    margin-right: 30px;
-    margin-left: 30px;
-    border-color: var(--bs-orange);
-  "
->
-  <h1 style="width: 500px">ReOrder List</h1>
-  <label
-    class="form-label"
-    style="
-      height: 30px;
-      margin-right: 20px;
-      margin-left: 0px;
-      font-size: 21px;
-      margin-top: 30px;
-    "
-    >Manually add products to be reordered</label
-  ><button
-    class="btn btn-primary"
-    type="button"
-    style="
-      margin-left: 200px;
-      background: var(--bs-orange);
-      border-color: var(--bs-orange);
-    "
-    (click)="addProduct()"
-  >
-    Add product
-  </button>
-  <i style="color: red; float: right" [hidden]="addQuan"
-    >Quantity can only be more than 0</i
-  >
-  <i style="color: red; float: right" [hidden]="addComplete"
-    >Complete the product selection</i
-  >
+<div class="container-fluid">
+  <form style="width: 720px">
+    <h1>ReOrder List</h1>
+    <div class="row">
+      <div class="col">
+        <h2 class="form-label">Manually add products to be reordered</h2>
+      </div>
+      <div class="col">
+        <button
+          class="btn btn-primary"
+          type="button"
+          style="
+            margin-left: 200px;
+            background: var(--bs-orange);
+            border-color: var(--bs-orange);
+          "
+          (click)="addProduct()"
+        >
+          Add product</button
+        ><i style="color: red; float: right" [hidden]="addQuan"
+          >Quantity can only be more than 0</i
+        >
+        <i style="color: red; float: right" [hidden]="addComplete"
+          >Complete the product selection</i
+        >
+      </div>
+    </div>
 
-  <div class="" style="height: 115px; margin-top: 30px">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Product Category</th>
-          <th>Product type</th>
-          <th>Product Name</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr id="productElement">
-          <td>
-            <select
-              id="categoryID"
-              class="btn"
-              name="PCategory"
-              style="
-                background: var(--bs-gray-100);
-                border-color: var(--bs-orange);
-                color: var(--bs-orange);
-              "
-              (input)="categorySelect($event.target.value)"
-            >
-              <option value="" disabled selected>Product Category</option>
-              <option
-                id="categoryOption"
-                value=" {{ productCategory.producT_CATEGORY_ID }} "
-                *ngFor="let productCategory of productCategories"
+    <div class="" style="height: 115px; margin-top: 30px">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Category</th>
+            <th>Product type</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="productElement">
+            <td>
+              <select
+                id="categoryID"
+                class="btn"
+                name="PCategory"
+                style="
+                  background: var(--bs-gray-100);
+                  border-color: var(--bs-orange);
+                  color: var(--bs-orange);
+                "
+                (input)="categorySelect($event.target.value)"
               >
-                {{ productCategory.categorY_NAME }}
-              </option>
-            </select>
-          </td>
-          <td>
-            <select
-              id="typeID"
-              class="btn"
-              name="PType"
-              style="
-                background: var(--bs-gray-100);
-                border-color: var(--bs-orange);
-                color: var(--bs-orange);
-              "
-              [disabled]="!categorySelected"
-              (input)="typeSelect($event.target.value)"
-            >
-              <option value="-1" disabled selected>Product Type</option>
-              <option
-                id="typeOption"
-                value=" {{ productType.producT_TYPE_ID }} "
-                *ngFor="let productType of productTypesTemp2"
+                <option value="" disabled selected>Product Category</option>
+                <option
+                  id="categoryOption"
+                  value=" {{ productCategory.producT_CATEGORY_ID }} "
+                  *ngFor="let productCategory of productCategories"
+                >
+                  {{ productCategory.categorY_NAME }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <select
+                id="typeID"
+                class="btn"
+                name="PType"
+                style="
+                  background: var(--bs-gray-100);
+                  border-color: var(--bs-orange);
+                  color: var(--bs-orange);
+                "
+                [disabled]="!categorySelected"
+                (input)="typeSelect($event.target.value)"
               >
-                {{ productType.typE_NAME }}
-              </option>
-            </select>
-          </td>
-          <td>
-            <select
-              id="nameID"
-              class="btn"
-              name="PName"
-              style="
-                background: var(--bs-gray-100);
-                border-color: var(--bs-orange);
-                color: var(--bs-orange);
-              "
-              [disabled]="!typeSelected"
-              (input)="
-                activateQuantity = false;
-                pID = $event.target.value;
-                nameSelect()
-              "
-            >
-              <option value="-1" disabled selected>Product Name</option>
-              <option
-                id="nameOption"
-                value=" {{ product.producT_ID }} "
-                *ngFor="let product of productsTemp2"
-                (click)="pID = product.producT_ID"
+                <option value="-1" disabled selected>Product Type</option>
+                <option
+                  id="typeOption"
+                  value=" {{ productType.producT_TYPE_ID }} "
+                  *ngFor="let productType of productTypesTemp2"
+                >
+                  {{ productType.typE_NAME }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <select
+                id="nameID"
+                class="btn"
+                name="PName"
+                style="
+                  background: var(--bs-gray-100);
+                  border-color: var(--bs-orange);
+                  color: var(--bs-orange);
+                "
+                [disabled]="!typeSelected"
+                (input)="
+                  activateQuantity = false;
+                  pID = $event.target.value;
+                  nameSelect()
+                "
               >
-                {{ product.producT_NAME }}
-              </option>
-            </select>
-          </td>
-          <td>
-            <input
-              (click)="addQuantityVali($event.target.value)"
-              id="quantityID"
-              [disabled]="activateQuantity"
-              class="form-control"
-              type="number"
-              [(ngModel)]="quantity"
-              name="inputQuantity"
-              style="width: 100px"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div
-    class="table-responsive"
-    style="height: 350px; margin-top: 10px; margin-bottom: 10px"
-  >
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Product Category</th>
-          <th>Product type</th>
-          <th>Product Name</th>
-          <th>Quantity on Hand</th>
-          <th>ReOrder Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let dynamic of dynamicArray">
-          <td>{{ dynamic.CategoryName }}</td>
-          <td>{{ dynamic.TypeName }}</td>
-          <td>{{ dynamic.ProductName }}</td>
-          <td style="text-align: center">
-            {{ dynamic.QuanHand }}
-          </td>
-          <td>
-            <input
-              (click)="quantityVali($event.target.value)"
-              class="form-control"
-              type="number"
-              style="width: 100px"
-              value="{{ dynamic.Quantity }}"
-              [(ngModel)]="dynamic.Quantity"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div>
-    <i style="color: red" [hidden]="completeQuantity"
-      >Quantity can only be equal to or more than 0</i
+                <option value="-1" disabled selected>Product Name</option>
+                <option
+                  id="nameOption"
+                  value=" {{ product.producT_ID }} "
+                  *ngFor="let product of productsTemp2"
+                  (click)="pID = product.producT_ID"
+                >
+                  {{ product.producT_NAME }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input
+                (click)="addQuantityVali($event.target.value)"
+                id="quantityID"
+                [disabled]="activateQuantity"
+                class="form-control"
+                type="number"
+                [(ngModel)]="quantity"
+                name="inputQuantity"
+                style="width: 100px"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="table-responsive"
+      style="height: 350px; margin-top: 10px; margin-bottom: 10px"
     >
-  </div>
-  <button
-    class="btn btn-primary"
-    type="button"
-    style="
-      background: var(--bs-orange);
-      border-color: var(--bs-orange);
-      margin-right: 0px;
-      margin-left: 10px;
-    "
-    [disabled]="!completeQuantity"
-    data-toggle="modal"
-    data-target="#exampleModal"
-  >
-    Print</button
-  ><button
-    routerLink="/supplier-page"
-    class="btn btn-primary"
-    type="button"
-    style="
-      background: var(--bs-orange);
-      border-color: var(--bs-orange);
-      margin-left: 500px;
-    "
-  >
-    Back
-  </button>
-</form>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Category</th>
+            <th>Product type</th>
+            <th>Product Name</th>
+            <th>Quantity on Hand</th>
+            <th>ReOrder Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dynamic of dynamicArray">
+            <td>{{ dynamic.CategoryName }}</td>
+            <td>{{ dynamic.TypeName }}</td>
+            <td>{{ dynamic.ProductName }}</td>
+            <td style="text-align: center">
+              {{ dynamic.QuanHand }}
+            </td>
+            <td>
+              <input
+                (click)="quantityVali($event.target.value)"
+                class="form-control"
+                type="number"
+                style="width: 100px"
+                value="{{ dynamic.Quantity }}"
+                [(ngModel)]="dynamic.Quantity"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <i style="color: red" [hidden]="completeQuantity"
+        >Quantity can only be equal to or more than 0</i
+      >
+    </div>
+    <button
+      routerLink="/supplier-page"
+      class="btn btn-primary"
+      type="button"
+      style="background: var(--bs-orange); border-color: var(--bs-orange)"
+    >
+      Back
+    </button>
+    <button
+      class="btn btn-primary"
+      type="button"
+      style="
+        background: var(--bs-orange);
+        border-color: var(--bs-orange);
+        margin-left: 500px;
+      "
+      [disabled]="!completeQuantity"
+      data-toggle="modal"
+      data-target="#exampleModal"
+    >
+      Print
+    </button>
+  </form>
+</div>
 
 <div
   class="modal fade"

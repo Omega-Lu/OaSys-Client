@@ -42,6 +42,7 @@ export class ReceiveSupplierOrderComponent implements OnInit {
   }
 
   async forLoop() {
+    this.dynamicArray = [];
     this.suppliersTemp = this.suppliers;
     console.log(this.orders.length);
     for (let i = 0; i < this.orders.length; i++) {
@@ -54,14 +55,12 @@ export class ReceiveSupplierOrderComponent implements OnInit {
       console.log(this.orderStatussesTemp);
       this.orderStatussesTemp = this.orderStatussesTemp.filter(
         (orderStatus) => {
-
           return orderStatus.orderID == element.orderID;
         }
       );
       if (this.orderStatussesTemp[0].description == 'Placed') {
         this.suppliersTemp = this.suppliers;
         this.suppliersTemp = this.suppliersTemp.filter((supplier) => {
-
           return supplier.supplieR_ID == element.supplierID;
         });
 
@@ -75,10 +74,6 @@ export class ReceiveSupplierOrderComponent implements OnInit {
         this.tempArray = this.dynamicArray;
       }
     }
-  }
-
-  Return() {
-    this.return.emit('false');
   }
 
   getAllOrders() {
@@ -117,6 +112,7 @@ export class ReceiveSupplierOrderComponent implements OnInit {
   back() {
     this.boolReceive = false;
     this.return.emit('false');
+    this.getAllOrders();
   }
 
   populateForm(i: number) {

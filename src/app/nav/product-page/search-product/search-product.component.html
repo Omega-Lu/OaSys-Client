@@ -1,51 +1,47 @@
 <div class="container-fluid">
-  <form style="height: 530px; margin-right: 0px">
-    <h1 class="text-dark">Search Product</h1>
-    <div class="search-container" style="margin-right: 0px; margin-left: 300px">
-      <input
-        class="form-control search-input"
-        type="text"
-        name="search-bar"
-        placeholder="Search..."
-        style="width: 320px; margin-right: 0px; margin-left: 400px"
-        [(ngModel)]="searchText"
-        (keyup)="Search()"
-      /><button class="btn btn-light search-btn" type="button">
-        <i class="fa fa-search"></i>
-      </button>
-    </div>
-    <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Product ID</th>
-            <th>Product Name</th>
-            <th>Product Description</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let product of products">
-            <td>{{ product.producT_ID }}</td>
-            <td>{{ product.producT_NAME }}</td>
-            <td>{{ product.producT_DESCRIPTION }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <button
-      class="btn btn-primary"
-      type="button"
-      style="
-        --bs-warning: #f6c23e;
-        --bs-warning-rgb: 246, 194, 62;
-        background: var(--bs-orange);
-        margin-left: 10px;
-      "
-      routerLink="/product-page"
-    >
-      Back
-    </button>
-  </form>
+  <h1>Search Product</h1>
+
+  <input
+    class="form-control search-input"
+    type="text"
+    name="search-bar"
+    placeholder="Search..."
+    style="width: 320px"
+    [(ngModel)]="searchText"
+    (keyup)="Search()"
+  />
+  <hr />
+  <div class="table-responsive" style="max-height: 700px">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Product Description</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.producT_ID }}</td>
+          <td>{{ product.producT_NAME }}</td>
+          <td>{{ product.producT_DESCRIPTION }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    class="btn btn-primary"
+    type="button"
+    style="
+      border-color: var(--bs-orange);
+      background: var(--bs-orange);
+      margin-left: 10px;
+      margin-top: 10px;
+    "
+    routerLink="/product-page"
+  >
+    Back
+  </button>
 </div>

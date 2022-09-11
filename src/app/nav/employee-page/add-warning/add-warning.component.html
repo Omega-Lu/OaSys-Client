@@ -15,7 +15,7 @@
           background: var(--bs-gray-100);
           border-color: var(--bs-orange);
           color: var(--bs-orange);
-          width: 250px;
+          width: fit-content;
         "
         [(ngModel)]="warning.employeE_ID"
         (click)="validateEmployee()"
@@ -43,7 +43,7 @@
           background: var(--bs-gray-100);
           border-color: var(--bs-orange);
           color: var(--bs-orange);
-          width: 250px;
+          width: fit-content;
         "
         [(ngModel)]="warning.warininG_NAME"
         (click)="validateWarning()"
@@ -64,6 +64,7 @@
 
       <textarea
         type="text"
+        class="form-control"
         placeholder="Reason For Warning"
         name="warningReason"
         [(ngModel)]="warning.reason"

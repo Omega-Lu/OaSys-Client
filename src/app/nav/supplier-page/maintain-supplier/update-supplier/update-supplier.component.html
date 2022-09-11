@@ -1,134 +1,134 @@
-<form
-  style="
-    width: 750px;
-    margin-right: 0px;
-    margin-left: 5px;
-    height: 850px;
-    border-right-color: rgb(8, 15, 67);
-    --bs-light: #f8f9fc;
-    --bs-light-rgb: 248, 249, 252;
-  "
-  #form="ngForm"
-  (ngSubmit)="onSubmit()"
->
-  <h4
-    style="
-      margin-right: 750px;
-      color: rgb(0, 0, 0);
-      width: 241px;
-      margin-left: 0px;
-    "
+<div class="containter-fluid">
+  <h1 style="margin-left: 1%">Update Supplier</h1>
+  <form
+    style="width: 450px; height: 200px; margin-left: 2%"
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
   >
-    Update Supplier
-  </h4>
-  <div class="container">
-    <div class="row">
-      <div
-        class="col-md-6"
-        style="
-          color: rgb(0, 0, 0);
-          border-bottom-color: var(--bs-red);
-        ">
-        <label class="form-label" style="margin-right: 650px">Name:</label>
-        <input
-          class="form-control"
-          name="emplyeeName"
-          type="text"
-          style="width: 300px; margin-right: 50px; margin-left: 10px"
-          [(ngModel)]="supplier.name"
-          (click)="namevalidate()"
-          (keyup)="namevalidate()"
-        />
-        <div *ngIf="!details" style="color: Red">Invalid Details</div>
+    <label class="form-label">Name:</label
+    ><input
+      class="form-control"
+      name="positionName"
+      placeholder="Name"
+      type="text"
+      style="margin-left: 10px; width: 400px"
+      [(ngModel)]="supplier.name"
+      (click)="ValidateName()"
+      (keyup)="ValidateName()"
+    />
+    <div *ngIf="!details" style="color: Red">Invalid Name</div>
 
-        <label class="form-label" style="margin-right: 650px; width: 180px"
-          >VAT number:</label
-        >
-        <input
-          class="form-control"
-          name="employeeIdNumber"
-          type="text"
-          style="width: 300px; margin-right: 50px; margin-left: 10px"
-          [(ngModel)]="supplier.vaT_NUMBER"
-          required
-          minlength="13"
-          maxlength="13"
-          (click)="Vatvalidate()"
-          (keyup)="Vatvalidate()"
-        />
-        <div *ngIf="!vdetails" style="color: Red">Invalid Details</div>
+    <label class="form-label">VAT Number:</label
+    ><input
+      class="form-control"
+      name="vatnum"
+      placeholder="0"
+      type="text"
+      style="margin-left: 10px; width: 400px"
+      [(ngModel)]="supplier.vaT_NUMBER"
+      (click)="ValidateVat()"
+      (keyup)="ValidateVat()"
+    />
+    <div *ngIf="!vdetails" style="color: Red">Invalid Vat Number</div>
 
-        <label class="form-label" style="margin-right: 1200px; width: 130px"
-          >Contact Number: </label
-        >+27<input
-          class="form-control"
-          type="text"
-          required
-          name="emplyeeNumber"
-          required
-          minlength="9"
-          maxlength="9"
-          style="margin-left: 10px; width: 300px"
-          [(ngModel)]="supplier.contacT_NUMBER"
-          (click)="Contactvalidate()"
-          (keyup)="Contactvalidate()"
-        />
-        <div *ngIf="!cdetails" style="color: Red">Invalid Details</div>
-
-        <label class="form-label" style="margin-right: 1200px; width: 300px"
-          >Alternate Contact Number: </label
-        >+27<input
-          class="form-control"
-          type="text"
-          required
-          name="emplyeeAltNumber"
-          required
-          minlength="9"
-          maxlength="9"
-          style="margin-left: 10px; width: 300px"
-          [(ngModel)]="supplier.alT_NUMBER"
-          (click)="Altvalidate()"
-          (keyup)="Altvalidate()"
-        />
-        <div *ngIf="!adetails" style="color: Red">Invalid Details</div>
-
-        <label class="form-label" style="margin-right: 650px">Email:</label
-        ><input
-          class="form-control"
-          type="email"
-          required
-          name="emplyeeEmail"
-          style="width: 300px; margin-left: 10px"
-          [(ngModel)]="supplier.email"
-          (click)="emailvalidate()"
-          (keyup)="emailvalidate()"
-        />
-        <div *ngIf="!edetails" style="color: Red">Invalid Details</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <button
-        class="btn btn-primary"
-        type="button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-        style="
-          border-right-color: var(--bs-orange);
-          background: var(--bs-orange);
-          margin-right: 650px;
-          margin-top: 10px;
-        "
-        *ngIf="details && edetails"
+    <label class="form-label">Contact Number:</label>
+    <div class="input-group prefix" style="width: 88.6%; margin-left: 10px">
+      <span
+        class="input-group-addon"
+        style="display: flex; justify-content: center; align-items: center"
+        >+27</span
       >
-        Update Changes
-      </button>
+      <input
+        class="form-control"
+        type="tel"
+        required
+        name="emplyeeNumber"
+        placeholder=""
+        required
+        minlength="9"
+        maxlength="9"
+        style="margin-left: 5px"
+        [(ngModel)]="supplier.contacT_NUMBER"
+        (keyup)="ValidateContactNumber()"
+      />
+    </div>
+    <div *ngIf="!cdetails" style="color: Red">Invalid Contact Number</div>
+
+    <label class="form-label">Alternate Contact Number:</label>
+    <div class="input-group prefix" style="width: 88.6%; margin-left: 10px">
+      <span
+        class="input-group-addon"
+        style="display: flex; justify-content: center; align-items: center"
+        >+27</span
+      >
+      <input
+        class="form-control"
+        type="tel"
+        required
+        name="emplyeeAltNumber"
+        placeholder=""
+        required
+        minlength="9"
+        maxlength="9"
+        style="margin-left: 5px"
+        [(ngModel)]="supplier.alT_NUMBER"
+        (keyup)="VaildateAltNumber()"
+      />
+    </div>
+    <div *ngIf="!adetails" style="color: Red">Invalid Alternate Number</div>
+
+    <label class="form-label">Email:</label
+    ><input
+      class="form-control"
+      name="email"
+      placeholder="exmaple@email.com"
+      type="email"
+      style="margin-left: 10px; width: 400px"
+      [(ngModel)]="supplier.email"
+      (click)="ValidateEmail()"
+      (keyup)="ValidateEmail()"
+    />
+    <div *ngIf="!edetails" style="color: Red">Invalid Email</div>
+    <div class="form-group" style="margin-top: 20px">
+      <span>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="Return()"
+          style="
+            border-right-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 30px;
+            margin-top: 10px;
+          "
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-toggle="modal"
+          data-target="#updateSupplierModal"
+          style="
+            border-right-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 0px;
+            margin-top: 10px;
+          "
+          [disabled]="
+            !details || !edetails || !vdetails || !cdetails || !adetails
+          "
+          (mouseover)="FormValidate()"
+        >
+          Save
+        </button>
+      </span>
       <div
         class="modal fade"
-        id="exampleModal"
+        id="updateSupplierModal"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="exampleModalLabel"
+        aria-labelledby="updateSupplierModalLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog" role="document">
@@ -136,15 +136,15 @@
             <div class="modal-header">
               <h5
                 class="modal-title"
-                id="exampleModalLabel"
-                *ngIf="!successSubmit"
+                id="updateSupplierModalLabel"
+                *ngIf="!successUpdate"
               >
                 Are You Sure You Would Like To Update The Supplier
               </h5>
               <h5
                 class="modal-title"
-                id="exampleModalLabel"
-                *ngIf="successSubmit"
+                id="updateSupplierModalLabel"
+                *ngIf="successUpdate"
               >
                 Supplier Successfully Updated
               </h5>
@@ -155,15 +155,15 @@
                 type="button"
                 class="btn btn-secondary"
                 data-dismiss="modal"
-                *ngIf="!successSubmit"
+                *ngIf="!successUpdate"
               >
                 No
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
-                data-target="#exampleModal"
-                *ngIf="!successSubmit"
+                data-target="#updateSupplierModal"
+                *ngIf="!successUpdate"
               >
                 Yes
               </button>
@@ -171,9 +171,9 @@
                 type="button"
                 class="btn btn-primary"
                 data-toggle="modal"
-                data-target="#exampleModal"
+                data-target="#updateSupplierModal"
                 data-dismiss="modal"
-                *ngIf="successSubmit"
+                *ngIf="successUpdate"
                 (click)="Return()"
               >
                 OK
@@ -183,5 +183,5 @@
         </div>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>

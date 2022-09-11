@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
 @Component({
   selector: 'app-update-supplier',
@@ -16,61 +17,52 @@ export class UpdateSupplierComponent implements OnInit {
   cdetails: boolean = true;
   adetails: boolean = true;
   edetails: boolean = true;
-  successSubmit: boolean = false;
+  successUpdate: boolean = false;
+
+  //use validation
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
 
   constructor(private supplierService: SupplierService) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onSubmit() {
     this.supplierService.updateSupplier(this.supplier).subscribe((response) => {
       console.log(response);
-       this.successSubmit = true;
+      this.successUpdate = true;
     });
-
   }
 
-  namevalidate() {
-    var matches = this.supplier.name.match(/\d+/g);
-    if (matches != null) {
-      this.details = false;
-    } else if (this.supplier.name == '') {
-      this.details = false;
-    } else {
-      this.details = true;
-    }
+  FormValidate() {
+    this.ValidateName();
+    this.ValidateVat();
+    this.ValidateContactNumber();
+    this.VaildateAltNumber();
+    this.ValidateEmail();
   }
 
-  emailvalidate() {
-    if (this.supplier.email == '') {
-      this.edetails = false;
-    } else {
-      this.edetails = true;
-    }
+  ValidateName() {
+    this.details = this.validate.ValidateString(this.supplier.name);
   }
 
-  Contactvalidate() {
-    if (this.supplier.contacT_NUMBER < 1) {
-      this.cdetails = false;
-    } else {
-      this.cdetails = true;
-    }
+  ValidateVat() {
+    this.vdetails = this.validate.ValdiateVatNumber(this.supplier.vaT_NUMBER);
   }
 
-  Vatvalidate() {
-    if (this.supplier.vaT_NUMBER < 1) {
-      this.vdetails = false;
-    } else {
-      this.vdetails = true;
-    }
+  ValidateContactNumber() {
+    this.cdetails = this.validate.ValidateContactNumber(
+      this.supplier.contacT_NUMBER
+    );
   }
 
-  Altvalidate() {
-    if (this.supplier.alT_NUMBER < 1) {
-      this.adetails = false;
-    } else {
-      this.adetails = true;
-    }
+  VaildateAltNumber() {
+    this.adetails = this.validate.ValidateContactNumber(
+      this.supplier.alT_NUMBER
+    );
+  }
+
+  ValidateEmail() {
+    this.edetails = this.validate.ValidateEmail(this.supplier.email);
   }
 
   Return() {

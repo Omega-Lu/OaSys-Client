@@ -1,21 +1,22 @@
-<div class="container-fluid">
-  <app-update-supplier
-    *ngIf="updateSupplier"
-    [supplier]="supplier"
-    (return)="back()"
-  ></app-update-supplier>
-  <form style="height: 530px; margin-right: 0px" *ngIf="!updateSupplier">
+<app-update-supplier
+  *ngIf="updateSupplier"
+  [supplier]="supplier"
+  (return)="back()"
+></app-update-supplier>
+
+<div class="container-fluid" *ngIf="!updateSupplier">
+  <form style="height: 530px; margin-right: 0px">
     <h1>Maintain Supplier</h1>
-    <div class="search-container">
-      <input
-        type="search"
-        name="Search"
-        style="padding-bottom: 0%; margin-bottom: 2%"
-        placeholder="Search..."
-        [(ngModel)]="searchText"
-        (input)="Search()"
-      />
-    </div>
+
+    <input
+      class="form-control search-input"
+      type="text"
+      name="search-bar"
+      placeholder="Search..."
+      style="width: 320px"
+      [(ngModel)]="searchText"
+      (keyup)="Search()"
+    />
 
     <div class="table-responsive" style="height: 350px; color: var(--bs-dark)">
       <table class="table">
@@ -24,6 +25,8 @@
             <th>&nbsp;Name</th>
             <th>Contact Number</th>
             <th>Email</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +50,7 @@
                 type="button"
                 style="background: var(--bs-red)"
                 data-toggle="modal"
-                data-target="#exampleModal"
+                data-target="#deleteSupplierModal"
                 (click)="deletee(supplier.supplieR_ID)"
               >
                 Delete
@@ -73,10 +76,10 @@
     </button>
     <div
       class="modal fade"
-      id="exampleModal"
+      id="deleteSupplierModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="deleteSupplierModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
@@ -84,14 +87,14 @@
           <div class="modal-header">
             <h5
               class="modal-title"
-              id="exampleModalLabel"
+              id="deleteSupplierModalLabel"
               *ngIf="!successDelete"
             >
               Are You Sure You Would Like To Delete This Supplier
             </h5>
             <h5
               class="modal-title"
-              id="exampleModalLabel"
+              id="deleteSupplierModalLabel"
               *ngIf="successDelete"
             >
               Supplier Successfully Deleted
@@ -110,9 +113,8 @@
             <button
               type="submit"
               class="btn btn-primary"
-              data-dismiss="modal"
               name="deleteempl"
-              data-target="#exampleModal"
+              data-target="#deleteSupplierModal"
               *ngIf="!successDelete"
               (click)="deleteSupplier()"
             >
@@ -122,7 +124,7 @@
               type="button"
               class="btn btn-primary"
               data-toggle="modal"
-              data-target="#exampleModal"
+              data-target="#deleteSupplierModal"
               data-dismiss="modal"
               *ngIf="successDelete"
               routerLink="/supplier-page"
