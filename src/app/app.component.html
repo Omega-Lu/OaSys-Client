@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!loggedIn">
   <div class="row justify-content-center">
     <div class="col-9">
-      <div class="card shadow-lg o-hidden border-0 my-5">
+      <div class="card shadow-lg o-hidden border-0 m-5">
         <div class="card-body p-0">
           <div class="row justify-content-center">
             <div class="justify-content-center">
@@ -70,22 +70,14 @@
                   <button
                     class="btn btn-primary d-block btn-user w-100"
                     type="submit"
-                    style="background: #ff5722; border-width: 0px"
-                    (click)="login()"
-                  >
-                    Login
-                  </button>
-                  <button
-                    class="btn btn-primary d-block btn-user w-100"
-                    type="button"
                     style="
                       background: #ff5722;
                       border-width: 0px;
-                      margin-top: 20px;
+                      font-size: large;
                     "
-                    routerLink="/forgot-reset-password"
+                    (click)="login()"
                   >
-                    Reset Password
+                    Login
                   </button>
                   <hr />
                   <hr />

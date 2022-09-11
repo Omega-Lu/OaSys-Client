@@ -1,45 +1,52 @@
-<form #form="ngForm">
-  <h1>Update Employee Type</h1>
-  <h2 style="margin-left: 1%">Update Employee Type Details:</h2>
-  <label class="form-label" style="margin-left: 1%">Position Name:</label>
-  <input
-    class="form-control"
-    type="text"
-    name="position"
-    style="margin-left: 10px; width: 400px"
-    placeholder="{{ employeetype.positioN_NAME }}"
-    [(ngModel)]="employeetype.positioN_NAME"
-    (keyup)="validateString()"
-    (input)="validateString()"
-  />
-  <div *ngIf="!validName" style="color: Red">Invalid Position Name</div>
-  <button
-    type="button"
-    class="btn btn-primary"
-    routerLink="/maintain-employee"
-    style="
-      border-right-color: var(--bs-orange);
-      background: var(--bs-orange);
-      margin-right: 30px;
-      margin-top: 20px;
-    "
-    routerLink="/maintain-employee-type"
-    (click)="Return()"
-  >
-    Cancel
-  </button>
-  <button
-    class="btn btn-primary"
-    type="button"
-    data-toggle="modal"
-    data-target="#updateEmployeeModal"
-    style="background: var(--bs-orange); margin-top: 20px; margin-left: 10px"
-    (mouseover)="validateString()"
-    [disabled]="!validName"
-  >
-    Update
-  </button>
-</form>
+<div class="container-fluid">
+  <form #form="ngForm">
+    <h1>Update Employee Type</h1>
+    <h2 style="margin-left: 1%">Update Employee Type Details:</h2>
+    <label class="form-label" style="margin-left: 1%">Position Name:</label>
+    <input
+      class="form-control"
+      type="text"
+      name="position"
+      style="margin-left: 10px; width: 400px"
+      placeholder="{{ employeetype.positioN_NAME }}"
+      [(ngModel)]="employeetype.positioN_NAME"
+      (keyup)="validateString()"
+      (input)="validateString()"
+    />
+    <div *ngIf="!validName" style="color: Red">Invalid Position Name</div>
+    <button
+      type="button"
+      class="btn btn-primary"
+      routerLink="/maintain-employee"
+      style="
+        border-color: var(--bs-orange);
+        background: var(--bs-orange);
+        margin-right: 30px;
+        margin-top: 20px;
+      "
+      routerLink="/maintain-employee-type"
+      (click)="Return()"
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-toggle="modal"
+      data-target="#updateEmployeeModal"
+      style="
+        background: var(--bs-orange);
+        border-color: var(--bs-orange);
+        margin-top: 20px;
+        margin-left: 10px;
+      "
+      (mouseover)="validateString()"
+      [disabled]="!validName"
+    >
+      Update
+    </button>
+  </form>
+</div>
 
 <div
   class="modal fade"

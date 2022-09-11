@@ -1,115 +1,106 @@
-<div class="card">
-  <div class="card-header">
-    <h5
-      class="mb-0"
-      style="
-        --bs-primary: #3c404d;
-        --bs-primary-rgb: 60, 64, 77;
-        color: rgb(0, 0, 0);
-        font-weight: bold;
-        font-size: large;
-      "
-    >
-      Supplier
-    </h5>
-  </div>
-</div>
+<!--Supplier Cards-->
+<div class="row">
+  <h1>Supplier</h1>
 
-<div class="card-group">
-  <div class="card" routerLink="/add-supplier">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-plus text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Add Supplier
-      </button>
+  <div class="card-group">
+    <div class="card" routerLink="/add-supplier">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-plus text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Add Supplier
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="card" routerLink="/search-supplier">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-search text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Search Supplier
-      </button>
+    <div class="card" routerLink="/search-supplier">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-search text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Search Supplier
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="card" routerLink="/maintain-supplier">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-pencil-alt text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Maintain Supplier
-      </button>
+    <div class="card" routerLink="/maintain-supplier">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-pencil-alt text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Maintain Supplier
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="card-group">
-  <div class="card" routerLink="/create-supplier-order">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-plus text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Create Supplier Order
-      </button>
-    </div>
-  </div>
-  <div class="card" routerLink="/search-supplier-order">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-search text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Search Supplier Order
-      </button>
-    </div>
-  </div>
-  <div class="card" routerLink="/receive-supplier-order">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-truck text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Receive Supplier Order
-      </button>
-    </div>
-  </div>
-</div>
+<!--Supplier Order Cards-->
+<div class="row">
+  <h1>Supplier Order</h1>
 
-<hr />
-
-<div class="card-group">
-  <div class="card" routerLink="/return-supplier-order">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-window-close text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Return Supplier Order
-      </button>
+  <div class="card-group">
+    <div class="card" routerLink="/create-supplier-order">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-plus text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Create Supplier Order
+        </button>
+      </div>
+    </div>
+    <div class="card" routerLink="/search-supplier-order">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-search text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Search Supplier Order
+        </button>
+      </div>
+    </div>
+    <div class="card" routerLink="/receive-supplier-order">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-truck text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Receive Supplier Order
+        </button>
+      </div>
     </div>
   </div>
-  <div class="card" routerLink="/reorder-list">
-    <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
-      <i
-        class="fas fa-plus text-warning"
-        style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
-      ></i
-      ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
-        Generate Reorder List
-      </button>
+
+  <div class="card-group">
+    <div class="card" routerLink="/return-supplier-order">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-window-close text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Return Supplier Order
+        </button>
+      </div>
+    </div>
+    <div class="card" routerLink="/reorder-list">
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-plus text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Generate Reorder List
+        </button>
+      </div>
     </div>
   </div>
 </div>

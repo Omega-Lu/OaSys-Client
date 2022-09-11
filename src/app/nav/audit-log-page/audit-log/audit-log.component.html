@@ -1,42 +1,26 @@
-<form style="width: 1062px; height: 462px">
-  <h1 class="text-dark mb-1" style="margin-left: 20px">VIEW AUDIT LOG</h1>
-  <i
-    class="fa fa-search"
-    style="
-      width: 27.8594px;
-      height: 36px;
-      margin-left: 8px;
-      font-size: 25px;
-      margin-top: 10px;
-      margin-bottom: -8px;
-    "
-  ></i
-  ><input
+<div class="container-fluid">
+  <h1>VIEW AUDIT LOG</h1>
+
+  <input
     class="form-control"
     type="search"
-    style="
-      width: 626px;
-      margin: 14px 0px 0px 16px;
-      margin-left: 37px;
-      margin-top: -30px;
-    "
-    placeholder="Enter audit log search details"
+    style="width: 320px"
+    placeholder="Enter Audit Log Search Details.."
     (keyup)="search($event.target.value)"
   />
 
-  <div
-    class="table-responsive"
-    style="width: 896px; margin-top: 46px; margin-left: 16px; height: 500px"
-  >
+  <hr />
+
+  <div class="table-responsive" style="max-height: 600px">
     <table class="table">
       <thead>
         <tr>
-          <th>AUDIT ID</th>
-          <th>USER ID </th>
-          <th>NAME</th>
-          <th>SURNAME</th>
-          <th>FUNCTION USED </th>
-          <th>DATE</th>
+          <th>Audit ID</th>
+          <th>User ID </th>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>Function Used</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
@@ -56,13 +40,12 @@
     class="btn btn-primary"
     type="button"
     style="
-      margin-left: 20px;
+      border-color: var(--bs-orange);
       background: var(--bs-orange);
-      height: 41px;
-      width: 83.7188px;
+      margin-top: 10px;
     "
     routerLink="/audit-log-page"
   >
     Back
   </button>
-</form>
+</div>

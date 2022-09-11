@@ -1,67 +1,61 @@
-<form style="width: 898px; height: 446px" *ngIf="!viewAccount">
-  <div class="container-fluid">
-    <h3 class="text-dark mb-1">Select a Debtor that you would like to view</h3>
-  </div>
-  <input
-    class="form-control search-input"
-    type="text"
-    name="search-bar"
-    placeholder="Search..."
-    style="width: 320px; margin-right: 0px; margin-left: 400px"
-    [(ngModel)]="searchText"
-    (keyup)="Search()"
-  />
-  <div
-    class="table-responsive"
-    style="width: 896px; margin-top: 46px; margin-left: 16px"
-  >
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Surname </th>
-          <th> Contact Number</th>
-          <th style="width: 207.891px"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let customerAccount of customerAccountsTemp">
-          <td>{{ customerAccount.name }}</td>
-          <td>{{ customerAccount.surname }}</td>
-          <td>0{{ customerAccount.contacT_NUMBER }}</td>
-          <td>
-            <button
-              class="btn btn-primary"
-              (click)="viewAccount = true; populateForm(customerAccount)"
-              type="button"
-              style="
-                margin-left: 0px;
-                background: var(--bs-orange);
-                height: 34px;
-                width: 86px;
-              "
-            >
-              <i class="far fa-eye"></i> View
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <button
-    class="btn btn-primary"
-    routerLink="/debtor-page"
-    type="button"
-    style="
-      margin-left: 384px;
-      background: var(--bs-orange);
-      height: 41px;
-      width: 83.7188px;
-    "
-  >
-    Back
-  </button>
-</form>
+<div class="container-fluid">
+  <h1>Select a Debtor that you would like to view</h1>
+  <form *ngIf="!viewAccount">
+    <input
+      class="form-control search-input"
+      type="text"
+      name="search-bar"
+      placeholder="Search..."
+      style="width: 320px"
+      [(ngModel)]="searchText"
+      (keyup)="Search()"
+    />
+
+    <hr />
+
+    <div class="table-responsive" style="max-height: 600px">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Surname </th>
+            <th> Contact Number</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customerAccount of customerAccountsTemp">
+            <td>{{ customerAccount.name }}</td>
+            <td>{{ customerAccount.surname }}</td>
+            <td>0{{ customerAccount.contacT_NUMBER }}</td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="viewAccount = true; populateForm(customerAccount)"
+                type="button"
+                style="
+                  border-color: var(--bs-orange);
+                  background: var(--bs-orange);
+                "
+              >
+                <i class="far fa-eye"></i> View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary"
+      routerLink="/debtor-page"
+      type="button"
+      style="border-color: var(--bs-orange); background: var(--bs-orange)"
+    >
+      Back
+    </button>
+  </form>
+</div>
+
 <app-view-approved-accounts
   *ngIf="viewAccount"
   [customerAccount]="customerAccount"

@@ -5,12 +5,14 @@
     type="text"
     name="search-bar"
     placeholder="Search..."
-    style="width: 250px"
+    style="width: 320px"
     [(ngModel)]="searchText"
     (input)="Search()"
   />
 
-  <div class="table-responsive">
+  <hr />
+
+  <div class="table-responsive" style="max-height: 700px">
     <table class="table">
       <thead>
         <tr>
@@ -27,7 +29,12 @@
   <button
     class="btn btn-primary"
     type="button"
-    style="background: var(--bs-orange); margin-left: 10px; margin-top: 20px"
+    style="
+      background: var(--bs-orange);
+      border-color: var(--bs-orange);
+      margin-left: 10px;
+      margin-top: 20px;
+    "
     routerLink="/employee-page"
   >
     Back

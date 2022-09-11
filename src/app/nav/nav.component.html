@@ -15,7 +15,7 @@
             <a
               class="nav-link"
               routerLink="/employee-page"
-              (click)="navName = 'Dashboard'"
+              (click)="navName = 'Dashboard'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
               ><span class="text-warning">Dashboard</span></a
             >
@@ -24,7 +24,7 @@
             <a
               class="nav-link"
               routerLink="/employee-page"
-              (click)="navName = 'Employee'"
+              (click)="navName = 'Employee'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
               ><span class="text-warning">Employee</span></a
             >
@@ -33,7 +33,7 @@
             <a
               class="nav-link"
               routerLink="/supplier-page"
-              (click)="navName = 'Supplier'"
+              (click)="navName = 'Supplier'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
               ><span class="text-warning">Supplier</span></a
             >
@@ -42,7 +42,7 @@
             <a
               class="nav-link"
               routerLink="/product-page"
-              (click)="navName = 'Product'"
+              (click)="navName = 'Product'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
               ><span class="text-warning">Product</span></a
             >
@@ -51,7 +51,7 @@
             <a
               class="nav-link"
               routerLink="/debtor-page"
-              (click)="navName = 'Debtor'"
+              (click)="navName = 'Debtor'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
               ><span class="text-warning">Debtor</span></a
             >
@@ -60,7 +60,7 @@
             <a
               class="nav-link"
               routerLink="/sale-page"
-              (click)="navName = 'Sale'"
+              (click)="navName = 'Sale'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
               ><span class="text-warning">Sale</span></a
             >
@@ -69,7 +69,7 @@
             <a
               class="nav-link"
               routerLink="/reports-page"
-              (click)="navName = 'Reports'"
+              (click)="navName = 'Reports'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
               ><span class="text-warning">Reports</span></a
             >
@@ -78,9 +78,11 @@
             <a
               class="nav-link"
               routerLink="/audit-log-page"
-              (click)="navName = 'Audit Log'"
+              (click)="navName = 'Audit Log'; logoutTimerDisplay = false"
               ><i class="fas fa-tachometer-alt text-dark"></i
-              ><span class="text-warning" (click)="navName = 'Audit Log'"
+              ><span
+                class="text-warning"
+                (click)="navName = 'Audit Log'; logoutTimerDisplay = false"
                 >Audit Log</span
               ></a
             >
@@ -150,9 +152,9 @@
         <div class="pl-3">
           <router-outlet *ngIf="!logoutTimerDisplay"></router-outlet>
           <app-logout-timer
-  *ngIf="logoutTimerDisplay"
-  (newItemEvent)="updateLogout($event)"
-></app-logout-timer>
+            *ngIf="logoutTimerDisplay"
+            (newItemEvent)="updateLogout($event)"
+          ></app-logout-timer>
         </div>
       </div>
       <footer class="bg-white sticky-footer">
@@ -165,4 +167,3 @@
     </div>
   </div>
 </body>
-

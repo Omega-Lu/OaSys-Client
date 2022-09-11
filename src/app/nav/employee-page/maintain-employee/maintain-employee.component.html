@@ -17,7 +17,9 @@
     (keyup)="Search()"
   />
 
-  <div class="table-responsive" style="height: 450px">
+  <hr />
+
+  <div class="table-responsive" style="max-height: 700px">
     <table class="table">
       <thead>
         <tr>
@@ -41,7 +43,10 @@
             <button
               class="btn btn-primary"
               type="button"
-              style="background: var(--bs-orange)"
+              style="
+                background: var(--bs-orange);
+                border-color: var(--bs-orange);
+              "
               (click)="populateForm(employee)"
             >
               Edit
@@ -68,8 +73,7 @@
     type="button"
     routerLink="/employee-page"
     style="
-      --bs-warning: #f6c23e;
-      --bs-warning-rgb: 246, 194, 62;
+      border-color: var(--bs-orange);
       background: var(--bs-orange);
       margin-left: 10px;
       margin-top: 20px;
