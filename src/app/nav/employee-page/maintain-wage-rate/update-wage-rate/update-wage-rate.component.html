@@ -1,20 +1,30 @@
 <div class="container-fluid">
-  <h1>Update wage rate</h1>
-  <form #form="ngForm" style="margin-left: 1%; width: 800px">
-    <h2 class="form-label">New wage rate details:</h2>
+  <h1>Update Wage Rate</h1>
+  <h2 style="margin-left: 1%">Wage Rate Details:</h2>
+  <form #form="ngForm" style="margin-left: 2%; width: 700px">
+    <div class="row" style="padding-bottom: 15px">
+      <div class="col-6">
+        <label class="form-label" style="width: 100%">Wage rate name:</label>
+        <input
+          name="WageName"
+          id="WageNameID"
+          class="form-control"
+          disabled
+          [(ngModel)]="rate.ratE_NAME"
+        />
 
-    <div class="row">
-      <label class="form-label">Wage rate name:</label>
-      <h2>{{ rate.ratE_NAME }}</h2>
+        <div *ngIf="!validRateName" style="color: Red">
+          Please Select A Name
+        </div>
+      </div>
     </div>
-
-    <div class="row">
+    <div class="row" style="padding-bottom: 15px">
       <div class="col-6">
         <label class="form-label">Wage rate(R/h):</label>
         <input
           class="form-control"
           type="number"
-          placeholder="Rand"
+          placeholder="0.00"
           name="rate"
           [(ngModel)]="rate.ratE_AMOUNT"
           (input)="validateMoney()"
@@ -23,38 +33,38 @@
       </div>
     </div>
 
-    <button
-      type="button"
-      class="btn btn-primary"
-      (click)="Return()"
-      style="
-        border-color: var(--bs-orange);
-        background: var(--bs-orange);
-        margin-right: 30px;
-        margin-top: 10px;
-      "
-    >
-      Cancel
-    </button>
-    <button
-      class="btn btn-primary"
-      type="button"
-      data-toggle="modal"
-      data-target="#exampleModal"
-      style="
-        border-color: var(--bs-orange);
-        background: var(--bs-orange);
-        margin-right: 0px;
-        margin-top: 10px;
-      "
-      data-toggle="modal"
-      data-target="#exampleModal"
-      [disabled]="!validMoney || !validRateName"
-      (pointerover)="FormValidate()"
-      (mouseover)="FormValidate()"
-    >
-      Update
-    </button>
+    <div class="form-group" style="margin-top: 15px">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="Return()"
+        style="
+          border-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 30px;
+        "
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+        style="
+          border-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 0px;
+        "
+        data-toggle="modal"
+        data-target="#exampleModal"
+        [disabled]="!validMoney || !validRateName"
+        (pointerover)="FormValidate()"
+        (mouseover)="FormValidate()"
+      >
+        Save
+      </button>
+    </div>
   </form>
 </div>
 
@@ -70,7 +80,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
-          Are You Sure You Would Like To Update This New Wage Rate
+          Are You Sure You Would Like To Update This Wage Rate
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
           Wage Rate Successfully Updated
@@ -102,7 +112,6 @@
           data-target="#exampleModal"
           data-dismiss="modal"
           *ngIf="successSubmit"
-          routerLink="/maintain-wage-rate"
           (click)="Return()"
         >
           OK

@@ -9,6 +9,7 @@ import { CurrentUser } from 'src/app/models/CurrentUser.model';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
 @Component({
   selector: 'app-add-product',
@@ -17,23 +18,20 @@ import { AuditLog } from 'src/app/models/AuditLog.model';
 })
 export class AddProductComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
-
-  details: boolean = true;
-  pdetails: boolean = true;
   categorySelected: boolean = false;
   successSubmit: boolean = false;
 
-  cdetails: boolean = true;
-  sdetails: boolean = true;
-
+  //product Categorys
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
   productCategoriesTemp: ProductCategory[] = [];
 
+  //product Type
   productType: ProductType;
   productTypes: ProductType[] = [];
   productTypesTemp: ProductType[] = [];
 
+  //product
   product: Product = {
     producT_ID: 0,
     producT_CATEGORY_ID: -1,
@@ -47,10 +45,12 @@ export class AddProductComponent implements OnInit {
     barcode: '',
   };
 
+  //current USer
   currentUser: CurrentUser;
   currentUsers: CurrentUser[] = [];
   currentUsersTemp: CurrentUser[] = [];
 
+  //audit Log
   audit: AuditLog = {
     auditLogID: 0,
     userID: 0,
@@ -61,6 +61,15 @@ export class AddProductComponent implements OnInit {
   };
   audits: AuditLog[] = [];
   auditsTemp: AuditLog[] = [];
+
+  //validation
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
+  validName: boolean = true;
+  validDescription: boolean = true;
+  validCost: boolean = true;
+  validSell: boolean = true;
+  validReorder: boolean = true;
+  validBarcode: boolean = true;
 
   constructor(
     private productService: ProductService,
@@ -96,6 +105,15 @@ export class AddProductComponent implements OnInit {
     });
   }
 
+  FormValidate() {
+    this.Costvalidate();
+    this.nameValidate();
+    this.DescriptionValdate();
+    this.Sellvalidate();
+    this.BarcodeValidate();
+    this.ReorderValidate();
+  }
+
   getAllProductCategories() {
     this.productCategoryService
       .getAllProductCategories()
@@ -126,30 +144,43 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  namevalidate() {
-    var matches = this.product.producT_NAME.match(/\d+/g);
-    if (matches != null) {
-      this.details = false;
-    } else if (this.product.producT_NAME == '') {
-      this.details = false;
-    } else {
-      this.details = true;
-    }
+  nameValidate() {
+    if (this.product.producT_NAME == '') this.validName = false;
+    else this.validName = true;
   }
 
-  survalidate() {
-    var matches = this.product.producT_DESCRIPTION.match(/\d+/g);
-    if (matches != null) {
-      this.pdetails = false;
-    } else if (this.product.producT_DESCRIPTION == '') {
-      this.pdetails = false;
-    } else {
-      this.pdetails = true;
-    }
+  DescriptionValdate() {
+    if (this.product.producT_DESCRIPTION == '') this.validDescription = false;
+    else this.validDescription = true;
   }
 
   Return() {
     this.return.emit('false');
+  }
+
+  Costvalidate() {
+    this.validCost = this.validate.ValidateMoney(this.product.cosT_PRICE);
+  }
+
+  Sellvalidate() {
+    if (
+      this.product.sellinG_PRICE <= 0 ||
+      this.product.sellinG_PRICE > this.product.cosT_PRICE
+    )
+      this.validSell = false;
+    else {
+      this.validSell = this.validate.ValidateMoney(this.product.sellinG_PRICE);
+    }
+  }
+
+  BarcodeValidate() {
+    this.validBarcode = this.validate.ValidateInteger(this.product.barcode);
+  }
+
+  ReorderValidate() {
+    this.validReorder = this.validate.ValidateInteger(
+      this.product.reordeR_LIMIT
+    );
   }
 
   async categorySelect(id: number) {
@@ -160,21 +191,5 @@ export class AddProductComponent implements OnInit {
     });
     console.log(this.productTypes);
     this.categorySelected = true;
-  }
-
-  Costvalidate() {
-    if (this.product.cosT_PRICE < 1) {
-      this.cdetails = false;
-    } else {
-      this.cdetails = true;
-    }
-  }
-
-  Sellvalidate() {
-    if (this.product.sellinG_PRICE < 1) {
-      this.sdetails = false;
-    } else {
-      this.sdetails = true;
-    }
   }
 }

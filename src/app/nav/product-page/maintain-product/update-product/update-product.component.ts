@@ -18,7 +18,6 @@ export class UpdateProductComponent implements OnInit {
 
   details: boolean = true;
   pdetails: boolean = true;
-  categorySelected: boolean = false;
   successSubmit: boolean = false;
 
   cdetails: boolean = true;
@@ -39,10 +38,9 @@ export class UpdateProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('this is the product');
     console.log(this.product);
     this.getAllProductCategories();
-    this.getAllProductTypes();
-    this.categorySelect(this.product.producT_CATEGORY_ID);
   }
 
   getAllProductCategories() {
@@ -50,13 +48,17 @@ export class UpdateProductComponent implements OnInit {
       .getAllProductCategories()
       .subscribe((response) => {
         this.productCategories = response;
+        console.log('this is all the product categories');
         console.log(this.productCategories);
+        this.getAllProductTypes();
       });
   }
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
+      this.productTypes = response;
       this.productTypesTemp = response;
+      console.log('this is all the product types');
       console.log(this.productTypes);
     });
   }
@@ -95,16 +97,12 @@ export class UpdateProductComponent implements OnInit {
   }
 
   async categorySelect(id: number) {
-    this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTypesTemp = response;
-      console.log(this.productTypes);
-    });
-    this.productTypes = this.productTypesTemp.filter((productType) => {
+    this.productTypesTemp = this.productTypes;
+    this.productTypesTemp = this.productTypesTemp.filter((productType) => {
       console.log(productType.producT_CATEGORY_ID == id);
       return productType.producT_CATEGORY_ID == id;
     });
     console.log(this.productTypes);
-    this.categorySelected = true;
   }
 
   Costvalidate() {

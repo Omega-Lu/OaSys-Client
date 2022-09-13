@@ -1,4 +1,9 @@
-.btn.btn-primary{
-  margin-bottom: 60px;
-  width: 300px;
+h1 {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+.row {
+  padding-bottom: 15px;
 }

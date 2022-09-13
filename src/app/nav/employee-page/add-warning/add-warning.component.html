@@ -1,87 +1,107 @@
-<div class="container-fluid" style="margin-left: 1%">
+<div class="container-fluid">
   <h1>Add Warning</h1>
-  <label class="form-label" style="margin-left: 1%; font-weight: bold"
-    >Add a new warning:</label
-  >
+  <h2 class="form-label" style="margin-left: 1%">New Warning Details:</h2>
 
-  <form #form="ngForm" style="margin-left: 2%">
-    <div class="row">
-      <label class="form-label">Employee name:</label>
-      <select
-        name="employeeName"
-        id="employeeNameID"
-        class="btn btn-primary"
-        style="
-          background: var(--bs-gray-100);
-          border-color: var(--bs-orange);
-          color: var(--bs-orange);
-          width: fit-content;
-        "
-        [(ngModel)]="warning.employeE_ID"
-        (click)="validateEmployee()"
-        (input)="validateEmployee()"
-      >
-        <option disabled selected value="Employee Name">Employee Name</option>
-        <option
-          *ngFor="let employee of employees"
-          value="{{ employee.employeE_ID }}"
+  <form #form="ngForm" style="margin-left: 2%; width: 700px">
+    <div class="row" style="margin-bottom: 15px">
+      <div class="col">
+        <label class="form-label" style="width: 100%">Employee name:</label>
+        <select
+          name="employeeName"
+          id="employeeNameID"
+          class="btn btn-primary"
+          style="
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+            width: 100%;
+          "
+          [(ngModel)]="warning.employeE_ID"
+          (click)="validateEmployee()"
+          (input)="validateEmployee()"
         >
-          {{ employee.name }}
-        </option>
-      </select>
-      <div *ngIf="!validEmployee" style="color: Red">
-        Select An Employee Name
+          <option disabled selected value="-1">Employee Name</option>
+          <option
+            *ngFor="let employee of employees"
+            value="{{ employee.employeE_ID }}"
+          >
+            {{ employee.name }}
+          </option>
+        </select>
+        <div *ngIf="!validEmployee" style="color: Red">
+          Select An Employee Name
+        </div>
+      </div>
+      <div class="col">
+        <label class="form-label" style="width: 100%">Warning Type:</label>
+        <select
+          name="warningTypeName"
+          id="warningTypeNameID"
+          class="btn btn-primary"
+          style="
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+            width: 100%;
+          "
+          [(ngModel)]="warning.warninG_TYPE_ID"
+          (click)="validateWarningType()"
+          (input)="validateWarningType()"
+        >
+          <option disabled selected value="-1">Warning Type</option>
+          <option
+            *ngFor="let warning of warningTypes"
+            value="{{ warning.warninG_TYPE_ID }}"
+          >
+            {{ warning.description }}
+          </option>
+        </select>
+        <div *ngIf="!validWarningType" style="color: Red">
+          Select A Warning Type
+        </div>
       </div>
     </div>
-    <div class="row">
-      <label class="form-label">Warning name:</label>
-      <select
-        name="warningName"
-        id="warningNameID"
-        class="btn btn-primary"
-        style="
-          background: var(--bs-gray-100);
-          border-color: var(--bs-orange);
-          color: var(--bs-orange);
-          width: fit-content;
-        "
-        [(ngModel)]="warning.warininG_NAME"
-        (click)="validateWarning()"
-        (input)="validateWarning()"
-      >
-        <option disabled selected value="Warning Name">Warning Name</option>
-        <option
-          *ngFor="let warning of warningTypes"
-          value="{{ warning.description }}"
-        >
-          {{ warning.description }}
-        </option>
-      </select>
-      <div *ngIf="!validWarning" style="color: Red">Select A Warning Name</div>
-    </div>
-    <div class="row">
-      <label class="form-label">Reason:</label>
+    <div class="row" style="margin-bottom: 15px">
+      <div class="col">
+        <label class="form-label">Warning name:</label>
+        <input
+          class="form-control"
+          name="warningName"
+          placeholder="Warning Name..."
+          [(ngModel)]="warning.warininG_NAME"
+          (click)="validateWarning()"
+          (keyup)="validateWarning()"
+        />
+        <div *ngIf="!validWarning" style="color: Red">
+          Select A Warning Name
+        </div>
+      </div>
 
-      <textarea
-        type="text"
-        class="form-control"
-        placeholder="Reason For Warning"
-        name="warningReason"
-        [(ngModel)]="warning.reason"
-        style="width: 250px; height: 100px"
-        rows="3"
-        cols="30"
-        (keyup)="validateReason()"
-      ></textarea>
-      <div *ngIf="!validReason" style="color: Red">Invalid Reason</div>
+      <div class="col">
+        <label class="form-label">Reason:</label>
+        <textarea
+          type="text"
+          class="form-control"
+          placeholder="Reason For Warning..."
+          name="warningReason"
+          [(ngModel)]="warning.reason"
+          style="height: 100px"
+          rows="3"
+          cols="30"
+          (click)="validateReason()"
+          (keyup)="validateReason()"
+        ></textarea>
+        <div *ngIf="!validReason" style="color: Red">Invalid Reason</div>
+      </div>
     </div>
+
     <div style="margin-top: 20px">
       <button
         type="button"
         class="btn btn-primary"
         routerLink="/employee-page"
         style="
-        border-color: var(--bs-orange);
+          border-color: var(--bs-orange);
           background: var(--bs-orange);
           margin-right: 30px;
           margin-top: 10px;
@@ -91,9 +111,9 @@
       </button>
       <button
         class="btn btn-primary"
-        type="submit"
+        type="button"
         style="
-         border-color: var(--bs-orange);
+          border-color: var(--bs-orange);
           background: var(--bs-orange);
           margin-top: 10px;
         "

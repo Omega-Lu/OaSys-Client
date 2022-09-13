@@ -33,8 +33,8 @@
       style="
         margin-left: px;
         width: 74.7109px;
-        background: var(--bs-yellow);
-        border-color: var(--bs-yellow);
+        background: var(--bs-orange);
+        border-color: var(--bs-orange);
       "
       (click)="Return()"
     >
@@ -44,8 +44,8 @@
       type="button"
       style="
         margin-left: 40px;
-        border-color: var(--bs-yellow);
-        background: var(--bs-yellow);
+        border-color: var(--bs-orange);
+        background: var(--bs-orange);
       "
       data-toggle="modal"
       data-target="#exampleModal"
@@ -88,7 +88,7 @@
           class="btn btn-primary"
           data-target="#exampleModal"
           *ngIf="!successSubmit"
-          (click)="ReturnSale(); "
+          (click)="ReturnSale()"
         >
           Yes
         </button>

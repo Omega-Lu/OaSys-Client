@@ -1,47 +1,68 @@
-<div class="container">
-  <div class="row">
-    <button
-      class="btn btn-primary"
-      style="border-color: var(--bs-orange); background: var(--bs-orange)"
-      type="button"
-      data-toggle="modal"
-      data-target="#AddTimerModal"
-    >
-      Add Logout Timer
-    </button>
-  </div>
-  <div class="row">
-    <button
-      class="btn btn-primary"
-      type="button"
-      style="border-color: var(--bs-orange); background: var(--bs-orange)"
-    >
-      View Logout Timer
-    </button>
-  </div>
-  <div class="row">
-    <button
-      class="btn btn-primary"
-      style="border-color: var(--bs-orange); background: var(--bs-orange)"
-      type="button"
-      data-toggle="modal"
-      data-target="#EditTimerModal"
-    >
-      Edit Logout Timer
-    </button>
-  </div>
-  <div class="row">
-    <button
-      class="btn btn-primary"
-      style="border-color: var(--bs-orange); background: var(--bs-orange)"
-      type="button"
-      data-toggle="modal"
-      data-target="#DeleteTimerModal"
-    >
-      Delete Logout Timer
-    </button>
+<!--------------------Logout Timer Cards------------------------------------->
+
+<div class="row">
+  <h1>Logout Timer</h1>
+
+  <div class="card-group">
+    <div class="card">
+      <div
+        class="card-body"
+        style="border: 2px solid var(--bs-gray-900)"
+        data-toggle="modal"
+        data-target="#AddTimerModal"
+      >
+        <i
+          class="fas fa-plus text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Add Logout Timer
+        </button>
+      </div>
+      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+        <i
+          class="fas fa-eye text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          View Logout Timer
+        </button>
+      </div>
+    </div>
+    <div class="card">
+      <div
+        class="card-body"
+        style="border: 2px solid var(--bs-gray-900)"
+        data-toggle="modal"
+        data-target="#EditTimerModal"
+      >
+        <i
+          class="fas fa-pencil-alt text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Edit Logout Timer
+        </button>
+      </div>
+      <div
+        class="card-body"
+        style="border: 2px solid var(--bs-gray-900)"
+        data-toggle="modal"
+        data-target="#DeleteTimerModal"
+      >
+        <i
+          class="fas fa-trash text-warning"
+          style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
+        ></i
+        ><button class="btn" type="button" style="color: rgb(0, 0, 0)">
+          Delete Logout Timer
+        </button>
+      </div>
+    </div>
   </div>
 </div>
+
+<!------------------------------Timer Modals----------------------------------->
 
 <!-- Modal Delete -->
 

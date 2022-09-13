@@ -33,7 +33,7 @@ export class UpdateEmployeeTypeComponent implements OnInit {
       });
   }
 
-  validateString() {
+  namevalidate() {
     this.validName = this.validate.ValidateString(
       this.employeetype.positioN_NAME
     );

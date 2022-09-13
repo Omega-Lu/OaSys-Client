@@ -1,28 +1,31 @@
 <div class="container-fluid">
   <h1>Update Warning type</h1>
+  <h2 style="margin-left: 1%">Warning type details:</h2>
 
-  <form #form="ngForm" style="margin-left: 1%">
-    <div class="row" style="margin-left: 1%">
-      <label class="form-label">Warning Type Name:</label>
-      <input
-        type="text"
-        name="warningTypeName"
-        style="width: 250px"
-        [(ngModel)]="warningType.description"
-        (keyup)="validateName()"
-      />
-      <div *ngIf="!validWarning" style="color: Red">
-        Invalid Warning Type Name
+  <form #form="ngForm" style="margin-left: 2%">
+    <div class="row" style="padding-bottom: 15px">
+      <div class="col-6">
+        <label class="form-label">Warning Type Name:</label>
+        <input
+          class="form-control"
+          type="text"
+          name="warningTypeName"
+          [(ngModel)]="warningType.description"
+          (keyup)="validateName()"
+        />
+        <div *ngIf="!validWarning" style="color: Red">
+          Invalid Warning Type Name
+        </div>
       </div>
     </div>
 
-    <div style="margin-top: 20px">
+    <div class="form-group" style="margin-top: 15px">
       <button
         type="button"
         class="btn btn-primary"
         (click)="Return()"
         style="
-          border-right-color: var(--bs-orange);
+          border-color: var(--bs-orange);
           background: var(--bs-orange);
           margin-right: 30px;
         "
@@ -31,16 +34,13 @@
       </button>
       <button
         class="btn btn-primary"
-        style="
-          border-right-color: var(--bs-orange);
-          background: var(--bs-orange);
-        "
+        style="border-color: var(--bs-orange); background: var(--bs-orange)"
         data-toggle="modal"
-        data-target="#updateWarningTypeModal"
+        data-target="#exampleModal"
         [disabled]="!validWarning"
         (mouseover)="validateName()"
       >
-        Update
+        Save
       </button>
     </div>
   </form>
@@ -48,27 +48,19 @@
 
 <div
   class="modal fade"
-  id="updateWarningTypeModal"
+  id="exampleModal"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="updateWarningTypeModalLabel"
+  aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5
-          class="modal-title"
-          id="updateWarningTypeModalLabel"
-          *ngIf="!successSubmit"
-        >
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
           Are You Sure You Would Like To Update This Warning Type
         </h5>
-        <h5
-          class="modal-title"
-          id="updateWarningTypeModalLabel"
-          *ngIf="successSubmit"
-        >
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
           Warning Type Successfully Updated
         </h5>
       </div>

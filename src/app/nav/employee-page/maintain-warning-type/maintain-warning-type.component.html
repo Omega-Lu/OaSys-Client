@@ -51,7 +51,7 @@
               type="button"
               style="background: var(--bs-red)"
               data-toggle="modal"
-              data-target="#exampleModal"
+              data-target="#warningDeleteModal"
               (click)="deletee(warningtype.warninG_TYPE_ID)"
             >
               Delete
@@ -73,4 +73,66 @@
   >
     Back
   </button>
+</div>
+
+<div
+  class="modal fade"
+  id="warningDeleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="warningDeleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="warningDeleteModalLabel"
+          *ngIf="!successDelete"
+        >
+          Are You Sure You Would Like To Delete This Warning Type
+        </h5>
+        <h5
+          class="modal-title"
+          id="warningDeleteModalLabel"
+          *ngIf="successDelete"
+        >
+          Warning Type Successfully Deleted
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successDelete"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          name="deleteempl"
+          data-target="#warningDeleteModal"
+          *ngIf="!successDelete"
+          (click)="deleteEmployee()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#warningDeleteModal"
+          data-dismiss="modal"
+          *ngIf="successDelete"
+          routerLink="/employee-page"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

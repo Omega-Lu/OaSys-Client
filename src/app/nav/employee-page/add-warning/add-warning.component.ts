@@ -6,6 +6,8 @@ import { EmployeeService } from 'src/app/_services/employee.service';
 import { WarningType } from 'src/app/models/warning-type.model';
 import { WarningTypeService } from 'src/app/_services/warning-type.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+import { EmployeeWarning } from 'src/app/models/EmployeeWarning.model';
+import { EmployeeWarningService } from 'src/app/_services/EmployeeWarning.service';
 
 @Component({
   selector: 'app-add-warning',
@@ -17,6 +19,7 @@ export class AddWarningComponent implements OnInit {
   validEmployee: boolean = true;
   validWarning: boolean = true;
   validReason: boolean = true;
+  validWarningType: boolean = true;
 
   //employees
   employee: Employee;
@@ -28,18 +31,27 @@ export class AddWarningComponent implements OnInit {
 
   successSubmit: boolean = false;
 
+  //warning
   warning: Warning = {
     warninG_ID: 0,
-    warininG_NAME: 'Warning Name',
-    employeE_ID: 'Employee Name',
-    warninG_TYPE_ID: 0,
+    warininG_NAME: '',
+    employeE_ID: -1,
+    warninG_TYPE_ID: -1,
     reason: '',
+  };
+
+  //employeeWarning
+  employeeWarning: EmployeeWarning = {
+    employeeWarningID: 0,
+    employeeID: 0,
+    warningID: 0,
   };
 
   constructor(
     private warningService: WarningService,
     private WarningTypeService: WarningTypeService,
-    private EmployeeService: EmployeeService
+    private EmployeeService: EmployeeService,
+    private EmployeeWarningService: EmployeeWarningService
   ) {}
 
   async ngOnInit() {
@@ -49,8 +61,17 @@ export class AddWarningComponent implements OnInit {
 
   onSubmit() {
     this.warningService.addEmployee(this.warning).subscribe((response) => {
+      console.log('this is the new warning entry');
       console.log(response);
-      this.successSubmit = true;
+      this.employeeWarning.employeeID = response.employeE_ID;
+      this.employeeWarning.warningID = response.warninG_ID;
+      this.EmployeeWarningService.addEmployeeWarning(
+        this.employeeWarning
+      ).subscribe((res) => {
+        console.log('this is the new EmployeeWarning');
+        console.log(res);
+        this.successSubmit = true;
+      });
     });
   }
 
@@ -74,21 +95,28 @@ export class AddWarningComponent implements OnInit {
     this.validateEmployee();
     this.validateReason();
     this.validateWarning();
+    this.validateWarningType();
   }
 
   validateEmployee() {
-    if (this.warning.employeE_ID == 'Employee Name') {
+    if (this.warning.employeE_ID == -1) {
       this.validEmployee = false;
     } else this.validEmployee = true;
   }
 
   validateWarning() {
-    if (this.warning.warininG_NAME == 'Warning Name') {
+    if (this.warning.warininG_NAME == '') {
       this.validWarning = false;
     } else this.validWarning = true;
   }
 
+  validateWarningType() {
+    if (this.warning.warninG_TYPE_ID == -1) this.validWarningType = false;
+    else this.validWarningType = true;
+  }
+
   validateReason() {
-    this.validReason = this.validate.ValidateString(this.warning.reason);
+    if (this.warning.reason == '') this.validReason = false;
+    else this.validReason = true;
   }
 }

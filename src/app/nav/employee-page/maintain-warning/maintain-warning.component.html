@@ -22,18 +22,20 @@
     <table class="table">
       <thead>
         <tr>
+          <th>Employee Name</th>
+          <th>Warning Type</th>
           <th>Warning Name</th>
           <th>Reason</th>
-          <th>Employee Name</th>
           <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let warning of warnings">
-          <td>{{ warning.warininG_NAME }}</td>
-          <td>{{ warning.reason }}</td>
-          <td>{{ warning.employeE_ID }}</td>
+        <tr *ngFor="let element of dynamicArray">
+          <td>{{ element.name }}</td>
+          <td>{{ element.warningType }}</td>
+          <td>{{ element.warningName }}</td>
+          <td>{{ element.reason }}</td>
           <td>
             <button
               class="btn btn-primary"

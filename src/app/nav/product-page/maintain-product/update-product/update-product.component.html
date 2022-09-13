@@ -1,12 +1,12 @@
 <div class="container-fluid">
-  <h1>Add Products:</h1>
+  <h1>Update Product:</h1>
+  <h2 style="margin-left: 1%">Products Details:</h2>
   <form
     #form="ngForm"
     (ngSubmit)="onSubmit()"
-    style="max-width: 800px; margin-left: 1%"
+    style="max-width: 700px; margin-left: 2%"
   >
     <div class="row">
-      <h2>New products details:</h2>
       <div class="col">
         <label class="form-label"> Product Name: </label>
         <input
@@ -47,15 +47,15 @@
             background: var(--bs-gray-100);
             border-color: var(--bs-orange);
             color: var(--bs-orange);
+            width: 100%;
           "
           [(ngModel)]="product.producT_CATEGORY_ID"
-          required
           (input)="categorySelect($event.target.value)"
         >
-          <option value="-1" selected disabled>Product Category</option>
+          <option value="-1" disabled>Product Category</option>
           <option
-            value=" {{ productCategory.producT_CATEGORY_ID }} "
             *ngFor="let productCategory of productCategories"
+            value=" {{ productCategory.producT_CATEGORY_ID }} "
           >
             {{ productCategory.categorY_NAME }}
           </option>
@@ -64,7 +64,6 @@
       <div class="col">
         <label class="form-label" style="width: 100%"> Product type: </label>
         <select
-          [disabled]="!categorySelected"
           name="productType"
           id="productType"
           class="btn"
@@ -72,13 +71,14 @@
             background: var(--bs-gray-100);
             border-color: var(--bs-orange);
             color: var(--bs-orange);
+            width: 100%;
           "
           [(ngModel)]="product.producT_TYPE_ID"
         >
-          <option value="-1" selected disabled>Product Type</option>
+          <option value="-1" disabled>Product Type</option>
           <option
-            value=" {{ productType.producT_TYPE_ID }} "
             *ngFor="let productType of productTypesTemp"
+            value=" {{ productType.producT_TYPE_ID }} "
           >
             {{ productType.typE_NAME }}
           </option>
@@ -196,10 +196,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
-          Are You Sure You Would Like To Add A New Product
+          Are You Sure You Would Like To Update This Product
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
-          Product Successfully Added
+          Product Successfully Updated
         </h5>
       </div>
 

@@ -42,7 +42,6 @@ export class MaintainEmployeeComponent implements OnInit {
   getAllEmployees() {
     this.employeeService.getAllEmployees().subscribe((response) => {
       this.employees = response;
-      console.log(this.employees);
     });
   }
 
@@ -51,7 +50,7 @@ export class MaintainEmployeeComponent implements OnInit {
       .deleteEmployee(this.deletenumber)
       .subscribe((response) => {
         this.getAllEmployees();
-        console.log(this.employees);
+        response;
         this.successDelete = true;
       });
   }

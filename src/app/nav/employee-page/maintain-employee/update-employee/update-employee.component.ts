@@ -32,25 +32,31 @@ export class UpdateEmployeeComponent implements OnInit {
   employeeType: EmployeeType;
   employeeTypes: EmployeeType[] = [];
 
-  employeeSelected: boolean = true;
+  employeeSelected: boolean = false;
 
   // import validation
   validate: ValidationServicesComponent = new ValidationServicesComponent();
 
   //user models
-  user: User = {
-    useR_ID: 0,
-    useR_ROLE_ID: 0,
-    employeE_ID: 0,
-    useR_STATUS_ID: 0,
-    username: '',
-    useR_PASSWORD: '',
-  };
+  user: User;
   users: User[] = [];
+  usersTemp: User[] = [];
 
-  constructor(private employeeService: EmployeeService) {}
+  role = -1;
 
-  ngOnInit(): void {}
+  constructor(
+    private employeeService: EmployeeService,
+    private employeeTypeService: EmployeeTypeService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    console.log('this is the employee');
+    console.log(this.employee);
+
+    this.GetUsers();
+    this.GetEmployeeTypes();
+  }
 
   FormValidate() {
     // validate name
@@ -79,7 +85,11 @@ export class UpdateEmployeeComponent implements OnInit {
     this.employeeService.updateEmployee(this.employee).subscribe((response) => {
       console.log('this is the new updated employee');
       console.log(response);
-      this.successSubmit = true;
+      this.userService.updateUser(this.user).subscribe((res) => {
+        console.log('this is the updated user');
+        console.log(res);
+        this.successSubmit = true;
+      });
     });
   }
 
@@ -159,5 +169,25 @@ export class UpdateEmployeeComponent implements OnInit {
         } else this.user.useR_ROLE_ID = 4;
       }
     }
+  }
+
+  GetEmployeeTypes() {
+    this.employeeTypeService.getAllEmployees().subscribe((res) => {
+      this.employeeTypes = res;
+    });
+  }
+
+  GetUsers() {
+    this.userService.getAllUsers().subscribe((res) => {
+      this.usersTemp = res.filter((user) => {
+        return user.employeE_ID == this.employee.employeE_ID;
+      });
+      this.user = this.usersTemp[0];
+      if (this.user.useR_ROLE_ID == 3 || this.user.useR_ROLE_ID == 4) {
+        this.employeeSelected = true;
+      } else {
+        this.employeeSelected = false;
+      }
+    });
   }
 }

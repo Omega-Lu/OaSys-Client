@@ -1,31 +1,7 @@
 <div class="container-fluid">
-  <form style="width: 720px">
-    <h1>ReOrder List</h1>
-    <div class="row">
-      <div class="col">
-        <h2 class="form-label">Manually add products to be reordered</h2>
-      </div>
-      <div class="col">
-        <button
-          class="btn btn-primary"
-          type="button"
-          style="
-            margin-left: 200px;
-            background: var(--bs-orange);
-            border-color: var(--bs-orange);
-          "
-          (click)="addProduct()"
-        >
-          Add product</button
-        ><i style="color: red; float: right" [hidden]="addQuan"
-          >Quantity can only be more than 0</i
-        >
-        <i style="color: red; float: right" [hidden]="addComplete"
-          >Complete the product selection</i
-        >
-      </div>
-    </div>
-
+  <h1>ReOrder List</h1>
+  <h2 style="margin-left: 1%">Manually add products to be reordered</h2>
+  <form style="max-width: 1000px; margin-left: 2%">
     <div class="" style="height: 115px; margin-top: 30px">
       <table class="table">
         <thead>
@@ -34,6 +10,7 @@
             <th>Product type</th>
             <th>Product Name</th>
             <th>Quantity</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -123,13 +100,34 @@
                 style="width: 100px"
               />
             </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="
+                  background: var(--bs-orange);
+                  border-color: var(--bs-orange);
+                "
+                (click)="addProduct()"
+              >
+                Add product
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
+      <div class="row" style="text-align: right">
+        <p style="color: red; float: right" [hidden]="addQuan">
+          Quantity can only be more than 0
+        </p>
+        <p style="color: red; float: right" [hidden]="addComplete">
+          Complete the product selection
+        </p>
+      </div>
     </div>
     <div
       class="table-responsive"
-      style="height: 350px; margin-top: 10px; margin-bottom: 10px"
+      style="height: 350px; margin-top: 25px; margin-bottom: 10px"
     >
       <table class="table">
         <thead>
@@ -183,7 +181,7 @@
       style="
         background: var(--bs-orange);
         border-color: var(--bs-orange);
-        margin-left: 500px;
+        float: right;
       "
       [disabled]="!completeQuantity"
       data-toggle="modal"

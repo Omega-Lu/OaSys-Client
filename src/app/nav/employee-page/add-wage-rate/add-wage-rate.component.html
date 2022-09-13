@@ -1,78 +1,85 @@
-<form #form="ngForm" style="margin-left: 1%">
-  <h1>Add wage rate</h1>
-  <h2 style="margin-left: 1%">New wage rate details:</h2>
-  <div class="row" style="margin-left: 1%">
-    <label class="form-label">Wage rate name:</label>
-    <select
-      name="WageName"
-      id="WageNameID"
-      class="btn btn-primary"
-      style="
-        background: var(--bs-gray-100);
-        border-color: var(--bs-orange);
-        color: var(--bs-orange);
-        width: 250px;
-      "
-      [(ngModel)]="rate.ratE_NAME"
-      (click)="validateRateName()"
-    >
-      <option disabled selected value="Select A Name">Select A Name</option>
-      <option
-        value="{{ type.positioN_NAME }}"
-        *ngFor="let type of employeeTypes"
-      >
-        {{ type.positioN_NAME }}
-      </option>
-    </select>
-    <div *ngIf="!validRateName" style="color: Red">Please Select A Name</div>
-  </div>
-  <div class="row" style="margin-left: 1%">
-    <label class="form-label">Wage rate(R/h):</label>
-    <input
-      class="form-control"
-      type="number"
-      placeholder="Rand"
-      name="rate"
-      [(ngModel)]="rate.ratE_AMOUNT"
-      (input)="validateMoney()"
-      style="width: 250px"
-    />/h
-    <div *ngIf="!validMoney" style="color: Red">Invalid Wage Rate</div>
-  </div>
+<div class="container-fluid">
+  <h1>Add Wage Rate</h1>
+  <h2 style="margin-left: 1%">New Wage Rate Details:</h2>
+  <form #form="ngForm" style="margin-left: 2%; width: 700px">
+    <div class="row" style="padding-bottom: 15px">
+      <div class="col-6">
+        <label class="form-label" style="width: 100%">Wage Rate Name:</label>
+        <select
+          name="WageName"
+          id="WageNameID"
+          class="btn btn-primary"
+          style="
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+            width: 100%;
+          "
+          [(ngModel)]="rate.ratE_NAME"
+          (click)="validateRateName()"
+        >
+          <option disabled selected value="Select A Name">Select A Name</option>
+          <option
+            value="{{ type.positioN_NAME }}"
+            *ngFor="let type of employeeTypes"
+          >
+            {{ type.positioN_NAME }}
+          </option>
+        </select>
+        <div *ngIf="!validRateName" style="color: Red">
+          Please Select A Name
+        </div>
+      </div>
+    </div>
+    <div class="row" style="padding-bottom: 15px">
+      <div class="col-6">
+        <label class="form-label">Wage Rate(R/h):</label>
+        <input
+          class="form-control"
+          type="number"
+          placeholder="0.00"
+          name="rate"
+          [(ngModel)]="rate.ratE_AMOUNT"
+          (input)="validateMoney()"
+        />
+        <div *ngIf="!validMoney" style="color: Red">Invalid Wage Rate</div>
+      </div>
+    </div>
 
-  <button
-    type="button"
-    class="btn btn-primary"
-    routerLink="/employee-page"
-    style="
-      border-color: var(--bs-orange);
-      background: var(--bs-orange);
-      margin-right: 30px;
-      margin-top: 10px;
-    "
-  >
-    Cancel
-  </button>
-  <button
-    class="btn btn-primary"
-    type="button"
-    data-toggle="modal"
-    data-target="#exampleModal"
-    style="
-      border-color: var(--bs-orange);
-      background: var(--bs-orange);
-      margin-right: 0px;
-      margin-top: 10px;
-    "
-    data-toggle="modal"
-    data-target="#exampleModal"
-    [disabled]="!validMoney || !validRateName"
-    (pointerover)="FormValidate()"
-    (mouseover)="FormValidate()"
-  >
-    Save
-  </button>
-</form>
+    <div class="form-group" style="margin-top: 15px">
+      <button
+        type="button"
+        class="btn btn-primary"
+        routerLink="/employee-page"
+        style="
+          border-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 30px;
+        "
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+        style="
+          border-color: var(--bs-orange);
+          background: var(--bs-orange);
+          margin-right: 0px;
+        "
+        data-toggle="modal"
+        data-target="#exampleModal"
+        [disabled]="!validMoney || !validRateName"
+        (pointerover)="FormValidate()"
+        (mouseover)="FormValidate()"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
 
 <div
   class="modal fade"

@@ -15,6 +15,10 @@ export class MaintainWarningTypeComponent implements OnInit {
   updateWarning: boolean = false;
   lekke: any;
 
+  successDelete: boolean = false;
+
+  deleteID;
+
   constructor(private warningTypeService: WarningTypeService) {}
 
   ngOnInit() {
@@ -28,12 +32,18 @@ export class MaintainWarningTypeComponent implements OnInit {
     });
   }
 
-  deleteEmployee(id: number) {
-    console.log(id);
-    this.warningTypeService.deleteEmployee(id).subscribe((response) => {
-      this.getAllEmployees();
-      console.log(this.warningtypes);
-    });
+  deletee(delID) {
+    this.deleteID = delID;
+  }
+
+  deleteEmployee() {
+    this.warningTypeService
+      .deleteEmployee(this.deleteID)
+      .subscribe((response) => {
+        this.getAllEmployees();
+        console.log(this.warningtypes);
+        this.successDelete = true;
+      });
   }
 
   populateForm(warningtype: WarningType) {

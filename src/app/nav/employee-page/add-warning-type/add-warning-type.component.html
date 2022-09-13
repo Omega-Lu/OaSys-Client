@@ -1,24 +1,25 @@
 <div class="container-fluid">
-  <h1>Add Warning type</h1>
+  <h1>Add Warning Type</h1>
+  <h2 style="margin-left: 1%">New Warning Type Details:</h2>
 
-  <form #form="ngForm" style="margin-left: 1%">
-    <h2>Add a new warning type:</h2>
-    <div class="row">
-      <label class="form-label">Warning Type Name:</label>
-      <input
-        class="form-control"
-        type="text"
-        name="warningTypeName"
-        style="width: 250px"
-        [(ngModel)]="warningType.description"
-        (keyup)="validateName()"
-      />
-      <div *ngIf="!validWarning" style="color: Red">
-        Invalid Warning Type Name
+  <form #form="ngForm" style="margin-left: 2%; width: 700px">
+    <div class="row" style="padding-bottom: 15px">
+      <div class="col-6">
+        <label class="form-label">Warning Type Name:</label>
+        <input
+          class="form-control"
+          type="text"
+          name="warningTypeName"
+          [(ngModel)]="warningType.description"
+          (keyup)="validateName()"
+        />
+        <div *ngIf="!validWarning" style="color: Red">
+          Invalid Warning Type Name
+        </div>
       </div>
     </div>
 
-    <div style="margin-top: 20px">
+    <div class="form-group" style="margin-top: 15px">
       <button
         type="button"
         class="btn btn-primary"

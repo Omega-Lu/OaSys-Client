@@ -17,6 +17,7 @@
       <thead>
         <tr>
           <th>Employee Name</th>
+          <th>Warning Type</th>
           <th>Warning Name</th>
           <th>Reason</th>
         </tr>
@@ -24,6 +25,7 @@
       <tbody>
         <tr *ngFor="let element of dynamicArray">
           <td>{{ element.name }}</td>
+          <td>{{ element.warningType }}</td>
           <td>{{ element.warningName }}</td>
           <td>{{ element.reason }}</td>
         </tr>
