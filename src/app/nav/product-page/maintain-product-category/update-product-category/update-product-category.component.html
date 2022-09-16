@@ -1,37 +1,41 @@
-<h1>&nbsp;Update Product Category</h1>
 <div class="container-fluid">
-  <form #form="ngForm" (ngSubmit)="onSubmit()">
+  <h1>Update Product Category</h1>
+  <h2 style="margin-left: 1%">Product Category Details:</h2>
+  <form #form="ngForm" style="margin-left: 2%; max-width: 700px">
     <div class="row">
-      <label class="form-label" style="margin-right: 650px"
-        >Product Category Name:</label
-      >
-      <input
-        class="form-control"
-        name="emplyee"
-        type="text"
-        style="width: 300px; margin-right: 50px; margin-left: 10px"
-        [(ngModel)]="productCategory.categorY_NAME"
-        (click)="namevalidate()"
-        (keyup)="namevalidate()"
-      />
-      <div *ngIf="!details" style="color: Red">Invalid Details</div>
+      <div class="col-6">
+        <label class="form-label">Product Category Name:</label>
+        <input
+          class="form-control"
+          name="emplyee"
+          type="text"
+          [(ngModel)]="productCategory.categorY_NAME"
+          (click)="namevalidate()"
+          (keyup)="namevalidate()"
+        />
+        <div *ngIf="!details" style="color: Red">Invalid Category Name</div>
+        <div *ngIf="!uniqueName" style="color: Red">
+          Duplicate Category Name
+        </div>
+      </div>
     </div>
     <div class="row">
-      <label class="form-label" style="margin-right: 650px"
-        >Product Category Description:</label
-      >
-      <input
-        class="form-control"
-        name="emplyeeName"
-        type="text"
-        style="width: 300px; margin-right: 50px; margin-left: 10px"
-        [(ngModel)]="productCategory.categorY_DESCRIPTION"
-        (click)="survalidate()"
-        (keyup)="survalidate()"
-      />
-      <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+      <div class="col-6">
+        <label class="form-label">Product Category Description:</label>
+        <input
+          class="form-control"
+          name="emplyeeName"
+          type="text"
+          [(ngModel)]="productCategory.categorY_DESCRIPTION"
+          (click)="survalidate()"
+          (keyup)="survalidate()"
+        />
+        <div *ngIf="!sdetails" style="color: Red">
+          Invalid Category Description
+        </div>
+      </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" style="margin-top: 15px">
       <span>
         <button
           type="button"
@@ -41,7 +45,6 @@
             border-color: var(--bs-orange);
             background: var(--bs-orange);
             margin-right: 30px;
-            margin-top: 10px;
           "
         >
           Cancel
@@ -50,77 +53,71 @@
           class="btn btn-primary"
           type="button"
           data-toggle="modal"
-          data-target="#exampleModal"
+          data-target="#updateModal"
           style="
             border-color: var(--bs-orange);
             background: var(--bs-orange);
             margin-right: 0px;
-            margin-top: 10px;
           "
-          *ngIf="details && sdetails"
+          (mouseover)="FormValidate()"
+          [disabled]="!details || !sdetails || !uniqueName"
         >
           Save
         </button>
       </span>
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5
-                class="modal-title"
-                id="exampleModalLabel"
-                *ngIf="!successSubmit"
-              >
-                Are You Sure You Would Like To Update This Product Category
-              </h5>
-              <h5
-                class="modal-title"
-                id="exampleModalLabel"
-                *ngIf="successSubmit"
-              >
-                Product Category Successfully Updated
-              </h5>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                *ngIf="!successSubmit"
-              >
-                No
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                data-target="#exampleModal"
-                *ngIf="!successSubmit"
-              >
-                Yes
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-toggle="modal"
-                data-target="#exampleModal"
-                data-dismiss="modal"
-                *ngIf="successSubmit"
-                (click)="Return()"
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </form>
+</div>
+
+<div
+  class="modal fade"
+  id="updateModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="updateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Update This Product Category
+        </h5>
+        <h5 class="modal-title" id="updateModalLabel" *ngIf="successSubmit">
+          Product Category Successfully Updated
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#updateModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#updateModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

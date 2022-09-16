@@ -9,8 +9,12 @@ import { DebtorService } from 'src/app/_services/debtor.service';
 })
 export class MaintainDebtorComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
-  debtors: Debtor[] = [];
+
+  //debtor
   debtor: Debtor;
+  debtors: Debtor[] = [];
+  debtorsTemp: Debtor[] = [];
+
   successDelete: boolean = false;
   model: any;
   delete: boolean = false;
@@ -30,14 +34,13 @@ export class MaintainDebtorComponent implements OnInit {
   getAllDebtors() {
     this.debtorService.getAllDebtors().subscribe((response) => {
       this.debtors = response;
-      console.log(this.debtors);
+      this.debtorsTemp = response;
     });
   }
 
   deleteDebtor() {
     this.debtorService.deleteDebtor(this.deleteNumber).subscribe((response) => {
       this.getAllDebtors();
-      console.log(this.debtors);
       this.successDelete = true;
     });
   }
@@ -47,16 +50,14 @@ export class MaintainDebtorComponent implements OnInit {
   }
 
   Search() {
+    this.debtorsTemp = this.debtors;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.debtors = this.debtors.filter((employee) => {
-        console.log(employee.name.match(searchValue));
-        return employee.name.match(searchValue);
+      this.debtorsTemp = this.debtorsTemp.filter((debtor) => {
+        return (
+          debtor.name.match(this.searchText) ||
+          debtor.surname.match(this.searchText)
+        );
       });
-      console.log(this.debtor);
-    } else {
-      this.getAllDebtors();
     }
   }
 

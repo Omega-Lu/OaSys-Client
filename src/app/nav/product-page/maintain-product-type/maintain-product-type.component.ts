@@ -67,6 +67,8 @@ export class MaintainProductTypeComponent implements OnInit {
   }
 
   back() {
+    this.updateProductType = false;
     this.return.emit('false');
+    this.getAllProductTypes();
   }
 }

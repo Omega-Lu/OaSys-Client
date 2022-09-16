@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <h1>Add Products:</h1>
-  <h2 style="margin-left: 1%">New products details:</h2>
+  <h2 style="margin-left: 1%">New Products Details:</h2>
   <form
     #form="ngForm"
     (ngSubmit)="onSubmit()"
@@ -15,8 +15,8 @@
           id="productname"
           type="text"
           [(ngModel)]="product.producT_NAME"
-          (click)="nameValidate()"
           (keyup)="nameValidate()"
+          (input)="nameValidate()"
         />
         <div *ngIf="!validName" style="color: Red">Invalid Product Name</div>
       </div>
@@ -27,11 +27,14 @@
           name="productDescription"
           type="text"
           [(ngModel)]="product.producT_DESCRIPTION"
-          (click)="DescriptionValdate()"
           (keyup)="DescriptionValdate()"
+          (input)="DescriptionValdate()"
         />
         <div *ngIf="!validDescription" style="color: Red">
           Invalid Product Description
+        </div>
+        <div *ngIf="!uniqueNameAndDesc" style="color: Red">
+          Duplicate Product Name and Description
         </div>
       </div>
     </div>
@@ -53,7 +56,8 @@
           "
           [(ngModel)]="product.producT_CATEGORY_ID"
           required
-          (input)="categorySelect($event.target.value)"
+          (click)="validateCategory()"
+          (input)="categorySelect($event.target.value); validateCategory()"
         >
           <option value="-1" selected disabled>Product Category</option>
           <option
@@ -63,6 +67,9 @@
             {{ productCategory.categorY_NAME }}
           </option>
         </select>
+        <div *ngIf="!validCategory" style="color: Red">
+          Please Select A Category
+        </div>
       </div>
       <div class="col">
         <label class="form-label" style="width: 100%"> Product type: </label>
@@ -77,6 +84,8 @@
             color: var(--bs-orange);
             width: 100%;
           "
+          (click)="validateType()"
+          (input)="validateType()"
           [(ngModel)]="product.producT_TYPE_ID"
         >
           <option value="-1" selected disabled>Product Type</option>
@@ -87,6 +96,7 @@
             {{ productType.typE_NAME }}
           </option>
         </select>
+        <div *ngIf="!validType" style="color: Red">Please Select A Type</div>
       </div>
     </div>
     <div class="row">
@@ -97,6 +107,8 @@
           name="reorder"
           type="text"
           required
+          (keyup)="ReorderValidate()"
+          (input)="ReorderValidate()"
           [(ngModel)]="product.reordeR_LIMIT"
         />
         <div *ngIf="!validReorder" style="color: Red">
@@ -110,9 +122,12 @@
           name="barcode"
           type="text"
           required
+          (keyup)="BarcodeValidate()"
+          (input)="BarcodeValidate()"
           [(ngModel)]="product.barcode"
         />
-        <div *ngIf="!validBarcode" style="color: Red">Invalid Details</div>
+        <div *ngIf="!validBarcode" style="color: Red">Invalid Barcode</div>
+        <div *ngIf="!uniqueBarcode" style="color: Red">Duplicate Barcode</div>
       </div>
     </div>
     <div class="row">
@@ -126,8 +141,9 @@
           [(ngModel)]="product.cosT_PRICE"
           (click)="Costvalidate()"
           (keyup)="Costvalidate()"
+          (input)="Costvalidate()"
         />
-        <div *ngIf="!validCost" style="color: Red">Invalid Details</div>
+        <div *ngIf="!validCost" style="color: Red">Invalid Cost Price</div>
       </div>
       <div class="col">
         <label class="form-label"> Product Selling Price:(R) </label>
@@ -139,8 +155,9 @@
           [(ngModel)]="product.sellinG_PRICE"
           (click)="Sellvalidate()"
           (keyup)="Sellvalidate()"
+          (input)="Sellvalidate()"
         />
-        <div *ngIf="!validSell" style="color: Red">Invalid Details</div>
+        <div *ngIf="!validSell" style="color: Red">Invalid Selling Price</div>
       </div>
     </div>
 
@@ -189,7 +206,9 @@
             !validCost ||
             !validSell ||
             !validReorder ||
-            !validBarcode
+            !validBarcode ||
+            !uniqueNameAndDesc ||
+            !uniqueBarcode
           "
         >
           Save

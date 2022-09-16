@@ -71,5 +71,7 @@ export class MaintainProductCategoryComponent implements OnInit {
 
   back() {
     this.return.emit('false');
+    this.updateProductCategory = false;
+    this.getAllProductCategories();
   }
 }

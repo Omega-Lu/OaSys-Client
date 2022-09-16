@@ -15,6 +15,7 @@
       placeholder="Search..."
       style="width: 320px"
       [(ngModel)]="searchText"
+      (input)="Search()"
       (keyup)="Search()"
     />
 
@@ -30,14 +31,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employeetype of employeetypes">
+          <tr *ngFor="let employeetype of employeeTypesTemp">
             <td>{{ employeetype.positioN_NAME }}</td>
             <td>
               <button
                 class="btn btn-primary"
                 type="button"
                 name="position"
-                style="background: var(--bs-orange);border-color: var(--bs-orange);"
+                style="
+                  background: var(--bs-orange);
+                  border-color: var(--bs-orange);
+                "
                 (click)="populateForm(employeetype)"
               >
                 Edit
@@ -48,7 +52,7 @@
                 class="btn btn-primary"
                 type="button"
                 name="delete"
-                style="background: var(--bs-red)"
+                style="background: var(--bs-red); border-color: var(--bs-red)"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 (click)="deleteID(employeetype.employeE_TYPE_ID)"
@@ -63,7 +67,11 @@
     <button
       class="btn btn-primary"
       type="button"
-      style="background: var(--bs-orange);border-color: var(--bs-orange); margin-left: 10px"
+      style="
+        background: var(--bs-orange);
+        border-color: var(--bs-orange);
+        margin-left: 10px;
+      "
       routerLink="/employee-page"
     >
       Back

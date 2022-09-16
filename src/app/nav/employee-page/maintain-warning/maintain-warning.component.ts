@@ -126,6 +126,7 @@ export class MaintainWarningComponent implements OnInit {
         reason: this.warningsTemp[0].reason,
       });
     }
+    this.tempArray = this.dynamicArray;
   }
 
   deletee(delet: any) {
@@ -149,15 +150,15 @@ export class MaintainWarningComponent implements OnInit {
   }
 
   Search() {
+    this.dynamicArray = this.tempArray;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.warnings = this.warnings.filter((warning) => {
-        console.log(warning.warininG_NAME.match(searchValue));
-        return warning.warininG_NAME.match(searchValue);
+      this.dynamicArray = this.dynamicArray.filter((dynamic) => {
+        return (
+          dynamic.name.match(this.searchText) ||
+          dynamic.warningName.match(this.searchText) ||
+          dynamic.warningType.match(this.searchText)
+        );
       });
-    } else {
-      this.getAllEmployees();
     }
   }
 }

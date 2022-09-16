@@ -5,6 +5,7 @@ import { ProductType } from 'src/app/models/Product-Type.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductTypeService } from 'src/app/_services/product-type.service';
+import * as $ from 'jQuery';
 
 @Component({
   selector: 'app-update-product',
@@ -12,8 +13,6 @@ import { ProductTypeService } from 'src/app/_services/product-type.service';
   styleUrls: ['./update-product.component.css'],
 })
 export class UpdateProductComponent implements OnInit {
-  @Input() product: Product;
-
   @Output() return = new EventEmitter<string>();
 
   details: boolean = true;
@@ -31,17 +30,34 @@ export class UpdateProductComponent implements OnInit {
   productTypes: ProductType[] = [];
   productTypesTemp: ProductType[] = [];
 
+  @Input() product: Product;
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
     private productTypeService: ProductTypeService
-  ) {}
-
-  ngOnInit(): void {
-    console.log('this is the product');
-    console.log(this.product);
-    this.getAllProductCategories();
+  ) {
+    this.productCategoryService
+      .getAllProductCategories()
+      .subscribe((response) => {
+        this.productCategories = response;
+        console.log('this is all the product categories');
+        console.log(this.productCategories);
+      });
+    this.productTypeService.getAllProductTypes().subscribe((response) => {
+      this.productTypes = response;
+      this.productTypesTemp = response;
+      console.log('this is all the product types');
+      console.log(this.productTypes);
+      this.categorySelect(this.product.producT_CATEGORY_ID);
+      this.product = this.product;
+      console.log('this is the product');
+      console.log(this.product.producT_CATEGORY_ID);
+      this.getAllProductCategories();
+    });
   }
+
+  ngOnInit(): void {}
 
   getAllProductCategories() {
     this.productCategoryService
@@ -60,6 +76,7 @@ export class UpdateProductComponent implements OnInit {
       this.productTypesTemp = response;
       console.log('this is all the product types');
       console.log(this.productTypes);
+      this.categorySelect(this.product.producT_CATEGORY_ID);
     });
   }
 
@@ -99,10 +116,8 @@ export class UpdateProductComponent implements OnInit {
   async categorySelect(id: number) {
     this.productTypesTemp = this.productTypes;
     this.productTypesTemp = this.productTypesTemp.filter((productType) => {
-      console.log(productType.producT_CATEGORY_ID == id);
       return productType.producT_CATEGORY_ID == id;
     });
-    console.log(this.productTypes);
   }
 
   Costvalidate() {

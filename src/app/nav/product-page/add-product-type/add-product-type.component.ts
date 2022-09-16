@@ -12,19 +12,25 @@ import { ProductCategory } from 'src/app/models/Product-Category.model';
 export class AddProductTypeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //validation
   details: boolean = true;
   cdetails: boolean = true;
+  uniqueName: boolean = true;
 
   successSubmit: boolean = false;
 
+  //product Category
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
 
+  //product Type
   productType: ProductType = {
     producT_TYPE_ID: 0,
     producT_CATEGORY_ID: -1,
     typE_NAME: '',
   };
+  productTypes: ProductType[] = [];
+  productTypesTemp: ProductType[] = [];
 
   constructor(
     private productTypeService: ProductTypeService,
@@ -44,8 +50,16 @@ export class AddProductTypeComponent implements OnInit {
       });
   }
 
+  FormValidate() {
+    this.categoryValidate();
+    this.namevalidate();
+    this.compareNames();
+  }
+
   categoryValidate() {
-    this.cdetails = true;
+    if (this.productType.producT_CATEGORY_ID == -1) {
+      this.cdetails = false;
+    } else this.cdetails = true;
   }
 
   getAllProductCategories() {
@@ -54,7 +68,14 @@ export class AddProductTypeComponent implements OnInit {
       .subscribe((response) => {
         this.productCategories = response;
         console.log(this.productCategories);
+        this.getProductTypes();
       });
+  }
+
+  getProductTypes() {
+    this.productTypeService.getAllProductTypes().subscribe((res) => {
+      this.productTypes = res;
+    });
   }
 
   namevalidate() {
@@ -66,6 +87,20 @@ export class AddProductTypeComponent implements OnInit {
     } else {
       this.details = true;
     }
+    this.compareNames();
+  }
+
+  compareNames() {
+    this.productTypesTemp = this.productTypes;
+    this.productTypesTemp = this.productTypesTemp.filter((type) => {
+      return type.producT_CATEGORY_ID == this.productType.producT_CATEGORY_ID;
+    });
+    this.productTypesTemp = this.productTypesTemp.filter((type) => {
+      return type.typE_NAME == this.productType.typE_NAME;
+    });
+    if (this.productTypesTemp.length > 0) {
+      this.uniqueName = false;
+    } else this.uniqueName = true;
   }
 
   Return() {

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
 @Component({
   selector: 'app-update-product-category',
@@ -8,12 +9,17 @@ import { ProductCategoryService } from 'src/app/_services/product-category.servi
   styleUrls: ['./update-product-category.component.css'],
 })
 export class UpdateProductCategoryComponent implements OnInit {
+  //product category
   @Input() productCategory: ProductCategory;
+  productCategories: ProductCategory[] = [];
+  productCategoriesTemp: ProductCategory[] = [];
 
   @Output() return = new EventEmitter<string>();
 
+  //validation
   details: boolean = true;
   sdetails: boolean = true;
+  uniqueName: boolean = true;
 
   successSubmit: boolean = false;
 
@@ -21,6 +27,10 @@ export class UpdateProductCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.productCategory);
+    this.productCategoryService.getAllProductCategories().subscribe((res) => {
+      this.productCategories = res;
+      this.productCategoriesTemp = res;
+    });
   }
 
   onSubmit() {
@@ -32,26 +42,34 @@ export class UpdateProductCategoryComponent implements OnInit {
       });
   }
 
+  FormValidate() {
+    this.namevalidate();
+    this.survalidate();
+  }
+
   namevalidate() {
-    var matches = this.productCategory.categorY_NAME.match(/\d+/g);
-    if (matches != null) {
-      this.details = false;
-    } else if (this.productCategory.categorY_NAME == '') {
-      this.details = false;
-    } else {
-      this.details = true;
-    }
+    if (this.productCategory.categorY_NAME == '') this.details = false;
+    else this.details = true;
+    this.compareName();
+  }
+
+  compareName() {
+    this.productCategoriesTemp = this.productCategories;
+    this.productCategoriesTemp = this.productCategoriesTemp.filter((temp) => {
+      return temp.categorY_NAME == this.productCategory.categorY_NAME;
+    });
+    if (
+      this.productCategoriesTemp.length > 0 &&
+      this.productCategory.producT_CATEGORY_ID !=
+        this.productCategoriesTemp[0].producT_CATEGORY_ID
+    )
+      this.uniqueName = false;
+    else this.uniqueName = true;
   }
 
   survalidate() {
-    var matches = this.productCategory.categorY_DESCRIPTION.match(/\d+/g);
-    if (matches != null) {
-      this.sdetails = false;
-    } else if (this.productCategory.categorY_DESCRIPTION == '') {
-      this.sdetails = false;
-    } else {
-      this.sdetails = true;
-    }
+    if (this.productCategory.categorY_DESCRIPTION == '') this.sdetails = false;
+    else this.sdetails = true;
   }
 
   Return() {

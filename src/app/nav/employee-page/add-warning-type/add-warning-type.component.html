@@ -9,12 +9,17 @@
         <input
           class="form-control"
           type="text"
+          placeholder="Type Name..."
           name="warningTypeName"
           [(ngModel)]="warningType.description"
           (keyup)="validateName()"
+          (input)="validateName()"
         />
         <div *ngIf="!validWarning" style="color: Red">
           Invalid Warning Type Name
+        </div>
+        <div *ngIf="!uniqueName" style="color: Red">
+          Duplicate Warning Type Name
         </div>
       </div>
     </div>
@@ -37,8 +42,8 @@
         style="border-color: var(--bs-orange); background: var(--bs-orange)"
         data-toggle="modal"
         data-target="#exampleModal"
-        [disabled]="!validWarning"
-        (mouseover)="validateName()"
+        [disabled]="!validWarning || !uniqueName"
+        (mouseover)="FormValidate()"
       >
         Add
       </button>

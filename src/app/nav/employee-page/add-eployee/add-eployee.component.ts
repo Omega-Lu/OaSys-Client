@@ -27,16 +27,17 @@ export class AddEployeeComponent implements OnInit {
   adetails: boolean = true;
   numberVal: boolean = true;
   passportVal: boolean = true;
-
   validRole: boolean = true;
   validType: boolean = true;
 
-  exists: boolean = false;
+  //unique variables
+  uniquePassport: boolean = true;
+  uniqueContactNumber: boolean = true;
+  uniqueEmail: boolean = true;
 
-  screenStart: boolean = true;
   successSubmit: boolean = false;
-  something: any;
 
+  //employee type
   employeeType: EmployeeType;
   employeeTypes: EmployeeType[] = [];
 
@@ -48,18 +49,19 @@ export class AddEployeeComponent implements OnInit {
   //employee models
   employee: Employee = {
     employeE_ID: 0,
-    employeE_ID_NUMBER: 0,
+    employeE_ID_NUMBER: null,
     employeE_TYPE_ID: 0,
     employeE_STATUS_ID: 0,
     warninG_ID: 0,
     name: '',
     surname: '',
     title: '',
-    contacT_NUMBER: 0,
+    contacT_NUMBER: null,
     email: '',
     address: '',
   };
   employees: Employee[] = [];
+  employeesTemp: Employee[] = [];
 
   //user models
   user: User = {
@@ -73,7 +75,6 @@ export class AddEployeeComponent implements OnInit {
   users: User[] = [];
 
   //hashing
-  //bcrypt = require('bcrypt');
   salt = 'YourSecretKeyForEncryption&DescryptionOasys';
 
   constructor(
@@ -81,6 +82,33 @@ export class AddEployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private userService: UserService
   ) {}
+
+  comparePassport() {
+    this.employeesTemp = this.employees;
+    this.employeesTemp = this.employeesTemp.filter((employee) => {
+      return employee.employeE_ID_NUMBER == this.employee.employeE_ID_NUMBER;
+    });
+    if (this.employeesTemp.length > 0) this.uniquePassport = false;
+    else this.uniquePassport = true;
+  }
+
+  compareContactNumber() {
+    this.employeesTemp = this.employees;
+    this.employeesTemp = this.employeesTemp.filter((employee) => {
+      return employee.contacT_NUMBER == this.employee.contacT_NUMBER;
+    });
+    if (this.employeesTemp.length > 0) this.uniqueContactNumber = false;
+    else this.uniqueContactNumber = true;
+  }
+
+  compareEmail() {
+    this.employeesTemp = this.employees;
+    this.employeesTemp = this.employeesTemp.filter((employee) => {
+      return employee.email == this.employee.email;
+    });
+    if (this.employeesTemp.length > 0) this.uniqueEmail = false;
+    else this.uniqueEmail = true;
+  }
 
   saltnHash(value: string): string {
     return CryptoJS.AES.encrypt(value, this.salt.trim()).toString();
@@ -93,9 +121,6 @@ export class AddEployeeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.employee.contacT_NUMBER = 0;
-    this.employee.employeE_ID_NUMBER = 0;
-
     await this.getAllEmployees();
     await this.getAllEmployeeTypes();
   }
@@ -144,20 +169,10 @@ export class AddEployeeComponent implements OnInit {
     //validate employee type
     this.typeValidate();
 
-    //validate if employee with id or contact number exists
-    for (let index = 0; index < this.employees.length; index++) {
-      const element = this.employees[index];
-
-      if (element.contacT_NUMBER == this.employee.contacT_NUMBER) {
-        this.exists = true;
-        break;
-      }
-      if (element.employeE_ID_NUMBER == this.employee.employeE_ID_NUMBER) {
-        this.exists = true;
-        break;
-      }
-      this.exists = false;
-    }
+    //compare details
+    this.compareContactNumber();
+    this.compareEmail();
+    this.comparePassport();
   }
 
   ValidateName() {
@@ -170,18 +185,21 @@ export class AddEployeeComponent implements OnInit {
 
   ValidateEmail() {
     this.edetails = this.validate.ValidateEmail(this.employee.email);
+    this.compareEmail();
   }
 
   ValidateContactNumber() {
     this.numberVal = this.validate.ValidateContactNumber(
       this.employee.contacT_NUMBER
     );
+    this.compareContactNumber();
   }
 
   ValidateIDNumber() {
     this.passportVal = this.validate.ValidateIDNumber(
       this.employee.employeE_ID_NUMBER
     );
+    this.comparePassport();
   }
 
   onSubmit() {

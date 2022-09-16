@@ -10,7 +10,10 @@ import { WarningTypeService } from 'src/app/_services/warning-type.service';
 export class SearchWarningTypeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //warning types
   warningtypes: WarningType[] = [];
+  warningTypesTemp: WarningType[] = [];
+
   searchText: string = '';
 
   constructor(private warningtypesService: WarningTypeService) {}
@@ -22,20 +25,17 @@ export class SearchWarningTypeComponent implements OnInit {
   getAllEmployees() {
     this.warningtypesService.getAllEmployees().subscribe((response) => {
       this.warningtypes = response;
+      this.warningTypesTemp = response;
       console.log(this.warningtypes);
     });
   }
 
   Search() {
+    this.warningTypesTemp = this.warningtypes;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.warningtypes = this.warningtypes.filter((warning) => {
-        console.log(warning.description.match(searchValue));
-        return warning.description.match(searchValue);
+      this.warningTypesTemp = this.warningTypesTemp.filter((warning) => {
+        return warning.description.match(this.searchText);
       });
-    } else {
-      this.getAllEmployees();
     }
   }
 

@@ -1,281 +1,267 @@
-<form
-  style="
-    width: 750px;
-    margin-right: 0px;
-    margin-left: 5px;
-    height: 850px;
-    border-right-color: rgb(8, 15, 67);
-    --bs-light: #f8f9fc;
-    --bs-light-rgb: 248, 249, 252;
-  "
-  #form="ngForm"
-  (ngSubmit)="onSubmit()"
->
-  <h1
-    style="
-      margin-right: 750px;
-      color: rgb(0, 0, 0);
-      width: 241px;
-      margin-left: 0px;
-    "
-  >
-    Update Debtor
-  </h1>
-  <h3 style="color: rgb(0, 0, 0); margin-right: 480px; height: 27px">
-    Debtor Details:
-  </h3>
-  <div class="container">
+<div class="container-fluid">
+  <h1>{{ title }}</h1>
+  <h2 style="margin-left: 1%">Debtor Details:</h2>
+  <form style="width: 700px; margin-left: 2%" #form="ngForm">
     <div class="row">
-      <div style="color: rgb(0, 0, 0); border-bottom-color: var(--bs-red)">
-        <label class="form-label" style="margin-right: 650px">Name:</label>
+      <div class="col">
+        <label class="form-label">Name:</label>
         <input
           class="form-control"
           name="debtorName"
+          placeholder="Debtor Name"
           type="text"
-          style="width: 300px; margin-right: 50px; margin-left: 10px"
           [(ngModel)]="debtor.name"
-          (click)="namevalidate()"
-          (keyup)="namevalidate()"
+          (input)="nameValidate()"
+          (keyup)="nameValidate()"
         />
-        <div *ngIf="!nDetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!nDetails" style="color: Red">Invalid Name</div>
       </div>
-      <div
-        style="
-          box-shadow: 0px 0px rgb(242, 243, 248), 0px 0px var(--bs-purple);
-          color: rgb(0, 0, 0);
-        "
-      >
-        <label class="form-label" style="margin-right: 300px">Surname:</label
+      <div class="col">
+        <label class="form-label">Surname:</label
         ><input
           class="form-control"
           type="text"
+          placeholder="Debtor Surname"
           required
           name="debtorSurname"
-          style="width: 300px; margin-right: -500px; margin-left: 10px"
           [(ngModel)]="debtor.surname"
-          (click)="survalidate()"
-          (keyup)="survalidate()"
+          (input)="surnameValidate()"
+          (keyup)="surnameValidate()"
         />
-        <div *ngIf="!sDetails" style="color: Red">Invalid Details</div>
-
-        <label class="form-label" style="margin-right: 1200px; width: 130px"
-          >Contact Number: </label
-        >+27<input
-          class="form-control"
-          type="text"
-          required
-          name="debtorNumber"
-          required
-          minlength="9"
-          maxlength="9"
-          style="margin-left: 10px; width: 300px"
-          [(ngModel)]="debtor.contacT_NUMBER"
-        />
-
-        <label class="form-label" style="margin-right: 650px">Email:</label
-        ><input
-          class="form-control"
-          type="email"
-          required
-          name="emplyeeEmail"
-          style="width: 300px; margin-left: 10px"
-          [(ngModel)]="debtor.email"
-          (click)="emailvalidate()"
-          (keyup)="emailvalidate()"
-        />
-        <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!sDetails" style="color: Red">Invalid Surname</div>
       </div>
     </div>
-  </div>
-  <div class="container" style="margin-top: 21px; margin-bottom: 7px">
-    <div
-      class="row"
-      style="height: 136px; margin-bottom: -3px; margin-top: -13px"
-    >
-      <div class="col-md-6">
-        <p style="color: rgb(2, 3, 7)" style="margin-bottom: 0px !important">
-          Province:
-        </p>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Contact Number: </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              +27
+            </div>
+          </div>
+          <input
+            class="form-control"
+            type="text"
+            required
+            id="inlineFormInputGroup"
+            name="emplyeeNumber"
+            placeholder="123456789"
+            minlength="9"
+            maxlength="9"
+            [(ngModel)]="debtor.contacT_NUMBER"
+            (input)="ValidateContactNumber()"
+            (keyup)="ValidateContactNumber()"
+          />
+        </div>
+        <div *ngIf="!cnDetails" style="color: Red">Invalid Contact Number</div>
+        <div *ngIf="!uniqueContactNumber" style="color: Red">
+          Duplicate Contact Number
+        </div>
+      </div>
+      <div class="col">
+        <label class="form-label">Email:</label>
+        <input
+          class="form-control"
+          name="debtorEmail"
+          placeholder="update@email.com"
+          type="text"
+          [(ngModel)]="debtor.email"
+          (input)="emailValidate()"
+          (keyup)="emailValidate()"
+        />
+        <div *ngIf="!eDetails" style="color: Red">Invalid Email</div>
+        <div *ngIf="!uniqueEmail" style="color: Red">Duplicate Email</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label" style="width: 100%"> Province:</label>
         <select
+          class="form-control"
           name="productCategory"
           id="productCategory"
           class="btn btn-primary"
           style="
-            background: var(--bs-orange);
-            border-right-color: var(--bs-orange);
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+            width: 100%;
           "
           [(ngModel)]="debtor.provincE_ID"
           required
+          (click)="Provalidate()"
           (input)="categorySelect($event.target.value)"
         >
-          <option value="1">Gauteng</option>
-          <option value="2">Northen Cape</option>
-          <option value="3">North-West</option>
-          <option value="4">Mpumalanga</option>
-          <option value="5">Limpopo</option>
-          <option value="6">Western Cape</option>
-          <option value="7">Eastern Cape</option>
-          <option value="8">KwaZulu-Natal</option>
-          <option value="9">Free State</option>
+          <option value="-1" selected disabled>Province</option>
+          <option
+            *ngFor="let province of provinces"
+            value="{{ province.provinceID }}"
+          >
+            {{ province.provinceName }}
+          </option>
         </select>
-        <div class="col-md-6" *ngIf="categorySelected">
-          <p
-            style="color: rgb(2, 3, 7)"
-            style="margin-bottom: 0px !important; margin-top: 15px"
-          >
-            City:
-          </p>
-          <select
-            name="productCategor"
-            id="productCategor"
-            class="btn btn-primary"
-            style="
-              background: var(--bs-orange);
-              border-right-color: var(--bs-orange);
-              padding-bottom: 10px;
-            "
-          >
-            <option value="1" *ngIf="Gauteng">Pretoria</option>
-            <option value="2" *ngIf="Gauteng">Johannesburg</option>
-            <option value="2" *ngIf="Gauteng">Centurion</option>
-            <option value="2" *ngIf="Gauteng">Alexandra</option>
-            <option value="2" *ngIf="Gauteng">Lenasia</option>
-            <option value="2" *ngIf="Gauteng">Midrand</option>
-            <option value="2" *ngIf="Gauteng">Roodepoort</option>
-            <option value="2" *ngIf="Gauteng">Sandton</option>
-            <option value="2" *ngIf="Gauteng">Soweto</option>
-            <option value="2" *ngIf="Gauteng">Mshongo</option>
-            <option value="3" *ngIf="NorthWest">Brits</option>
-            <option value="4" *ngIf="NorthWest">Rustenburg</option>
-            <option value="5" *ngIf="Mpumalanga">Tabazimbi</option>
-            <option value="6" *ngIf="Mpumalanga">Mkloho</option>
-            <option value="7" *ngIf="Limpopo">Zanene</option>
-            <option value="8" *ngIf="Limpopo">Mghto</option>
-            <option value="9" *ngIf="Western">Mossel Bay</option>
-            <option value="5" *ngIf="Western">Cape Town</option>
-            <option value="6" *ngIf="Eastern">East London</option>
-            <option value="7" *ngIf="Eastern">Port Elizabeth</option>
-            <option value="8" *ngIf="KwaZulu">Durban</option>
-            <option value="9" *ngIf="KwaZulu">Natal</option>
-            <option value="5" *ngIf="State">Bloemfontein</option>
-            <option value="5" *ngIf="State">Bethlehem</option>
-          </select>
+        <div *ngIf="!pDetails" style="color: Red">Please Select A Province</div>
+      </div>
+      <div class="col">
+        <label class="form-label" style="width: 100%">City:</label>
+        <select
+          [disabled]="!categorySelected"
+          name="productCategor"
+          id="productCategor"
+          class="btn btn-primary"
+          style="
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+            width: 100%;
+          "
+          [(ngModel)]="debtor.cityID"
+          (click)="cityValidate()"
+        >
+          <option value="-1" selected disabled>City</option>
+          <option *ngFor="let city of citiesTemp" value="{{ city.cityID }}">
+            {{ city.cityName }}
+          </option>
+        </select>
+        <div *ngIf="!cityDetails" style="color: Red">Please Select A City</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <label class="form-label">Credit Limit:</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              R
+            </div>
+          </div>
+          <input
+            class="form-control"
+            name="debtorLimit"
+            type="number"
+            placeholder="0.00"
+            required
+            [(ngModel)]="debtor.crediT_LIMIT"
+            (input)="creditValidate()"
+            (keyup)="creditValidate()"
+          />
         </div>
+        <div *ngIf="!creditDetails" style="color: Red">Invalid Details</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <span>
+        <button
+          type="button"
+          class="btn btn-primary"
+          routerLink="/debtor-page"
+          style="
+            border-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 30px;
+            margin-top: 10px;
+          "
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-toggle="modal"
+          data-target="#updateModal"
+          style="
+            border-color: var(--bs-orange);
+            background: var(--bs-orange);
+            margin-right: 0px;
+            margin-top: 10px;
+          "
+          [disabled]="
+            !nDetails ||
+            !sDetails ||
+            !eDetails ||
+            !cnDetails ||
+            !pDetails ||
+            !uniqueEmail ||
+            !uniqueContactNumber ||
+            !creditDetails ||
+            !cityDetails
+          "
+          (pointerover)="FormValidate()"
+          (mouseover)="FormValidate()"
+        >
+          Save
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<div
+  class="modal fade"
+  id="updateModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="updateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Update This Debtor
+        </h5>
+        <h5 class="modal-title" id="updateModalLabel" *ngIf="successSubmit">
+          Debtor Successfully Updated
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-target="#updateModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#updateModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          routerLink="/debtor-page"
+        >
+          OK
+        </button>
       </div>
     </div>
   </div>
-  <div class="row" style="height: 100px">
-    <div class="text-dark" style="height: 100px">
-      <label
-        class="form-label"
-        style="margin-right: 20px; padding-top: 16px; width: 100"
-        >Credit Limit (R)</label
-      ><input
-        class="form-control"
-        name="debtorLimit"
-        type="text"
-        required
-        style="width: 300px; padding-left: 20px"
-        [(ngModel)]="debtor.crediT_LIMIT"
-      />
-      <div *ngIf="!eDetails" style="color: Red">Invalid Details</div>
-    </div>
-  </div>
-  <!--<div class="container">
-    <div class="row" style="height: 100px">
-      <div class="col-md-6 text-dark" style="height: 100px">
-        <label class="form-label" style="margin-right: 250px">Address:</label
-        ><input class="form-control"
-        name = "employeeAddress"
-        type="text"
-        required
-        style="width: 674px"
-        [(ngModel)]="employee.address"
-        (click)="addressvalidate()"
-        (keyup)="addressvalidate()"
-        />
-        <div *ngIf="!adetails" style="color: Red;">
-          Invalid Details
-        </div>-->
-
-  <div class="form-group">
-    <button
-      class="btn btn-primary"
-      type="button"
-      data-toggle="modal"
-      data-target="#exampleModal"
-      style="
-        border-right-color: var(--bs-orange);
-        background: var(--bs-orange);
-        margin-right: 650px;
-        margin-top: 10px;
-      "
-      *ngIf="nDetails && sDetails && eDetails && cnDetails"
-    >
-      Update
-    </button>
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5
-              class="modal-title"
-              id="exampleModalLabel"
-              *ngIf="!successSubmit"
-            >
-              Are You Sure You Would Like To Update The Debtor
-            </h5>
-            <h5
-              class="modal-title"
-              id="exampleModalLabel"
-              *ngIf="successSubmit"
-            >
-              Debtor Successfully Updated
-            </h5>
-          </div>
-
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-              *ngIf="!successSubmit"
-            >
-              No
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              data-target="#exampleModal"
-              *ngIf="!successSubmit"
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              data-dismiss="modal"
-              *ngIf="successSubmit"
-              (click)="Return()"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--</div>
-    </div>
-  </div>-->
-</form>
->>>>>>> 6591523bd3c02f9065441769cd63252824d59807
+</div>

@@ -1,46 +1,58 @@
 <div class="container-fluid">
   <h1>Add Product Type</h1>
-  <form #form="ngForm" (ngSubmit)="onSubmit()" style="margin-left: 1%">
+  <h2 style="margin-left: 1%s">New Product Type Details:</h2>
+  <form
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
+    style="margin-left: 2%; max-width: 700px"
+  >
     <div class="row">
-      <label class="form-label">Product Category:</label>
-      <select
-        name="productCategory"
-        id="productCategory"
-        class="btn btn-primary"
-        style="
-          background: var(--bs-gray-100);
-          border-color: var(--bs-orange);
-          color: var(--bs-orange);
-          width: fit-content;
-        "
-        [(ngModel)]="productType.producT_CATEGORY_ID"
-        (input)="categoryValidate()"
-      >
-        <option value="-1" selected disabled>Product Category</option>
-        <option
-          value=" {{ productCategory.producT_CATEGORY_ID }} "
-          *ngFor="let productCategory of productCategories"
+      <div class="col-6">
+        <label class="form-label" style="width: 100%">Product Category:</label>
+        <select
+          name="productCategory"
+          id="productCategory"
+          class="btn btn-primary"
+          style="
+            background: var(--bs-gray-100);
+            border-color: var(--bs-orange);
+            color: var(--bs-orange);
+            width: 100%;
+          "
+          [(ngModel)]="productType.producT_CATEGORY_ID"
+          (click)="categoryValidate()"
+          (input)="categoryValidate()"
         >
-          {{ productCategory.categorY_NAME }}
-        </option>
-      </select>
+          <option value="-1" selected disabled>Product Category</option>
+          <option
+            value=" {{ productCategory.producT_CATEGORY_ID }} "
+            *ngFor="let productCategory of productCategories"
+          >
+            {{ productCategory.categorY_NAME }}
+          </option>
+        </select>
+      </div>
       <div *ngIf="!cdetails" style="color: Red">Category Required</div>
     </div>
 
     <div class="row">
-      <label class="form-label">Product Type Name:</label>
-      <input
-        class="form-control"
-        name="emplyeeName"
-        type="text"
-        style="width: 300px"
-        [(ngModel)]="productType.typE_NAME"
-        (click)="namevalidate()"
-        (keyup)="namevalidate()"
-      />
-      <div *ngIf="!details" style="color: Red">Invalid Details</div>
+      <div class="col-6">
+        <label class="form-label">Product Type Name:</label>
+        <input
+          class="form-control"
+          name="emplyeeName"
+          type="text"
+          [(ngModel)]="productType.typE_NAME"
+          (input)="namevalidate()"
+          (keyup)="namevalidate()"
+        />
+        <div *ngIf="!details" style="color: Red">Invalid Details</div>
+        <div *ngIf="!uniqueName" style="color: Red">
+          Dubplicate Product Category and Type Name
+        </div>
+      </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" style="margin-top: 15px">
       <span>
         <button
           type="button"
@@ -50,7 +62,6 @@
             border-color: var(--bs-orange);
             background: var(--bs-orange);
             margin-right: 30px;
-            margin-top: 10px;
           "
         >
           Cancel
@@ -62,11 +73,11 @@
           data-target="#exampleModal"
           style="
             border-color: var(--bs-orange);
-            background: var(--bs-orange);
-            margin-right: 0px;
-            margin-top: 10px;
+            background-color: var(--bs-orange);
           "
-          [disabled]="!details || !cdetails"
+          (mouseover)="FormValidate()"
+          (pointerover)="FormValidate()"
+          [disabled]="!details || !cdetails || !uniqueName"
         >
           Save
         </button>

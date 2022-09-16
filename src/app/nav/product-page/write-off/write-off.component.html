@@ -202,7 +202,9 @@
         margin-bottom: 0px;
         margin-top: 0px;
       "
-      [disabled]="!completeSelection || !completeQuantity || !QuanOnHand"
+      [disabled]="
+        !completeSelection || !completeQuantity || !QuanOnHand || !booloff
+      "
       data-toggle="modal"
       data-target="#exampleModal"
     >

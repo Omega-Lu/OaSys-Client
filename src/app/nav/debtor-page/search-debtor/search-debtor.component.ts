@@ -9,7 +9,11 @@ import { Debtor } from '../../../models/debtor.model';
 })
 export class SearchDebtorComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
+
+  //debtor
   debtors: Debtor[] = [];
+  debtorsTemp: Debtor[] = [];
+
   searchText: string = '';
   constructor(private debtorService: DebtorService) {}
 
@@ -20,20 +24,19 @@ export class SearchDebtorComponent implements OnInit {
   getAllDebtors() {
     this.debtorService.getAllDebtors().subscribe((response) => {
       this.debtors = response;
-      console.log(this.debtors);
+      this.debtorsTemp = response;
     });
   }
 
   Search() {
+    this.debtorsTemp = this.debtors;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.debtors = this.debtors.filter((debtor) => {
-        console.log(debtor.name.match(searchValue));
-        return debtor.name.match(searchValue);
+      this.debtorsTemp = this.debtorsTemp.filter((debtor) => {
+        return (
+          debtor.name.match(this.searchText) ||
+          debtor.surname.match(this.searchText)
+        );
       });
-    } else {
-      this.getAllDebtors();
     }
   }
 

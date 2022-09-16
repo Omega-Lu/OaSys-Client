@@ -15,14 +15,30 @@ export class AddWarningTypeComponent implements OnInit {
   successSubmit: boolean = false;
   validWarning: boolean = true;
 
+  //warning type
   warningType: WarningType = {
     warninG_TYPE_ID: 0,
     description: '',
   };
+  warningTypes: WarningType[] = [];
+  warningTypesTemp: WarningType[] = [];
+
+  //unique Vaiables
+  uniqueName: boolean = true;
 
   constructor(private warningTypeService: WarningTypeService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.warningTypeService.getAllEmployees().subscribe((res) => {
+      console.log('this is all the warning types');
+      console.log(res);
+      this.warningTypes = res;
+    });
+  }
+
+  FormValidate() {
+    this.validateName();
+  }
 
   onSubmit() {
     this.warningTypeService
@@ -37,5 +53,16 @@ export class AddWarningTypeComponent implements OnInit {
     this.validWarning = this.validate.ValidateString(
       this.warningType.description
     );
+    this.compareName();
+  }
+
+  compareName() {
+    this.warningTypesTemp = this.warningTypes;
+    this.warningTypesTemp = this.warningTypesTemp.filter((type) => {
+      return type.description == this.warningType.description;
+    });
+
+    if (this.warningTypesTemp.length > 0) this.uniqueName = false;
+    else this.uniqueName = true;
   }
 }

@@ -8,12 +8,13 @@ import { WarningTypeService } from 'src/app/_services/warning-type.service';
   styleUrls: ['./maintain-warning-type.component.css'],
 })
 export class MaintainWarningTypeComponent implements OnInit {
-  warningtypes: WarningType[] = [];
+  //warning types
   warningtype: WarningType;
-  model: any;
+  warningtypes: WarningType[] = [];
+  warningTypesTemp: WarningType[] = [];
+
   searchText: any = '';
   updateWarning: boolean = false;
-  lekke: any;
 
   successDelete: boolean = false;
 
@@ -28,6 +29,7 @@ export class MaintainWarningTypeComponent implements OnInit {
   getAllEmployees() {
     this.warningTypeService.getAllEmployees().subscribe((response) => {
       this.warningtypes = response;
+      this.warningTypesTemp = response;
       console.log(this.warningtypes);
     });
   }
@@ -52,17 +54,14 @@ export class MaintainWarningTypeComponent implements OnInit {
   }
 
   Search() {
+    this.warningTypesTemp = this.warningtypes;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.warningtypes = this.warningtypes.filter((warningtype) => {
-        console.log(warningtype.description.match(searchValue));
-        return warningtype.description.match(searchValue);
+      this.warningTypesTemp = this.warningTypesTemp.filter((warning) => {
+        return warning.description.match(this.searchText);
       });
-    } else {
-      this.getAllEmployees();
     }
   }
+
   back() {
     this.updateWarning = false;
     this.getAllEmployees();

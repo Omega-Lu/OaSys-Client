@@ -14,6 +14,7 @@
     placeholder="Search..."
     style="width: 320px"
     [(ngModel)]="searchText"
+    (input)="Search()"
     (keyup)="Search()"
   />
 
@@ -24,20 +25,23 @@
       <thead>
         <tr>
           <th>Wage rate name</th>
-          <th>Amount (/h)</th>
+          <th>Amount</th>
           <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let rate of rates">
+        <tr *ngFor="let rate of ratesTemp">
           <td>{{ rate.ratE_NAME }}</td>
-          <td>R{{ rate.ratE_AMOUNT }}</td>
+          <td>R{{ rate.ratE_AMOUNT }}/h</td>
           <td>
             <button
               class="btn btn-primary"
               type="button"
-              style="background: var(--bs-orange);border-color: var(--bs-orange);"
+              style="
+                background: var(--bs-orange);
+                border-color: var(--bs-orange);
+              "
               (click)="populateForm(rate)"
             >
               Edit
@@ -62,7 +66,11 @@
   <button
     class="btn btn-primary"
     type="button"
-    style="background: var(--bs-orange);border-color: var(--bs-orange); margin-top: 20px"
+    style="
+      background: var(--bs-orange);
+      border-color: var(--bs-orange);
+      margin-top: 20px;
+    "
     routerLink="/employee-page"
   >
     Back

@@ -7,10 +7,12 @@
         <label class="form-label">Name:</label>
         <input
           class="form-control"
+          placeholder="Employee Name"
           name="emplyeeName"
           type="text"
           [(ngModel)]="employee.name"
           (input)="ValidateName()"
+          (keyup)="ValidateName()"
         />
         <div *ngIf="!details" style="color: Red">Invalid Name Details</div>
       </div>
@@ -19,10 +21,12 @@
         ><input
           class="form-control"
           type="text"
+          placeholder="Employee Surname"
           required
           name="emplyeeSurname"
           [(ngModel)]="employee.surname"
           (keyup)="ValidateSurname()"
+          (input)="ValidateSurname()"
         />
         <div *ngIf="!sdetails" style="color: Red">Invalid Surname Details</div>
       </div>
@@ -35,13 +39,17 @@
           class="form-control"
           name="employeeIdNumber"
           type="text"
+          placeholder="6502035093085"
           [(ngModel)]="employee.employeE_ID_NUMBER"
-          required
           minlength="13"
           maxlength="13"
           (keyup)="ValidateIDNumber()"
+          (input)="ValidateIDNumber()"
         />
         <div *ngIf="!passportVal" style="color: Red">Invalid ID Number</div>
+        <div *ngIf="!uniquePassport" style="color: Red">
+          Duplicate ID Number
+        </div>
       </div>
       <div class="col">
         <label class="form-label">Contact Number: </label>
@@ -60,7 +68,6 @@
           <input
             class="form-control"
             type="text"
-            required
             id="inlineFormInputGroup"
             name="emplyeeNumber"
             placeholder="123456789"
@@ -68,9 +75,13 @@
             maxlength="9"
             [(ngModel)]="employee.contacT_NUMBER"
             (keyup)="ValidateContactNumber()"
+            (input)="ValidateContactNumber()"
           />
         </div>
         <div *ngIf="!numberVal" style="color: Red">Invalid Contact Number</div>
+        <div *ngIf="!uniqueContactNumber" style="color: Red">
+          Duplicate Contact Number
+        </div>
       </div>
     </div>
 
@@ -100,12 +111,15 @@
         ><input
           class="form-control"
           type="email"
+          placeholder="example@email.com"
           required
           name="emplyeeEmail"
           [(ngModel)]="employee.email"
           (keyup)="ValidateEmail()"
+          (input)="ValidateEmail()"
         />
         <div *ngIf="!edetails" style="color: Red">Invalid Email</div>
+        <div *ngIf="!uniqueEmail" style="color: Red">Duplicate Email</div>
       </div>
     </div>
 
@@ -116,9 +130,11 @@
           class="form-control"
           name="employeeAddress"
           type="text"
+          placeholder="Employee Address"
           required
           [(ngModel)]="employee.address"
           (keyup)="addressvalidate()"
+          (input)="addressvalidate()"
         />
         <div *ngIf="!adetails" style="color: Red">Invalid Address</div>
       </div>
@@ -158,7 +174,6 @@
         </div>
       </div>
       <div class="col-6" *ngIf="employeeSelected">
-        \
         <label for="eployeeTypeSelect" class="form-label">Employee Type:</label>
         <select
           name="eployeeTypeSelect"
@@ -187,9 +202,6 @@
         </div>
       </div>
     </div>
-    <div *ngIf="exists" style="color: Red">
-      An Employee With This Contact Number OR ID Number Already Exists
-    </div>
     <div class="form-group" style="margin-top: 15px">
       <span>
         <button
@@ -216,11 +228,13 @@
             !tdetails ||
             !edetails ||
             !adetails ||
-            exists ||
             !numberVal ||
             !passportVal ||
             !validRole ||
-            !validType
+            !validType ||
+            !uniquePassport ||
+            !uniqueEmail ||
+            !uniqueContactNumber
           "
           (pointerover)="FormValidate()"
           (mouseover)="FormValidate()"
@@ -231,6 +245,16 @@
     </div>
   </form>
 </div>
+
+<!--  !details ||
+            !sdetails ||
+            !tdetails ||
+            !edetails ||
+            !adetails ||
+            !numberVal ||
+            !passportVal ||
+            !validRole ||
+            !validType -->
 
 <div
   class="modal fade"

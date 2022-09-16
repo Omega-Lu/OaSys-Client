@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
@@ -16,20 +10,21 @@ import { EmployeeService } from 'src/app/_services/employee.service';
 })
 export class MaintainEmployeeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
-  employees: Employee[] = [];
+
+  //employee
   employee: Employee;
+  employees: Employee[] = [];
+  employeesTemp: Employee[] = [];
+
   successDelete: boolean = false;
-  model: any;
+
   delete: boolean = false;
   searchText: any = '';
   updateEmployee: boolean = false;
   lekke: any;
   deletenumber: any;
 
-  constructor(
-    private employeeService: EmployeeService,
-    private router: Router
-  ) {}
+  constructor(private employeeService: EmployeeService) {}
 
   ngOnInit() {
     this.getAllEmployees();
@@ -42,6 +37,7 @@ export class MaintainEmployeeComponent implements OnInit {
   getAllEmployees() {
     this.employeeService.getAllEmployees().subscribe((response) => {
       this.employees = response;
+      this.employeesTemp = response;
     });
   }
 
@@ -61,16 +57,11 @@ export class MaintainEmployeeComponent implements OnInit {
   }
 
   Search() {
+    this.employeesTemp = this.employees;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.employees = this.employees.filter((employee) => {
-        console.log(employee.name.match(searchValue));
-        return employee.name.match(searchValue);
+      this.employeesTemp = this.employeesTemp.filter((employee) => {
+        return employee.name.match(this.searchText);
       });
-      console.log(this.employee);
-    } else {
-      this.getAllEmployees();
     }
   }
 

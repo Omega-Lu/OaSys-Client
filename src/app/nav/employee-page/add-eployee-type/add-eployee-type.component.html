@@ -8,11 +8,16 @@
         ><input
           class="form-control"
           name="positionName"
+          placeholder="Employee Position Name"
           type="text"
           [(ngModel)]="employeetype.positioN_NAME"
           (keyup)="namevalidate()"
+          (input)="namevalidate()"
         />
-        <div *ngIf="!details" style="color: Red">Invalid Details</div>
+        <div *ngIf="!details" style="color: Red">Invalid Position Name</div>
+        <div *ngIf="!uniqueName" style="color: Red">
+          Duplicate Position Name
+        </div>
       </div>
     </div>
 
@@ -33,8 +38,8 @@
         class="btn btn-primary"
         type="submit"
         style="background: var(--bs-orange); border-color: var(--bs-orange)"
-        [disabled]="!details"
-        (pointerover)="namevalidate()"
+        [disabled]="!details || !uniqueName"
+        (pointerover)="FormValidate()"
         data-toggle="modal"
         data-target="#exampleModal"
       >

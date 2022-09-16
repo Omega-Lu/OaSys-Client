@@ -1,34 +1,48 @@
 <div class="container-fluid">
   <h1>Add Product Category</h1>
-  <form #form="ngForm" (ngSubmit)="onSubmit()" style="margin-left: 1%">
+  <h2 style="margin-left: 1%">New Product Category Details:</h2>
+  <form
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
+    style="margin-left: 2%; max-width: 700px"
+  >
     <div class="row">
-      <label class="form-label">Product Category Name:</label>
-      <input
-        class="form-control"
-        name="emplyeeName"
-        type="text"
-        style="width: 300px"
-        [(ngModel)]="productCategory.categorY_NAME"
-        (click)="namevalidate()"
-        (keyup)="namevalidate()"
-      />
-      <div *ngIf="!details" style="color: Red">Invalid Details</div>
+      <div class="col-6">
+        <label class="form-label">Product Category Name:</label>
+        <input
+          class="form-control"
+          name="emplyeeName"
+          type="text"
+          [(ngModel)]="productCategory.categorY_NAME"
+          (input)="nameValidate()"
+          (keyup)="nameValidate()"
+        />
+        <div *ngIf="!validCategory" style="color: Red">
+          Invalid Category Name
+        </div>
+        <div *ngIf="!uniqueCatName" style="color: Red">
+          Duplicate Category Name
+        </div>
+      </div>
     </div>
     <div class="row">
-      <label class="form-label">Product Category Description:</label>
-      <input
-        class="form-control"
-        name="emplyeeName"
-        type="text"
-        style="width: 300px"
-        [(ngModel)]="productCategory.categorY_DESCRIPTION"
-        (click)="survalidate()"
-        (keyup)="survalidate()"
-      />
-      <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+      <div class="col-6">
+        <label class="form-label">Product Category Description:</label>
+        <input
+          class="form-control"
+          name="emplyeeName"
+          type="text"
+          [(ngModel)]="productCategory.categorY_DESCRIPTION"
+          (input)="descriptionValidate()"
+          (keyup)="descriptionValidate()"
+        />
+        <div *ngIf="!validDescription" style="color: Red">
+          Invalid Category Description
+        </div>
+      </div>
     </div>
     <div class="form-group">
-      <span style="margin-top: 10px">
+      <span style="margin-top: 15px">
         <button
           type="button"
           class="btn btn-primary"
@@ -46,11 +60,10 @@
           type="button"
           data-toggle="modal"
           data-target="#exampleModal"
-          style="
-            border-color: var(--bs-orange);
-            background: var(--bs-orange);
-          "
-          *ngIf="details && sdetails"
+          style="border-color: var(--bs-orange); background: var(--bs-orange)"
+          [disabled]="!validCategory || !validDescription"
+          (mouseover)="FormValidate()"
+          (pointerover)="FormValidate()"
         >
           Save
         </button>

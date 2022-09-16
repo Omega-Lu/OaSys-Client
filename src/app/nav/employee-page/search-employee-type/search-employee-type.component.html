@@ -8,6 +8,7 @@
     style="width: 320px"
     [(ngModel)]="searchText"
     (input)="Search()"
+    (keyup)="Search()"
   />
 
   <hr />
@@ -20,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let employeetype of employeetypes">
+        <tr *ngFor="let employeetype of employeeTypesTemp">
           <td>{{ employeetype.positioN_NAME }}</td>
         </tr>
       </tbody>

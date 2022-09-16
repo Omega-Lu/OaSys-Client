@@ -8,6 +8,7 @@
     placeholder="Search..."
     style="width: 320px"
     [(ngModel)]="searchText"
+    (input)="Search()"
     (keyup)="Search()"
   />
 
@@ -17,7 +18,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th>&nbsp;Name</th>
+          <th>Name</th>
           <th>Surname</th>
           <th>Contact Number</th>
           <th></th>
@@ -25,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let debtor of debtors">
+        <tr *ngFor="let debtor of debtorsTemp">
           <td>{{ debtor.name }}</td>
           <td>{{ debtor.surname }}</td>
           <td>0{{ debtor.contacT_NUMBER }}</td>

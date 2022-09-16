@@ -8,6 +8,7 @@
     placeholder="Search..."
     style="width: 320px"
     [(ngModel)]="searchText"
+    (input)="Search()"
     (keyup)="Search()"
   />
 
@@ -25,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let employee of employees">
+        <tr *ngFor="let employee of employeesTemp">
           <td>{{ employee.title }}</td>
           <td>{{ employee.name }}</td>
           <td>{{ employee.surname }}</td>

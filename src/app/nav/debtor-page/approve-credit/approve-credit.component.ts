@@ -23,16 +23,6 @@ export class ApproveCreditComponent implements OnInit {
 
   async ngOnInit() {
     this.getAllCustomerApplications();
-
-    await this.sleep(150);
-
-    this.customerApplications = this.customerApplications.filter(
-      (customerApplication) => {
-        console.log(customerApplication.accountStatusID == 0);
-        return customerApplication.accountStatusID == 0;
-      }
-    );
-    this.customerApplicationsTemp = this.customerApplications;
   }
 
   sleep(ms) {
@@ -46,25 +36,26 @@ export class ApproveCreditComponent implements OnInit {
       .getAllCustomerApplications()
       .subscribe((response) => {
         this.customerApplications = response;
-        console.log(this.customerApplications);
+        this.customerApplications = this.customerApplications.filter(
+          (customerApplication) => {
+            return customerApplication.accountStatusID == 0;
+          }
+        );
+        this.customerApplicationsTemp = this.customerApplications;
       });
   }
 
   Search() {
     this.customerApplicationsTemp = this.customerApplications;
-    console.log(this.searchText);
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
       this.customerApplicationsTemp = this.customerApplicationsTemp.filter(
         (customerApplication) => {
-          console.log(customerApplication.name.match(searchValue));
-          return customerApplication.name.match(searchValue);
+          return (
+            customerApplication.name.match(this.searchText) ||
+            customerApplication.surname.match(this.searchText)
+          );
         }
       );
-      console.log(this.customerApplication);
-    } else {
-      this.customerApplicationsTemp = this.customerApplications;
     }
   }
 
@@ -75,6 +66,7 @@ export class ApproveCreditComponent implements OnInit {
   back() {
     this.approveCredit = false;
     this.return.emit('false');
+    this.getAllCustomerApplications();
   }
 
   populateForm(customerApplication: CustomerApplication) {

@@ -42,6 +42,9 @@
           (keyup)="ValidateIDNumber()"
         />
         <div *ngIf="!passportVal" style="color: Red">Invalid ID Number</div>
+        <div *ngIf="!uniquePassport" style="color: Red">
+          Duplicate ID Number
+        </div>
       </div>
       <div class="col">
         <label class="form-label">Contact Number: </label>
@@ -71,6 +74,9 @@
           />
         </div>
         <div *ngIf="!numberVal" style="color: Red">Invalid Contact Number</div>
+        <div *ngIf="!uniqueContactNumber" style="color: Red">
+          Duplicate Contact Number
+        </div>
       </div>
     </div>
 
@@ -107,6 +113,7 @@
           (keyup)="ValidateEmail()"
         />
         <div *ngIf="!edetails" style="color: Red">Invalid Email</div>
+        <div *ngIf="!uniqueEmail" style="color: Red">Duplicate Email</div>
       </div>
     </div>
 
@@ -224,7 +231,10 @@
             !numberVal ||
             !passportVal ||
             !validRole ||
-            !validType
+            !validType ||
+            !uniquePassport ||
+            !uniqueContactNumber ||
+            !uniqueEmail
           "
           (pointerover)="FormValidate()"
           (mouseover)="FormValidate()"

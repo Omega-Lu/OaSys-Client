@@ -13,7 +13,10 @@ import { UserService } from 'src/app/_services/user.service';
   styleUrls: ['./update-employee.component.css'],
 })
 export class UpdateEmployeeComponent implements OnInit {
+  //employee
   @Input() employee: Employee;
+  employees: Employee[] = [];
+  employeesTemp: Employee[] = [];
 
   @Output() return = new EventEmitter<string>();
 
@@ -44,6 +47,11 @@ export class UpdateEmployeeComponent implements OnInit {
 
   role = -1;
 
+  //unique variables
+  uniquePassport: boolean = true;
+  uniqueContactNumber: boolean = true;
+  uniqueEmail: boolean = true;
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
@@ -56,6 +64,11 @@ export class UpdateEmployeeComponent implements OnInit {
 
     this.GetUsers();
     this.GetEmployeeTypes();
+    this.employeeService.getAllEmployees().subscribe((res) => {
+      console.log('this is all the employees');
+      console.log(res);
+      this.employees = res;
+    });
   }
 
   FormValidate() {
@@ -79,6 +92,50 @@ export class UpdateEmployeeComponent implements OnInit {
 
     //validate title
     this.titlevalidate(this.employee.title);
+
+    //compare details
+    this.compareContactNumber();
+    this.compareEmail();
+    this.comparePassport();
+  }
+
+  comparePassport() {
+    this.employeesTemp = this.employees;
+    this.employeesTemp = this.employeesTemp.filter((employee) => {
+      return employee.employeE_ID_NUMBER == this.employee.employeE_ID_NUMBER;
+    });
+    if (
+      this.employeesTemp.length > 0 &&
+      this.employee.employeE_ID != this.employeesTemp[0].employeE_ID
+    )
+      this.uniquePassport = false;
+    else this.uniquePassport = true;
+  }
+
+  compareContactNumber() {
+    this.employeesTemp = this.employees;
+    this.employeesTemp = this.employeesTemp.filter((employee) => {
+      return employee.contacT_NUMBER == this.employee.contacT_NUMBER;
+    });
+    if (
+      this.employeesTemp.length > 0 &&
+      this.employee.employeE_ID != this.employeesTemp[0].employeE_ID
+    )
+      this.uniqueContactNumber = false;
+    else this.uniqueContactNumber = true;
+  }
+
+  compareEmail() {
+    this.employeesTemp = this.employees;
+    this.employeesTemp = this.employeesTemp.filter((employee) => {
+      return employee.email == this.employee.email;
+    });
+    if (
+      this.employeesTemp.length > 0 &&
+      this.employee.employeE_ID != this.employeesTemp[0].employeE_ID
+    )
+      this.uniqueEmail = false;
+    else this.uniqueEmail = true;
   }
 
   onSubmit() {
@@ -93,17 +150,6 @@ export class UpdateEmployeeComponent implements OnInit {
     });
   }
 
-  namevalidate() {
-    var matches = this.employee.name.match(/\d+/g);
-    if (matches != null) {
-      this.details = false;
-    } else if (this.employee.name == '') {
-      this.details = false;
-    } else {
-      this.details = true;
-    }
-  }
-
   ValidateName() {
     console.log(this.employee.name);
     this.details = this.validate.ValidateString(this.employee.name);
@@ -115,18 +161,21 @@ export class UpdateEmployeeComponent implements OnInit {
 
   ValidateEmail() {
     this.edetails = this.validate.ValidateEmail(this.employee.email);
+    this.compareEmail();
   }
 
   ValidateContactNumber() {
     this.numberVal = this.validate.ValidateContactNumber(
       this.employee.contacT_NUMBER
     );
+    this.compareContactNumber();
   }
 
   ValidateIDNumber() {
     this.passportVal = this.validate.ValidateIDNumber(
       this.employee.employeE_ID_NUMBER
     );
+    this.comparePassport();
   }
 
   titlevalidate(title) {

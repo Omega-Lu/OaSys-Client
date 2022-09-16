@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
 @Component({
   selector: 'app-add-product-category',
@@ -10,20 +11,28 @@ import { ProductCategoryService } from 'src/app/_services/product-category.servi
 export class AddProductCategoryComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
-  details: boolean = true;
-  sdetails: boolean = true;
+  //validations
+  validCategory: boolean = true;
+  validDescription: boolean = true;
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
+  uniqueCatName: boolean = true;
 
   successSubmit: boolean = false;
 
+  //product Categories
   productCategory: ProductCategory = {
     producT_CATEGORY_ID: 0,
     categorY_NAME: '',
     categorY_DESCRIPTION: '',
   };
+  productCategories: ProductCategory[] = [];
+  productCategoriesTemp: ProductCategory[] = [];
 
   constructor(private productCategoryService: ProductCategoryService) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.getProductCategories();
+  }
 
   onSubmit() {
     this.productCategoryService
@@ -34,25 +43,44 @@ export class AddProductCategoryComponent implements OnInit {
       });
   }
 
-  namevalidate() {
-    var matches = this.productCategory.categorY_NAME.match(/\d+/g);
-    if (matches != null) {
-      this.details = false;
-    } else if (this.productCategory.categorY_NAME == '') {
-      this.details = false;
-    } else {
-      this.details = true;
-    }
+  FormValidate() {
+    this.nameValidate();
+    this.descriptionValidate();
   }
 
-  survalidate() {
-    var matches = this.productCategory.categorY_DESCRIPTION.match(/\d+/g);
-    if (matches != null) {
-      this.sdetails = false;
-    } else if (this.productCategory.categorY_DESCRIPTION == '') {
-      this.sdetails = false;
+  nameValidate() {
+    this.validCategory = this.validate.ValidateString(
+      this.productCategory.categorY_NAME
+    );
+    this.compareName();
+  }
+
+  compareName() {
+    this.productCategoriesTemp = this.productCategories;
+    this.productCategoriesTemp = this.productCategoriesTemp.filter(
+      (category) => {
+        return category.categorY_NAME == this.productCategory.categorY_NAME;
+      }
+    );
+    console.log(this.productCategoriesTemp);
+    if (this.productCategoriesTemp.length > 0) {
+      this.uniqueCatName = false;
+    } else this.uniqueCatName = true;
+  }
+
+  getProductCategories() {
+    this.productCategoryService.getAllProductCategories().subscribe((res) => {
+      this.productCategories = res;
+      console.log('this is all the product categories');
+      console.log(this.productCategories);
+    });
+  }
+
+  descriptionValidate() {
+    if (this.productCategory.categorY_DESCRIPTION == '') {
+      this.validDescription = false;
     } else {
-      this.sdetails = true;
+      this.validDescription = true;
     }
   }
 

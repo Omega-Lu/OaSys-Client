@@ -10,6 +10,7 @@ import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-add-product',
@@ -44,8 +45,10 @@ export class AddProductComponent implements OnInit {
     reordeR_LIMIT: 0,
     barcode: '',
   };
+  products: Product[] = [];
+  productsTemp: Product[] = [];
 
-  //current USer
+  //current User
   currentUser: CurrentUser;
   currentUsers: CurrentUser[] = [];
   currentUsersTemp: CurrentUser[] = [];
@@ -70,6 +73,12 @@ export class AddProductComponent implements OnInit {
   validSell: boolean = true;
   validReorder: boolean = true;
   validBarcode: boolean = true;
+  validCategory: boolean = true;
+  validType: boolean = true;
+
+  //unique
+  uniqueNameAndDesc: boolean = true;
+  uniqueBarcode: boolean = true;
 
   constructor(
     private productService: ProductService,
@@ -82,9 +91,10 @@ export class AddProductComponent implements OnInit {
   async ngOnInit() {
     this.getAllProductCategories();
     this.getAllProductTypes();
-
+    this.getProducts();
     await this.getAllCurrentUsers();
     await this.sleep(500);
+
     //set the current user
     this.audit.userID = this.currentUsers[this.currentUsers.length - 1].userID;
     this.audit.employeeID =
@@ -112,6 +122,10 @@ export class AddProductComponent implements OnInit {
     this.Sellvalidate();
     this.BarcodeValidate();
     this.ReorderValidate();
+    this.validateCategory();
+    this.validateType();
+    this.compareBarcode();
+    this.uniqueNameAndDescription();
   }
 
   getAllProductCategories() {
@@ -127,6 +141,14 @@ export class AddProductComponent implements OnInit {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
       this.productTypes = response;
       console.log(this.productTypes);
+    });
+  }
+
+  getProducts() {
+    this.productService.getAllProducts().subscribe((res) => {
+      this.products = res;
+      console.log('this is all the products');
+      console.log(this.products);
     });
   }
 
@@ -152,6 +174,27 @@ export class AddProductComponent implements OnInit {
   DescriptionValdate() {
     if (this.product.producT_DESCRIPTION == '') this.validDescription = false;
     else this.validDescription = true;
+    this.uniqueNameAndDescription();
+  }
+
+  uniqueNameAndDescription() {
+    this.uniqueNameAndDesc = true;
+    this.productsTemp = this.products;
+    this.productsTemp = this.productsTemp.filter((product) => {
+      return product.producT_DESCRIPTION == this.product.producT_DESCRIPTION;
+    });
+
+    if (this.productsTemp.length > 0) {
+      console.log(this.productsTemp);
+      for (let i = 0; i < this.productsTemp.length; i++) {
+        const element = this.productsTemp[i];
+        if (element.producT_NAME == this.product.producT_NAME) {
+          console.log('duplicate');
+          this.uniqueNameAndDesc = false;
+          break;
+        }
+      }
+    }
   }
 
   Return() {
@@ -159,13 +202,16 @@ export class AddProductComponent implements OnInit {
   }
 
   Costvalidate() {
-    this.validCost = this.validate.ValidateMoney(this.product.cosT_PRICE);
+    if (this.product.cosT_PRICE <= 0) this.validCost = false;
+    else {
+      this.validCost = this.validate.ValidateMoney(this.product.cosT_PRICE);
+    }
   }
 
   Sellvalidate() {
     if (
       this.product.sellinG_PRICE <= 0 ||
-      this.product.sellinG_PRICE > this.product.cosT_PRICE
+      this.product.sellinG_PRICE < this.product.cosT_PRICE
     )
       this.validSell = false;
     else {
@@ -174,13 +220,36 @@ export class AddProductComponent implements OnInit {
   }
 
   BarcodeValidate() {
-    this.validBarcode = this.validate.ValidateInteger(this.product.barcode);
+    if (this.product.barcode == '') {
+      this.validBarcode = false;
+    } else {
+      this.validBarcode = this.validate.ValidateInteger(this.product.barcode);
+      if (this.validBarcode) {
+        this.compareBarcode();
+      }
+    }
+  }
+
+  compareBarcode() {
+    this.productsTemp = this.products;
+    this.productsTemp = this.products.filter((product) => {
+      return product.barcode == this.product.barcode;
+    });
+    if (this.productsTemp.length > 0) {
+      this.uniqueBarcode = false;
+    } else {
+      this.uniqueBarcode = true;
+    }
   }
 
   ReorderValidate() {
-    this.validReorder = this.validate.ValidateInteger(
-      this.product.reordeR_LIMIT
-    );
+    if (this.product.reordeR_LIMIT <= 0) {
+      this.validReorder = false;
+    } else {
+      this.validReorder = this.validate.ValidateInteger(
+        this.product.reordeR_LIMIT
+      );
+    }
   }
 
   async categorySelect(id: number) {
@@ -191,5 +260,17 @@ export class AddProductComponent implements OnInit {
     });
     console.log(this.productTypes);
     this.categorySelected = true;
+  }
+
+  validateCategory() {
+    if (this.product.producT_CATEGORY_ID == -1) {
+      this.validCategory = false;
+    } else this.validCategory = true;
+  }
+
+  validateType() {
+    if (this.product.producT_TYPE_ID == -1) {
+      this.validType = false;
+    } else this.validType = true;
   }
 }

@@ -9,29 +9,36 @@ import { RateService } from 'src/app/_services/rate.service';
 })
 export class MaintainWageRateComponent implements OnInit {
   updateRate: boolean = false;
-  rates: Rate[] = [];
+
+  //rate
   rate: Rate;
-  model: any;
+  rates: Rate[] = [];
+  ratesTemp: Rate[] = [];
+
   searchText: any = '';
-  lekke: any;
 
   constructor(private rateService: RateService) {}
 
   ngOnInit() {
-    this.getAllEmployees();
+    this.getRates();
   }
 
-  getAllEmployees() {
+  getRates() {
     this.rateService.getAllEmployees().subscribe((response) => {
       this.rates = response;
+      this.ratesTemp = response;
       console.log(this.rates);
     });
   }
 
-  deleteEmployee(id: number) {
-    console.log(id);
-    this.rateService.deleteEmployee(id).subscribe((response) => {
-      this.getAllEmployees();
+  deleteID: number;
+  deletee(id) {
+    this.deleteID = id;
+  }
+
+  deleteWageRate() {
+    this.rateService.deleteEmployee(this.deleteID).subscribe((response) => {
+      this.getRates();
       console.log(this.rates);
     });
   }
@@ -42,21 +49,16 @@ export class MaintainWageRateComponent implements OnInit {
   }
 
   Search() {
+    this.ratesTemp = this.rates;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.rates = this.rates.filter((rate) => {
-        console.log(rate.ratE_NAME.match(searchValue));
-        return rate.ratE_NAME.match(searchValue);
+      this.ratesTemp = this.ratesTemp.filter((rate) => {
+        return rate.ratE_NAME.match(this.searchText);
       });
-      console.log(this.rate);
-    } else {
-      this.getAllEmployees();
     }
   }
 
   back() {
     this.updateRate = false;
-    this.getAllEmployees();
+    this.getRates();
   }
 }

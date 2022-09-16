@@ -39,6 +39,8 @@ export class AddWarningComponent implements OnInit {
     warninG_TYPE_ID: -1,
     reason: '',
   };
+  warnings: Warning[] = [];
+  warningsTemp: Warning[] = [];
 
   //employeeWarning
   employeeWarning: EmployeeWarning = {
@@ -46,6 +48,9 @@ export class AddWarningComponent implements OnInit {
     employeeID: 0,
     warningID: 0,
   };
+
+  //unique cariables
+  uniqueWarning: boolean = true;
 
   constructor(
     private warningService: WarningService,
@@ -57,6 +62,11 @@ export class AddWarningComponent implements OnInit {
   async ngOnInit() {
     await this.getEmployees();
     await this.getWarningTypes();
+    this.warningService.getAllEmployees().subscribe((res) => {
+      console.log('this is all the warnings');
+      console.log(res);
+      this.warnings = res;
+    });
   }
 
   onSubmit() {
@@ -96,27 +106,46 @@ export class AddWarningComponent implements OnInit {
     this.validateReason();
     this.validateWarning();
     this.validateWarningType();
+    this.compareWarning();
   }
 
   validateEmployee() {
     if (this.warning.employeE_ID == -1) {
       this.validEmployee = false;
     } else this.validEmployee = true;
+    this.compareWarning();
   }
 
   validateWarning() {
     if (this.warning.warininG_NAME == '') {
       this.validWarning = false;
     } else this.validWarning = true;
+    this.compareWarning();
   }
 
   validateWarningType() {
     if (this.warning.warninG_TYPE_ID == -1) this.validWarningType = false;
     else this.validWarningType = true;
+    this.compareWarning();
   }
 
   validateReason() {
     if (this.warning.reason == '') this.validReason = false;
     else this.validReason = true;
+  }
+
+  compareWarning() {
+    this.warningsTemp = this.warnings;
+    this.warningsTemp = this.warningsTemp.filter((warning) => {
+      return warning.employeE_ID == this.warning.employeE_ID;
+    });
+    this.warningsTemp = this.warningsTemp.filter((warning) => {
+      return warning.warninG_TYPE_ID == this.warning.warninG_TYPE_ID;
+    });
+    this.warningsTemp = this.warningsTemp.filter((warning) => {
+      return warning.warininG_NAME == this.warning.warininG_NAME;
+    });
+    if (this.warningsTemp.length > 0) this.uniqueWarning = false;
+    else this.uniqueWarning = true;
   }
 }

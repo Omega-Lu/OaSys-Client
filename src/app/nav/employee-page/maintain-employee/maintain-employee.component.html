@@ -14,6 +14,7 @@
     placeholder="Search..."
     style="width: 320px"
     [(ngModel)]="searchText"
+    (input)="Search()"
     (keyup)="Search()"
   />
 
@@ -33,7 +34,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let employee of employees">
+        <tr *ngFor="let employee of employeesTemp">
           <td>{{ employee.title }}</td>
           <td>{{ employee.name }}</td>
           <td>{{ employee.surname }}</td>
@@ -56,7 +57,7 @@
             <button
               class="btn btn-primary"
               type="button"
-              style="background: var(--bs-red)"
+              style="background: var(--bs-red); border-color: var(--bs-red)"
               data-toggle="modal"
               data-target="#exampleModal"
               (click)="deletee(employee.employeE_ID)"

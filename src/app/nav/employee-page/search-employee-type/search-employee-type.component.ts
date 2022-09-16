@@ -5,48 +5,40 @@ import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 @Component({
   selector: 'app-search-employee-type',
   templateUrl: './search-employee-type.component.html',
-  styleUrls: ['./search-employee-type.component.css']
+  styleUrls: ['./search-employee-type.component.css'],
 })
 export class SearchEmployeeTypeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
-  employeetypes : EmployeeType[] = [];
-  searchText : string = '';
 
-  constructor(private employeetypeService: EmployeeTypeService ) { 
+  //employee types
+  employeetypes: EmployeeType[] = [];
+  employeeTypesTemp: EmployeeType[] = [];
 
-  }
+  searchText: string = '';
+
+  constructor(private employeetypeService: EmployeeTypeService) {}
 
   ngOnInit(): void {
     this.getAllEmployees();
   }
 
   getAllEmployees() {
-    this.employeetypeService.getAllEmployees()
-    .subscribe(
-      response => {
-        this.employeetypes = response;
-        console.log(this.employeetypes);
-      }
-    );
+    this.employeetypeService.getAllEmployees().subscribe((response) => {
+      this.employeetypes = response;
+      this.employeeTypesTemp = response;
+    });
   }
 
   Search() {
-    if(this.searchText !== ""){
-      let searchValue = this.searchText
-      console.log(searchValue);
-      this.employeetypes = this.employeetypes.filter((employeetype) =>{
-        console.log(employeetype.positioN_NAME.match(searchValue));
-        return employeetype.positioN_NAME.match(searchValue);  
-      
-            });
-          }
-    else {
-      this.getAllEmployees();
+    this.employeeTypesTemp = this.employeetypes;
+    if (this.searchText !== '') {
+      this.employeeTypesTemp = this.employeeTypesTemp.filter((employeetype) => {
+        return employeetype.positioN_NAME.match(this.searchText);
+      });
     }
   }
 
-  Return(){
-    this.return.emit("false");
+  Return() {
+    this.return.emit('false');
   }
-
 }

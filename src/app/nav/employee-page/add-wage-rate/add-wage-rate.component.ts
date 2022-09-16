@@ -26,7 +26,7 @@ export class AddWageRateComponent implements OnInit {
   rate: Rate = {
     ratE_ID: 0,
     ratE_NAME: 'Select A Name',
-    ratE_AMOUNT: 0,
+    ratE_AMOUNT: null,
   };
 
   constructor(

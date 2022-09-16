@@ -6,50 +6,40 @@ import { Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-search-employee',
   templateUrl: './search-employee.component.html',
-  styleUrls: ['./search-employee.component.css']
+  styleUrls: ['./search-employee.component.css'],
 })
 export class SearchEmployeeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
-  //title = 'employees';
+
+  //employee
   employees: Employee[] = [];
-  searchText : string = '';
+  employeesTemp: Employee[] = [];
 
-  constructor(private employeeService: EmployeeService ) { 
+  searchText: string = '';
 
-  }
+  constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
     this.getAllEmployees();
   }
 
   getAllEmployees() {
-    this.employeeService.getAllEmployees()
-    .subscribe(
-      response => {
-        this.employees = response;
-        console.log(this.employees);
-      }
-    );
+    this.employeeService.getAllEmployees().subscribe((response) => {
+      this.employees = response;
+      this.employeesTemp = response;
+    });
   }
 
   Search() {
-    if(this.searchText !== ""){
-      let searchValue = this.searchText
-      console.log(searchValue);
-      this.employees = this.employees.filter((employee) =>{
-        console.log(employee.name.match(searchValue));
-        return employee.name.match(searchValue);  
-      
-            });
-          }
-    else {
-      this.getAllEmployees();
+    this.employeesTemp = this.employees;
+    if (this.searchText !== '') {
+      this.employeesTemp = this.employeesTemp.filter((employee) => {
+        return employee.name.match(this.searchText);
+      });
     }
   }
 
-  Return(){
-    this.return.emit("false");
+  Return() {
+    this.return.emit('false');
   }
-
-
 }

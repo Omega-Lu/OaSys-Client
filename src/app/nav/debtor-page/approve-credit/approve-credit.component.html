@@ -1,6 +1,6 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="!approveCredit">
   <h1>Select an application that you would like to review</h1>
-  <form *ngIf="!approveCredit">
+  <form>
     <input
       class="form-control search-input"
       type="text"
@@ -60,6 +60,7 @@
     </button>
   </form>
 </div>
+
 <app-view-credit-account
   *ngIf="approveCredit"
   [customerApplication]="customerApplication"

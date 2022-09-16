@@ -10,9 +10,12 @@ import { CustomerAccountService } from 'src/app/_services/customer-account.servi
 export class ViewDebtorAccountComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
-  customerAccountsTemp: CustomerAccount[] = [];
-  customerAccounts: CustomerAccount[] = [];
+  //customer accounts
   customerAccount: CustomerAccount;
+  customerAccounts: CustomerAccount[] = [];
+  customerAccountsTemp: CustomerAccount[] = [];
+
+  updateDebtor: boolean = false;
 
   viewAccount: boolean = false;
   searchText: string = '';
@@ -20,42 +23,29 @@ export class ViewDebtorAccountComponent implements OnInit {
   constructor(private customerAccountService: CustomerAccountService) {}
 
   async ngOnInit() {
-    this.getAllCustomerAccounts();
-    await this.sleep(150);
-
-    this.customerAccountsTemp = this.customerAccounts;
+    this.getDebtors();
   }
 
-  getAllCustomerAccounts() {
+  getDebtors() {
     this.customerAccountService
       .getAllCustomerAccounts()
       .subscribe((response) => {
         this.customerAccounts = response;
-        console.log(this.customerAccounts);
+        this.customerAccountsTemp = this.customerAccounts;
       });
-  }
-
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
   }
 
   Search() {
     this.customerAccountsTemp = this.customerAccounts;
-    console.log(this.searchText);
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
       this.customerAccountsTemp = this.customerAccountsTemp.filter(
         (customerAccount) => {
-          console.log(customerAccount.name.match(searchValue));
-          return customerAccount.name.match(searchValue);
+          return (
+            customerAccount.name.match(this.searchText) ||
+            customerAccount.surname.match(this.searchText)
+          );
         }
       );
-      console.log(this.customerAccounts);
-    } else {
-      this.customerAccountsTemp = this.customerAccounts;
     }
   }
 
@@ -64,10 +54,12 @@ export class ViewDebtorAccountComponent implements OnInit {
   }
 
   back() {
-    this.viewAccount = false;
+    this.updateDebtor = false;
+    this.getDebtors();
   }
 
   populateForm(customerAccount: CustomerAccount) {
     this.customerAccount = customerAccount;
+    this.updateDebtor = true;
   }
 }

@@ -1,15 +1,17 @@
 <div class="container-fluid">
-  <h1>Add Debtor</h1>
-  <form style="width: 800px" #form="ngForm" (ngSubmit)="onSubmit()">
+  <h1>Add Credit Application</h1>
+  <h2 style="margin-left: 1%">New Application Details:</h2>
+  <form style="width: 700px; margin-left: 2%" #form="ngForm">
     <div class="row">
       <div class="col">
         <label class="form-label">Name:</label>
         <input
           class="form-control"
           name="debtorName"
+          placeholder="Debtor Name"
           type="text"
           [(ngModel)]="customerApplication.name"
-          (click)="nameValidate()"
+          (input)="nameValidate()"
           (keyup)="nameValidate()"
         />
         <div *ngIf="!nameDetails" style="color: Red">Invalid Name</div>
@@ -19,10 +21,11 @@
         ><input
           class="form-control"
           type="text"
+          placeholder="Debtor Surname"
           required
           name="debtorSurname"
           [(ngModel)]="customerApplication.surname"
-          (click)="surnameValidate()"
+          (input)="surnameValidate()"
           (keyup)="surnameValidate()"
         />
         <div *ngIf="!surnameDetails" style="color: Red">Invalid Surname</div>
@@ -32,36 +35,52 @@
     <div class="row">
       <div class="col">
         <label class="form-label">Contact Number: </label>
-        <div class="input-group prefix">
-          <span
-            class="input-group-addon"
-            style="display: flex; justify-content: center; align-items: center"
-            >+27</span
-          >
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              +27
+            </div>
+          </div>
           <input
             class="form-control"
-            type="tel"
+            type="text"
             required
-            name="debtorNumber"
+            id="inlineFormInputGroup"
+            name="emplyeeNumber"
+            placeholder="123456789"
             minlength="9"
             maxlength="9"
-            style="margin-left: 5px"
             [(ngModel)]="customerApplication.contactNumber"
+            (input)="ValidateContactNumber()"
+            (keyup)="ValidateContactNumber()"
           />
         </div>
-        <div *ngIf="!contactDetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!contactDetails" style="color: Red">
+          Invalid Contact Number
+        </div>
+        <div *ngIf="!uniqueContactNumber" style="color: Red">
+          Duplicate Contact Number
+        </div>
       </div>
       <div class="col">
         <label class="form-label">Email:</label>
         <input
           class="form-control"
           name="debtorEmail"
+          placeholder="example@email.com"
           type="text"
           [(ngModel)]="customerApplication.email"
-          (click)="emailValidate()"
+          (input)="emailValidate()"
           (keyup)="emailValidate()"
         />
-        <div *ngIf="!emailDetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!emailDetails" style="color: Red">Invalid Email</div>
+        <div *ngIf="!uniqueEmail" style="color: Red">Duplicate Email</div>
       </div>
     </div>
 
@@ -77,22 +96,24 @@
             background: var(--bs-gray-100);
             border-color: var(--bs-orange);
             color: var(--bs-orange);
+            width: 100%;
           "
           [(ngModel)]="customerApplication.provinceID"
           required
+          (click)="Provalidate()"
           (input)="categorySelect($event.target.value)"
         >
           <option value="-1" selected disabled>Province</option>
-          <option value="1">Gauteng</option>
-          <option value="2">Northen Cape</option>
-          <option value="3">North-West</option>
-          <option value="4">Mpumalanga</option>
-          <option value="5">Limpopo</option>
-          <option value="6">Western Cape</option>
-          <option value="7">Eastern Cape</option>
-          <option value="8">KwaZulu-Natal</option>
-          <option value="9">Free State</option>
+          <option
+            *ngFor="let province of provinces"
+            value="{{ province.provinceID }}"
+          >
+            {{ province.provinceName }}
+          </option>
         </select>
+        <div *ngIf="!provinceDetails" style="color: Red">
+          Please Select A Province
+        </div>
       </div>
       <div class="col">
         <label class="form-label" style="width: 100%">City:</label>
@@ -105,34 +126,49 @@
             background: var(--bs-gray-100);
             border-color: var(--bs-orange);
             color: var(--bs-orange);
+            width: 100%;
           "
+          [(ngModel)]="customerApplication.cityID"
+          (click)="cityValidate()"
         >
           <option value="-1" selected disabled>City</option>
-          <option value="1" *ngIf="Gauteng">Pretoria</option>
-          <option value="2" *ngIf="Gauteng">Johannesburg</option>
-          <option value="2" *ngIf="Gauteng">Centurion</option>
-          <option value="2" *ngIf="Gauteng">Alexandra</option>
-          <option value="2" *ngIf="Gauteng">Lenasia</option>
-          <option value="2" *ngIf="Gauteng">Midrand</option>
-          <option value="2" *ngIf="Gauteng">Roodepoort</option>
-          <option value="2" *ngIf="Gauteng">Sandton</option>
-          <option value="2" *ngIf="Gauteng">Soweto</option>
-          <option value="2" *ngIf="Gauteng">Mshongo</option>
-          <option value="3" *ngIf="NorthWest">Brits</option>
-          <option value="4" *ngIf="NorthWest">Rustenburg</option>
-          <option value="5" *ngIf="Mpumalanga">Tabazimbi</option>
-          <option value="6" *ngIf="Mpumalanga">Mkloho</option>
-          <option value="7" *ngIf="Limpopo">Zanene</option>
-          <option value="8" *ngIf="Limpopo">Mghto</option>
-          <option value="9" *ngIf="Western">Mossel Bay</option>
-          <option value="5" *ngIf="Western">Cape Town</option>
-          <option value="6" *ngIf="Eastern">East London</option>
-          <option value="7" *ngIf="Eastern">Port Elizabeth</option>
-          <option value="8" *ngIf="KwaZulu">Durban</option>
-          <option value="9" *ngIf="KwaZulu">Natal</option>
-          <option value="5" *ngIf="State">Bloemfontein</option>
-          <option value="5" *ngIf="State">Bethlehem</option>
+          <option *ngFor="let city of citiesTemp" value="{{ city.cityID }}">
+            {{ city.cityName }}
+          </option>
         </select>
+        <div *ngIf="!cityDetails" style="color: Red">Please Select A City</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <label class="form-label">Credit Limit:</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              R
+            </div>
+          </div>
+          <input
+            class="form-control"
+            name="debtorLimit"
+            type="number"
+            placeholder="0.00"
+            required
+            [(ngModel)]="customerApplication.creditLimit"
+            (input)="creditValidate()"
+            (keyup)="creditValidate()"
+          />
+        </div>
+        <div *ngIf="!creditDetails" style="color: Red">
+          Invalid Credit Limit
+        </div>
       </div>
     </div>
 
@@ -162,7 +198,19 @@
             margin-right: 0px;
             margin-top: 10px;
           "
-          [disabled]="!nameDetails || !surnameDetails || !emailDetails || !contactDetails"
+          [disabled]="
+            !nameDetails ||
+            !surnameDetails ||
+            !emailDetails ||
+            !contactDetails ||
+            !creditDetails ||
+            !provinceDetails ||
+            !uniqueEmail ||
+            !uniqueContactNumber ||
+            !cityDetails
+          "
+          (pointerover)="FormValidate()"
+          (mouseover)="FormValidate()"
         >
           Save
         </button>
@@ -183,10 +231,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
-          Are You Sure You Would Like To Add A New Debtor
+          Are You Sure You Would Like To Add A New Credit Application
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
-          Debtor Successfully Added
+          Credit Application Successfully Added
         </h5>
       </div>
 
@@ -204,6 +252,7 @@
           class="btn btn-primary"
           data-target="#exampleModal"
           *ngIf="!successSubmit"
+          (click)="onSubmit()"
         >
           Yes
         </button>

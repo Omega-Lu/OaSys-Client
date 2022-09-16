@@ -8,14 +8,13 @@ import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
   styleUrls: ['./maintain-employee-type.component.css'],
 })
 export class MaintainEmployeeTypeComponent implements OnInit {
-  employeetypes: EmployeeType[] = [];
+  //employee type
   employeetype: EmployeeType;
+  employeetypes: EmployeeType[] = [];
+  employeeTypesTemp: EmployeeType[] = [];
 
-  model: any;
   searchText: any = '';
   updateEmployeeType: boolean = false;
-
-  lekke: any;
 
   successDelete: boolean = false;
   IDDelete: any;
@@ -29,8 +28,7 @@ export class MaintainEmployeeTypeComponent implements OnInit {
   getAllEmployees() {
     this.employeeService.getAllEmployees().subscribe((response) => {
       this.employeetypes = response;
-      console.log('this is all the employee types');
-      console.log(this.employeetypes);
+      this.employeeTypesTemp = response;
     });
   }
 
@@ -52,16 +50,11 @@ export class MaintainEmployeeTypeComponent implements OnInit {
   }
 
   Search() {
+    this.employeeTypesTemp = this.employeetypes;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.employeetypes = this.employeetypes.filter((employeetype) => {
-        console.log(employeetype.positioN_NAME.match(searchValue));
-        return employeetype.positioN_NAME.match(searchValue);
+      this.employeeTypesTemp = this.employeeTypesTemp.filter((employeetype) => {
+        return employeetype.positioN_NAME.match(this.searchText);
       });
-      console.log(this.employeetype);
-    } else {
-      this.getAllEmployees();
     }
   }
 

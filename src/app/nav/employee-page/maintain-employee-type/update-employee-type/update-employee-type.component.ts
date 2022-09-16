@@ -10,10 +10,17 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 })
 export class UpdateEmployeeTypeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
+
+  //employee type
   @Input() employeetype: EmployeeType;
+  employeeTypes: EmployeeType[] = [];
+  employeeTypesTemp: EmployeeType[] = [];
 
   //import validation
   validate: ValidationServicesComponent = new ValidationServicesComponent();
+
+  //unique variables
+  uniqueName: boolean = true;
 
   validName: boolean = true;
 
@@ -21,7 +28,13 @@ export class UpdateEmployeeTypeComponent implements OnInit {
 
   constructor(private employeeTypeService: EmployeeTypeService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.employeeTypeService.getAllEmployees().subscribe((res) => {
+      console.log('This is all the employeeTypes');
+      console.log(res);
+      this.employeeTypes = res;
+    });
+  }
 
   onSubmit() {
     this.employeeTypeService
@@ -33,10 +46,30 @@ export class UpdateEmployeeTypeComponent implements OnInit {
       });
   }
 
+  FormValidate() {
+    this.namevalidate();
+    this.compareName();
+  }
+
+  compareName() {
+    this.employeeTypesTemp = this.employeeTypes;
+    this.employeeTypesTemp = this.employeeTypesTemp.filter((type) => {
+      return type.positioN_NAME == this.employeetype.positioN_NAME;
+    });
+    if (
+      this.employeeTypesTemp.length > 0 &&
+      this.employeeTypesTemp[0].employeE_TYPE_ID !=
+        this.employeetype.employeE_TYPE_ID
+    )
+      this.uniqueName = false;
+    else this.uniqueName = true;
+  }
+
   namevalidate() {
     this.validName = this.validate.ValidateString(
       this.employeetype.positioN_NAME
     );
+    this.compareName();
   }
 
   Return() {

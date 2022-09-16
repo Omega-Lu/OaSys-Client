@@ -67,6 +67,8 @@ export class MaintainProductComponent implements OnInit {
   }
 
   back() {
+    this.updateProduct = false;
     this.return.emit('false');
+    this.getAllProducts();
   }
 }

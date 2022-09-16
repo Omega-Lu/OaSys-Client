@@ -1,105 +1,94 @@
-<form
-  class="text-dark"
-  style="
-    width: 850px;
-    height: 500px;
-    margin-top: 0px;
-    margin-right: 30px;
-    margin-left: 50px;
-    border-color: var(--bs-orange);
-  "
->
-  <h1 style="width: 700px; margin-bottom: 20px">
-    Please select a product category to complete the stock take
-  </h1>
-  <div
-    class="search-container"
-    style="width: 100%; margin-top: 20px; margin-bottom: 50px"
-  >
-    <select
-      id="categoryID"
-      class="btn"
-      name="PCategory"
-      style="
-        background: var(--bs-gray-100);
-        border-color: var(--bs-orange);
-        color: var(--bs-orange);
-        float: right;
-        margin-bottom: 20px;
-      "
-      (input)="categorySelect($event.target.value)"
-    >
-      <option value="" disabled selected>Product Category</option>
-      <option
-        id="categoryOption"
-        value=" {{ productCategory.producT_CATEGORY_ID }} "
-        *ngFor="let productCategory of productCategories"
+<div class="container-fluid">
+  <h1>Please select a product category to complete the stock take</h1>
+  <form style="max-width: 1000px; margin-left: 1%">
+    <div class="row justify-content-end">
+      <select
+        id="categoryID"
+        class="btn"
+        name="PCategory"
+        style="
+          background: var(--bs-gray-100);
+          border-color: var(--bs-orange);
+          color: var(--bs-orange);
+          float: right;
+          width: fit-content;
+          margin-bottom: 20px;
+        "
+        (input)="categorySelect($event.target.value)"
       >
-        {{ productCategory.categorY_NAME }}
-      </option>
-    </select>
-  </div>
-  <div
-    class="table-responsive"
-    style="height: 300px; margin-top: 0px; width: 100%"
-  >
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Product Category</th>
-          <th>Product type</th>
-          <th>Product Name</th>
-          <th>Actual Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let dynamic of dynamicArray; let i = index">
-          <td>{{ dynamic.CategoryName }}</td>
-          <td>{{ dynamic.TypeName }}</td>
-          <td>{{ dynamic.ProductName }}</td>
-          <td>
-            <input
-              (click)="quantityVali($event.target.value)"
-              class="form-control"
-              type="number"
-              style="width: 100px"
-              value="{{ dynamic.Quantity }}"
-              [(ngModel)]="dynamic.Quantity"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div>
-    <i style="color: red" [hidden]="completeQuantity"
-      >Quantity can only be equal to or more than 0</i
-    >
-  </div>
-  <button
-    routerLink="/product-page"
-    class="btn btn-primary"
-    type="button"
-    style="background: var(--bs-orange); border-color: var(--bs-orange)"
-  >
-    Back
-  </button>
-  <button
-    class="btn btn-primary"
-    type="submit"
-    style="
-      background: var(--bs-orange);
-      border-color: var(--bs-orange);
-      margin-left: 500px;
-    "
-    [disabled]="!completeQuantity"
-    data-toggle="modal"
-    data-target="#exampleModal"
-  >
-    Complete Stock take
-  </button>
-</form>
+        <option value="" disabled selected>Product Category</option>
+        <option
+          id="categoryOption"
+          value=" {{ productCategory.producT_CATEGORY_ID }} "
+          *ngFor="let productCategory of productCategories"
+        >
+          {{ productCategory.categorY_NAME }}
+        </option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="table-responsive" style="max-height: 600px">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Product Category</th>
+              <th>Product type</th>
+              <th>Product Name</th>
+              <th>Actual Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dynamic of dynamicArray; let i = index">
+              <td>{{ dynamic.CategoryName }}</td>
+              <td>{{ dynamic.TypeName }}</td>
+              <td>{{ dynamic.ProductName }}</td>
+              <td>
+                <input
+                  (click)="quantityVali($event.target.value)"
+                  class="form-control"
+                  type="number"
+                  style="width: 100px"
+                  value="{{ dynamic.Quantity }}"
+                  [(ngModel)]="dynamic.Quantity"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <i style="color: red" [hidden]="completeQuantity"
+          >Quantity can only be equal to or more than 0</i
+        >
+      </div>
+    </div>
+    <div class="form-group">
+      <button
+        routerLink="/product-page"
+        class="btn btn-primary"
+        type="button"
+        style="background: var(--bs-orange); border-color: var(--bs-orange)"
+      >
+        Back
+      </button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        style="
+          background: var(--bs-orange);
+          border-color: var(--bs-orange);
+          float: right;
+        "
+        [disabled]="!completeQuantity"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        Complete Stock take
+      </button>
+    </div>
+  </form>
+</div>
 
 <div
   class="modal fade"

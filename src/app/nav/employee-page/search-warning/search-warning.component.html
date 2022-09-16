@@ -7,6 +7,7 @@
     placeholder="Search..."
     style="width: 320px"
     [(ngModel)]="searchText"
+    (input)="Search()"
     (keyup)="Search()"
   />
 

@@ -11,8 +11,12 @@
           type="text"
           [(ngModel)]="employeetype.positioN_NAME"
           (keyup)="namevalidate()"
+          (input)="namevalidate()"
         />
         <div *ngIf="!validName" style="color: Red">Invalid Details</div>
+        <div *ngIf="!uniqueName" style="color: Red">
+          Duplicate Position Name
+        </div>
       </div>
     </div>
 
@@ -33,8 +37,8 @@
         class="btn btn-primary"
         type="submit"
         style="background: var(--bs-orange); border-color: var(--bs-orange)"
-        [disabled]="!validName"
-        (pointerover)="namevalidate()"
+        [disabled]="!validName || !uniqueName"
+        (pointerover)="FormValidate()"
         data-toggle="modal"
         data-target="#updateModal"
       >
