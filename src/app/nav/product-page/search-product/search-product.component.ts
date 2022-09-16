@@ -6,48 +6,43 @@ import { Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-search-product',
   templateUrl: './search-product.component.html',
-  styleUrls: ['./search-product.component.css']
+  styleUrls: ['./search-product.component.css'],
 })
 export class SearchProductComponent implements OnInit {
-
   @Output() return = new EventEmitter<string>();
 
+  // products
   products: Product[] = [];
+  productsTemp: Product[] = [];
+
   searchText: string = '';
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.getAllProducts();
   }
 
   getAllProducts() {
-    this.productService.getAllProducts()
-    .subscribe(
-      response => {
-        this.products = response;
-        console.log(this.products);
-      }
-    );
+    this.productService.getAllProducts().subscribe((response) => {
+      this.products = response;
+      this.productsTemp = response;
+    });
   }
 
   Search() {
-    if(this.searchText !== ""){
-      let searchValue = this.searchText
-      console.log(searchValue);
-      this.products = this.products.filter((product) =>{
-        console.log(product.producT_NAME.match(searchValue));
-        return product.producT_NAME.match(searchValue);  
-      
-            });
-          }
-    else {
-      this.getAllProducts();
+    this.productsTemp = this.products;
+    if (this.searchText !== '') {
+      this.productsTemp = this.productsTemp.filter((product) => {
+        return (
+          product.producT_NAME.match(this.searchText) ||
+          product.producT_DESCRIPTION.match(this.searchText)
+        );
+      });
     }
   }
 
-  Return(){
-    this.return.emit("false");
+  Return() {
+    this.return.emit('false');
   }
-
 }

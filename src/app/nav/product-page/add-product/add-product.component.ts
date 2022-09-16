@@ -40,9 +40,9 @@ export class AddProductComponent implements OnInit {
     producT_NAME: '',
     producT_DESCRIPTION: '',
     quantitY_ON_HAND: 0,
-    cosT_PRICE: 0,
-    sellinG_PRICE: 0,
-    reordeR_LIMIT: 0,
+    cosT_PRICE: null,
+    sellinG_PRICE: null,
+    reordeR_LIMIT: null,
     barcode: '',
   };
   products: Product[] = [];

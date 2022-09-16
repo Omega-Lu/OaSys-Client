@@ -12,26 +12,28 @@
         ><input
           class="form-control"
           name="positionName"
-          placeholder="Name"
+          placeholder="Name..."
           type="text"
           [(ngModel)]="supplier.name"
           (click)="ValidateName()"
           (keyup)="ValidateName()"
         />
         <div *ngIf="!details" style="color: Red">Invalid Name</div>
+        <div *ngIf="!uniqueName" style="color: Red">Duplicate Name</div>
       </div>
       <div class="col">
         <label class="form-label">VAT Number:</label
         ><input
           class="form-control"
           name="vatnum"
-          placeholder="0"
+          placeholder="Vat..."
           type="text"
           [(ngModel)]="supplier.vaT_NUMBER"
           (click)="ValidateVat()"
           (keyup)="ValidateVat()"
         />
         <div *ngIf="!vdetails" style="color: Red">Invalid Vat Number</div>
+        <div *ngIf="!uniqueVat" style="color: Red">Duplicate Vat Number</div>
       </div>
     </div>
     <div class="row">
@@ -63,6 +65,9 @@
           />
         </div>
         <div *ngIf="!cdetails" style="color: Red">Invalid Contact Number</div>
+        <div *ngIf="!uniqueContactNumber" style="color: Red">
+          Duplicate Contact Number
+        </div>
       </div>
       <div class="col">
         <label class="form-label">Alternate Contact Number:</label>
@@ -92,6 +97,9 @@
           />
         </div>
         <div *ngIf="!adetails" style="color: Red">Invalid Alternate Number</div>
+        <div *ngIf="!validAlt" style="color: Red">
+          Alt and Contact Number Cannot Be The Same
+        </div>
       </div>
     </div>
     <div class="row">
@@ -107,6 +115,7 @@
           (keyup)="ValidateEmail()"
         />
         <div *ngIf="!edetails" style="color: Red">Invalid Email</div>
+        <div *ngIf="!uniqueEmail" style="color: Red">Duplicate Email</div>
       </div>
     </div>
 
@@ -129,12 +138,18 @@
           type="button"
           data-toggle="modal"
           data-target="#exampleModal"
-          style="
-            border-color: var(--bs-orange);
-            background: var(--bs-orange);
-          "
+          style="border-color: var(--bs-orange); background: var(--bs-orange)"
           [disabled]="
-            !details || !edetails || !vdetails || !cdetails || !adetails
+            !details ||
+            !edetails ||
+            !vdetails ||
+            !cdetails ||
+            !adetails ||
+            !uniqueVat ||
+            !uniqueEmail ||
+            !uniqueContactNumber ||
+            !validAlt ||
+            !uniqueName
           "
           (mouseover)="FormValidate()"
         >

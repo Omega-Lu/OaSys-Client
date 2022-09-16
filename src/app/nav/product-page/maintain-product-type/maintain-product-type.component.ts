@@ -14,6 +14,8 @@ export class MaintainProductTypeComponent implements OnInit {
   updateProductType: boolean = false;
   successDelete: boolean = false;
 
+  //product Type
+  productTypesTemp: ProductType[] = [];
   productTypes: ProductType[] = [];
   productType: ProductType;
 
@@ -49,20 +51,16 @@ export class MaintainProductTypeComponent implements OnInit {
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
       this.productTypes = response;
-      console.log(this.productTypes);
+      this.productTypesTemp = response;
     });
   }
 
   Search() {
+    this.productTypesTemp = this.productTypes;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.productTypes = this.productTypes.filter((productType) => {
-        console.log(productType.typE_NAME.match(searchValue));
-        return productType.typE_NAME.match(searchValue);
+      this.productTypesTemp = this.productTypesTemp.filter((productType) => {
+        return productType.typE_NAME.match(this.searchText);
       });
-    } else {
-      this.getAllProductTypes();
     }
   }
 

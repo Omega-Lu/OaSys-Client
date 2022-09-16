@@ -13,6 +13,7 @@
           class="form-control"
           name="productname"
           id="productname"
+          placeholder="Name..."
           type="text"
           [(ngModel)]="product.producT_NAME"
           (keyup)="nameValidate()"
@@ -25,6 +26,7 @@
         <input
           class="form-control"
           name="productDescription"
+          placeholder="Description..."
           type="text"
           [(ngModel)]="product.producT_DESCRIPTION"
           (keyup)="DescriptionValdate()"
@@ -105,7 +107,8 @@
         <input
           class="form-control"
           name="reorder"
-          type="text"
+          type="number"
+          placeholder="Re-Order Limit..."
           required
           (keyup)="ReorderValidate()"
           (input)="ReorderValidate()"
@@ -121,6 +124,7 @@
           class="form-control"
           name="barcode"
           type="text"
+          placeholder="Barcode..."
           required
           (keyup)="BarcodeValidate()"
           (input)="BarcodeValidate()"
@@ -137,6 +141,7 @@
           class="form-control"
           name="costPrice"
           type="text"
+          placeholder="0.00"
           required
           [(ngModel)]="product.cosT_PRICE"
           (click)="Costvalidate()"
@@ -152,6 +157,7 @@
           name="sellingPrice"
           type="text"
           required
+          placeholder="0.00"
           [(ngModel)]="product.sellinG_PRICE"
           (click)="Sellvalidate()"
           (keyup)="Sellvalidate()"

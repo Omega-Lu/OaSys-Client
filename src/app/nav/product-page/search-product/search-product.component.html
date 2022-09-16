@@ -11,7 +11,7 @@
     (keyup)="Search()"
   />
 
-  <div class="table-responsive" style="max-height: 600px">
+  <div class="table-responsive" style="max-height: 550px">
     <table class="table">
       <thead>
         <tr>
@@ -23,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products">
+        <tr *ngFor="let product of productsTemp">
           <td>{{ product.producT_ID }}</td>
           <td>{{ product.producT_NAME }}</td>
           <td>{{ product.producT_DESCRIPTION }}</td>

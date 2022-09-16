@@ -20,7 +20,7 @@
 
     <hr />
 
-    <div class="table-responsive" style="max-height: 600px">
+    <div class="table-responsive" style="max-height: 550px">
       <table class="table">
         <thead>
           <tr>
@@ -31,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let productType of productTypes">
+          <tr *ngFor="let productType of productTypesTemp">
             <td>{{ productType.producT_TYPE_ID }}</td>
             <td>{{ productType.typE_NAME }}</td>
             <td>
@@ -51,7 +51,7 @@
               <button
                 class="btn btn-primary"
                 type="button"
-                style="background: var(--bs-red)"
+                style="background: var(--bs-red); border-color: var(--bs-red)"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 (click)="deletee(productType.producT_TYPE_ID)"

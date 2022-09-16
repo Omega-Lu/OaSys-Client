@@ -11,7 +11,10 @@ import { Output, EventEmitter } from '@angular/core';
 export class SearchProductCategoryComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //product category
   productCategories: ProductCategory[] = [];
+  productCategoriesTemp: ProductCategory[] = [];
+
   searchText: string = '';
 
   constructor(private productCategoryService: ProductCategoryService) {}
@@ -25,20 +28,21 @@ export class SearchProductCategoryComponent implements OnInit {
       .getAllProductCategories()
       .subscribe((response) => {
         this.productCategories = response;
-        console.log(this.productCategories);
+        this.productCategoriesTemp = response;
       });
   }
 
   Search() {
+    this.productCategoriesTemp = this.productCategories;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.productCategories = this.productCategories.filter((product) => {
-        console.log(product.categorY_NAME.match(searchValue));
-        return product.categorY_NAME.match(searchValue);
-      });
-    } else {
-      this.getAllProductCategories();
+      this.productCategoriesTemp = this.productCategoriesTemp.filter(
+        (product) => {
+          return (
+            product.categorY_NAME.match(this.searchText) ||
+            product.categorY_DESCRIPTION.match(this.searchText)
+          );
+        }
+      );
     }
   }
 

@@ -11,7 +11,10 @@ import { Output, EventEmitter } from '@angular/core';
 export class SearchProductTypeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //product Type
   productTypes: ProductType[] = [];
+  productTypesTemp: ProductType[] = [];
+
   searchText: string = '';
 
   constructor(private productTypeService: ProductTypeService) {}
@@ -23,20 +26,16 @@ export class SearchProductTypeComponent implements OnInit {
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
       this.productTypes = response;
-      console.log(this.productTypes);
+      this.productTypesTemp = response;
     });
   }
 
   Search() {
+    this.productTypesTemp = this.productTypes;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.productTypes = this.productTypes.filter((productType) => {
-        console.log(productType.typE_NAME.match(searchValue));
-        return productType.typE_NAME.match(searchValue);
+      this.productTypesTemp = this.productTypesTemp.filter((productType) => {
+        return productType.typE_NAME.match(this.searchText);
       });
-    } else {
-      this.getAllProductTypes();
     }
   }
 

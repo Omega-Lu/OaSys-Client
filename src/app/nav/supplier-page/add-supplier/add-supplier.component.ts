@@ -18,23 +18,37 @@ export class AddSupplierComponent implements OnInit {
   cdetails: boolean = true;
   adetails: boolean = true;
   successSubmit: boolean = false;
+  validAlt: boolean = true;
 
   //supplier model
   supplier: Supplier = {
     supplieR_ID: 0,
     name: '',
-    vaT_NUMBER: 0,
-    contacT_NUMBER: 0,
-    alT_NUMBER: 0,
+    vaT_NUMBER: null,
+    contacT_NUMBER: null,
+    alT_NUMBER: null,
     email: '',
   };
+  suppliers: Supplier[] = [];
+  suppliersTemp: Supplier[] = [];
 
   //use validation
   validate: ValidationServicesComponent = new ValidationServicesComponent();
 
+  //unique variables
+  uniqueName: boolean = true;
+  uniqueVat: boolean = true;
+  uniqueEmail: boolean = true;
+  uniqueContactNumber: boolean = true;
+
   constructor(private suppliierService: SupplierService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.suppliierService.getAllSuppliers().subscribe((res) => {
+      this.suppliers = res;
+      this.suppliersTemp = res;
+    });
+  }
 
   onSubmit() {
     this.suppliierService.addSupplier(this.supplier).subscribe((response) => {
@@ -53,16 +67,50 @@ export class AddSupplierComponent implements OnInit {
 
   ValidateName() {
     this.details = this.validate.ValidateString(this.supplier.name);
+    this.compareName();
+  }
+
+  compareName() {
+    this.suppliersTemp = this.suppliers;
+    this.suppliersTemp = this.suppliersTemp.filter((temp) => {
+      return temp.name == this.supplier.name;
+    });
+    if (this.suppliersTemp.length > 0) this.uniqueName = false;
+    else this.uniqueName = true;
   }
 
   ValidateVat() {
     this.vdetails = this.validate.ValdiateVatNumber(this.supplier.vaT_NUMBER);
+    this.compareVat();
+  }
+
+  compareVat() {
+    this.suppliersTemp = this.suppliers;
+    this.suppliersTemp = this.suppliersTemp.filter((temp) => {
+      return temp.vaT_NUMBER == this.supplier.vaT_NUMBER;
+    });
+    if (this.suppliersTemp.length > 0) this.uniqueVat = false;
+    else this.uniqueVat = true;
   }
 
   ValidateContactNumber() {
     this.cdetails = this.validate.ValidateContactNumber(
       this.supplier.contacT_NUMBER
     );
+    this.compareContactNumber();
+  }
+
+  compareContactNumber() {
+    this.suppliersTemp = this.suppliers;
+    this.suppliersTemp = this.suppliersTemp.filter((temp) => {
+      return temp.contacT_NUMBER == this.supplier.contacT_NUMBER;
+    });
+    if (this.suppliersTemp.length > 0) this.uniqueContactNumber = false;
+    else this.uniqueContactNumber = true;
+
+    if (this.supplier.contacT_NUMBER == this.supplier.alT_NUMBER)
+      this.validAlt = false;
+    else this.validAlt = true;
   }
 
   VaildateAltNumber() {
@@ -73,6 +121,16 @@ export class AddSupplierComponent implements OnInit {
 
   ValidateEmail() {
     this.edetails = this.validate.ValidateEmail(this.supplier.email);
+    this.compareEmail();
+  }
+
+  compareEmail() {
+    this.suppliersTemp = this.suppliers;
+    this.suppliersTemp = this.suppliersTemp.filter((temp) => {
+      return temp.email == this.supplier.email;
+    });
+    if (this.suppliersTemp.length > 0) this.uniqueEmail = false;
+    else this.uniqueEmail = true;
   }
 
   Return() {

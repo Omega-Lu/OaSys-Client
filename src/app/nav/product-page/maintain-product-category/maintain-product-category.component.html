@@ -19,7 +19,7 @@
 
   <hr />
 
-  <div class="table-responsive" style="max-height: 600px">
+  <div class="table-responsive" style="max-height: 550px">
     <table class="table">
       <thead>
         <tr>
@@ -30,7 +30,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let productCategory of productCategories">
+        <tr *ngFor="let productCategory of productCategoriesTemp">
           <td>{{ productCategory.categorY_NAME }}</td>
           <td>{{ productCategory.categorY_DESCRIPTION }}</td>
           <td>
@@ -50,7 +50,7 @@
             <button
               class="btn btn-primary"
               type="button"
-              style="background: var(--bs-red)"
+              style="background: var(--bs-red); border-color: var(--bs-red)"
               data-toggle="modal"
               data-target="#deleteCategoryModal"
               (click)="deletee(productCategory.producT_CATEGORY_ID)"

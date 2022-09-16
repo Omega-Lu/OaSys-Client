@@ -14,6 +14,8 @@ export class MaintainProductComponent implements OnInit {
   updateProduct: boolean = false;
   successDelete: boolean = false;
 
+  // products
+  productsTemp: Product[] = [];
   products: Product[] = [];
   product: Product;
 
@@ -34,7 +36,7 @@ export class MaintainProductComponent implements OnInit {
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
       this.products = response;
-      console.log(this.products);
+      this.productsTemp = response;
     });
   }
 
@@ -54,15 +56,14 @@ export class MaintainProductComponent implements OnInit {
   }
 
   Search() {
+    this.productsTemp = this.products;
     if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.products = this.products.filter((product) => {
-        console.log(product.producT_NAME.match(searchValue));
-        return product.producT_NAME.match(searchValue);
+      this.productsTemp = this.productsTemp.filter((product) => {
+        return (
+          product.producT_NAME.match(this.searchText) ||
+          product.producT_DESCRIPTION.match(this.searchText)
+        );
       });
-    } else {
-      this.getAllProducts();
     }
   }
 
