@@ -79,26 +79,17 @@ export class SearchSupplierOrderComponent implements OnInit {
     console.log(this.orders.length);
     for (let i = 0; i < this.orders.length; i++) {
       const element = this.orders[i];
-      this.suppliersTemp = this.suppliers;
-      this.suppliersTemp = this.suppliersTemp.filter((supplier) => {
+      this.suppliersTemp = this.suppliers.filter((supplier) => {
         return supplier.supplieR_ID == element.supplierID;
       });
-      this.orderStatussesTemp = this.orderStatusses;
-      this.orderStatussesTemp = this.orderStatussesTemp.filter(
-        (orderStatus) => {
-          return orderStatus.orderID == element.orderID;
-        }
-      );
 
-      if (this.orderStatussesTemp[0].description == 'Placed') {
-        this.dynamicArray.push({
-          SupplierName: this.suppliersTemp[0].name,
-          ContactNumber: this.suppliersTemp[0].contacT_NUMBER,
-          DatePlaced: element.datePlaced,
-          Status: this.orderStatussesTemp[0].description,
-        });
-        this.tempArray = this.dynamicArray;
-      }
+      this.dynamicArray.push({
+        SupplierName: this.suppliersTemp[0].name,
+        ContactNumber: this.suppliersTemp[0].contacT_NUMBER,
+        DatePlaced: element.datePlaced,
+        Status: element.orderStatusID,
+      });
+      this.tempArray = this.dynamicArray;
     }
   }
 

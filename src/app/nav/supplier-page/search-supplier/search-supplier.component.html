@@ -19,6 +19,7 @@
         <tr>
           <th>Name</th>
           <th>Contct Number</th>
+          <th>Alternate Number</th>
           <th>Email</th>
         </tr>
       </thead>
@@ -26,6 +27,7 @@
         <tr *ngFor="let supplier of suppliers">
           <td>{{ supplier.name }}</td>
           <td>0{{ supplier.contacT_NUMBER }}</td>
+          <td>0{{ supplier.alT_NUMBER }}</td>
           <td>{{ supplier.email }}</td>
         </tr>
       </tbody>

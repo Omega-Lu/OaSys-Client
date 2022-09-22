@@ -23,6 +23,9 @@ export class SearchDebtorComponent implements OnInit {
 
   getAllDebtors() {
     this.debtorService.getAllDebtors().subscribe((response) => {
+      response = response.filter((debtor) => {
+        return debtor.deleted == false;
+      });
       this.debtors = response;
       this.debtorsTemp = response;
     });

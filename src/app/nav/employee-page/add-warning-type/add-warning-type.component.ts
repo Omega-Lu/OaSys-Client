@@ -19,6 +19,7 @@ export class AddWarningTypeComponent implements OnInit {
   warningType: WarningType = {
     warninG_TYPE_ID: 0,
     description: '',
+    deleted: false,
   };
   warningTypes: WarningType[] = [];
   warningTypesTemp: WarningType[] = [];

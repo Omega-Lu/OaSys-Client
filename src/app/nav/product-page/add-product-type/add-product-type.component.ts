@@ -28,6 +28,7 @@ export class AddProductTypeComponent implements OnInit {
     producT_TYPE_ID: 0,
     producT_CATEGORY_ID: -1,
     typE_NAME: '',
+    deleted: false,
   };
   productTypes: ProductType[] = [];
   productTypesTemp: ProductType[] = [];
@@ -42,12 +43,22 @@ export class AddProductTypeComponent implements OnInit {
   }
 
   onSubmit() {
-    this.productTypeService
-      .addProductType(this.productType)
-      .subscribe((response) => {
-        console.log(response);
-        this.successSubmit = true;
-      });
+    if (this.productType.producT_TYPE_ID == 0) {
+      this.productTypeService
+        .addProductType(this.productType)
+        .subscribe((response) => {
+          console.log(response);
+          this.successSubmit = true;
+        });
+    } else {
+      this.productTypeService
+        .updateProductType(this.productType)
+        .subscribe((res) => {
+          console.log('this is the updated product');
+          console.log(res);
+          this.successSubmit = true;
+        });
+    }
   }
 
   FormValidate() {
@@ -99,7 +110,12 @@ export class AddProductTypeComponent implements OnInit {
       return type.typE_NAME == this.productType.typE_NAME;
     });
     if (this.productTypesTemp.length > 0) {
-      this.uniqueName = false;
+      if (this.productTypesTemp[0].deleted) {
+        this.productType.producT_TYPE_ID =
+          this.productTypesTemp[0].producT_TYPE_ID;
+      } else {
+        this.uniqueName = false;
+      }
     } else this.uniqueName = true;
   }
 

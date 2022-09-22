@@ -9,7 +9,6 @@ import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductTypeService } from 'src/app/_services/product-type.service';
 import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/_services/order.service';
-import { OrderStatus } from 'src/app/models/orderStatus.model';
 import { OrderStatusService } from 'src/app/_services/orderStatus.service';
 import { OrderProduct } from 'src/app/models/orderProduct.model';
 import { OrderProductService } from 'src/app/_services/orderProduct.service';
@@ -25,19 +24,24 @@ export class SupplierOrderComponent implements OnInit {
   @Input() supplier: Supplier;
   @Output() return = new EventEmitter<string>();
 
-  productCategory: ProductCategory;
-  productCategories: ProductCategory[] = [];
-
-  productType: ProductType;
-  productTypes: ProductType[] = [];
-  productTypesTemp: ProductType[] = [];
-
+  //product
   product: Product;
   products: Product[] = [];
   productsTemp: Product[] = [];
 
+  //product category
+  productCategory: ProductCategory;
+  productCategories: ProductCategory[] = [];
+
+  //product type
+  productType: ProductType;
+  productTypes: ProductType[] = [];
+  productTypesTemp: ProductType[] = [];
+
+  //orders
   orders: Order[] = [];
 
+  //validation
   successSubmit: boolean = false;
   categorySelected: boolean = false;
   typeSelected: boolean = false;
@@ -45,33 +49,26 @@ export class SupplierOrderComponent implements OnInit {
   activateQuantity: boolean = true;
   completeQuantity: boolean = true;
   completeSelection: boolean = true;
-
-  something: number;
   ordered: boolean = false;
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
 
+  //order
   order: Order = {
     orderID: 0,
     supplierID: 0,
-    orderStatusID: 0,
+    orderStatusID: 'Placed',
     datePlaced: '',
     dateReceived: '',
   };
 
-  orderStatus: OrderStatus = {
-    orderStatusID: 0,
-    orderID: 0,
-    description: 'Placed',
-  };
-
+  //order product
   orderProduct: OrderProduct = {
     orderProductID: 0,
     productID: 0,
     orderID: 0,
-    quantity: 0,
+    quantityOrdered: 0,
+    quantityReceived: 0,
   };
-
-  //use validation
-  validate: ValidationServicesComponent = new ValidationServicesComponent();
 
   constructor(
     private productService: ProductService,
@@ -84,33 +81,44 @@ export class SupplierOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllProductCategories();
-    this.getAllProductTypes();
     this.getAllProducts();
     this.getAllOrders();
-    this.sleep(100);
+  }
+
+  getAllProducts() {
+    this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
+      this.products = response;
+      console.log('All the products');
+      console.log(this.productsTemp);
+      this.getAllProductCategories();
+    });
   }
 
   getAllProductCategories() {
     this.productCategoryService
       .getAllProductCategories()
       .subscribe((response) => {
+        response = response.filter((category) => {
+          return category.deleted == false;
+        });
         this.productCategories = response;
+        console.log('All the Product Categories');
         console.log(this.productCategories);
+        this.getAllProductTypes();
       });
   }
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
+      response = response.filter((type) => {
+        return type.deleted == false;
+      });
       this.productTypes = response;
+      console.log('All the Product Types');
       console.log(this.productTypes);
-    });
-  }
-
-  getAllProducts() {
-    this.productService.getAllProducts().subscribe((response) => {
-      this.products = response;
-      console.log(this.productsTemp);
     });
   }
 
@@ -211,6 +219,11 @@ export class SupplierOrderComponent implements OnInit {
     }
   }
 
+  deleteRow(index) {
+    this.dynamicArray.splice(index, 1);
+    if (this.dynamicArray.length < 1) this.ordered = false;
+  }
+
   onSubmit() {
     this.order.supplierID = this.supplier.supplieR_ID;
     this.order.datePlaced = new Date().toString();
@@ -220,16 +233,7 @@ export class SupplierOrderComponent implements OnInit {
     this.orderService.addOrder(this.order).subscribe((response) => {
       console.log('this is the new order');
       console.log(response);
-      this.orderStatus.orderID = response.orderID;
       this.orderProduct.orderID = response.orderID;
-
-      // add the order status
-      this.orderStatusService
-        .addOrderStatus(this.orderStatus)
-        .subscribe((response) => {
-          console.log('this is the new order status');
-          console.log(response);
-        });
 
       // add the order products
       for (let i = 0; i < this.dynamicArray.length; i++) {
@@ -237,7 +241,7 @@ export class SupplierOrderComponent implements OnInit {
 
         this.orderProduct.productID = element.productIDnumber;
 
-        this.orderProduct.quantity = element.quantity;
+        this.orderProduct.quantityOrdered = element.quantity;
 
         this.orderProductService
           .addOrderProduct(this.orderProduct)

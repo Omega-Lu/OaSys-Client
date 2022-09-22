@@ -29,17 +29,20 @@
           <th>Surname</th>
           <th>Contact Number</th>
           <th>ID Number</th>
+          <th>Employee Position</th>
           <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let employee of employeesTemp">
+        <tr *ngFor="let employee of dynamicArray">
           <td>{{ employee.title }}</td>
           <td>{{ employee.name }}</td>
           <td>{{ employee.surname }}</td>
-          <td>0{{ employee.contacT_NUMBER }}</td>
-          <td>{{ employee.employeE_ID_NUMBER }}</td>
+          <td>0{{ employee.contactNumber }}</td>
+          <td>{{ employee.IDNumber }}</td>
+          <td>{{ employee.type }}</td>
+
           <td>
             <button
               class="btn btn-primary"
@@ -60,7 +63,7 @@
               style="background: var(--bs-red); border-color: var(--bs-red)"
               data-toggle="modal"
               data-target="#exampleModal"
-              (click)="deletee(employee.employeE_ID)"
+              (click)="deletee(employee)"
             >
               Delete
             </button>

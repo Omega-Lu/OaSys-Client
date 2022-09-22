@@ -38,6 +38,7 @@ export class AddWarningComponent implements OnInit {
     employeE_ID: -1,
     warninG_TYPE_ID: -1,
     reason: '',
+    deleted: false,
   };
   warnings: Warning[] = [];
   warningsTemp: Warning[] = [];

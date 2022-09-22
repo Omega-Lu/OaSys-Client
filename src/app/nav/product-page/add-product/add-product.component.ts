@@ -44,6 +44,7 @@ export class AddProductComponent implements OnInit {
     sellinG_PRICE: null,
     reordeR_LIMIT: null,
     barcode: '',
+    deleted: false,
   };
   products: Product[] = [];
   productsTemp: Product[] = [];
@@ -125,7 +126,7 @@ export class AddProductComponent implements OnInit {
     this.validateCategory();
     this.validateType();
     this.compareBarcode();
-    this.uniqueNameAndDescription();
+    this.CompareNameAndDescription();
   }
 
   getAllProductCategories() {
@@ -153,11 +154,19 @@ export class AddProductComponent implements OnInit {
   }
 
   onSubmit() {
-    this.productService.addProduct(this.product).subscribe((response) => {
-      console.log('this is the new product');
-      console.log(response);
-      this.successSubmit = true;
-    });
+    if (this.product.producT_ID == 0) {
+      this.productService.addProduct(this.product).subscribe((response) => {
+        console.log('this is the new product');
+        console.log(response);
+        this.successSubmit = true;
+      });
+    } else {
+      this.productService.updateProduct(this.product).subscribe((res) => {
+        console.log('this is the updated product');
+        console.log(res);
+        this.successSubmit = true;
+      });
+    }
 
     //adding to audit log
     this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
@@ -174,10 +183,10 @@ export class AddProductComponent implements OnInit {
   DescriptionValdate() {
     if (this.product.producT_DESCRIPTION == '') this.validDescription = false;
     else this.validDescription = true;
-    this.uniqueNameAndDescription();
+    this.CompareNameAndDescription();
   }
 
-  uniqueNameAndDescription() {
+  CompareNameAndDescription() {
     this.uniqueNameAndDesc = true;
     this.productsTemp = this.products;
     this.productsTemp = this.productsTemp.filter((product) => {
@@ -190,8 +199,13 @@ export class AddProductComponent implements OnInit {
         const element = this.productsTemp[i];
         if (element.producT_NAME == this.product.producT_NAME) {
           console.log('duplicate');
-          this.uniqueNameAndDesc = false;
-          break;
+          if (element.deleted) {
+            this.product.producT_ID = element.producT_ID;
+            this.product.barcode = element.barcode;
+          } else {
+            this.uniqueNameAndDesc = false;
+            break;
+          }
         }
       }
     }
@@ -211,7 +225,7 @@ export class AddProductComponent implements OnInit {
   Sellvalidate() {
     if (
       this.product.sellinG_PRICE <= 0 ||
-      this.product.sellinG_PRICE < this.product.cosT_PRICE
+      this.product.cosT_PRICE > this.product.sellinG_PRICE
     )
       this.validSell = false;
     else {
@@ -236,7 +250,11 @@ export class AddProductComponent implements OnInit {
       return product.barcode == this.product.barcode;
     });
     if (this.productsTemp.length > 0) {
-      this.uniqueBarcode = false;
+      if (this.productsTemp[0].deleted) {
+        this.product.producT_ID = this.productsTemp[0].producT_ID;
+      } else {
+        this.uniqueBarcode = false;
+      }
     } else {
       this.uniqueBarcode = true;
     }

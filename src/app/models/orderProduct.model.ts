@@ -2,5 +2,6 @@ export interface OrderProduct {
   orderProductID: number;
   productID: number;
   orderID: number;
-  quantity: number;
+  quantityOrdered: number;
+  quantityReceived: number;
 }

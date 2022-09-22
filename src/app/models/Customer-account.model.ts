@@ -10,4 +10,5 @@ export interface CustomerAccount {
   amounT_OWING: number;
   crediT_LIMIT: number;
   remindeR_MESSAGE: string;
+  deleted: boolean;
 }

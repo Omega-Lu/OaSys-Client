@@ -24,16 +24,16 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Product Type ID</th>
             <th>Product Type Name</th>
+            <th>Product Category</th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let productType of productTypesTemp">
-            <td>{{ productType.producT_TYPE_ID }}</td>
-            <td>{{ productType.typE_NAME }}</td>
+          <tr *ngFor="let productType of dynamicArray">
+            <td>{{ productType.name }}</td>
+            <td>{{ productType.category }}</td>
             <td>
               <button
                 class="btn btn-primary"
@@ -54,7 +54,7 @@
                 style="background: var(--bs-red); border-color: var(--bs-red)"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                (click)="deletee(productType.producT_TYPE_ID)"
+                (click)="deletee(productType.productType)"
               >
                 Delete
               </button>
@@ -86,10 +86,14 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" *ngIf="hasReference">
+              Product Type Cannot Be Deleted Because There Is A Product With A
+              Reference To It
+            </h5>
             <h5
               class="modal-title"
               id="exampleModalLabel"
-              *ngIf="!successDelete"
+              *ngIf="!successDelete && !hasReference"
             >
               Are You Sure You Would Like To Delete This Product Type
             </h5>
@@ -107,17 +111,16 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
-              *ngIf="!successDelete"
+              *ngIf="!successDelete && !hasReference"
             >
               No
             </button>
             <button
               type="submit"
               class="btn btn-primary"
-              data-dismiss="modal"
               name="deleteempl"
               data-target="#exampleModal"
-              *ngIf="!successDelete"
+              *ngIf="!successDelete && !hasReference"
               (click)="deleteProductType()"
             >
               Yes
@@ -130,6 +133,16 @@
               data-dismiss="modal"
               *ngIf="successDelete"
               routerLink="/product-page"
+            >
+              OK
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-dismiss="modal"
+              *ngIf="hasReference"
             >
               OK
             </button>

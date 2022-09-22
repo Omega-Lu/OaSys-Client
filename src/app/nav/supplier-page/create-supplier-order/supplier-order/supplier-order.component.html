@@ -124,9 +124,10 @@
     >
       Add Product Order
     </button>
+
     <div
       class="table-responsive"
-      style="height: 150px; margin-top: 70px; margin-bottom: 50px"
+      style="max-height: 400px; margin-top: 70px; margin-bottom: 10px"
     >
       <table class="table">
         <thead>
@@ -147,7 +148,17 @@
             <td>{{ dynamic.type }}</td>
             <td>{{ dynamic.name }}</td>
             <td>{{ dynamic.quantity }}</td>
-            <td>Remove</td>
+            <td (click)="deleteRow(i)">
+              <button
+                class="btn btn-primary"
+                style="
+                  background: var(--bs-orange);
+                  border-color: var(--bs-orange);
+                "
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </td>
           </tr>
           <tr></tr>
         </tbody>

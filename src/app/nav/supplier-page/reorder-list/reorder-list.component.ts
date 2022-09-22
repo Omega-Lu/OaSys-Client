@@ -53,25 +53,21 @@ export class ReorderListComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.getAllProductCategories();
-    this.getAllProductTypes();
     this.getAllProducts();
-    await this.sleep(100);
+  }
 
-    this.productsTemp = this.products;
-    this.productsTemp = this.productsTemp.filter((product) => {
+  createDynamicArray() {
+    this.productsTemp = this.products.filter((product) => {
       console.log(product.quantitY_ON_HAND < product.reordeR_LIMIT);
       return product.quantitY_ON_HAND < product.reordeR_LIMIT;
     });
 
     for (let index = 0; index < this.productsTemp.length; index++) {
       const element = this.productsTemp[index];
-      this.productCategoriesTemp = this.productCategories;
-      this.productTypesTemp = this.productTypes;
 
       //filter categories
 
-      this.productCategoriesTemp = this.productCategoriesTemp.filter(
+      this.productCategoriesTemp = this.productCategories.filter(
         (productCategory) => {
           console.log(
             productCategory.producT_CATEGORY_ID == element.producT_CATEGORY_ID
@@ -83,10 +79,13 @@ export class ReorderListComponent implements OnInit {
       );
 
       //filter types
-      this.productTypesTemp = this.productTypesTemp.filter((productType) => {
+
+      this.productTypesTemp = this.productTypes.filter((productType) => {
         console.log(productType.producT_TYPE_ID == element.producT_TYPE_ID);
         return productType.producT_TYPE_ID == element.producT_TYPE_ID;
       });
+
+      //push to dynamic array
 
       this.dynamicArray.push({
         CategoryName: this.productCategoriesTemp[0].categorY_NAME,
@@ -101,8 +100,12 @@ export class ReorderListComponent implements OnInit {
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
       this.products = response;
       console.log(this.products);
+      this.getAllProductCategories();
     });
   }
 
@@ -110,13 +113,20 @@ export class ReorderListComponent implements OnInit {
     this.productCategoryService
       .getAllProductCategories()
       .subscribe((response) => {
+        response = response.filter((productCat) => {
+          return productCat.deleted == false;
+        });
         this.productCategories = response;
         console.log(this.productCategories);
+        this.getAllProductTypes();
       });
   }
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
+      response = response.filter((productType) => {
+        return productType.deleted == false;
+      });
       this.productTypes = response;
       console.log(this.productTypes);
     });

@@ -53,7 +53,7 @@
               type="button"
               style="background: var(--bs-red)"
               data-toggle="modal"
-              data-target="#exampleModal"
+              data-target="#wageRateDeleteModal"
               (click)="deletee(rate.ratE_ID)"
             >
               Delete
@@ -75,4 +75,66 @@
   >
     Back
   </button>
+</div>
+
+<div
+  class="modal fade"
+  id="wageRateDeleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="wageRateDeleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="wageRateDeleteModalLabel"
+          *ngIf="!successDelete"
+        >
+          Are You Sure You Would Like To Delete This Wage Rate
+        </h5>
+        <h5
+          class="modal-title"
+          id="wageRateDeleteModalLabel"
+          *ngIf="successDelete"
+        >
+          Wage Rate Successfully Deleted
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successDelete"
+        >
+          No
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          name="deleteempl"
+          data-target="#wageRateDeleteModal"
+          *ngIf="!successDelete"
+          (click)="deleteWageRate()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#wageRateDeleteModal"
+          data-dismiss="modal"
+          *ngIf="successDelete"
+          routerLink="/employee-page"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

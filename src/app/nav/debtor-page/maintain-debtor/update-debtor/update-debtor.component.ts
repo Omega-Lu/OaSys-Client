@@ -103,10 +103,7 @@ export class UpdateDebtorComponent implements OnInit {
         return customer.contactNumber == this.debtor.contacT_NUMBER;
       }
     );
-    if (
-      this.customerApplicationsTemp.length > 0 &&
-      this.debtorsTemp[0].customeR_ACCOUNT_ID != this.debtor.customeR_ACCOUNT_ID
-    ) {
+    if (this.customerApplicationsTemp.length > 0) {
       this.uniqueContactNumber = false;
     }
   }
@@ -139,10 +136,7 @@ export class UpdateDebtorComponent implements OnInit {
         return customer.email == this.debtor.email;
       }
     );
-    if (
-      this.customerApplicationsTemp.length > 0 &&
-      this.debtorsTemp[0].customeR_ACCOUNT_ID != this.debtor.customeR_ACCOUNT_ID
-    ) {
+    if (this.customerApplicationsTemp.length > 0) {
       this.uniqueEmail = false;
     }
   }

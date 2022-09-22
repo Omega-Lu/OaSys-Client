@@ -17,14 +17,14 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Product Type ID</th>
-          <th>&nbsp;Product Type Name</th>
+          <th>Product Type Name</th>
+          <th>Product Category</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let productType of productTypesTemp">
-          <td>{{ productType.producT_TYPE_ID }}</td>
-          <td>{{ productType.typE_NAME }}</td>
+        <tr *ngFor="let productType of dynamicArray">
+          <td>{{ productType.name }}</td>
+          <td>{{ productType.category }}</td>
         </tr>
       </tbody>
     </table>

@@ -21,7 +21,7 @@
             <th>Name</th>
             <th>Surname </th>
             <th> Contact Number</th>
-            <th></th>
+            <th>Email</th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +29,7 @@
             <td>{{ customerAccount.name }}</td>
             <td>{{ customerAccount.surname }}</td>
             <td>0{{ customerAccount.contacT_NUMBER }}</td>
+            <td>{{ customerAccount.email }}</td>
             <td>
               <button
                 class="btn btn-primary"
@@ -57,9 +58,9 @@
   </form>
 </div>
 
-<app-update-debtor
+<app-view-approved-accounts
   *ngIf="updateDebtor"
   [debtor]="customerAccount"
   (return)="back()"
   [title]="'Debtor Account'"
-></app-update-debtor>
+></app-view-approved-accounts>

@@ -9,14 +9,14 @@ import { SupplierService } from 'src/app/_services/supplier.service';
 })
 export class CreateSupplierOrderComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
-  suppliers: Supplier[] = [];
+
+  //supplier
   supplier: Supplier;
-  model: any;
-  delete: boolean = false;
+  suppliers: Supplier[] = [];
+  suppliersTemp: Supplier[] = [];
+
   searchText: any = '';
-  updateSupplier: boolean = false;
-  lekke: any;
-  deletenumber: any;
+
   createSupplierOrder: boolean = false;
 
   constructor(private supplierService: SupplierService) {}
@@ -27,7 +27,12 @@ export class CreateSupplierOrderComponent implements OnInit {
 
   getAllSuppliers() {
     this.supplierService.getAllSuppliers().subscribe((response) => {
+      response = response.filter((supplier) => {
+        return supplier.deleted == false;
+      });
+      this.suppliersTemp = response;
       this.suppliers = response;
+      console.log('All the Suppliers');
       console.log(this.suppliers);
     });
   }
@@ -38,21 +43,12 @@ export class CreateSupplierOrderComponent implements OnInit {
   }
 
   Search() {
-    if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      console.log(searchValue);
-      this.suppliers = this.suppliers.filter((supplier) => {
-        console.log(supplier.name.match(searchValue));
-        return supplier.name.match(searchValue);
-      });
-      console.log(this.supplier);
-    } else {
-      this.getAllSuppliers();
-    }
-  }
-
-  Return() {
-    this.return.emit('false');
+    this.suppliersTemp = this.suppliers.filter((supplier) => {
+      return (
+        supplier.name.match(this.searchText) ||
+        supplier.email.match(this.searchText)
+      );
+    });
   }
 
   back() {

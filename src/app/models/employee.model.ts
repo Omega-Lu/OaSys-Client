@@ -10,4 +10,5 @@ export interface Employee {
   contacT_NUMBER: number;
   email: string;
   address: string;
+  deleted: boolean;
 }

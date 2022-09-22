@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h1>Return Order</h1>
+  <h1>Return {{ supplier.name }} Order</h1>
   <h2 style="margin-left: 1%">
     Please select the products that need to be returned
   </h2>
@@ -12,7 +12,8 @@
             <th>Product Type</th>
             <th>Product Name</th>
             <th>Reason</th>
-            <th>Quantity</th>
+            <th>Quantity Received</th>
+            <th>Return Quantity</th>
           </tr>
         </thead>
         <tbody>
@@ -30,24 +31,25 @@
                   border-color: var(--bs-orange);
                   color: var(--bs-orange);
                 "
-                (input)="reasonNot($event.target.value, i)"
-                [(ngModel)]="dynamicArray[i].retReason"
+                [(ngModel)]="dynamic.retReason"
+                (input)="validateReason()"
+                (click)="validateQuantity()"
               >
-                <option value="-1" disabled selected>Reason</option>
+                <option value="-1" selected>No Return</option>
                 <option value="Expired">Expired</option>
                 <option value="Damaged">Damaged</option>
-                <option value="not">-</option>
               </select>
             </td>
+            <td>{{ dynamic.Quantity }}</td>
             <td>
               <input
                 class="form-control"
                 id="quantityID{{ i }}"
                 type="number"
                 style="width: 100px"
-                (input)="quantityVali(dynamic.Quantity, i, $event.target.value)"
-                value="{{ dynamic.Quantity }}"
-                [(ngModel)]="dynamic.Quantity"
+                (input)="validateQuantity()"
+                (keyup)="validateQuantity()"
+                [(ngModel)]="dynamic.quanReturned"
                 [ngModelOptions]="{ standalone: true }"
               />
             </td>
@@ -57,13 +59,14 @@
       </table>
     </div>
     <div style="margin-bottom: 20px">
-      <i style="color: red" [hidden]="completeQuantity"
-        >Quantity returned cannot be more than quantity received</i
-      >
-      <i style="color: red" [hidden]="zeroQuan"
-        >Quantity returned cannot be less than 0</i
-      >
-      <i style="color: red" [hidden]="reasonComplete">Please select a reason</i>
+      <div style="color: red" [hidden]="validQuantityWithReason">
+        Please Select A Reason.
+      </div>
+      <div style="color: red" [hidden]="validQuantity">Invalid Quantity.</div>
+      <div style="color: red" [hidden]="validReasonWithQuantity">
+        Reason Selected Without Quantity
+      </div>
+      <div style="color: red" [hidden]="validReturn">Nothing Selected</div>
     </div>
     <button
       class="btn btn-primary"
@@ -81,7 +84,13 @@
         border-color: var(--bs-orange);
         float: right;
       "
-      [disabled]="!completeQuantity || !zeroQuan || !reasonComplete"
+      [disabled]="
+        !validReasonWithQuantity ||
+        !validQuantity ||
+        !validQuantityWithReason ||
+        !validReturn
+      "
+      (mouseover)="FormValidate()"
       data-toggle="modal"
       data-target="#exampleModal"
     >

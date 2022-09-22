@@ -88,12 +88,16 @@ export class ApplyForCreditComponent implements OnInit {
     this.nameDetails = this.validate.ValidateString(
       this.customerApplication.name
     );
+    this.compareContactNumber();
+    this.compareEmail();
   }
 
   surnameValidate() {
     this.surnameDetails = this.validate.ValidateString(
       this.customerApplication.surname
     );
+    this.compareContactNumber();
+    this.compareEmail();
   }
 
   ValidateContactNumber() {
@@ -110,7 +114,17 @@ export class ApplyForCreditComponent implements OnInit {
       return debtor.contacT_NUMBER == this.customerApplication.contactNumber;
     });
     if (this.debtorsTemp.length > 0) {
-      this.uniqueContactNumber = false;
+      if (this.debtorsTemp[0].deleted) {
+        if (
+          this.debtorsTemp[0].name == this.customerApplication.name &&
+          this.debtorsTemp[0].surname == this.customerApplication.surname
+        ) {
+        } else {
+          this.uniqueContactNumber = false;
+        }
+      } else {
+        this.uniqueContactNumber = false;
+      }
     }
 
     this.customerApplicationsTemp = this.customerApplications;
@@ -138,7 +152,17 @@ export class ApplyForCreditComponent implements OnInit {
       return debtor.email == this.customerApplication.email;
     });
     if (this.debtorsTemp.length > 0) {
-      this.uniqueEmail = false;
+      if (this.debtorsTemp[0].deleted) {
+        if (
+          this.debtorsTemp[0].name == this.customerApplication.name &&
+          this.debtorsTemp[0].surname == this.customerApplication.surname
+        ) {
+        } else {
+          this.uniqueEmail = false;
+        }
+      } else {
+        this.uniqueEmail = false;
+      }
     }
 
     this.customerApplicationsTemp = this.customerApplications;

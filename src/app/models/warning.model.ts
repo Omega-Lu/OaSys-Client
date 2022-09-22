@@ -4,4 +4,5 @@ export interface Warning {
   employeE_ID: number;
   warninG_TYPE_ID: number;
   reason: string;
+  deleted: boolean;
 }

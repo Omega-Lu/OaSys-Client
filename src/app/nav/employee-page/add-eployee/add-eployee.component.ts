@@ -59,6 +59,7 @@ export class AddEployeeComponent implements OnInit {
     contacT_NUMBER: null,
     email: '',
     address: '',
+    deleted: false,
   };
   employees: Employee[] = [];
   employeesTemp: Employee[] = [];

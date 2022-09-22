@@ -25,10 +25,12 @@ import { AuditLog } from 'src/app/models/AuditLog.model';
 export class MakeSaleComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //customer account
   customerAccount: CustomerAccount;
   customerAccounts: CustomerAccount[] = [];
   customerAccountsTemp: CustomerAccount[] = [];
 
+  //sale
   sale: Sale = {
     saleID: 0,
     userID: 0,
@@ -39,6 +41,7 @@ export class MakeSaleComponent implements OnInit {
   sales: Sale[] = [];
   salesTemp: Sale[] = [];
 
+  //payment
   payment: Payment = {
     paymentID: 0,
     paymentTypeID: 0,
@@ -49,6 +52,7 @@ export class MakeSaleComponent implements OnInit {
   payments: Payment[] = [];
   paymentsTemp: Payment[] = [];
 
+  //payment type
   paymentType: PaymentType = {
     paymentTypeID: 0,
     description: '',
@@ -56,6 +60,7 @@ export class MakeSaleComponent implements OnInit {
   paymentTypes: PaymentType[] = [];
   paymentTypesTemp: PaymentType[] = [];
 
+  //sale product
   saleProduct: SaleProduct = {
     saleProductID: 0,
     saleID: 0,
@@ -65,14 +70,17 @@ export class MakeSaleComponent implements OnInit {
   saleProducts: SaleProduct[] = [];
   saleProductsTemp: SaleProduct[] = [];
 
+  //product
   product: Product;
   products: Product[] = [];
   productsTemp: Product[] = [];
 
+  //current user
   currentUser: CurrentUser;
   currentUsers: CurrentUser[] = [];
   currentUsersTemp: CurrentUser[] = [];
 
+  //audit log
   audit: AuditLog = {
     auditLogID: 0,
     userID: 0,
@@ -92,6 +100,7 @@ export class MakeSaleComponent implements OnInit {
   amountGiven: number = 0;
   change: number = 0;
 
+  //validation
   barcodeSelected: boolean = true;
   quanValidate: boolean = true;
   customerCreditValidate: boolean = true;
@@ -441,6 +450,9 @@ export class MakeSaleComponent implements OnInit {
     this.customerAccountService
       .getAllCustomerAccounts()
       .subscribe((response) => {
+        response = response.filter((debtor) => {
+          return debtor.deleted == false;
+        });
         this.customerAccounts = response;
         console.log('all customer accounts');
         console.log(this.customerAccounts);
@@ -469,6 +481,9 @@ export class MakeSaleComponent implements OnInit {
   }
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
       this.products = response;
       console.log('all products');
       console.log(this.products);

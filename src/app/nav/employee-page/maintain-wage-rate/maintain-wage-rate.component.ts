@@ -17,6 +17,8 @@ export class MaintainWageRateComponent implements OnInit {
 
   searchText: any = '';
 
+  successDelete: boolean = false;
+
   constructor(private rateService: RateService) {}
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class MaintainWageRateComponent implements OnInit {
     this.rateService.deleteEmployee(this.deleteID).subscribe((response) => {
       this.getRates();
       console.log(this.rates);
+      this.successDelete = true;
     });
   }
 

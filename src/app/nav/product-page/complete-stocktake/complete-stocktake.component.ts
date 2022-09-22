@@ -16,14 +16,17 @@ import { StocktakeService } from 'src/app/_services/stocktake.service';
 export class CompleteStocktakeComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //product
   product: Product;
   products: Product[] = [];
   productsTemp: Product[] = [];
 
+  //product type
   productType: ProductType;
   productTypes: ProductType[] = [];
   productTypesTemp: ProductType[] = [];
 
+  //product category
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
   productCategoriesTemp: ProductCategory[] = [];
@@ -49,16 +52,18 @@ export class CompleteStocktakeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllProductCategories();
-    this.getAllProductTypes();
     this.getAllProducts();
   }
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
       this.products = response;
       console.log(response);
     });
+    this.getAllProductTypes();
   }
 
   getAllProductTypes() {
@@ -66,6 +71,7 @@ export class CompleteStocktakeComponent implements OnInit {
       this.productTypes = response;
       console.log(response);
     });
+    this.getAllProductCategories();
   }
 
   getAllProductCategories() {

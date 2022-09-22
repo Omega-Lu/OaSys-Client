@@ -9,4 +9,5 @@ export interface Product {
   sellinG_PRICE: number;
   reordeR_LIMIT: number;
   barcode: string;
+  deleted: boolean;
 }

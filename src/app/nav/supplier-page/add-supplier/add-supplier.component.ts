@@ -28,6 +28,7 @@ export class AddSupplierComponent implements OnInit {
     contacT_NUMBER: null,
     alT_NUMBER: null,
     email: '',
+    deleted: false,
   };
   suppliers: Supplier[] = [];
   suppliersTemp: Supplier[] = [];
@@ -45,6 +46,8 @@ export class AddSupplierComponent implements OnInit {
 
   ngOnInit() {
     this.suppliierService.getAllSuppliers().subscribe((res) => {
+      console.log('this is all the suppliers');
+      console.log(res);
       this.suppliers = res;
       this.suppliersTemp = res;
     });

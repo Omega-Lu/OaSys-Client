@@ -24,6 +24,7 @@ export class AddProductCategoryComponent implements OnInit {
     producT_CATEGORY_ID: 0,
     categorY_NAME: '',
     categorY_DESCRIPTION: '',
+    deleted: false,
   };
   productCategories: ProductCategory[] = [];
   productCategoriesTemp: ProductCategory[] = [];
@@ -35,12 +36,22 @@ export class AddProductCategoryComponent implements OnInit {
   }
 
   onSubmit() {
-    this.productCategoryService
-      .addProductCategory(this.productCategory)
-      .subscribe((response) => {
-        console.log(response);
-        this.successSubmit = true;
-      });
+    if (this.productCategory.producT_CATEGORY_ID == 0) {
+      this.productCategoryService
+        .addProductCategory(this.productCategory)
+        .subscribe((response) => {
+          console.log(response);
+          this.successSubmit = true;
+        });
+    } else {
+      this.productCategoryService
+        .updateProductCategory(this.productCategory)
+        .subscribe((res) => {
+          console.log('this is the updated category');
+          console.log(res);
+          this.successSubmit = true;
+        });
+    }
   }
 
   FormValidate() {
@@ -64,7 +75,12 @@ export class AddProductCategoryComponent implements OnInit {
     );
     console.log(this.productCategoriesTemp);
     if (this.productCategoriesTemp.length > 0) {
-      this.uniqueCatName = false;
+      if (this.productCategoriesTemp[0].deleted) {
+        this.productCategory.producT_CATEGORY_ID =
+          this.productCategoriesTemp[0].producT_CATEGORY_ID;
+      } else {
+        this.uniqueCatName = false;
+      }
     } else this.uniqueCatName = true;
   }
 

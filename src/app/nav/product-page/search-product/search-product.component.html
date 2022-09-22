@@ -15,18 +15,18 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Product ID</th>
           <th>Product Name</th>
           <th>Product Description</th>
-          <th></th>
-          <th></th>
+          <th>Product Type</th>
+          <th>Product Category</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of productsTemp">
-          <td>{{ product.producT_ID }}</td>
-          <td>{{ product.producT_NAME }}</td>
-          <td>{{ product.producT_DESCRIPTION }}</td>
+        <tr *ngFor="let product of dynamicArray">
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.type }}</td>
+          <td>{{ product.category }}</td>
         </tr>
       </tbody>
     </table>

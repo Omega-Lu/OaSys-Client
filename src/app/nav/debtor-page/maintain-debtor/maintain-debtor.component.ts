@@ -27,19 +27,38 @@ export class MaintainDebtorComponent implements OnInit {
     this.getAllDebtors();
   }
 
-  deletee(delet: any) {
-    this.deleteNumber = delet;
-  }
-
   getAllDebtors() {
     this.debtorService.getAllDebtors().subscribe((response) => {
+      response = response.filter((debtor) => {
+        return debtor.deleted == false;
+      });
       this.debtors = response;
       this.debtorsTemp = response;
+      console.log('this is all the debtors');
+      console.log(response);
     });
   }
 
+  deletee(delet: any) {
+    this.debtor = delet;
+    this.OutstandingMoney();
+  }
+
+  hasDebt: boolean = false;
+
+  OutstandingMoney() {
+    if (this.debtor.amounT_OWING > 0) {
+      this.hasDebt = true;
+    } else {
+      this.hasDebt = false;
+    }
+  }
+
   deleteDebtor() {
-    this.debtorService.deleteDebtor(this.deleteNumber).subscribe((response) => {
+    this.debtor.deleted = true;
+    this.debtorService.updateDebtor(this.debtor).subscribe((response) => {
+      console.log('this is the deleted debtor');
+      console.log(response);
       this.getAllDebtors();
       this.successDelete = true;
     });

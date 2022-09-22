@@ -1,7 +1,7 @@
 export interface Order {
   orderID: number;
   supplierID: number;
-  orderStatusID: number;
+  orderStatusID: string;
   datePlaced: string;
   dateReceived: string;
 }

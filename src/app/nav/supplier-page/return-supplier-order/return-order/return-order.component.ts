@@ -3,8 +3,6 @@ import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/_services/order.service';
 import { OrderProduct } from 'src/app/models/orderProduct.model';
 import { OrderProductService } from 'src/app/_services/orderProduct.service';
-import { OrderStatus } from 'src/app/models/orderStatus.model';
-import { OrderStatusService } from 'src/app/_services/orderStatus.service';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
@@ -20,6 +18,8 @@ import { ProductOrderReturn } from 'src/app/models/productOrderReturn.model';
 import { ProductOrderReturnService } from 'src/app/_services/productOrderReturn.service';
 import * as $ from 'jquery';
 
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+
 @Component({
   selector: 'app-return-order',
   templateUrl: './return-order.component.html',
@@ -31,30 +31,33 @@ export class ReturnOrderComponent implements OnInit {
 
   @Output() return = new EventEmitter<string>();
 
+  //order products
   orderProduct: OrderProduct;
   orderProducts: OrderProduct[] = [];
 
-  orderStatus: OrderStatus;
-  orderStatusses: OrderStatus[] = [];
-
+  //product
   product: Product;
   products: Product[] = [];
   productsTemp: Product[] = [];
 
+  //product type
   productType: ProductType;
   productTypes: ProductType[] = [];
   productTypesTemp: ProductType[] = [];
 
+  //product category
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
   productCategoriesTemp: ProductCategory[] = [];
 
+  //supplier order return
   supplierOrderReturn: SupplierOrderReturn = {
     supplierOrderReturnID: 0,
     supplierID: 0,
     orderReturnID: 0,
   };
 
+  //order return
   orderReturn: OrderReturn = {
     orderReturnID: 0,
     orderID: 0,
@@ -62,6 +65,7 @@ export class ReturnOrderComponent implements OnInit {
   };
   orderReturns: OrderReturn[] = [];
 
+  //product order Return
   productOrderReturn: ProductOrderReturn = {
     productOrderReturnID: 0,
     productID: 0,
@@ -70,186 +74,54 @@ export class ReturnOrderComponent implements OnInit {
     reason: '-1',
   };
 
+  //dynamic array
   dynamicArray = [];
   tempArray = [];
+
+  //validation
   returnReason: string;
   completeQuantity: boolean = true;
   zeroQuan: boolean = true;
-  quanArray = [];
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
+  validQuantity: boolean = true;
+  validReasonWithQuantity: boolean = true;
+  validQuantityWithReason: boolean = true;
+
   reasonComplete: boolean = true;
   successSubmit: boolean = false;
 
+  //quantity
+  quanArray = [];
+
   constructor(
     private orderProductService: OrderProductService,
-    private orderStatusService: OrderStatusService,
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
     private productTypeService: ProductTypeService,
     private orderReturnService: OrderReturnService,
     private supplierOrderReturnService: SupplierOrderReturnService,
-    private productOrderReturnService: ProductOrderReturnService
+    private productOrderReturnService: ProductOrderReturnService,
+    private orderService: OrderService
   ) {}
 
   async ngOnInit() {
     this.getAllOrderProducts();
-
-    console.log('Supplier detailssssssss');
-    console.log(this.supplier);
-    console.log(this.order);
   }
 
-  displayTable() {
-    this.orderProducts = this.orderProducts.filter((orderProduct) => {
-      console.log(orderProduct.orderID == this.order.orderID);
-      return orderProduct.orderID == this.order.orderID;
-    });
-
-    for (let i = 0; i < this.orderProducts.length; i++) {
-      const element = this.orderProducts[i];
-
-      this.productsTemp = this.products;
-      this.productTypesTemp = this.productTypes;
-      this.productCategoriesTemp = this.productCategories;
-
-      this.productsTemp = this.productsTemp.filter((product) => {
-        console.log(product.producT_ID == element.productID);
-        return product.producT_ID == element.productID;
-      });
-
-      console.log('Product ' + i);
-      console.log(this.productsTemp[0]);
-      console.log('awe');
-
-      this.productCategoriesTemp = this.productCategoriesTemp.filter(
-        (productCategory) => {
-          console.log(
-            productCategory.producT_CATEGORY_ID ==
-              this.productsTemp[0].producT_CATEGORY_ID
-          );
-          return (
-            productCategory.producT_CATEGORY_ID ==
-            this.productsTemp[0].producT_CATEGORY_ID
-          );
-        }
-      );
-
-      console.log('productCategoriesTemp ');
-      console.log(this.productCategoriesTemp);
-      console.log('awe');
-
-      this.productTypesTemp = this.productTypesTemp.filter((productType) => {
-        console.log(
-          productType.producT_TYPE_ID == this.productsTemp[0].producT_TYPE_ID
-        );
-        return (
-          productType.producT_TYPE_ID == this.productsTemp[0].producT_TYPE_ID
-        );
-      });
-
-      console.log('productTypesTemp');
-      console.log(this.productTypesTemp);
-      console.log('awe');
-
-      this.quanArray.push({
-        quan: element.quantity,
-      });
-
-      this.dynamicArray.push({
-        CategoryName: this.productCategoriesTemp[0].categorY_NAME,
-        TypeName: this.productTypesTemp[0].typE_NAME,
-        ProductName: this.productsTemp[0].producT_NAME,
-        Quantity: element.quantity,
-        productID: element.productID,
-        orderID: element.orderID,
-        retReason: '',
-      });
-    }
-  }
-
-  reasonNot(val: any, index: number) {
-    let id = '#quantityID' + index.toString();
-    if (val == 'not') {
-      $(id).val('0');
-    }
-    for (let i = 0; i < this.dynamicArray.length; i++) {
-      const element = this.dynamicArray[i];
-      if (
-        element.retReason == '-1' ||
-        element.retReason == '' ||
-        (element.retReason == 'not' && element.quantity > 0)
-      ) {
-        this.reasonComplete = false;
-      } else {
-        this.reasonComplete = true;
-      }
-    }
-    if ((val == 'Expired' || val == 'Damaged') && $(id).val() < 1) {
-      $(id).val('1');
-    }
-    for (let index = 0; index < this.quanArray.length; index++) {
-      const element = this.quanArray[index];
-      let id = '#categoryID' + index.toString();
-      if ($(id).val() == null) {
-        this.reasonComplete = false;
-        break;
-      } else {
-        this.reasonComplete = true;
-      }
-    }
-  }
-
-  quantityVali(productQuantity: number, index: number, inputQuantity: number) {
-    if (this.quanArray[index].quan < inputQuantity) {
-      this.completeQuantity = false;
-    } else {
-      this.completeQuantity = true;
-    }
-    if (inputQuantity < 0) {
-      this.zeroQuan = false;
-    } else {
-      this.zeroQuan = true;
-    }
-    let id = '#categoryID' + index.toString();
-    let idsel = '#categoryID' + index.toString() + ' option:selected';
-
-    if ($(id).val() == 'not' && inputQuantity > 0) {
-      $(id).val('-1');
-    }
-    if (inputQuantity == 0) {
-      $(id).val('not');
-    }
-    console.log('nuwe een');
-    console.log($(idsel).text());
-    console.log($(id).val());
-
-    for (let index = 0; index < this.quanArray.length; index++) {
-      const element = this.quanArray[index];
-      if ($(id).val() == null) {
-        this.reasonComplete = false;
-      }
-    }
-  }
-
-  Return() {
-    this.return.emit('false');
-  }
+  //////////////////////////////////get functions////////////////////////////
 
   getAllOrderProducts() {
-    this.orderProductService.getAllOrderProducts().subscribe((response) => {
-      this.orderProducts = response;
-      this.getAllOrderStatusses();
-    });
-  }
-
-  getAllOrderStatusses() {
-    this.orderStatusService.getAllOrderStatuss().subscribe((response) => {
-      this.orderStatusses = response;
+    this.orderProductService.getAllOrderProducts().subscribe((res) => {
+      this.orderProducts = res;
       this.getAllProducts();
     });
   }
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
       this.products = response;
       this.getAllProductTypes();
     });
@@ -278,120 +150,175 @@ export class ReturnOrderComponent implements OnInit {
     });
   }
 
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
+  //////////////////////create the dynamic array ///////////////////////////
+
+  displayTable() {
+    this.orderProducts = this.orderProducts.filter((orderProduct) => {
+      return orderProduct.orderID == this.order.orderID;
     });
+
+    for (let i = 0; i < this.orderProducts.length; i++) {
+      const element = this.orderProducts[i];
+
+      this.productsTemp = this.products.filter((product) => {
+        return product.producT_ID == element.productID;
+      });
+
+      this.productCategoriesTemp = this.productCategories.filter(
+        (productCategory) => {
+          return (
+            productCategory.producT_CATEGORY_ID ==
+            this.productsTemp[0].producT_CATEGORY_ID
+          );
+        }
+      );
+
+      this.productTypesTemp = this.productTypes.filter((productType) => {
+        return (
+          productType.producT_TYPE_ID == this.productsTemp[0].producT_TYPE_ID
+        );
+      });
+
+      this.dynamicArray.push({
+        CategoryName: this.productCategoriesTemp[0].categorY_NAME,
+        TypeName: this.productTypesTemp[0].typE_NAME,
+        ProductName: this.productsTemp[0].producT_NAME,
+        Quantity: element.quantityReceived,
+        quanReturned: 0,
+        productID: element.productID,
+        orderID: element.orderID,
+        retReason: '-1',
+      });
+    }
+    console.log('dynamicArray');
+    console.log(this.dynamicArray);
   }
 
-  ReturnOrder() {
-    if (this.completeQuantity == false) {
-    } else if (this.zeroQuan == false) {
-    } else {
-      for (let index = 0; index < this.dynamicArray.length; index++) {
-        const element = this.dynamicArray[index];
-        console.log('hierdieeeeeeeeeeeeeee is die index van ' + index);
-        console.log(element);
-        if (
-          element.retReason == '-1' ||
-          element.retReason == '' ||
-          element.retReason == null ||
-          (element.retReason == 'not' && element.quantity > 0)
-        ) {
-          this.reasonComplete = false;
-        }
-      }
+  //////////////////////validation///////////////////////////////////
 
-      if (this.reasonComplete == true) {
-        //adding a orderReturn row to the table
-        console.log(' befp   order returns');
-        this.orderReturn.orderID = this.order.orderID;
-        this.orderReturn.returnDate = new Date().toString();
-        this.orderReturnService
-          .addOrderReturn(this.orderReturn)
-          .subscribe((response) => {
-            console.log(response);
-          });
-        this.sleep(100);
-        this.getAllOrderReturns();
-        this.sleep(100);
-        console.log('order returns');
-        console.log(this.orderReturns);
+  FormValidate() {
+    this.validateQuantity();
+    this.validateReason();
+    this.valdiateReturn();
+  }
 
-        for (let index = 0; index < this.dynamicArray.length; index++) {
-          const element = this.dynamicArray[index];
-          if (element.Quantity > 0) {
-            console.log('dynamic array');
-            console.log(element);
-            this.getAllProducts();
-            this.sleep(52);
+  validateReason() {
+    this.validReasonWithQuantity = true;
+    for (let i = 0; i < this.dynamicArray.length; i++) {
+      const element = this.dynamicArray[i];
 
-            this.productsTemp = this.products;
-
-            this.productsTemp = this.productsTemp.filter((product) => {
-              console.log(product.producT_ID == element.productID);
-              return product.producT_ID == element.productID;
-            });
-
-            console.log('updates product');
-            console.log('quannnnnn' + element.Quantity);
-            this.product = this.productsTemp[0];
-            this.product.quantitY_ON_HAND =
-              this.product.quantitY_ON_HAND - element.Quantity;
-            this.productService
-              .updateProduct(this.product)
-              .subscribe((response) => {
-                console.log(response);
-              });
-
-            //adding a ProductOrderReturn row
-
-            this.productOrderReturn.productID = element.productID;
-            this.productOrderReturn.quantity = element.Quantity;
-            this.productOrderReturn.reason = element.retReason;
-            this.getAllOrderReturns();
-            this.sleep(50);
-            console.log('OrderReturn' + this.orderReturns.length);
-            this.productOrderReturn.orderReturnID =
-              this.orderReturns[this.orderReturns.length - 1].orderID + 1;
-            this.productOrderReturnService
-              .addProductOrderReturn(this.productOrderReturn)
-              .subscribe((response) => {
-                console.log(response);
-              });
-          }
-
-          console.log('before order status filter');
-
-          this.orderStatusses = this.orderStatusses.filter((orderStatus) => {
-            console.log(orderStatus.orderID == this.order.orderID);
-            return orderStatus.orderID == this.order.orderID;
-          });
-
-          console.log(this.orderStatusses[0]);
-          console.log('before order status filter');
-
-          this.orderStatus = this.orderStatusses[0];
-          this.orderStatus.description = 'Returned';
-          this.orderStatusService
-            .updateOrderStatus(this.orderStatus)
-            .subscribe((response) => {
-              console.log(response);
-            });
-
-          //adding a supplierOrderReturn
-
-          this.supplierOrderReturn.supplierID = this.supplier.supplieR_ID;
-          this.supplierOrderReturn.orderReturnID =
-            this.orderReturns[this.orderReturns.length - 1].orderReturnID + 1;
-          this.supplierOrderReturnService
-            .addSupplierOrderReturn(this.supplierOrderReturn)
-            .subscribe((response) => {
-              console.log(response);
-              this.successSubmit = true;
-            });
+      if (element.retReason != '-1') {
+        if (element.quanReturned < 1) {
+          this.validReasonWithQuantity = false;
         }
       }
     }
+    this.valdiateReturn();
+  }
+
+  validateQuantity() {
+    this.validQuantityWithReason = true;
+    for (let i = 0; i < this.dynamicArray.length; i++) {
+      const element = this.dynamicArray[i];
+
+      this.validQuantity = this.validate.ValidateInteger(element.quanReturned);
+      if (!this.validQuantity) break;
+    }
+
+    for (let i = 0; i < this.dynamicArray.length; i++) {
+      const element = this.dynamicArray[i];
+
+      if (element.quanReturned > 0) {
+        if (element.retReason == '-1') this.validQuantityWithReason = false;
+      }
+    }
+    this.validateReason();
+  }
+
+  validReturn: boolean = true;
+  valdiateReturn() {
+    let temp = this.dynamicArray.filter((dynamic) => {
+      return dynamic.quanReturned > 0;
+    });
+
+    if (temp.length > 0) {
+    } else {
+      let reason = this.dynamicArray.filter((dynamic) => {
+        return dynamic.retReason != '-1';
+      });
+      if (reason.length > 0) {
+        this.validReturn = true;
+      } else {
+        this.validReturn = false;
+      }
+    }
+  }
+
+  Return() {
+    this.return.emit('false');
+  }
+
+  ReturnOrder() {
+    //change order status
+    this.order.orderStatusID = 'Returned';
+    this.orderService.updateOrder(this.order).subscribe((res) => {
+      console.log('Updated order status');
+      console.log(res);
+    });
+
+    //add to order return
+
+    this.orderReturn.returnDate = new Date().toString();
+    this.orderReturn.orderID = this.order.orderID;
+    this.orderReturnService
+      .addOrderReturn(this.orderReturn)
+      .subscribe((res) => {
+        for (let i = 0; i < this.dynamicArray.length; i++) {
+          const element = this.dynamicArray[i];
+
+          if (element.quanReturned > 0) {
+            //add order return ID to product order return
+
+            this.productOrderReturn.productID = element.productID;
+            this.productOrderReturn.orderReturnID = res.orderReturnID;
+            this.productOrderReturn.quantity = element.quanReturned;
+            this.productOrderReturn.reason = element.retReason;
+            this.productOrderReturnService
+              .addProductOrderReturn(this.productOrderReturn)
+              .subscribe((response) => {
+                console.log('new ProductOrderReturn');
+                console.log(response);
+              });
+
+            //decrease product quantity
+
+            this.productsTemp = this.products.filter((product) => {
+              return product.producT_ID == element.productID;
+            });
+            this.productsTemp[0].quantitY_ON_HAND =
+              this.productsTemp[0].quantitY_ON_HAND - element.quanReturned;
+            this.productService
+              .updateProduct(this.productsTemp[0])
+              .subscribe((response) => {
+                console.log('updated product');
+                console.log(response);
+                this.successSubmit = true;
+              });
+          }
+        }
+
+        //add supplier order return
+
+        this.supplierOrderReturn.supplierID = this.supplier.supplieR_ID;
+        this.supplierOrderReturn.orderReturnID = res.orderReturnID;
+        this.supplierOrderReturnService
+          .addSupplierOrderReturn(this.supplierOrderReturn)
+          .subscribe((response) => {
+            console.log('new supplier order return');
+            console.log(response);
+          });
+      });
+
+    
   }
 }

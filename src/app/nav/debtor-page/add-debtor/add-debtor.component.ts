@@ -50,6 +50,7 @@ export class AddDebtorComponent implements OnInit {
     cityID: -1,
     amounT_OWING: 0,
     remindeR_MESSAGE: '',
+    deleted: false,
   };
   debtors: Debtor[] = [];
   debtorsTemp: Debtor[] = [];
@@ -85,6 +86,8 @@ export class AddDebtorComponent implements OnInit {
 
   nameValidate() {
     this.nDetails = this.validate.ValidateString(this.debtor.name);
+    this.compareContactNumber();
+    this.compareEmail();
   }
 
   ValidateContactNumber() {
@@ -101,7 +104,19 @@ export class AddDebtorComponent implements OnInit {
       return debtor.contacT_NUMBER == this.debtor.contacT_NUMBER;
     });
     if (this.debtorsTemp.length > 0) {
-      this.uniqueContactNumber = false;
+      if (this.debtorsTemp[0].deleted) {
+        if (
+          this.debtorsTemp[0].name == this.debtor.name &&
+          this.debtorsTemp[0].surname == this.debtor.surname
+        ) {
+          this.debtor.customeR_ACCOUNT_ID =
+            this.debtorsTemp[0].customeR_ACCOUNT_ID;
+        } else {
+          this.uniqueContactNumber = false;
+        }
+      } else {
+        this.uniqueContactNumber = false;
+      }
     }
 
     this.customerApplicationsTemp = this.customerApplications;
@@ -117,6 +132,8 @@ export class AddDebtorComponent implements OnInit {
 
   surnameValidate() {
     this.sDetails = this.validate.ValidateString(this.debtor.surname);
+    this.compareContactNumber();
+    this.compareEmail();
   }
 
   emailValidate() {
@@ -131,7 +148,19 @@ export class AddDebtorComponent implements OnInit {
       return debtor.email == this.debtor.email;
     });
     if (this.debtorsTemp.length > 0) {
-      this.uniqueEmail = false;
+      if (this.debtorsTemp[0].deleted) {
+        if (
+          this.debtorsTemp[0].name == this.debtor.name &&
+          this.debtorsTemp[0].surname == this.debtor.surname
+        ) {
+          this.debtor.customeR_ACCOUNT_ID =
+            this.debtorsTemp[0].customeR_ACCOUNT_ID;
+        } else {
+          this.uniqueEmail = false;
+        }
+      } else {
+        this.uniqueEmail = false;
+      }
     }
 
     this.customerApplicationsTemp = this.customerApplications;
@@ -202,10 +231,19 @@ export class AddDebtorComponent implements OnInit {
   }
 
   onSubmit() {
-    this.debtorService.addAllDebtors(this.debtor).subscribe((response) => {
-      console.log(response);
-      this.successSubmit = true;
-    });
+    if (this.debtor.customeR_ACCOUNT_ID == 0) {
+      this.debtorService.addAllDebtors(this.debtor).subscribe((response) => {
+        console.log('newly added debtor');
+        console.log(response);
+        this.successSubmit = true;
+      });
+    } else {
+      this.debtorService.updateDebtor(this.debtor).subscribe((res) => {
+        console.log('updated debtor');
+        console.log(res);
+        this.successSubmit = true;
+      });
+    }
   }
 
   categorySelect(id: number) {

@@ -27,6 +27,7 @@ export class CalculateWagesComponent implements OnInit {
     ratE_ID: 0,
     ratE_AMOUNT: 0,
     ratE_NAME: '',
+    deleted: false,
   };
 
   rates: Rate[] = [];

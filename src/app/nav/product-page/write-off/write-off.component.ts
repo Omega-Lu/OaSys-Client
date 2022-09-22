@@ -81,6 +81,9 @@ export class WriteOffComponent implements OnInit {
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
       this.products = response;
       console.log(this.products);
     });

@@ -26,11 +26,6 @@ export class ViewCreditAccountComponent implements OnInit {
 
   @Output() return = new EventEmitter<string>();
 
-  //debtor
-  @Input() debtor: Debtor;
-  debtors: Debtor[] = [];
-  debtorsTemp: Debtor[] = [];
-
   //unique
   uniqueContactNumber: boolean = true;
   uniqueEmail: boolean = true;
@@ -54,7 +49,9 @@ export class ViewCreditAccountComponent implements OnInit {
   cityDetails: boolean = true;
   validate: ValidationServicesComponent = new ValidationServicesComponent();
   successSubmit: boolean = false;
+  successDecline: boolean = false;
 
+  //account statuses
   accountStatus: AccountStatus = {
     accountStatusID: 0,
     descrption: '',
@@ -62,7 +59,8 @@ export class ViewCreditAccountComponent implements OnInit {
   accountStatusses: AccountStatus[] = [];
   accountStatussesTemp: AccountStatus[] = [];
 
-  customerAccount: CustomerAccount = {
+  //debtor
+  debtor: CustomerAccount = {
     customeR_ACCOUNT_ID: 0,
     accounT_STATUS_ID: 0,
     provincE_ID: 0,
@@ -74,7 +72,10 @@ export class ViewCreditAccountComponent implements OnInit {
     amounT_OWING: 0,
     crediT_LIMIT: 0,
     remindeR_MESSAGE: '',
+    deleted: false,
   };
+  debtors: Debtor[] = [];
+  debtorsTemp: Debtor[] = [];
 
   constructor(
     private customerApplicationService: CustomerApplicationService,
@@ -106,12 +107,16 @@ export class ViewCreditAccountComponent implements OnInit {
     this.nameDetails = this.validate.ValidateString(
       this.customerApplication.name
     );
+    this.compareContactNumber();
+    this.compareEmail();
   }
 
   surnameValidate() {
     this.surnameDetails = this.validate.ValidateString(
       this.customerApplication.surname
     );
+    this.compareContactNumber();
+    this.compareEmail();
   }
 
   ValidateContactNumber() {
@@ -128,7 +133,19 @@ export class ViewCreditAccountComponent implements OnInit {
       return debtor.contacT_NUMBER == this.customerApplication.contactNumber;
     });
     if (this.debtorsTemp.length > 0) {
-      this.uniqueContactNumber = false;
+      if (this.debtorsTemp[0].deleted) {
+        if (
+          this.debtorsTemp[0].name == this.customerApplication.name &&
+          this.debtorsTemp[0].surname == this.customerApplication.surname
+        ) {
+          this.debtor.customeR_ACCOUNT_ID =
+            this.debtorsTemp[0].customeR_ACCOUNT_ID;
+        } else {
+          this.uniqueContactNumber = false;
+        }
+      } else {
+        this.uniqueContactNumber = false;
+      }
     }
 
     this.customerApplicationsTemp = this.customerApplications;
@@ -160,7 +177,19 @@ export class ViewCreditAccountComponent implements OnInit {
       return debtor.email == this.customerApplication.email;
     });
     if (this.debtorsTemp.length > 0) {
-      this.uniqueEmail = false;
+      if (this.debtorsTemp[0].deleted) {
+        if (
+          this.debtorsTemp[0].name == this.customerApplication.name &&
+          this.debtorsTemp[0].surname == this.customerApplication.surname
+        ) {
+          this.debtor.customeR_ACCOUNT_ID =
+            this.debtorsTemp[0].customeR_ACCOUNT_ID;
+        } else {
+          this.uniqueEmail = false;
+        }
+      } else {
+        this.uniqueEmail = false;
+      }
     }
 
     this.customerApplicationsTemp = this.customerApplications;
@@ -258,81 +287,48 @@ export class ViewCreditAccountComponent implements OnInit {
   }
 
   onSubmit() {
-    this.FormValidate();
+    this.debtor.accounT_STATUS_ID = this.customerApplication.accountStatusID;
+    this.debtor.provincE_ID = this.customerApplication.provinceID;
+    this.debtor.cityID = this.customerApplication.cityID;
+    this.debtor.name = this.customerApplication.name;
+    this.debtor.surname = this.customerApplication.surname;
+    this.debtor.email = this.customerApplication.email;
+    this.debtor.contacT_NUMBER = this.customerApplication.contactNumber;
+    this.debtor.crediT_LIMIT = this.customerApplication.creditLimit;
 
-    if (
-      !this.nameDetails ||
-      !this.surnameDetails ||
-      !this.emailDetails ||
-      !this.contactDetails ||
-      !this.creditDetails
-    ) {
-      console.log('if statement true');
-    } else {
-      console.log('if statement false');
-
-      this.customerApplication.accountStatusID = 1;
-      this.customerApplicationService
-        .updateCustomerApplication(this.customerApplication)
-        .subscribe((response) => {
-          console.log(response);
-        });
-
-      this.customerAccount.accounT_STATUS_ID =
-        this.customerApplication.accountStatusID;
-      this.customerAccount.provincE_ID = this.customerApplication.provinceID;
-      this.customerAccount.cityID = this.customerApplication.cityID;
-      this.customerAccount.name = this.customerApplication.name;
-      this.customerAccount.surname = this.customerApplication.surname;
-      this.customerAccount.email = this.customerApplication.email;
-      this.customerAccount.contacT_NUMBER =
-        this.customerApplication.contactNumber;
-      this.customerAccount.crediT_LIMIT = this.customerApplication.creditLimit;
-
+    if (this.debtor.customeR_ACCOUNT_ID == 0) {
       this.customerAccountService
-        .addCustomerAccount(this.customerAccount)
+        .addCustomerAccount(this.debtor)
         .subscribe((response) => {
+          console.log('new debtor');
           console.log(response);
           this.successSubmit = true;
         });
+    } else {
+      this.customerAccountService
+        .updateCustomerAccount(this.debtor)
+        .subscribe((res) => {
+          console.log('updated debtor added');
+          console.log(res);
+          this.successSubmit = true;
+        });
     }
+
+    this.customerApplicationService
+      .deleteCustomerApplication(this.customerApplication.customerApplicationID)
+      .subscribe((response) => {
+        console.log('aplication accepted and deleted');
+        console.log(response);
+      });
   }
 
   async Decilne() {
-    this.FormValidate();
-
-    if (
-      !this.nameDetails ||
-      !this.surnameDetails ||
-      !this.emailDetails ||
-      !this.contactDetails ||
-      !this.creditDetails
-    ) {
-      console.log('if statement true');
-    } else {
-      console.log('if statement false');
-
-      this.customerApplication.accountStatusID = 2;
-      this.customerApplicationService
-        .updateCustomerApplication(this.customerApplication)
-        .subscribe((response) => {
-          console.log(response);
-        });
-      this.successSubmit = true;
-
-      // this.customerAccount.accounT_STATUS_ID =
-      //   this.customerApplication.accountStatusID;
-      // this.customerAccount.provincE_ID = this.customerApplication.provinceID;
-      // this.customerAccount.name = this.customerApplication.name;
-      // this.customerAccount.surname = this.customerApplication.surname;
-      // this.customerAccount.email = this.customerApplication.email;
-      // this.customerAccount.crediT_LIMIT = this.customerApplication.creditLimit;
-
-      // this.customerAccountService
-      //   .addCustomerAccount(this.customerAccount)
-      //   .subscribe((response) => {
-      //     console.log(response);
-      //   });
-    }
+    this.customerApplicationService
+      .deleteCustomerApplication(this.customerApplication.customerApplicationID)
+      .subscribe((response) => {
+        console.log('deleted/declined customer applciation');
+        console.log(response);
+        this.successDecline = true;
+      });
   }
 }

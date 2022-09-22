@@ -28,6 +28,7 @@
             <th>Name</th>
             <th>Surname</th>
             <th>Contact Number</th>
+            <th>Email</th>
             <th></th>
             <th></th>
           </tr>
@@ -37,6 +38,7 @@
             <td>{{ debtor.name }}</td>
             <td>{{ debtor.surname }}</td>
             <td>0{{ debtor.contacT_NUMBER }}</td>
+            <td>{{ debtor.email }}</td>
             <td>
               <button
                 class="btn btn-primary"
@@ -57,7 +59,7 @@
                 style="background: var(--bs-red); border-color: var(--bs-red)"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                (click)="deletee(debtor.customeR_ACCOUNT_ID)"
+                (click)="deletee(debtor)"
               >
                 Delete
               </button>
@@ -93,11 +95,22 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successDelete">
+        <h5
+          class="modal-title"
+          id="exampleModalLabel"
+          *ngIf="!successDelete && !hasDebt"
+        >
           Are You Sure You Would Like To Delete This Debtor
         </h5>
-        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successDelete">
+        <h5
+          class="modal-title"
+          id="exampleModalLabel"
+          *ngIf="successDelete && !hasDebt"
+        >
           Debtor Successfully Deleted
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="hasDebt">
+          Cannot Delete Debtor While There Is Debt Outstanding
         </h5>
       </div>
 
@@ -106,7 +119,7 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasDebt"
         >
           No
         </button>
@@ -115,7 +128,7 @@
           class="btn btn-primary"
           name="deleteDebtor"
           data-target="#exampleModal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasDebt"
           (click)="deleteDebtor()"
         >
           Yes
@@ -128,6 +141,16 @@
           data-dismiss="modal"
           *ngIf="successDelete"
           routerLink="/debtor-page"
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="hasDebt"
         >
           OK
         </button>

@@ -10,4 +10,5 @@ export interface Debtor {
   crediT_LIMIT: number;
   amounT_OWING: number;
   remindeR_MESSAGE: string;
+  deleted: boolean;
 }

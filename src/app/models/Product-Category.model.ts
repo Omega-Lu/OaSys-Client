@@ -1,5 +1,6 @@
 export interface ProductCategory {
-    producT_CATEGORY_ID: number;
-    categorY_NAME: string;
-    categorY_DESCRIPTION: string;
+  producT_CATEGORY_ID: number;
+  categorY_NAME: string;
+  categorY_DESCRIPTION: string;
+  deleted: boolean;
 }

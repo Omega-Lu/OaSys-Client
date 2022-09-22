@@ -19,6 +19,7 @@ export class AddEployeeTypeComponent implements OnInit {
     employeE_TYPE_ID: 0,
     useR_ROLE_ID: 0,
     positioN_NAME: '',
+    deleted: false,
   };
   employeeTypes: EmployeeType[] = [];
   employeeTypesTemp: EmployeeType[] = [];

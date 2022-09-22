@@ -1,6 +1,10 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { CustomerAccount } from 'src/app/models/Customer-account.model';
-import { CustomerAccountService } from 'src/app/_services/customer-account.service';
+import { Debtor } from 'src/app/models/debtor.model';
+import { DebtorService } from '../../../../_services/debtor.service';
+import { Province } from 'src/app/models/province.model';
+import { ProvinceService } from 'src/app/_services/Province.service';
+import { City } from 'src/app/models/City.model';
+import { CityService } from 'src/app/_services/City.service';
 
 @Component({
   selector: 'app-view-approved-accounts',
@@ -8,169 +12,62 @@ import { CustomerAccountService } from 'src/app/_services/customer-account.servi
   styleUrls: ['./view-approved-accounts.component.css'],
 })
 export class ViewApprovedAccountsComponent implements OnInit {
-  @Input() customerAccount: CustomerAccount;
+  @Input() debtor: Debtor;
   @Output() return = new EventEmitter<string>();
 
-  nameDetails: boolean = true;
-  surnameDetails: boolean = true;
-  emailDetails: boolean = true;
-  contactDetails: boolean = true;
-  creditDetails: boolean = true;
-  provinceDetails: boolean = true;
   categorySelected: boolean = false;
   successSubmit: boolean = false;
   capturePayment: boolean = false;
 
-  Gauteng: boolean = false;
-  Northen: boolean = false;
-  NorthWest: boolean = false;
-  Mpumalanga: boolean = false;
-  Limpopo: boolean = false;
-  Western: boolean = false;
-  Eastern: boolean = false;
-  KwaZulu: boolean = false;
-  State: boolean = false;
+  //province
+  provinces: Province[] = [];
+  provincesTemp: Province[] = [];
 
-  constructor(private customerAccountService: CustomerAccountService) {}
+  //city
+  cities: City[] = [];
+  citiesTemp: City[] = [];
+
+  constructor(
+    private debtorService: DebtorService,
+    private provinceService: ProvinceService,
+    private cityService: CityService
+  ) {}
 
   ngOnInit(): void {
-    this.categorySelect(this.customerAccount.provincE_ID);
+    this.getProvinces();
   }
 
-  nameValidate() {
-    var matches = this.customerAccount.name.match(/\d+/g);
-    if (matches != null) {
-      this.nameDetails = false;
-    } else if (this.customerAccount.name == '') {
-      this.nameDetails = false;
-    } else {
-      this.nameDetails = true;
-    }
+  getProvinces() {
+    this.provinceService.getAllProvinces().subscribe((res) => {
+      this.provinces = res;
+      console.log('this is all the provinces');
+      console.log(this.provinces);
+      this.getCities();
+    });
   }
 
-  surnameValidate() {
-    var matches = this.customerAccount.surname.match(/\d+/g);
-    if (matches != null) {
-      this.surnameDetails = false;
-    } else if (this.customerAccount.surname == '') {
-      this.surnameDetails = false;
-    } else {
-      this.surnameDetails = true;
-    }
-  }
-
-  emailValidate() {
-    if (this.customerAccount.email == '') {
-      this.emailDetails = false;
-    } else {
-      this.emailDetails = true;
-    }
-  }
-
-  Contactvalidate() {
-    if (
-      this.customerAccount.contacT_NUMBER < 1 ||
-      this.customerAccount.contacT_NUMBER.toString().length < 9
-    ) {
-      this.contactDetails = false;
-    } else {
-      this.contactDetails = true;
-    }
-  }
-
-  creditValidate() {
-    if (
-      this.customerAccount.crediT_LIMIT < 1 ||
-      this.customerAccount.crediT_LIMIT == null
-    ) {
-      this.creditDetails = false;
-    } else {
-      this.creditDetails = true;
-    }
-  }
-
-  Provalidate(id: number) {
-    this.customerAccount.provincE_ID = id;
-    console.log(this.customerAccount.provincE_ID + '   helloooooo   ');
-    if (this.customerAccount.provincE_ID < 1) {
-      this.provinceDetails = false;
-    } else {
-      this.provinceDetails = true;
-    }
+  getCities() {
+    this.cityService.getAllCitys().subscribe((res) => {
+      this.cities = res;
+      console.log('this is all the cities');
+      console.log(this.cities);
+      this.categorySelect(this.debtor.provincE_ID);
+    });
   }
 
   categorySelect(id: number) {
-    console.log(id);
+    this.citiesTemp = this.cities;
+    this.citiesTemp = this.citiesTemp.filter((city) => {
+      return city.provinceID == id;
+    });
     this.categorySelected = true;
-    console.log(this.categorySelected);
-    this.Gauteng = false;
-    this.Northen = false;
-    this.NorthWest = false;
-    this.Mpumalanga = false;
-    this.Limpopo = false;
-    this.Western = false;
-    this.Eastern = false;
-    this.KwaZulu = false;
-    this.State = false;
-    if (id == 1) {
-      this.Gauteng = true;
-    }
-    if (id == 2) {
-      this.Northen = true;
-    }
-    if (id == 3) {
-      this.NorthWest = true;
-    }
-    if (id == 4) {
-      this.Mpumalanga = true;
-    }
-    if (id == 5) {
-      this.Limpopo = true;
-    }
-    if (id == 6) {
-      this.Western = true;
-    }
-    if (id == 7) {
-      this.Eastern = true;
-    }
-    if (id == 8) {
-      this.KwaZulu = true;
-    }
-    if (id == 9) {
-      this.State = true;
-    }
   }
 
   Return() {
     this.return.emit('false');
   }
 
-  onSubmit() {
-    this.nameValidate();
-    this.surnameValidate();
-    this.Contactvalidate();
-    this.emailValidate();
-    this.Provalidate(this.customerAccount.provincE_ID);
-    this.creditValidate();
-
-    if (
-      !this.nameDetails ||
-      !this.surnameDetails ||
-      !this.emailDetails ||
-      !this.contactDetails ||
-      !this.creditDetails
-    ) {
-      console.log('if statement true');
-    } else {
-      console.log('if statement false');
-      this.customerAccountService
-        .updateCustomerAccount(this.customerAccount)
-        .subscribe((response) => {
-          console.log(response);
-          this.successSubmit = true;
-        });
-    }
-  }
+  onSubmit() {}
 
   populateForm() {
     this.capturePayment = true;

@@ -30,7 +30,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let productCategory of productCategoriesTemp">
+        <tr
+          *ngFor="let productCategory of productCategoriesTemp"
+          [hidden]="productCategory.deleted"
+        >
           <td>{{ productCategory.categorY_NAME }}</td>
           <td>{{ productCategory.categorY_DESCRIPTION }}</td>
           <td>
@@ -53,7 +56,7 @@
               style="background: var(--bs-red); border-color: var(--bs-red)"
               data-toggle="modal"
               data-target="#deleteCategoryModal"
-              (click)="deletee(productCategory.producT_CATEGORY_ID)"
+              (click)="deletee(productCategory)"
             >
               Delete
             </button>
@@ -90,16 +93,23 @@
         <h5
           class="modal-title"
           id="deleteCategoryModalLabel"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasProductOrType"
         >
           Are You Sure You Would Like To Delete This Product Category
         </h5>
         <h5
           class="modal-title"
           id="deleteCategoryModalLabel"
-          *ngIf="successDelete"
+          *ngIf="successDelete && !hasProductOrType"
         >
           Product Category Successfully Deleted
+        </h5>
+        <h5
+          class="modal-title"
+          id="deleteCategoryModalLabel"
+          *ngIf="hasProductOrType"
+        >
+          This Cannot Be Deleted Because It Has A Product Type Dependant
         </h5>
       </div>
 
@@ -108,17 +118,16 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasProductOrType"
         >
           No
         </button>
         <button
           type="submit"
           class="btn btn-primary"
-          data-dismiss="modal"
           name="deleteempl"
           data-target="#deleteCategoryModal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasProductOrType"
           (click)="deleteProductCategory()"
         >
           Yes
@@ -131,6 +140,16 @@
           data-dismiss="modal"
           *ngIf="successDelete"
           routerLink="/product-page"
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#deleteCategoryModal"
+          data-dismiss="modal"
+          *ngIf="hasProductOrType"
         >
           OK
         </button>
