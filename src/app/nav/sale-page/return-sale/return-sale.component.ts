@@ -7,11 +7,11 @@ import { PaymentType } from 'src/app/models/PaymentType.model';
 import { PaymentTypeService } from 'src/app/_services/PaymentType.service';
 
 @Component({
-  selector: 'app-search-sale',
-  templateUrl: './search-sale.component.html',
-  styleUrls: ['./search-sale.component.css'],
+  selector: 'app-return-sale',
+  templateUrl: './return-sale.component.html',
+  styleUrls: ['./return-sale.component.css'],
 })
-export class SearchSaleComponent implements OnInit {
+export class ReturnSaleComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
   // sale
@@ -34,7 +34,7 @@ export class SearchSaleComponent implements OnInit {
 
   searchText: number;
 
-  viewSale: boolean = false;
+  ReturnSale: boolean = false;
 
   constructor(
     private saleService: SaleService,
@@ -138,11 +138,11 @@ export class SearchSaleComponent implements OnInit {
 
   populateForm(i) {
     this.sale = i;
-    this.viewSale = true;
+    this.ReturnSale = true;
   }
 
   back() {
-    this.viewSale = false;
+    this.ReturnSale = false;
     this.ngOnInit();
   }
 }

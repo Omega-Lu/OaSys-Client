@@ -181,12 +181,6 @@ export class SupplierOrderComponent implements OnInit {
     }
   }
 
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
-
   dynamicArray = [];
   newDynamic;
 

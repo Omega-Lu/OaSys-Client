@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h1>View Sale</h1>
+  <h1>Return Sale</h1>
   <h2 style="margin-left: 1%">Sale {{ sale.saleID }} Details:</h2>
   <form style="margin-left: 2%; max-width: 1000px">
     <div class="table-responsive" style="max-height: 500px">
@@ -8,21 +8,59 @@
           <tr>
             <th>Product Name</th>
             <th>Product Description</th>
-            <th>Quantity </th>
+            <th>Quantity Sold</th>
+            <th>Quantity Returned</th>
+            <th>Reason</th>
             <th>Product Price</th>
-            <th>Total price</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dynamic of dynamicArray">
+          <tr *ngFor="let dynamic of dynamicArray; let i = index">
             <td>{{ dynamic.name }}</td>
             <td>{{ dynamic.description }}</td>
             <td>{{ dynamic.quantity }}</td>
+            <td>
+              <input
+                class="form-control"
+                type="number"
+                name="QuantityReturned"
+                style="max-width: 100px"
+                [(ngModel)]="dynamic.quantityReturned"
+                (input)="validateQuantity()"
+                (keyup)="validateQuantity()"
+              />
+            </td>
+            <td>
+              <select
+                id="categoryID{{ i }}"
+                class="btn"
+                name="PCategory"
+                style="
+                  background: var(--bs-gray-100);
+                  border-color: var(--bs-orange);
+                  color: var(--bs-orange);
+                "
+                [(ngModel)]="dynamic.reason"
+                (input)="validateReason()"
+                (click)="validateReason()"
+                (click)="validateQuantity()"
+              >
+                <option value="-1" selected>No Return</option>
+                <option value="Expired">Expired</option>
+                <option value="Damaged">Damaged</option>
+              </select>
+            </td>
             <td>R{{ dynamic.price.toFixed(2) }}</td>
-            <td>R{{ dynamic.total.toFixed(2) }}</td>
           </tr>
         </tbody>
       </table>
+      <div style="color: red" *ngIf="!validQuantity">Invalid Quantity</div>
+      <div style="color: red" *ngIf="!moreThanZero">
+        Quantity Must Be More Than 0
+      </div>
+      <div style="color: red" *ngIf="!validReason">
+        Please Select A Quantity
+      </div>
     </div>
     <div class="row">
       <label
@@ -50,6 +88,8 @@
         "
         data-toggle="modal"
         data-target="#exampleModal"
+        (mouseover)="FormValidate()"
+        [disabled]="!validQuantity || !validReason || !moreThanZero"
       >
         Return Sale
       </button>

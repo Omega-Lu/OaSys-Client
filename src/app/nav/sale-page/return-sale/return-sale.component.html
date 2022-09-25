@@ -1,5 +1,5 @@
-<div class="container-fluid" *ngIf="!viewSale">
-  <h1>Search Sale</h1>
+<div class="container-fluid" *ngIf="!ReturnSale">
+  <h1>Return Sale</h1>
   <input
     class="form-control search-input"
     type="text"
@@ -39,7 +39,7 @@
               "
               (click)="viewSale = true; populateForm(dynamic.sale)"
             >
-              View
+              Return
             </button>
           </td>
           <!-- <td (click)="delete(dynamic.saleID)">Delete</td> -->
@@ -61,4 +61,5 @@
   </button>
 </div>
 
-<app-view-sale *ngIf="viewSale" [sale]="sale" (back)="back()"> </app-view-sale>
+<app-view-return-sale *ngIf="ReturnSale" [sale]="sale" (back)="back()">
+</app-view-return-sale>

@@ -1,7 +1,8 @@
 export interface Sale {
-  saleID:number;
-  userID:number;
-  customerAccountID:number;
-  date:string;
-  total:number;
+  saleID: number;
+  userID: number;
+  customerAccountID: number;
+  paymentID: number;
+  date: Date;
+  total: number;
 }

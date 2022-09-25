@@ -78,6 +78,9 @@ export class CompleteStocktakeComponent implements OnInit {
     this.productCategoryService
       .getAllProductCategories()
       .subscribe((response) => {
+        response = response.filter((productCat) => {
+          return productCat.deleted == false;
+        });
         this.productCategories = response;
         console.log(response);
       });

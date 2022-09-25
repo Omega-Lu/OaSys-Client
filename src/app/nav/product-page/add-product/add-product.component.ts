@@ -60,7 +60,7 @@ export class AddProductComponent implements OnInit {
     userID: 0,
     employeeID: 0,
     functionUsed: 'Add Product',
-    date: new Date().toString(),
+    date: new Date(),
     month: '',
   };
   audits: AuditLog[] = [];

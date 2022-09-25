@@ -100,6 +100,8 @@ import { EmployeeLandingPageComponent } from './nav-cashier/employee-landing-pag
 import { ClockInAndOutComponent } from './nav-cashier/clock-in-and-out/clock-in-and-out.component';
 import { ForgotResetPasswordComponent } from './forgot-reset-password/forgot-reset-password.component';
 import { LogoutTimerComponent } from './nav/logout-timer/logout-timer.component';
+import { ReturnSaleComponent } from './nav/sale-page/return-sale/return-sale.component';
+import { ViewReturnSaleComponent } from './nav/sale-page/return-sale/view-return-sale/view-return-sale.component';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -176,6 +178,7 @@ const appRoutes: Routes = [
   { path: 'forgot-reset-password', component: ForgotResetPasswordComponent },
   { path: 'logout-timer', component: LogoutTimerComponent },
   { path: 'complete-stocktake', component: CompleteStocktakeComponent },
+  { path: 'return-sale', component: ReturnSaleComponent },
 ];
 
 @NgModule({
@@ -265,6 +268,8 @@ const appRoutes: Routes = [
     ClockInAndOutComponent,
     ForgotResetPasswordComponent,
     LogoutTimerComponent,
+    ReturnSaleComponent,
+    ViewReturnSaleComponent,
   ],
   imports: [
     BrowserModule,

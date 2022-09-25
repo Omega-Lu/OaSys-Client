@@ -87,6 +87,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('//////////////////////////////////////');
+    let today = new Date();
+
+    console.log(new Date(today.getTime() + 0 * 24 * 60 * 60 * 1000));
+    console.log('//////////////////////////////////////');
     this.getUsers();
     console.log(this.saltnHash('12uqlgth'));
 
@@ -110,6 +115,8 @@ export class AppComponent implements OnInit {
     });
   }
 
+  ////////////////////////////////////////////////// salted passwords ////////////////////////////
+
   saltnHash(value: string): string {
     return CryptoJS.AES.encrypt(value, this.salt.trim()).toString();
   }
@@ -119,6 +126,8 @@ export class AppComponent implements OnInit {
       CryptoJS.enc.Utf8
     );
   }
+
+  ///////////////////////////////////////////// login  /////////////////////////////////////////
 
   login() {
     // this.usersTemp = this.users;
@@ -163,17 +172,25 @@ export class AppComponent implements OnInit {
     this.loginLevel();
   }
 
+  //////////////////////////////////////////////// get functions ///////////////////////////////////////////
+
   getUsers() {
-    this.userService.getAllUsers().subscribe((response) => {
-      this.users = response;
+    this.userService.getAllUsers().subscribe((res) => {
+      res = res.filter((employee) => {
+        return employee.deleted == false;
+      });
+      this.users = res;
       console.log('this is all the users');
-      console.log(response);
+      console.log(res);
     });
   }
 
   getEmployee() {
-    this.employeeService.getAllEmployees().subscribe((response) => {
-      this.employees = response;
+    this.employeeService.getAllEmployees().subscribe((res) => {
+      res = res.filter((user) => {
+        return user.deleted == false;
+      });
+      this.employees = res;
       console.log('this is all the employees');
       console.log(this.employees);
     });

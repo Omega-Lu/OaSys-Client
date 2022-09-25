@@ -7,6 +7,7 @@ import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductTypeService } from 'src/app/_services/product-type.service';
 import * as $ from 'jquery';
 
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 @Component({
   selector: 'app-reorder-list',
   templateUrl: './reorder-list.component.html',
@@ -15,26 +16,36 @@ import * as $ from 'jquery';
 export class ReorderListComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //products
   product: Product;
   products: Product[] = [];
   productsTemp: Product[] = [];
   productsTemp2: Product[] = [];
   productsTemp3: Product[] = [];
 
+  //product categories
   productCategory: ProductCategory;
   productCategories: ProductCategory[] = [];
   productCategoriesTemp: ProductCategory[] = [];
   productCategoriesTemp2: ProductCategory[] = [];
 
+  //product types
   productType: ProductType;
   productTypes: ProductType[] = [];
   productTypesTemp: ProductType[] = [];
   productTypesTemp2: ProductType[] = [];
 
+  //dynamic Array
   dynamicArray = [];
   tempArray = [];
+
   pID: number;
   quantity: number;
+
+  thisDate = new Date().toString();
+
+  //valdiation
+  valdiate: ValidationServicesComponent = new ValidationServicesComponent();
 
   successSubmit: boolean = false;
   completeQuantity: boolean = true;
@@ -45,6 +56,8 @@ export class ReorderListComponent implements OnInit {
   typeSelected: boolean = false;
   categorySelected: boolean = false;
   completeSelection: boolean = false;
+
+  addHeader: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -58,7 +71,6 @@ export class ReorderListComponent implements OnInit {
 
   createDynamicArray() {
     this.productsTemp = this.products.filter((product) => {
-      console.log(product.quantitY_ON_HAND < product.reordeR_LIMIT);
       return product.quantitY_ON_HAND < product.reordeR_LIMIT;
     });
 
@@ -69,9 +81,6 @@ export class ReorderListComponent implements OnInit {
 
       this.productCategoriesTemp = this.productCategories.filter(
         (productCategory) => {
-          console.log(
-            productCategory.producT_CATEGORY_ID == element.producT_CATEGORY_ID
-          );
           return (
             productCategory.producT_CATEGORY_ID == element.producT_CATEGORY_ID
           );
@@ -81,7 +90,6 @@ export class ReorderListComponent implements OnInit {
       //filter types
 
       this.productTypesTemp = this.productTypes.filter((productType) => {
-        console.log(productType.producT_TYPE_ID == element.producT_TYPE_ID);
         return productType.producT_TYPE_ID == element.producT_TYPE_ID;
       });
 
@@ -98,12 +106,15 @@ export class ReorderListComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////get funtions///////////////////////////////
+
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
       response = response.filter((product) => {
         return product.deleted == false;
       });
       this.products = response;
+      console.log('All products');
       console.log(this.products);
       this.getAllProductCategories();
     });
@@ -117,6 +128,7 @@ export class ReorderListComponent implements OnInit {
           return productCat.deleted == false;
         });
         this.productCategories = response;
+        console.log('All product categories');
         console.log(this.productCategories);
         this.getAllProductTypes();
       });
@@ -128,24 +140,18 @@ export class ReorderListComponent implements OnInit {
         return productType.deleted == false;
       });
       this.productTypes = response;
+      console.log('All product types');
       console.log(this.productTypes);
+      this.createDynamicArray();
     });
   }
 
   quantityVali(quan: number) {
-    if (quan >= 0) {
-      this.completeQuantity = true;
-    } else {
-      this.completeQuantity = false;
-    }
+    this.completeQuantity = this.valdiate.ValidateInteger(quan);
   }
 
   addQuantityVali(quan: number) {
-    if (this.quantity > 0) {
-      this.addQuan = true;
-    } else {
-      this.addQuan = false;
-    }
+    this.addQuan = this.valdiate.ValidateInteger(quan);
   }
 
   sleep(ms) {

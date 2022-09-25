@@ -34,7 +34,7 @@ export class StockReportComponent implements OnInit {
   selectedCategory;
   imgData;
 
-  generatedBy: string;
+  generatedBy: string = '';
 
   Date: Date = new Date();
 
@@ -50,13 +50,8 @@ export class StockReportComponent implements OnInit {
 
   async ngOnInit() {
     await this.getAllCurrentUsers();
-    await this.getAllProducts();
-    await this.getAllCategories();
-    await this.sleep(200);
 
     this.generatedBy = this.currentUser.username;
-
-    this.buildTable();
   }
 
   categorySelect(id) {
@@ -150,29 +145,7 @@ export class StockReportComponent implements OnInit {
     this.productsTemp = this.products;
   }
 
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
-
-  async getAllProducts() {
-    this.productService.getAllProducts().subscribe((repsonse) => {
-      this.products = repsonse;
-      console.log('this is all the products');
-      console.log(this.products);
-    });
-  }
-
-  async getAllCategories() {
-    this.productCategoryService
-      .getAllProductCategories()
-      .subscribe((response) => {
-        this.productCategories = response;
-        console.log('this is all the product categories');
-        console.log(this.productCategories);
-      });
-  }
+  //////////////////////////// Get Functions /////////////////////////////
 
   async getAllCurrentUsers() {
     this.currentUserService.getAllCurrentUsers().subscribe((response) => {
@@ -180,9 +153,31 @@ export class StockReportComponent implements OnInit {
       console.log('this is the current user for stock report');
       this.currentUser = this.currentUsers[this.currentUsers.length - 1];
       console.log(this.currentUser);
+      this.getAllProducts();
     });
   }
-  Return() {
-    this.return.emit('false');
+
+  async getAllProducts() {
+    this.productService.getAllProducts().subscribe((res) => {
+      res = res.filter((product) => {
+        return product.deleted == false;
+      });
+      this.products = res;
+      console.log('this is all the products');
+      console.log(this.products);
+      this.getAllCategories();
+    });
+  }
+
+  async getAllCategories() {
+    this.productCategoryService.getAllProductCategories().subscribe((res) => {
+      res = res.filter((productCat) => {
+        return productCat.deleted == false;
+      });
+      this.productCategories = res;
+      console.log('this is all the product categories');
+      console.log(this.productCategories);
+    });
+    this.buildTable();
   }
 }

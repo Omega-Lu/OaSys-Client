@@ -1,6 +1,6 @@
 export interface Payment {
   paymentID: number;
-  paymentTypeID: number;
+  paymentTypeID: string;
   saleID: number;
   date: string;
   amount: number;

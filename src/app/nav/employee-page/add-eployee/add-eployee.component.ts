@@ -72,6 +72,7 @@ export class AddEployeeComponent implements OnInit {
     useR_STATUS_ID: 0,
     username: '',
     useR_PASSWORD: '',
+    deleted: false,
   };
   users: User[] = [];
 

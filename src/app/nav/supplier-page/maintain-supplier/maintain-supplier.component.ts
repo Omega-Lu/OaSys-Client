@@ -1,12 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
+import { Order } from 'src/app/models/order.model';
+import { OrderService } from 'src/app/_services/order.service';
 
 @Component({
   selector: 'app-maintain-supplier',
@@ -15,8 +11,18 @@ import { SupplierService } from 'src/app/_services/supplier.service';
 })
 export class MaintainSupplierComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
+
+  //supplier
   suppliers: Supplier[] = [];
   supplier: Supplier;
+
+  //order
+  orders: Order[] = [];
+  ordersTemp: Order[] = [];
+
+  //valdiation
+  hasReference: boolean = false;
+
   successDelete: boolean = false;
   model: any;
   delete: boolean = false;
@@ -25,29 +31,53 @@ export class MaintainSupplierComponent implements OnInit {
   lekke: any;
   deletenumber: any;
 
-  constructor(private supplierService: SupplierService) {}
+  constructor(
+    private supplierService: SupplierService,
+    private OrderService: OrderService
+  ) {}
 
   ngOnInit(): void {
     this.getAllSuppliers();
   }
 
   deletee(delet: any) {
-    this.deletenumber = delet;
+    this.supplier = delet;
+    this.checkReference();
   }
 
   getAllSuppliers() {
-    this.supplierService.getAllSuppliers().subscribe((response) => {
-      this.suppliers = response;
-      console.log(this.suppliers);
+    this.supplierService.getAllSuppliers().subscribe((res) => {
+      res = res.filter((supplier) => {
+        return supplier.deleted == false;
+      });
+      this.suppliers = res;
+      this.getAllOrders();
     });
+  }
+
+  getAllOrders() {
+    this.OrderService.getAllOrders().subscribe((res) => {
+      this.orders = res;
+      this.ordersTemp = res;
+    });
+  }
+
+  checkReference() {
+    this.ordersTemp = this.orders.filter((order) => {
+      return order.supplierID == this.supplier.supplieR_ID;
+    });
+
+    if (this.ordersTemp.length > 0) this.hasReference = true;
+    else this.hasReference = false;
   }
 
   deleteSupplier() {
     this.supplierService
-      .deleteSupplier(this.deletenumber)
+      .deleteSupplier(this.supplier.supplieR_ID)
       .subscribe((response) => {
         this.getAllSuppliers();
-        console.log(this.supplier);
+        console.log('deleted supplier');
+        console.log(response);
         this.successDelete = true;
       });
   }

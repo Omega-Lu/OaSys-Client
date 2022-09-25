@@ -15,12 +15,14 @@ import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+
 @Component({
-  selector: 'app-view-sale',
-  templateUrl: './view-sale.component.html',
-  styleUrls: ['./view-sale.component.css'],
+  selector: 'app-view-return-sale',
+  templateUrl: './view-return-sale.component.html',
+  styleUrls: ['./view-return-sale.component.css'],
 })
-export class ViewSaleComponent implements OnInit {
+export class ViewReturnSaleComponent implements OnInit {
   @Input() sale: Sale;
 
   //payment
@@ -82,6 +84,9 @@ export class ViewSaleComponent implements OnInit {
   month: string;
 
   successSubmit: boolean = false;
+
+  //validation
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
 
   constructor(
     private saleReturnService: SaleReturnService,
@@ -160,10 +165,6 @@ export class ViewSaleComponent implements OnInit {
     });
   }
 
-  Return() {
-    this.back.emit('false');
-  }
-
   ////////////////////// create Dynamic Array ///////////////////////////////
 
   createDynamicArray() {
@@ -197,6 +198,8 @@ export class ViewSaleComponent implements OnInit {
         name: name,
         description: this.productsTemp[0].producT_DESCRIPTION,
         quantity: quantity,
+        quantityReturned: '0',
+        reason: '-1',
         price: price,
         total: totalPrice,
       });
@@ -206,9 +209,6 @@ export class ViewSaleComponent implements OnInit {
   ////////////////////////////////Return the Sale////////////////////////////
 
   ReturnSale() {
-    
-
-
     console.log('return sale');
 
     // new return
@@ -240,5 +240,55 @@ export class ViewSaleComponent implements OnInit {
       console.log(response);
       this.successSubmit = true;
     });
+  }
+
+  //////////////////////////validation functions////////////////////////////////////////
+  FormValidate() {
+    this.validateQuantity();
+    this.validateReason();
+  }
+
+  validQuantity: boolean = true;
+  moreThanZero: boolean = true;
+  validateQuantity() {
+    this.validQuantity = true;
+    this.moreThanZero = true;
+
+    for (let i = 0; i < this.dynamicArray.length; i++) {
+      const element = this.dynamicArray[i];
+
+      if (!this.validate.ValidateInteger(element.quantityReturned)) {
+        this.validQuantity = false;
+      }
+    }
+
+    for (let i = 0; i < this.dynamicArray.length; i++) {
+      const element = this.dynamicArray[i];
+      if (element.reason != '-1') {
+        if (element.quantityReturned < 1) {
+          this.moreThanZero = false;
+        }
+      }
+    }
+  }
+
+  validReason: boolean = true;
+  validateReason() {
+    this.validReason = true;
+
+    for (let i = 0; i < this.dynamicArray.length; i++) {
+      const element = this.dynamicArray[i];
+      if (element.quantityReturned > 0) {
+        if (element.reason == '-1') {
+          this.validReason = false;
+        }
+      }
+    }
+  }
+
+  ////////////////////// return ///////////////////////////
+
+  Return() {
+    this.back.emit('false');
   }
 }

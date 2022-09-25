@@ -3,6 +3,6 @@ export interface AuditLog {
   userID: number;
   employeeID: number;
   functionUsed: string;
-  date: string;
+  date: Date;
   month: string;
 }

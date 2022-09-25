@@ -14,10 +14,12 @@ export class DebtorsReportComponent implements OnInit {
 
   Date: Date = new Date();
 
+  //current user
   currentUser: CurrentUser;
   currentUsers: CurrentUser[] = [];
   currentUsersTemp: CurrentUser[] = [];
 
+  //customer account
   customerAccount: CustomerAccount;
   customerAccounts: CustomerAccount[] = [];
   customerAccountsTemp: CustomerAccount[] = [];
@@ -27,6 +29,7 @@ export class DebtorsReportComponent implements OnInit {
   generatedBy: string;
 
   totalAmount: number = 0;
+  totalAmountString: String;
 
   constructor(
     private currentUserService: CurrentUserService,
@@ -52,16 +55,21 @@ export class DebtorsReportComponent implements OnInit {
         amount: element.amounT_OWING.toFixed(2),
       });
     }
+    this.totalAmountString = this.totalAmount.toFixed(2);
   }
 
   async getAllCustomerAccounts() {
-    this.customerAccountService
-      .getAllCustomerAccounts()
-      .subscribe((response) => {
-        this.customerAccounts = response;
-        console.log('this is all the customer accounts');
-        console.log(this.customerAccounts);
+    this.customerAccountService.getAllCustomerAccounts().subscribe((res) => {
+      res = res.filter((debtor) => {
+        return debtor.deleted == false;
       });
+      res = res.filter((debtor) => {
+        return debtor.amounT_OWING > 0;
+      });
+      this.customerAccounts = res;
+      console.log('this is all the customer accounts');
+      console.log(this.customerAccounts);
+    });
   }
 
   sleep(ms) {

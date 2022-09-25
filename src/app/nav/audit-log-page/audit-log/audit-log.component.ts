@@ -37,17 +37,17 @@ export class AuditLogComponent implements OnInit {
     for (let i = 0; i < this.auditLogs.length; i++) {
       const element = this.auditLogs[i];
 
-      this.employeesTemp = this.employees;
+      // this.employeesTemp = this.employees;
 
-      this.employeesTemp = this.employeesTemp.filter((employee) => {
-        return employee.employeE_ID == element.employeeID;
-      });
+      // this.employeesTemp = this.employeesTemp.filter((employee) => {
+      //   return employee.employeE_ID == element.employeeID;
+      // });
 
       this.auditArray.push({
         auditID: element.auditLogID,
         userID: element.userID,
-        name: this.employeesTemp[0].name,
-        surname: this.employeesTemp[0].surname,
+        // name: this.employeesTemp[0].name,
+        // surname: this.employeesTemp[0].surname,
         function: element.functionUsed,
         date: element.date,
       });

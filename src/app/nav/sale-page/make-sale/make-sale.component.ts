@@ -17,6 +17,9 @@ import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 
+// valdiation
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+
 @Component({
   selector: 'app-make-sale',
   templateUrl: './make-sale.component.html',
@@ -35,7 +38,8 @@ export class MakeSaleComponent implements OnInit {
     saleID: 0,
     userID: 0,
     customerAccountID: -1,
-    date: '',
+    paymentID: 0,
+    date: new Date(),
     total: 0,
   };
   sales: Sale[] = [];
@@ -44,7 +48,7 @@ export class MakeSaleComponent implements OnInit {
   //payment
   payment: Payment = {
     paymentID: 0,
-    paymentTypeID: 0,
+    paymentTypeID: '',
     saleID: 0,
     date: '',
     amount: 0,
@@ -59,6 +63,8 @@ export class MakeSaleComponent implements OnInit {
   };
   paymentTypes: PaymentType[] = [];
   paymentTypesTemp: PaymentType[] = [];
+
+  typeOfPayment: string = '';
 
   //sale product
   saleProduct: SaleProduct = {
@@ -86,7 +92,7 @@ export class MakeSaleComponent implements OnInit {
     userID: 0,
     employeeID: 0,
     functionUsed: 'Make Sale',
-    date: new Date().toString(),
+    date: new Date(),
     month: '',
   };
   audits: AuditLog[] = [];
@@ -97,6 +103,7 @@ export class MakeSaleComponent implements OnInit {
   saleQuantity: number = 1;
   subTotal: any = 0;
   totalAmount: number = 0;
+  totalAmountString: string = '0';
   amountGiven: number = 0;
   change: number = 0;
 
@@ -113,6 +120,10 @@ export class MakeSaleComponent implements OnInit {
   successSubmit: boolean = false;
   notEnough: boolean = true;
   moreThanOnHand: boolean = true;
+  validQuantity: boolean = true;
+
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
+  s;
 
   monthInt: number = new Date().getMonth();
   month: string;
@@ -133,155 +144,85 @@ export class MakeSaleComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.getAllProducts();
-    this.getAllCustomerAccounts();
     this.getAllCurrentUsers();
-    await this.sleep(200);
-
-    this.customerAccountsTemp = this.customerAccounts;
-    console.log('this is the customer accounts temp array');
-    console.log(this.customerAccountsTemp);
-    await this.sleep(1000);
-
-    //set the current user
-    this.audit.userID = this.currentUsers[this.currentUsers.length - 1].userID;
-    this.audit.employeeID =
-      this.currentUsers[this.currentUsers.length - 1].employeeID;
-    this.sale.userID = this.currentUsers[this.currentUsers.length - 1].userID;
-
-    if (this.monthInt == 0) {
-      this.month = 'Jan';
-    } else if (this.monthInt == 1) {
-      this.month = 'Feb';
-    } else if (this.monthInt == 2) {
-      this.month = 'Mar';
-    } else if (this.monthInt == 3) {
-      this.month = 'Apr';
-    } else if (this.monthInt == 4) {
-      this.month = 'May';
-    } else if (this.monthInt == 5) {
-      this.month = 'Jun';
-    } else if (this.monthInt == 6) {
-      this.month = 'Jul';
-    } else if (this.monthInt == 7) {
-      this.month = 'Aug';
-    } else if (this.monthInt == 8) {
-      this.month = 'Sep';
-    } else if (this.monthInt == 9) {
-      this.month = 'Oct';
-    } else if (this.monthInt == 10) {
-      this.month = 'Nov';
-    } else if (this.monthInt == 11) {
-      this.month = 'Dec';
-    }
-
-    this.audit.month = this.month;
   }
 
-  getAllCurrentUsers() {
-    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
-      this.currentUsers = response;
-      console.log('All current Users');
-      console.log(this.currentUsers);
-    });
-  }
+  ///////////////////////////////make the sale////////////////////////////////
 
   async onSubmit() {
-    console.log('this is the type of payment');
-    console.log(this.typeOfPaymentID);
-
-    //add sale
-
-    this.sale.date = new Date().toString();
-    this.sale.total = this.totalAmount;
-    if (this.typeOfPaymentID == 3) {
-      let id = Number($('#customerAccountID option:selected').val());
-      this.sale.customerAccountID = id;
-    }
-
-    console.log('this is the sale');
-    //console.log(this.sale);
-    this.saleService.addSale(this.sale).subscribe((response) => {
-      console.log(response);
-    });
-
-    await this.sleep(500);
-    this.getAllSales();
-    await this.sleep(500);
-
-    //update customer account
-
-    if (this.typeOfPaymentID == 3) {
-      let id = Number($('#customerAccountID option:selected').val());
-      this.customerAccountsTemp = this.customerAccounts;
-      this.customerAccountsTemp = this.customerAccountsTemp.filter(
-        (customerAccount) => {
-          console.log(customerAccount.customeR_ACCOUNT_ID == id);
-          return customerAccount.customeR_ACCOUNT_ID == id;
-        }
-      );
-
-      this.customerAccount = this.customerAccountsTemp[0];
-      this.customerAccount.amounT_OWING =
-        this.customerAccount.amounT_OWING + this.totalAmount;
-
-      console.log('this is the updated customer account');
-      //console.log(this.customerAccount);
-      this.customerAccountService
-        .updateCustomerAccount(this.customerAccount)
-        .subscribe((response) => {
-          console.log(response);
-        });
-    }
-
-    this.salesTemp = this.sales;
-    let newSaleID = this.salesTemp[this.sales.length - 1].saleID;
-
     //add payment
 
-    this.payment.paymentTypeID = this.typeOfPaymentID;
     this.payment.date = new Date().toString();
     this.payment.amount = this.totalAmount;
-    this.payment.saleID = newSaleID;
+    this.payment.paymentTypeID = this.typeOfPayment;
 
-    console.log('this is the payment');
-    //console.log(this.payment);
-    this.paymentService.addPayment(this.payment).subscribe((response) => {
-      console.log(response);
-    });
+    this.paymentService.addPayment(this.payment).subscribe((res) => {
+      console.log('this is the new payment');
+      console.log(res);
 
-    //get products and their id
+      // add the sale
 
-    for (let index = 0; index < this.dynamicArray.length; index++) {
-      const element = this.dynamicArray[index];
-      this.productsTemp = this.products;
-      this.productsTemp = this.productsTemp.filter((product) => {
-        console.log(product.producT_ID == element.productID);
-        return product.producT_ID == element.productID;
-      });
+      if (this.typeOfPayment == 'Credit') {
+        this.sale.customerAccountID == this.customerID;
 
-      this.saleProduct.saleID = newSaleID;
-      this.saleProduct.productID = element.productID;
-      this.saleProduct.quantity = element.quantity;
-
-      console.log('this is the Sale Product');
-      // console.log(this.saleProduct);
-      this.saleProductService
-        .addSaleProduct(this.saleProduct)
-        .subscribe((response) => {
-          console.log(response);
+        // add to customer account debt
+        this.customerAccountsTemp = this.customerAccounts.filter((temp) => {
+          return temp.customeR_ACCOUNT_ID == this.customerID;
         });
 
-      this.product = this.productsTemp[0];
-      this.product.quantitY_ON_HAND =
-        this.product.quantitY_ON_HAND - element.quantity;
+        this.customerAccountsTemp[0].amounT_OWING =
+          this.customerAccountsTemp[0].amounT_OWING + this.totalAmount;
 
-      console.log('this is the New Product Quantity');
-      //console.log(this.product);
-      this.productService.updateProduct(this.product).subscribe((response) => {
+        this.customerAccountService
+          .updateCustomerAccount(this.customerAccountsTemp[0])
+          .subscribe((resCustomer) => {
+            console.log('this is the updated customer account');
+            console.log(resCustomer);
+          });
+      }
+      this.sale.date = new Date();
+      this.sale.total = this.totalAmount;
+      this.sale.paymentID = res.paymentID;
+      this.sale;
+
+      this.saleService.addSale(this.sale).subscribe((response) => {
+        console.log('this is the new Sale');
         console.log(response);
+
+        for (let i = 0; i < this.dynamicArray.length; i++) {
+          const element = this.dynamicArray[i];
+
+          // add sale Product
+
+          this.saleProduct.productID = element.productID;
+          this.saleProduct.saleID = response.saleID;
+          this.saleProduct.quantity = element.quantity;
+
+          this.saleProductService
+            .addSaleProduct(this.saleProduct)
+            .subscribe((resSaleProduct) => {
+              console.log('new SaleProduct');
+              console.log(resSaleProduct);
+            });
+
+          // decrease inventory
+
+          this.productsTemp = this.products.filter((product) => {
+            return product.producT_ID == element.productID;
+          });
+
+          this.productsTemp[0].quantitY_ON_HAND =
+            this.productsTemp[0].quantitY_ON_HAND - element.quantity;
+
+          this.productService
+            .updateProduct(this.productsTemp[0])
+            .subscribe((resProduct) => {
+              console.log('updated product quantity');
+              console.log(resProduct);
+            });
+        }
       });
-    }
+    });
 
     //adding to audit log
     this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
@@ -291,7 +232,12 @@ export class MakeSaleComponent implements OnInit {
     });
   }
 
+  validAmount: boolean = true;
+  changeString: string = '0';
+
   AmountEntered() {
+    this.validAmount = this.validate.ValidateMoney(this.amountGiven);
+
     console.log('amount entered ' + this.amountGiven);
     if (this.amountGiven > 0) {
       let amount = this.totalAmount - this.amountGiven;
@@ -300,6 +246,7 @@ export class MakeSaleComponent implements OnInit {
         this.amountvalidate = true;
       } else {
         this.change = (this.totalAmount - this.amountGiven) * -1;
+        this.changeString = this.change.toFixed(2);
         this.amountvalidate = true;
         this.notEnough = true;
       }
@@ -309,20 +256,9 @@ export class MakeSaleComponent implements OnInit {
   }
 
   selectPayment(x: any) {
-    if (x == '3') {
-      this.selectedPaymentMethod = false;
-      this.cash = true;
-      this.card = true;
-    } else if (x == '1') {
-      this.selectedPaymentMethod = true;
-      this.cash = false;
-      this.card = true;
-    } else {
-      this.selectedPaymentMethod = true;
-      this.cash = true;
-      this.card = false;
-    }
-    this.typeOfPaymentID = x;
+    this.typeOfPayment = x;
+
+    this.typeOfPaymentID = 1;
     this.showPrintRec = false;
   }
 
@@ -333,7 +269,6 @@ export class MakeSaleComponent implements OnInit {
     this.customerAccountsTemp = this.customerAccounts;
     this.customerAccountsTemp = this.customerAccountsTemp.filter(
       (customerAccount) => {
-        console.log(customerAccount.customeR_ACCOUNT_ID == id);
         return customerAccount.customeR_ACCOUNT_ID == id;
       }
     );
@@ -352,10 +287,10 @@ export class MakeSaleComponent implements OnInit {
   }
 
   CalQuan(i: number, quan: number) {
+    this.validQuantity = this.validate.ValidateInteger(quan);
+
     if (quan > 0) {
       let priceTemp = this.price;
-      console.log('calculating qunatity');
-      console.log(this.saleQuantity);
       priceTemp = priceTemp * quan;
       this.dynamicArray[i].total = priceTemp;
       this.dynamicArray[i].vatPrice = (priceTemp / 1.15).toFixed(2);
@@ -366,6 +301,7 @@ export class MakeSaleComponent implements OnInit {
       for (let i = 0; i < this.dynamicArray.length; i++) {
         const element = this.dynamicArray[i];
         this.totalAmount = this.totalAmount + element.total;
+        this.totalAmountString = this.totalAmount.toFixed(2);
         this.subTotal = (this.totalAmount / 1.15).toFixed(2);
       }
       this.quanValidate = true;
@@ -380,6 +316,8 @@ export class MakeSaleComponent implements OnInit {
       this.quanValidate = false;
     }
   }
+
+  ////////////////////////////Add Product To DYnamimc Array///////////////////
 
   price: number;
   addProduct() {
@@ -415,11 +353,26 @@ export class MakeSaleComponent implements OnInit {
       for (let i = 0; i < this.dynamicArray.length; i++) {
         const element = this.dynamicArray[i];
         this.totalAmount = this.totalAmount + element.total;
+        this.totalAmountString = this.totalAmount.toFixed(2);
         this.subTotal = (this.totalAmount / 1.15).toFixed(2);
       }
       if (this.customerID > -1) this.creditValidate(this.customerID);
       console.log(this.subTotal);
       this.productAdded = false;
+    }
+  }
+
+  deleteRow(index) {
+    this.dynamicArray.splice(index, 1);
+
+    console.log(this.dynamicArray);
+
+    if (this.dynamicArray.length < 1) {
+      this.productAdded = true;
+      this.typeOfPayment = '-1';
+      this.changeString = '';
+      this.totalAmountString = '';
+      this.subTotal = '';
     }
   }
 
@@ -446,6 +399,28 @@ export class MakeSaleComponent implements OnInit {
     });
   }
 
+  //////////////////////////get Functions /////////////////////////////////////
+
+  getAllCurrentUsers() {
+    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
+      this.currentUsers = response;
+
+      //set the current user
+      this.sale.userID = this.currentUsers[this.currentUsers.length - 1].userID;
+
+      this.audit.userID =
+        this.currentUsers[this.currentUsers.length - 1].userID;
+      this.audit.employeeID =
+        this.currentUsers[this.currentUsers.length - 1].employeeID;
+
+      this.audit.month = 'Jan';
+
+      console.log('All current Users');
+      console.log(this.currentUsers);
+      this.getAllCustomerAccounts();
+    });
+  }
+
   getAllCustomerAccounts() {
     this.customerAccountService
       .getAllCustomerAccounts()
@@ -454,31 +429,40 @@ export class MakeSaleComponent implements OnInit {
           return debtor.deleted == false;
         });
         this.customerAccounts = response;
+        this.customerAccountsTemp = response;
         console.log('all customer accounts');
         console.log(this.customerAccounts);
+        this.getAllPaymentss();
       });
   }
+
   getAllPaymentss() {
     this.paymentService.getAllPayments().subscribe((response) => {
       this.payments = response;
       console.log('all payments');
       console.log(this.payments);
+      this.getAllSales();
     });
   }
+
   getAllSales() {
     this.saleService.getAllSales().subscribe((response) => {
       this.sales = response;
       console.log('all sales');
       console.log(this.sales);
+      this.getAllSaleProducts();
     });
   }
+
   getAllSaleProducts() {
     this.saleProductService.getAllSaleProducts().subscribe((response) => {
       this.saleProducts = response;
       console.log('all sale products');
       console.log(this.saleProducts);
+      this.getAllProducts();
     });
   }
+
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
       response = response.filter((product) => {
@@ -487,15 +471,14 @@ export class MakeSaleComponent implements OnInit {
       this.products = response;
       console.log('all products');
       console.log(this.products);
+      this.getAllPaymentTypes();
     });
   }
+
   getAllPaymentTypes() {
     this.paymentTypeService.getAllPaymentTypes().subscribe((response) => {
       this.paymentTypes = response;
       console.log('all payment types');
     });
-  }
-  Return() {
-    this.return.emit('false');
   }
 }
