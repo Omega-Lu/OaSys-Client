@@ -1,6 +1,7 @@
 export interface Wage {
   wageID: number;
   employeeID: number;
+  rateID: number;
   dateIssued: string;
   dateCollected: string;
   wageCollected: string;

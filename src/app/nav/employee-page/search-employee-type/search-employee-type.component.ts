@@ -24,6 +24,9 @@ export class SearchEmployeeTypeComponent implements OnInit {
 
   getAllEmployees() {
     this.employeetypeService.getAllEmployees().subscribe((response) => {
+      response = response.filter((employeeType) => {
+        return employeeType.deleted == false;
+      });
       this.employeetypes = response;
       this.employeeTypesTemp = response;
     });

@@ -1,4 +1,3 @@
-import { Time } from '@angular/common';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeHours } from 'src/app/models/EmployeeHours.model';
@@ -11,31 +10,23 @@ import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { EmployeeService } from 'src/app/_services/employee.service';
 
+//current employee
+import { CurrentUser } from 'src/app/models/CurrentUser.model';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-collect-payslip',
   templateUrl: './collect-payslip.component.html',
   styleUrls: ['./collect-payslip.component.css'],
 })
 export class CollectPayslipComponent implements OnInit {
-  employeehours: EmployeeHours = {
-    employeeHoursID: 0,
-    employeeID: 0,
-    checkInTime: '',
-    checkOutTime: '',
-  };
+  //employee hours
+  employeehours: EmployeeHours;
   employeeHourss: EmployeeHours[] = [];
   employeeHourssTemp: EmployeeHours[] = [];
 
-  wage: Wage = {
-    wageID: 0,
-    employeeID: 0,
-    dateIssued: '',
-    dateCollected: '',
-    wageCollected: '',
-    amount: 0,
-    hrApproved: '',
-    dateWorked: '',
-  };
+  //wage
+  wage: Wage;
   wages: Wage[] = [];
   wagesTemp: Wage[] = [];
 
@@ -43,19 +34,27 @@ export class CollectPayslipComponent implements OnInit {
   successSubmit: boolean = false;
 
   totalTimeString: string = '0';
-  totalPayString: string = '0';
+  totalPay: number = 0;
 
+  //employee
   employee: Employee;
   employees: Employee[] = [];
   emlpoyeesTemp: Employee[] = [];
 
+  //employee type
   employeeType: EmployeeType;
   employeeTypes: EmployeeType[] = [];
   employeeTypesTemp: EmployeeType[] = [];
 
+  //rate
   rate: Rate;
   rates: Rate[] = [];
   ratesTemp: Rate[] = [];
+
+  //current user
+  currentUser: CurrentUser;
+  currentUsers: CurrentUser[] = [];
+  currentUsersTemp: CurrentUser[] = [];
 
   timeIn;
   timeOut;
@@ -66,62 +65,30 @@ export class CollectPayslipComponent implements OnInit {
     private wageService: WageService,
     private rateService: RateService,
     private EmployeeService: EmployeeService,
-    private EmployeeTypeService: EmployeeTypeService
+    private EmployeeTypeService: EmployeeTypeService,
+    private CurrentUserService: CurrentUserService
   ) {}
 
   async ngOnInit() {
-    this.getAllWages();
-  }
-
-  async collectWage() {
-    // this.wage.employeeID = this.employee.employeE_ID;
-    // this.wage.dateIssued = this.date.toString();
-    // this.wage.dateCollected = new Date().toString();
-    // this.wage.wageCollected = this.totalPay;
-    // console.log('this is the new wage entry');
-    // //console.log(this.wage);
-    // this.wageService.addWage(this.wage).subscribe((response) => {
-    //   console.log(response);
-    // });
-    // await this.sleep(200);
-    // this.employeehours.employeeID = this.employee.employeE_ID;
-    // this.employeehours.checkInTime = this.timeIn.toString();
-    // this.employeehours.checkOutTime = this.timeOut.toString();
-    // await this.getAllWages();
-    // await this.sleep(300);
-    // this.employeehours.wageID = this.wages[this.wages.length - 1].wageID;
-    // console.log('this is the new EmployeeHours Entry');
-    // //console.log(this.employeehours);
-    // this.employeeHoursService
-    //   .addEmployeeHours(this.employeehours)
-    //   .subscribe((response) => {
-    //     console.log(response);
-    //   });
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.currentUser = res[res.length - 1];
+      this.getAllWages();
+    });
   }
 
   async getAllWages() {
-    this.wageService.getAllWages().subscribe((response) => {
-      this.wages = response;
-      console.log('this is all the wages');
+    this.wageService.getAllWages().subscribe((res) => {
+      res = res.filter((wage) => {
+        return (
+          wage.hrApproved == 'true' &&
+          wage.wageCollected == 'false' &&
+          wage.employeeID == this.currentUser.employeeID
+        );
+      });
+
+      this.wages = res;
+      console.log('this is all the employee wages');
       console.log(this.wages);
-      this.getAllEmployees();
-    });
-  }
-
-  getAllEmployees() {
-    this.EmployeeService.getAllEmployees().subscribe((res) => {
-      this.employees = res;
-      console.log('this is all the employees');
-      console.log(this.employees);
-      this.getEmployeeTypes();
-    });
-  }
-
-  getEmployeeTypes() {
-    this.EmployeeTypeService.getAllEmployees().subscribe((res) => {
-      this.employeeTypes = res;
-      console.log('this is all the employee types');
-      console.log(this.employees);
       this.getRates();
     });
   }
@@ -130,7 +97,19 @@ export class CollectPayslipComponent implements OnInit {
     this.rateService.getAllEmployees().subscribe((res) => {
       this.rates = res;
       console.log('this is all the rates');
-      console.log(this.employees);
+      console.log(this.rates);
+
+      this.getEmployeeTypes();
+    });
+  }
+
+  getEmployeeTypes() {
+    this.EmployeeTypeService.getAllEmployees().subscribe((res) => {
+      console.log('this is all the employee types');
+      console.log(res);
+
+      this.employeeTypes = res;
+
       this.populateTable();
     });
   }
@@ -140,39 +119,34 @@ export class CollectPayslipComponent implements OnInit {
     for (let i = 0; i < this.wages.length; i++) {
       const element = this.wages[i];
 
-      //work out rate
-      this.emlpoyeesTemp = this.employees;
-      this.emlpoyeesTemp = this.emlpoyeesTemp.filter((employee) => {
-        return employee.employeE_ID == element.employeeID;
+      this.employeeTypesTemp = this.employeeTypes.filter((employee) => {
+        return employee.employeE_TYPE_ID == element.rateID;
       });
-
-      this.employeeTypesTemp = this.employeeTypes;
-      this.employeeTypesTemp = this.employeeTypesTemp.filter((type) => {
-        return type.employeE_TYPE_ID == this.emlpoyeesTemp[0].employeE_TYPE_ID;
-      });
-
-      this.ratesTemp = this.rates;
-      this.ratesTemp = this.ratesTemp.filter((rate) => {
-        return rate.ratE_NAME == this.employeeTypesTemp[0].positioN_NAME;
-      });
-
-      let hoursWorked = (
-        element.amount / this.ratesTemp[0].ratE_AMOUNT
-      ).toFixed(2);
 
       //push to dynamic array
+
       this.dynamicArray.push({
         date: element.dateWorked,
-        hours: hoursWorked,
-        rate: this.ratesTemp[0].ratE_NAME,
+        rate: this.employeeTypesTemp[0].positioN_NAME,
         pay: element.amount,
       });
+      this.totalPay = this.totalPay + element.amount;
     }
   }
 
-  async sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
+  async collectWage() {
+    for (let i = 0; i < this.wages.length; i++) {
+      const element = this.wages[i];
+
+      element.dateCollected = new Date().toLocaleDateString();
+      element.wageCollected = 'true';
+
+      this.wageService.updateWage(element).subscribe((res) => {
+        console.log('collected wage');
+        console.log(res);
+      });
+    }
+
+    this.successSubmit = true;
   }
 }

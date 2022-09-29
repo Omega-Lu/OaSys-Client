@@ -10,6 +10,11 @@ import { WageService } from 'src/app/_services/Wage.service';
 import * as $ from 'jquery';
 import { Time } from '@angular/common';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-calculate-wages',
   templateUrl: './calculate-wages.component.html',
@@ -18,25 +23,28 @@ import { Time } from '@angular/common';
 export class CalculateWagesComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
 
+  //employee
   employee: Employee;
   employees: Employee[] = [];
   employeesTemp: Employee[] = [];
   employeesTempSurname: Employee[] = [];
 
+  //rate
   rate: Rate = {
     ratE_ID: 0,
     ratE_AMOUNT: 0,
-    ratE_NAME: '',
+    ratE_NAME: 0,
     deleted: false,
   };
-
   rates: Rate[] = [];
   ratesTemp: Rate[] = [];
 
+  //wage
   wage: Wage;
   wages: Wage[] = [];
   wagesTemp: Wage[] = [];
 
+  //employee type
   employeeType: EmployeeType;
   employeeTypes: EmployeeType[] = [];
   employeeTypesTemp: EmployeeType[] = [];
@@ -61,32 +69,49 @@ export class CalculateWagesComponent implements OnInit {
   totalTime: number = null;
   totalPay: number = null;
 
+  successSubmit: boolean = false;
+
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Finalise Wage Payment',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private rateService: RateService,
     private employeeService: EmployeeService,
     private WageService: WageService,
-    private EmployeeTypeService: EmployeeTypeService
+    private EmployeeTypeService: EmployeeTypeService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
-    this.rate.ratE_NAME = '';
     await this.getEmployees();
-    await this.getRates();
-    await this.getAllWages();
-    await this.getEmployeeTypes();
 
-    this.employeesTemp = this.employees;
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
-  datePicked() {
-    this.timeInDisable = false;
-  }
+  ///////////////////////////get functions////////////////////////////////////
 
-  AddToTable() {
-    this.displayWages.push({
-      dateWorked: this.dateWorked,
-      wageName: this.rate.ratE_NAME,
-      totalPay: this.totalPay,
+  async getEmployees() {
+    this.employeeService.getAllEmployees().subscribe((res) => {
+      res = res.filter((employee) => {
+        return employee.deleted == false;
+      });
+      this.employees = res;
+      this.employeesTemp = res;
+      console.log('this is all the employees');
+      console.log(this.employees);
+
+      this.getEmployeeTypes();
     });
   }
 
@@ -95,121 +120,33 @@ export class CalculateWagesComponent implements OnInit {
       this.employeeTypes = res;
       console.log('this is all the employee types');
       console.log(this.employeeTypes);
+
+      this.getRates();
+    });
+  }
+
+  async getRates() {
+    this.rateService.getAllEmployees().subscribe((res) => {
+      this.rates = res;
+      console.log('this is all the rates');
+      console.log(this.rates);
+
+      this.getAllWages();
     });
   }
 
   async getAllWages() {
     this.WageService.getAllWages().subscribe((res) => {
+      res = res.filter((wage) => {
+        return wage.hrApproved == 'false';
+      });
       this.wages = res;
       console.log('this is all the wages');
       console.log(this.wages);
     });
   }
 
-  ValTimeIN(time: Time) {
-    var timeA: number[] = [];
-    console.log(time);
-    var timeArrayString = time.toString().split(':', 2);
-    for (let item of timeArrayString) {
-      let no: number = Number(item);
-      timeA.push(no);
-    }
-    console.log('Hours', timeA[0]);
-    console.log('Minutes', timeA[1]);
-
-    this.timeInNumber = timeA[0] + timeA[1] / 60;
-    console.log('Time in: ' + this.timeInNumber);
-
-    this.timeOutDisable = false;
-
-    if (this.totalTimeString != '0') {
-      this.calculatePay(this.timeOut);
-    }
-  }
-
-  totalTimeString: string = '0';
-  totalPayString: string = '0';
-
-  calculatePay(time: Time) {
-    var timeA: number[] = [];
-    console.log(time);
-    var timeArrayString = time.toString().split(':', 2);
-    for (let item of timeArrayString) {
-      let no: number = Number(item);
-      timeA.push(no);
-    }
-    console.log('Hours', timeA[0]);
-    console.log('Minutes', timeA[1]);
-
-    this.timeOutNumber = timeA[0] + timeA[1] / 60;
-    console.log('Time Out: ' + this.timeOutNumber);
-
-    this.totalTime = this.timeOutNumber - this.timeInNumber;
-    this.totalPay = this.rate.ratE_AMOUNT * this.totalTime;
-    this.totalPayString = this.totalPay.toFixed(2);
-    this.totalTimeString = this.totalTime.toFixed(2);
-
-    if (this.totalTime <= 0) {
-      this.timeVal = false;
-      this.totalPayString = '0';
-    } else {
-      this.timeVal = true;
-    }
-
-    if (this.totalPay > 0) {
-      this.screenStart = false;
-    }
-  }
-
-  wageOption(id: number) {
-    //this.rate.ratE_AMOUNT = 0;
-    this.ratesTemp = this.rates;
-    this.ratesTemp = this.ratesTemp.filter((rate) => {
-      console.log(rate.ratE_ID == id);
-      return rate.ratE_ID == id;
-    });
-    this.rate = this.ratesTemp[0];
-    console.log('this is the chosen rate');
-    console.log(this.rate);
-    this.tableDisable = false;
-  }
-
-  surnameOption(id: number) {
-    this.displayWages = [];
-    this.employeesTemp = this.employees;
-    this.employeesTemp = this.employeesTemp.filter((employee) => {
-      console.log(employee.employeE_ID == id);
-      return employee.employeE_ID == id;
-    });
-    this.employee = this.employeesTemp[0];
-    console.log('This is the selected employee');
-    console.log(this.employee);
-    this.populateTable();
-    this.ratesTemp = this.rates;
-    this.wageSelect = false;
-    $('#rateID').val('-1');
-  }
-
-  displayWages = [];
-
-  populateTable() {
-    this.employeeTypesTemp = this.employeeTypes.filter((type) => {
-      return type.employeE_TYPE_ID == this.employee.employeE_TYPE_ID;
-    });
-    for (let i = 0; i < this.wages.length; i++) {
-      const element = this.wages[i];
-
-      if (element.employeeID == this.employee.employeE_ID) {
-        this.displayWages.push({
-          date: element.dateWorked,
-          wageName: this.employeeTypesTemp[0].positioN_NAME,
-          totalPay: element.amount,
-          wageID: element.wageID,
-        });
-      }
-    }
-    this.employeeSelected = true;
-  }
+  /////////////////// name & surname option/////////////////////////////
 
   nameSelect(name: string) {
     this.displayWages = [];
@@ -224,63 +161,76 @@ export class CalculateWagesComponent implements OnInit {
     $('#surnameID').val('-1');
     $('#rateID').val('-1');
     this.wageSelect = true;
+    this.totalWageAmount = 0;
   }
 
-  async getEmployees() {
-    this.employeeService.getAllEmployees().subscribe((response) => {
-      this.employees = response;
-      console.log('this is all the employees');
-      console.log(this.employees);
+  surnameOption(id: number) {
+    this.displayWages = [];
+    this.employeesTemp = this.employees;
+    this.employeesTemp = this.employeesTemp.filter((employee) => {
+      console.log(employee.employeE_ID == id);
+      return employee.employeE_ID == id;
     });
+    this.employee = this.employeesTemp[0];
+    console.log('This is the selected employee');
+    console.log(this.employee);
+    this.totalWageAmount = 0;
+    this.populateTable();
   }
 
-  async getRates() {
-    this.rateService.getAllEmployees().subscribe((response) => {
-      this.rates = response;
-      console.log('this is all the rates');
-      console.log(this.rates);
-    });
+  ///////////////////////// populate the table //////////////////////////////
+
+  displayWages = [];
+  totalWageAmount = 0;
+
+  populateTable() {
+    for (let i = 0; i < this.wages.length; i++) {
+      const element = this.wages[i];
+
+      this.employeeTypesTemp = this.employeeTypes.filter((type) => {
+        return type.employeE_TYPE_ID == element.rateID;
+      });
+
+      if (element.employeeID == this.employee.employeE_ID) {
+        this.displayWages.push({
+          date: element.dateWorked,
+          wageName: this.employeeTypesTemp[0].positioN_NAME,
+          totalPay: element.amount,
+          wageID: element.wageID,
+        });
+        this.totalWageAmount = this.totalWageAmount + element.amount;
+      }
+    }
+    if (this.displayWages.length > 0) this.employeeSelected = true;
+    else this.employeeSelected = false;
   }
 
-  Return() {
-    this.return.emit('false');
-  }
+  ///////////////finalize the wage payment////////////////////////////////////
 
   finPay() {
     for (let i = 0; i < this.displayWages.length; i++) {
       const element = this.displayWages[i];
       this.wagesTemp = this.wages;
+
+      //get selected wage
       this.wagesTemp = this.wagesTemp.filter((wage) => {
         return wage.wageID == element.wageID;
       });
+
+      this.wagesTemp[0].dateIssued = new Date().toLocaleDateString();
       this.wagesTemp[0].hrApproved = 'true';
+
       this.WageService.updateWage(this.wagesTemp[0]).subscribe((res) => {
         console.log(' this is the new updated wages');
         console.log(res);
+
+        //add to audit log
+        this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+          console.log('new audit log entry');
+          console.log(res);
+          this.successSubmit = true;
+        });
       });
     }
-  }
-
-  back() {
-    this.collectPayslip = false;
-    this.totalPay = 0;
-    this.totalTime = 0;
-    this.totalPayString = '0';
-    this.totalTimeString = '0';
-
-    this.screenStart = true;
-    this.surnameSelect = true;
-    this.tableDisable = true;
-    this.wageSelect = true;
-    this.timeInDisable = true;
-    this.timeOutDisable = true;
-    this.timeVal = true;
-
-    this.dateWorked = null;
-
-    this.timeIn = null;
-    this.timeInNumber = null;
-    this.timeOut = null;
-    this.timeOutNumber = null;
   }
 }

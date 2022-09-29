@@ -7,6 +7,11 @@ import { ProductCategoryService } from 'src/app/_services/product-category.servi
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-maintain-product-type',
   templateUrl: './maintain-product-type.component.html',
@@ -42,58 +47,40 @@ export class MaintainProductTypeComponent implements OnInit {
   //reference
   hasReference: boolean = false;
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Delete Product Type',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private productTypeService: ProductTypeService,
     private productCategoryService: ProductCategoryService,
-    private productService: ProductService
+    private productService: ProductService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit(): void {
     this.getAllProductTypes();
-  }
 
-  deletee(delet: any) {
-    this.productType = delet;
-    this.ActiveReferece();
-  }
-
-  ActiveReferece() {
-    this.hasReference = false;
-
-    //product Reference
-    this.productService.getAllProducts().subscribe((res) => {
-      res = res.filter((product) => {
-        return product.producT_TYPE_ID == this.productType.producT_TYPE_ID;
-      });
-      let activeArray;
-      if (res.length > 0) {
-        activeArray = res.filter((product) => {
-          return product.deleted == false;
-        });
-      }
-      if (activeArray.length > 0) {
-        this.hasReference = true;
-      }
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
     });
   }
 
-  deleteProductType() {
-    this.productType.deleted = true;
-    this.productTypeService
-      .updateProductType(this.productType)
-      .subscribe((response) => {
-        this.successDelete = true;
-        this.getAllProductTypes();
-      });
-  }
-
-  populateForm(productType: ProductType) {
-    this.productType = productType;
-    this.updateProductType = true;
-  }
+  //////////////// get functions ///////////////////////////////////////////
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
+      response = response.filter((temp) => {
+        return temp.deleted == false;
+      });
       this.productTypes = response;
       this.productTypesTemp = response;
       this.getProductCategories();
@@ -106,6 +93,8 @@ export class MaintainProductTypeComponent implements OnInit {
       this.createDynamicArray();
     });
   }
+
+  //////////////// create dynamic array ////////////////////////////////////
 
   createDynamicArray() {
     this.dynamicArray = [];
@@ -129,6 +118,56 @@ export class MaintainProductTypeComponent implements OnInit {
       }
     }
     this.tempArray = this.dynamicArray;
+  }
+
+  ////////////////// delete product type //////////////////////////////////
+
+  deletee(delet: any) {
+    this.productType = delet;
+    this.ActiveReferece();
+  }
+
+  deleteProductType() {
+    this.productType.deleted = true;
+    this.productTypeService
+      .updateProductType(this.productType)
+      .subscribe((response) => {
+        this.successDelete = true;
+        this.getAllProductTypes();
+      });
+
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
+  }
+
+  //////////////////// reference /////////////////////////////////////
+
+  ActiveReferece() {
+    this.hasReference = false;
+
+    //product Reference
+    this.productService.getAllProducts().subscribe((res) => {
+      res = res.filter((product) => {
+        return product.producT_TYPE_ID == this.productType.producT_TYPE_ID;
+      });
+      let activeArray;
+      if (res.length > 0) {
+        activeArray = res.filter((product) => {
+          return product.deleted == false;
+        });
+      }
+      if (activeArray.length > 0) {
+        this.hasReference = true;
+      }
+    });
+  }
+
+  populateForm(productType: ProductType) {
+    this.productType = productType;
+    this.updateProductType = true;
   }
 
   Search() {

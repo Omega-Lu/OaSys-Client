@@ -18,13 +18,13 @@
       <thead>
         <tr>
           <th>Wage rate name</th>
-          <th>Amount</th>
+          <th>Amount (/h)</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let rate of ratesTemp">
-          <td>{{ rate.ratE_NAME }}</td>
-          <td>R{{ rate.ratE_AMOUNT }}/h</td>
+        <tr *ngFor="let rate of dynamicArray">
+          <td>{{ rate.name }}</td>
+          <td>R{{ rate.amount }}</td>
         </tr>
       </tbody>
     </table>

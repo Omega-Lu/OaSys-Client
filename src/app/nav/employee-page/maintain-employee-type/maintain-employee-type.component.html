@@ -21,7 +21,7 @@
 
     <hr />
 
-    <div class="table-responsive" style="max-height: 700px">
+    <div class="table-responsive" style="max-height: 600px">
       <table class="table">
         <thead>
           <tr>
@@ -55,7 +55,7 @@
                 style="background: var(--bs-red); border-color: var(--bs-red)"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                (click)="deleteID(employeetype.employeE_TYPE_ID)"
+                (click)="deleteID(employeetype)"
               >
                 Delete
               </button>
@@ -90,11 +90,18 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successDelete">
+        <h5
+          class="modal-title"
+          id="exampleModalLabel"
+          *ngIf="!successDelete && !hasReference"
+        >
           Are You Sure You Would Like To Delete This Employee Type
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="successDelete">
           Employee Type Successfully Deleted
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="hasReference">
+          All Employees With This Type Must be Changes First
         </h5>
       </div>
 
@@ -103,17 +110,16 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasReference"
         >
           No
         </button>
         <button
           type="submit"
           class="btn btn-primary"
-          data-dismiss="modal"
           name="deleteempl"
           data-target="#exampleModal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasReference"
           (click)="deleteEmployeeType()"
         >
           Yes
@@ -126,7 +132,16 @@
           data-dismiss="modal"
           *ngIf="successDelete"
           routerLink="/employee-page"
-          (click)="Return()"
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="hasReference"
         >
           OK
         </button>

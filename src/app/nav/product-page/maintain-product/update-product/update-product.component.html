@@ -15,10 +15,10 @@
           id="productname"
           type="text"
           [(ngModel)]="product.producT_NAME"
-          (click)="namevalidate()"
-          (keyup)="namevalidate()"
+          (keyup)="nameValidate()"
+          (input)="nameValidate()"
         />
-        <div *ngIf="!details" style="color: Red">Invalid Details</div>
+        <div *ngIf="!validName" style="color: Red">Invalid Product Name</div>
       </div>
       <div class="col">
         <label class="form-label"> Product Description: </label>
@@ -27,10 +27,15 @@
           name="productDescription"
           type="text"
           [(ngModel)]="product.producT_DESCRIPTION"
-          (click)="survalidate()"
-          (keyup)="survalidate()"
+          (keyup)="DescriptionValdate()"
+          (input)="DescriptionValdate()"
         />
-        <div *ngIf="!pdetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!validDescription" style="color: Red">
+          Invalid Product Description
+        </div>
+        <div *ngIf="!uniqueNameAndDesc" style="color: Red">
+          Duplicate Product Name and Description
+        </div>
       </div>
     </div>
     <div class="row">
@@ -41,7 +46,7 @@
 
         <select
           name="productCategory"
-          id="productCategoryID"
+          id="productCategory"
           class="btn"
           style="
             background: var(--bs-gray-100);
@@ -50,20 +55,27 @@
             width: 100%;
           "
           [(ngModel)]="product.producT_CATEGORY_ID"
-          (input)="categorySelect($event.target.value)"
+          [value]="product.producT_CATEGORY_ID"
+          required
+          (click)="validateCategory()"
+          (input)="categorySelect($event.target.value); validateCategory()"
         >
           <option value="-1" disabled>Product Category</option>
           <option
-            *ngFor="let productCategory of productCategories"
             value=" {{ productCategory.producT_CATEGORY_ID }} "
+            *ngFor="let productCategory of productCategories"
           >
             {{ productCategory.categorY_NAME }}
           </option>
         </select>
+        <div *ngIf="!validCategory" style="color: Red">
+          Please Select A Category
+        </div>
       </div>
       <div class="col">
         <label class="form-label" style="width: 100%"> Product type: </label>
         <select
+          [disabled]="!categorySelected"
           name="productType"
           id="productType"
           class="btn"
@@ -73,16 +85,20 @@
             color: var(--bs-orange);
             width: 100%;
           "
+          (click)="validateType()"
+          (input)="validateType()"
           [(ngModel)]="product.producT_TYPE_ID"
+          [value]="product.producT_TYPE_ID"
         >
-          <option value="-1" disabled>Product Type</option>
+          <option value="-1" selected disabled>Product Type</option>
           <option
-            *ngFor="let productType of productTypesTemp"
             value=" {{ productType.producT_TYPE_ID }} "
+            *ngFor="let productType of productTypesTemp"
           >
             {{ productType.typE_NAME }}
           </option>
         </select>
+        <div *ngIf="!validType" style="color: Red">Please Select A Type</div>
       </div>
     </div>
     <div class="row">
@@ -91,11 +107,16 @@
         <input
           class="form-control"
           name="reorder"
-          type="text"
+          type="number"
+          placeholder="Re-Order Limit..."
           required
+          (keyup)="ReorderValidate()"
+          (input)="ReorderValidate()"
           [(ngModel)]="product.reordeR_LIMIT"
         />
-        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!validReorder" style="color: Red">
+          Invalid Re-Order Limit
+        </div>
       </div>
       <div class="col">
         <label class="form-label">Product Barcode:</label>
@@ -103,38 +124,70 @@
           class="form-control"
           name="barcode"
           type="text"
+          placeholder="Barcode..."
           required
+          (keyup)="BarcodeValidate()"
+          (input)="BarcodeValidate()"
           [(ngModel)]="product.barcode"
         />
-        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+        <div *ngIf="!validBarcode" style="color: Red">Invalid Barcode</div>
+        <div *ngIf="!uniqueBarcode" style="color: Red">Duplicate Barcode</div>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <label class="form-label"> Product Cost Price:(R) </label>
-        <input
-          class="form-control"
-          name="costPrice"
-          type="text"
-          required
-          [(ngModel)]="product.cosT_PRICE"
-          (click)="Costvalidate()"
-          (keyup)="Costvalidate()"
-        />
-        <div *ngIf="!cdetails" style="color: Red">Invalid Details</div>
+        <label class="form-label"> Product Cost Price: </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              R
+            </div>
+          </div>
+          <input
+            class="form-control"
+            name="costPrice"
+            type="number"
+            placeholder="0.00"
+            required
+            [(ngModel)]="product.cosT_PRICE"
+            (keyup)="Costvalidate()"
+            (input)="Costvalidate()"
+          />
+        </div>
+        <div *ngIf="!validCost" style="color: Red">Invalid Cost Price</div>
       </div>
       <div class="col">
-        <label class="form-label"> Product Selling Price:(R) </label>
-        <input
-          class="form-control"
-          name="sellingPrice"
-          type="text"
-          required
-          [(ngModel)]="product.sellinG_PRICE"
-          (click)="Sellvalidate()"
-          (keyup)="Sellvalidate()"
-        />
-        <div *ngIf="!sdetails" style="color: Red">Invalid Details</div>
+        <label class="form-label"> Product Selling Price:</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              R
+            </div>
+          </div>
+          <input
+            class="form-control"
+            name="sellingPrice"
+            type="number"
+            required
+            placeholder="0.00"
+            [(ngModel)]="product.sellinG_PRICE"
+            (keyup)="Sellvalidate()"
+            (input)="Sellvalidate()"
+          />
+        </div>
+        <div *ngIf="!validSell" style="color: Red">Invalid Selling Price</div>
       </div>
     </div>
 
@@ -168,14 +221,24 @@
           class="btn btn-primary"
           type="button"
           data-toggle="modal"
-          data-target="#exampleModal"
+          data-target="#updateModal"
           style="
             border-color: var(--bs-orange);
             background: var(--bs-orange);
             margin-right: 0px;
             margin-top: 10px;
           "
-          *ngIf="details && pdetails && cdetails && sdetails"
+          (mouseover)="FormValidate()"
+          [disabled]="
+            !validName ||
+            !validDescription ||
+            !validCost ||
+            !validSell ||
+            !validReorder ||
+            !validBarcode ||
+            !uniqueNameAndDesc ||
+            !uniqueBarcode
+          "
         >
           Save
         </button>
@@ -186,19 +249,19 @@
 
 <div
   class="modal fade"
-  id="exampleModal"
+  id="updateModal"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="exampleModalLabel"
+  aria-labelledby="updateModalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+        <h5 class="modal-title" id="updateModalLabel" *ngIf="!successSubmit">
           Are You Sure You Would Like To Update This Product
         </h5>
-        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+        <h5 class="modal-title" id="updateModalLabel" *ngIf="successSubmit">
           Product Successfully Updated
         </h5>
       </div>
@@ -215,8 +278,9 @@
         <button
           type="submit"
           class="btn btn-primary"
-          data-target="#exampleModal"
+          data-target="#updateModal"
           *ngIf="!successSubmit"
+          (click)="onSubmit()"
         >
           Yes
         </button>
@@ -224,7 +288,7 @@
           type="button"
           class="btn btn-primary"
           data-toggle="modal"
-          data-target="#exampleModal"
+          data-target="#updateModal"
           data-dismiss="modal"
           *ngIf="successSubmit"
           routerLink="/product-page"

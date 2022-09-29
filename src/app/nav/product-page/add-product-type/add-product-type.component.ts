@@ -4,6 +4,11 @@ import { ProductTypeService } from 'src/app/_services/product-type.service';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-add-product-type',
   templateUrl: './add-product-type.component.html',
@@ -33,14 +38,54 @@ export class AddProductTypeComponent implements OnInit {
   productTypes: ProductType[] = [];
   productTypesTemp: ProductType[] = [];
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Add Product Type',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private productTypeService: ProductTypeService,
-    private productCategoryService: ProductCategoryService
+    private productCategoryService: ProductCategoryService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit(): void {
     this.getAllProductCategories();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
+
+  /////////////////// get functions //////////////////////////////////
+
+  getAllProductCategories() {
+    this.productCategoryService
+      .getAllProductCategories()
+      .subscribe((response) => {
+        response = response.filter((type) => {
+          return type.deleted == false;
+        });
+        this.productCategories = response;
+        console.log(this.productCategories);
+        this.getProductTypes();
+      });
+  }
+
+  getProductTypes() {
+    this.productTypeService.getAllProductTypes().subscribe((res) => {
+      this.productTypes = res;
+    });
+  }
+
+  ///////////////// add product type //////////////////////////////////
 
   onSubmit() {
     if (this.productType.producT_TYPE_ID == 0) {
@@ -59,6 +104,12 @@ export class AddProductTypeComponent implements OnInit {
           this.successSubmit = true;
         });
     }
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+      this.successSubmit = true;
+    });
   }
 
   FormValidate() {
@@ -71,22 +122,6 @@ export class AddProductTypeComponent implements OnInit {
     if (this.productType.producT_CATEGORY_ID == -1) {
       this.cdetails = false;
     } else this.cdetails = true;
-  }
-
-  getAllProductCategories() {
-    this.productCategoryService
-      .getAllProductCategories()
-      .subscribe((response) => {
-        this.productCategories = response;
-        console.log(this.productCategories);
-        this.getProductTypes();
-      });
-  }
-
-  getProductTypes() {
-    this.productTypeService.getAllProductTypes().subscribe((res) => {
-      this.productTypes = res;
-    });
   }
 
   namevalidate() {

@@ -7,6 +7,11 @@ import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/_services/user.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-update-employee',
   templateUrl: './update-employee.component.html',
@@ -52,10 +57,21 @@ export class UpdateEmployeeComponent implements OnInit {
   uniqueContactNumber: boolean = true;
   uniqueEmail: boolean = true;
 
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Update Employee',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private userService: UserService
+    private userService: UserService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit() {
@@ -138,7 +154,12 @@ export class UpdateEmployeeComponent implements OnInit {
     else this.uniqueEmail = true;
   }
 
+  //////////////////////////////update employee ///////////////////////////////
   onSubmit() {
+    if (this.employeeSelected == false) {
+      this.employee.employeE_TYPE_ID = 0;
+    }
+
     this.employeeService.updateEmployee(this.employee).subscribe((response) => {
       console.log('this is the new updated employee');
       console.log(response);
@@ -147,6 +168,12 @@ export class UpdateEmployeeComponent implements OnInit {
         console.log(res);
         this.successSubmit = true;
       });
+    });
+
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
     });
   }
 
@@ -220,9 +247,20 @@ export class UpdateEmployeeComponent implements OnInit {
     }
   }
 
+  ///////////////////////// get functions/////////////////////////////////////
+
   GetEmployeeTypes() {
     this.employeeTypeService.getAllEmployees().subscribe((res) => {
       this.employeeTypes = res;
+
+      this.getCurrentUser();
+    });
+  }
+
+  getCurrentUser() {
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
     });
   }
 

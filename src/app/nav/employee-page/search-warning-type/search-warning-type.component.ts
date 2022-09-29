@@ -24,6 +24,9 @@ export class SearchWarningTypeComponent implements OnInit {
 
   getAllEmployees() {
     this.warningtypesService.getAllEmployees().subscribe((response) => {
+      response = response.filter((temp) => {
+        return temp.deleted == false;
+      });
       this.warningtypes = response;
       this.warningTypesTemp = response;
       console.log(this.warningtypes);

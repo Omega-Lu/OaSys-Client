@@ -11,6 +11,13 @@ import { WriteOff } from 'src/app/models/WriteOff.model';
 import { WriteOffService } from 'src/app/_services/WriteOff.service';
 import * as $ from 'jquery';
 
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-write-off',
   templateUrl: './write-off.component.html',
@@ -61,23 +68,39 @@ export class WriteOffComponent implements OnInit {
 
   reason: string;
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Product Write Off',
+    date: new Date(),
+    month: 'Oct',
+  };
+
+  //import validation
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
+
   constructor(
     private productService: ProductService,
     private productWriteOffService: ProductWriteOffService,
     private writeOffService: WriteOffService,
     private productCategoryService: ProductCategoryService,
-    private productTypeService: ProductTypeService
+    private productTypeService: ProductTypeService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
-    await this.sleep(150);
     this.getAllProducts();
-    this.getAllProductCategories();
-    this.getAllProductTypes();
-    this.getAllProductWriteOffs();
-    this.getAllWriteOffs();
-    await this.sleep(150);
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
+
+  //////////////////////// get functions ////////////////////////////////////
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
@@ -85,14 +108,19 @@ export class WriteOffComponent implements OnInit {
         return product.deleted == false;
       });
       this.products = response;
-      console.log(this.products);
+
+      this.getAllProductTypes();
     });
   }
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
+      response = response.filter((res) => {
+        return res.deleted == false;
+      });
       this.productTypes = response;
-      console.log(this.productTypes);
+
+      this.getAllProductCategories();
     });
   }
 
@@ -100,8 +128,12 @@ export class WriteOffComponent implements OnInit {
     this.productCategoryService
       .getAllProductCategories()
       .subscribe((response) => {
+        response = response.filter((res) => {
+          return res.deleted == false;
+        });
         this.productCategories = response;
-        console.log(this.productCategories);
+
+        this.getAllProductWriteOffs();
       });
   }
 
@@ -110,26 +142,18 @@ export class WriteOffComponent implements OnInit {
       .getAllProductWriteOffs()
       .subscribe((response) => {
         this.productWriteOffs = response;
-        console.log(this.productCategories);
+
+        this.getAllWriteOffs();
       });
   }
 
   getAllWriteOffs() {
     this.writeOffService.getAllWriteOffs().subscribe((response) => {
       this.writeOffs = response;
-      console.log(this.productCategories);
     });
   }
 
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
-
-  Return() {
-    this.return.emit('false');
-  }
+  /////////////////// selecting the product /////////////////////////////////
 
   async categorySelect(id: number) {
     this.typeSelected = false;
@@ -140,14 +164,12 @@ export class WriteOffComponent implements OnInit {
     $('#nameID').val('-1');
     $('#quantityID').val('');
 
-    this.productTypesTemp = this.productTypes;
-    this.productTypesTemp = this.productTypesTemp.filter((productType) => {
-      console.log(productType.producT_CATEGORY_ID == id);
+    this.productTypesTemp = this.productTypes.filter((productType) => {
       return productType.producT_CATEGORY_ID == id;
     });
-    console.log('the selected product types from the category are');
-    console.log(this.productTypesTemp);
+
     this.categorySelected = true;
+    this.inList = false;
   }
 
   async typeSelect(id: number) {
@@ -157,39 +179,44 @@ export class WriteOffComponent implements OnInit {
     $('#reasonID').val('-1');
     $('#quantityID').val('');
 
-    this.productsTemp = this.products;
-    console.log(id);
-    this.productsTemp = this.productsTemp.filter((product) => {
-      console.log(product.producT_TYPE_ID == id);
+    this.productsTemp = this.products.filter((product) => {
       return product.producT_TYPE_ID == id;
     });
-    console.log('the selected products from the product types are');
-    console.log(this.productsTemp);
+
     this.typeSelected = true;
+    this.inList = false;
   }
 
   nameSelect() {
     this.activateQuantity = true;
     $('#reasonID').val('-1');
     $('#quantityID').val('');
+    this.inList = false;
   }
 
   reasonSelect() {
     $('#quantityID').val('');
     this.completeSelection = true;
+    this.inList = false;
   }
+
+  sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  ////////////// validate quantity ///////////////////////////////////////
 
   pID: number;
 
   quantityVali() {
     if (this.quantity > 0) {
-      this.completeQuantity = true;
+      this.completeQuantity = this.validate.ValidateInteger(this.quantity);
     } else {
       this.completeQuantity = false;
     }
-    this.productsTempQuan = this.productsTemp;
-    this.productsTempQuan = this.productsTempQuan.filter((products) => {
-      console.log(products.producT_ID == this.pID);
+    this.productsTempQuan = this.productsTemp.filter((products) => {
       return products.producT_ID == this.pID;
     });
     if (this.productsTempQuan[0].quantitY_ON_HAND < this.quantity) {
@@ -199,7 +226,11 @@ export class WriteOffComponent implements OnInit {
     }
   }
 
+  ///////////////// add product to dynamic array /////////////////////////////
+
   quantity: number;
+
+  inList: boolean = false;
 
   addProduct() {
     if (this.activateQuantity == true) {
@@ -208,68 +239,85 @@ export class WriteOffComponent implements OnInit {
       this.completeQuantity = false;
     } else if (this.QuanOnHand == false) {
     } else {
-      const categoryText = $('#categoryID option:selected').text();
-      const typeText = $('#typeID option:selected').text();
-      const nameText = $('#nameID option:selected').text();
-      this.reason = $('#reasonID option:selected').text();
-
-      console.log(categoryText);
-      console.log(typeText);
-      console.log(nameText);
-      console.log(this.quantity);
-      this.booloff = true;
-
-      this.dynamicArray.push({
-        category: categoryText,
-        type: typeText,
-        name: nameText,
-        quantity: this.quantity,
-        productIDnumber: this.pID,
-        reason: this.reason,
+      let temp = this.dynamicArray.filter((temp) => {
+        return temp.productIDnumber == this.pID;
       });
+      if (temp.length > 0) this.inList = true;
+      else {
+        const categoryText = $('#categoryID option:selected').text();
+        const typeText = $('#typeID option:selected').text();
+        const nameText = $('#nameID option:selected').text();
+        this.reason = $('#reasonID option:selected').text();
+
+        console.log(categoryText);
+        console.log(typeText);
+        console.log(nameText);
+        console.log(this.quantity);
+        this.booloff = true;
+
+        this.dynamicArray.push({
+          category: categoryText,
+          type: typeText,
+          name: nameText,
+          quantity: this.quantity,
+          productIDnumber: this.pID,
+          reason: this.reason,
+        });
+      }
     }
   }
+
+  ////////////// remove from dynamic array /////////////////////////////////
+
+  deleteRow(index) {
+    this.dynamicArray.splice(index, 1);
+    if (this.dynamicArray.length < 1) this.booloff = false;
+    else this.booloff = true;
+    this.inList = false;
+  }
+
+  /////////////// write off the products ////////////////////////////////////
 
   WriteOff() {
     for (let index = 0; index < this.dynamicArray.length; index++) {
       const element = this.dynamicArray[index];
 
-      //get all the product write off IDs
-      this.getAllProductWriteOffs();
-      this.sleep(75);
-
-      //get all the products
-      this.productsTemp = this.products;
-
-      this.writeOff.date = new Date().toString();
+      // add new write off
+      this.writeOff.date = new Date().toISOString();
       this.writeOff.reason = element.reason;
-      this.writeOffService.addWriteOff(this.writeOff).subscribe((response) => {
-        console.log(response);
-      });
+      this.writeOffService.addWriteOff(this.writeOff).subscribe((res) => {
+        console.log('new write off');
+        console.log(res);
 
-      //product write off code
-      this.productWriteOff.productID = element.productIDnumber;
-      this.getAllProductWriteOffs();
-      this.sleep(75);
-      this.productWriteOff.writeOffID =
-        this.writeOffs[this.writeOffs.length - 1].writeOffID + 1;
-      this.productWriteOff.quantity = element.quantity;
-      this.productWriteOffService
-        .addProductWriteOff(this.productWriteOff)
-        .subscribe((response) => {
-          console.log(response);
+        // add product write off
+        this.productWriteOff.productID = element.productIDnumber;
+        this.productWriteOff.writeOffID = res.writeOffID;
+        this.productWriteOff.quantity = element.quantity;
+        this.productWriteOffService
+          .addProductWriteOff(this.productWriteOff)
+          .subscribe((prodWriteOff) => {
+            console.log('new product write off');
+            console.log(prodWriteOff);
+          });
+
+        // update product quanitity
+        this.productsTemp = this.products.filter((product) => {
+          return product.producT_ID == element.productIDnumber;
         });
-
-      //product code stuff
-      this.productsTemp = this.productsTemp.filter((product) => {
-        console.log(product.producT_ID == element.productIDnumber);
-        return product.producT_ID == element.productIDnumber;
+        this.productsTemp[0].quantitY_ON_HAND =
+          this.productsTemp[0].quantitY_ON_HAND - element.quantity;
+        this.productService
+          .updateProduct(this.productsTemp[0])
+          .subscribe((prodres) => {
+            console.log('new product quantity');
+            console.log(prodres);
+          });
       });
-      this.product = this.productsTemp[0];
-      this.product.quantitY_ON_HAND =
-        this.product.quantitY_ON_HAND - element.quantity;
-      this.productService.updateProduct(this.product).subscribe((response) => {
-        console.log(response);
+
+      //add to audit log
+      this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+        console.log('new audit log entry');
+        console.log(res);
         this.successSubmit = true;
       });
     }

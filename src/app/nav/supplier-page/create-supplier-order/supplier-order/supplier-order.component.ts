@@ -15,6 +15,11 @@ import { OrderProductService } from 'src/app/_services/orderProduct.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 import * as $ from 'jquery';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-supplier-order',
   templateUrl: './supplier-order.component.html',
@@ -70,6 +75,16 @@ export class SupplierOrderComponent implements OnInit {
     quantityReceived: 0,
   };
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Create Supplier Order',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
@@ -77,13 +92,22 @@ export class SupplierOrderComponent implements OnInit {
     private supplierService: SupplierService,
     private orderService: OrderService,
     private orderStatusService: OrderStatusService,
-    private orderProductService: OrderProductService
+    private orderProductService: OrderProductService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit(): void {
     this.getAllProducts();
     this.getAllOrders();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
+
+  /////////////////// get functions ////////////////////////////////////////
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
@@ -134,6 +158,8 @@ export class SupplierOrderComponent implements OnInit {
     console.log('back to create');
   }
 
+  ////////////// select category ////////////////////////////////////////////
+
   async categorySelect(id: number) {
     this.typeSelected = false;
     $('#typeID').val('-1');
@@ -141,37 +167,41 @@ export class SupplierOrderComponent implements OnInit {
     $('#nameID').val('-1');
     $('#quantityID').val('');
 
-    this.productTypesTemp = this.productTypes;
-    console.log(this.productTypes);
-    this.productTypesTemp = this.productTypesTemp.filter((productType) => {
-      console.log(productType.producT_CATEGORY_ID == id);
+    this.productTypesTemp = this.productTypes.filter((productType) => {
       return productType.producT_CATEGORY_ID == id;
     });
     console.log('the selected product types from the category are');
     console.log(this.productTypesTemp);
     this.categorySelected = true;
+    this.inOrderAlready = false;
   }
+
+  ///////////////// select type /////////////////////////////////////////////
 
   async typeSelect(id: number) {
     $('#nameID').val('-1');
     this.activateQuantity = true;
     $('#quantityID').val('');
 
-    this.productsTemp = this.products;
-    console.log(id);
-    this.productsTemp = this.productsTemp.filter((product) => {
-      console.log(product.producT_TYPE_ID == id);
+    this.productsTemp = this.products.filter((product) => {
       return product.producT_TYPE_ID == id;
     });
     console.log('the selected products from the product types are');
     console.log(this.productsTemp);
     this.typeSelected = true;
+    this.inOrderAlready = false;
   }
+
+  /////////////// select name ////////////////////////////////////////////
 
   nameSelect() {
     $('#quantityID').val('');
+    this.quantity = 0;
     this.completeSelection = true;
+    this.inOrderAlready = false;
   }
+
+  /////////////// validation functions ////////////////////////////////
 
   ValidateQuantity() {
     if (this.quantity < 1) {
@@ -181,11 +211,15 @@ export class SupplierOrderComponent implements OnInit {
     }
   }
 
+  ////////////// add product to dynamic array /////////////////////////////
+
   dynamicArray = [];
   newDynamic;
 
   quantity: number;
   pID: number;
+
+  inOrderAlready: boolean = false;
 
   addProduct() {
     if (this.activateQuantity == true) {
@@ -193,30 +227,49 @@ export class SupplierOrderComponent implements OnInit {
     } else if (this.quantity < 1 || this.quantity == null) {
       this.completeQuantity = false;
     } else {
+      //if product is in order already
+      let temp = this.dynamicArray.filter((dynamic) => {
+        return dynamic.productIDnumber == this.pID;
+      });
+
       const categoryText = $('#categoryID option:selected').text();
       const typeText = $('#typeID option:selected').text();
       const nameText = $('#nameID option:selected').text();
 
-      console.log(categoryText);
-      console.log(typeText);
-      console.log(nameText);
-      console.log(this.quantity);
+      console.log('dynaminc for pid');
+      console.log(temp);
 
-      this.dynamicArray.push({
-        category: categoryText,
-        type: typeText,
-        name: nameText,
-        quantity: this.quantity,
-        productIDnumber: this.pID,
-      });
-      this.ordered = true;
+      if (temp.length > 0) {
+        this.inOrderAlready = true;
+      } else {
+        //if not in order already
+        this.inOrderAlready = false;
+
+        console.log(categoryText);
+        console.log(typeText);
+        console.log(nameText);
+        console.log(this.quantity);
+
+        this.dynamicArray.push({
+          category: categoryText,
+          type: typeText,
+          name: nameText,
+          quantity: this.quantity,
+          productIDnumber: this.pID,
+        });
+        this.ordered = true;
+      }
     }
   }
+
+  ////////////// remove from dynamic array /////////////////////////////////
 
   deleteRow(index) {
     this.dynamicArray.splice(index, 1);
     if (this.dynamicArray.length < 1) this.ordered = false;
   }
+
+  ///////////// create the supplier order /////////////////////////////////
 
   onSubmit() {
     this.order.supplierID = this.supplier.supplieR_ID;
@@ -245,6 +298,12 @@ export class SupplierOrderComponent implements OnInit {
             this.successSubmit = true;
           });
       }
+    });
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+      this.successSubmit = true;
     });
   }
 }

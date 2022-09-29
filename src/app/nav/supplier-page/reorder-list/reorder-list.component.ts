@@ -8,6 +8,11 @@ import { ProductTypeService } from 'src/app/_services/product-type.service';
 import * as $ from 'jquery';
 
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 @Component({
   selector: 'app-reorder-list',
   templateUrl: './reorder-list.component.html',
@@ -59,15 +64,34 @@ export class ReorderListComponent implements OnInit {
 
   addHeader: boolean = false;
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Generate Re-Order List',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
-    private productTypeService: ProductTypeService
+    private productTypeService: ProductTypeService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
     this.getAllProducts();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
+
+  ///////////// create the dynamic array //////////////////////////////////
 
   createDynamicArray() {
     this.productsTemp = this.products.filter((product) => {
@@ -154,11 +178,7 @@ export class ReorderListComponent implements OnInit {
     this.addQuan = this.valdiate.ValidateInteger(quan);
   }
 
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
+  ///////////////// selected a category /////////////////////////////////////
 
   async categorySelect(id: number) {
     this.typeSelected = false;
@@ -176,7 +196,10 @@ export class ReorderListComponent implements OnInit {
     console.log('the selected product types from the category are');
     console.log(this.productTypesTemp);
     this.categorySelected = true;
+    this.isInList = false;
   }
+
+  ////////////// select a type //////////////////////////////////////////////
 
   async typeSelect(id: number) {
     $('#nameID').val('-1');
@@ -192,23 +215,31 @@ export class ReorderListComponent implements OnInit {
     console.log('the selected products from the product types are');
     console.log(this.productsTemp);
     this.typeSelected = true;
+    this.isInList = false;
   }
+
+  /////////////// select a name  ////////////////////////////////////////////
 
   nameSelect() {
     $('#quantityID').val('');
     this.completeSelection = true;
     this.addComplete = true;
+    this.isInList = false;
   }
+
+  ///////////////// print the reorder list //////////////////////////////////
 
   printReorder() {
-    if (this.completeQuantity == true) {
-    } else {
-    }
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
   }
 
-  Return() {
-    this.return.emit('false');
-  }
+  //////////////// add a product to the dynamic array //////////////////////////
+
+  isInList: boolean = false;
 
   addProduct() {
     if (this.activateQuantity == true) {
@@ -231,24 +262,33 @@ export class ReorderListComponent implements OnInit {
         return product.producT_ID == this.pID;
       });
 
-      console.log(categoryText);
-      console.log(typeText);
-      console.log(nameText);
-      console.log(quanText);
-      console.log(this.pID);
-
-      this.dynamicArray.push({
-        CategoryName: categoryText,
-        TypeName: typeText,
-        ProductName: nameText,
-        QuanHand: this.productsTemp3[0].quantitY_ON_HAND,
-        Quantity: quanText,
-        productID: this.pID,
+      let temp = this.dynamicArray.filter((dynamic) => {
+        return dynamic.productID == this.pID;
       });
 
-      this.quantity = null;
+      if (temp.length > 0) {
+        this.isInList = true;
+      } else {
+        this.isInList = false;
+        console.log(categoryText);
+        console.log(typeText);
+        console.log(nameText);
+        console.log(quanText);
+        console.log(this.pID);
 
-      console.log(this.dynamicArray);
+        this.dynamicArray.push({
+          CategoryName: categoryText,
+          TypeName: typeText,
+          ProductName: nameText,
+          QuanHand: this.productsTemp3[0].quantitY_ON_HAND,
+          Quantity: quanText,
+          productID: this.pID,
+        });
+
+        this.quantity = null;
+
+        console.log(this.dynamicArray);
+      }
     }
   }
 }

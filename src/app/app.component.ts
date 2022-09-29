@@ -28,14 +28,17 @@ export class AppComponent implements OnInit {
 
   salt = 'YourSecretKeyForEncryption&DescryptionOasys';
 
+  //user
   user: User;
   users: User[] = [];
   usersTemp: User[] = [];
 
+  //employee
   employee: Employee;
   employees: Employee[] = [];
   employeesTemp: Employee[] = [];
 
+  //current user
   currentUser: CurrentUser = {
     id: 0,
     userID: 0,
@@ -90,9 +93,8 @@ export class AppComponent implements OnInit {
     console.log('//////////////////////////////////////');
     let today = new Date();
 
-    console.log(new Date(today.getTime() + 0 * 24 * 60 * 60 * 1000));
+    console.log(new Date().toLocaleDateString());
     console.log('//////////////////////////////////////');
-    this.getUsers();
     console.log(this.saltnHash('12uqlgth'));
 
     // Email.send({
@@ -106,6 +108,7 @@ export class AppComponent implements OnInit {
     // }).then((message) => alert(message));
 
     this.getEmployee();
+    this.getUsers();
     this.router.events.subscribe((val) => {
       if (location.pathname == '/forgot-reset-password') {
         this.loggedIn = true;
@@ -115,64 +118,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ////////////////////////////////////////////////// salted passwords ////////////////////////////
-
-  saltnHash(value: string): string {
-    return CryptoJS.AES.encrypt(value, this.salt.trim()).toString();
-  }
-
-  decrypt(textToDecrypt: string) {
-    return CryptoJS.AES.decrypt(textToDecrypt, this.salt.trim()).toString(
-      CryptoJS.enc.Utf8
-    );
-  }
-
-  ///////////////////////////////////////////// login  /////////////////////////////////////////
-
-  login() {
-    // this.usersTemp = this.users;
-    // console.log('by login');
-    // console.log(this.username);
-
-    // this.usersTemp = this.usersTemp.filter((user) => {
-    //   console.log(user.username == this.username);
-    //   return user.username == this.username;
-    // });
-
-    // console.log(this.usersTemp);
-    // console.log('this is the usersTemp length ' + this.usersTemp.length);
-
-    // if (this.usersTemp.length == 0) {
-    //   this.details = false;
-    // } else {
-    //   this.details = true;
-    //   let saledPass = this.decrypt(this.usersTemp[0].useR_PASSWORD);
-    //   if (saledPass == this.password) {
-    //     console.log('THe Current User ID');
-    //     console.log(this.usersTemp[0].useR_ID);
-    //     this.currentUser.userID = this.usersTemp[0].useR_ID;
-    //     this.currentUser.username = this.username;
-    //     this.currentUser.employeeID = this.usersTemp[0].employeE_ID;
-    //     this.currentUserService
-    //       .addCurrentUser(this.currentUser)
-    //       .subscribe((response) => {
-    //         console.log('this is the current user');
-    //         console.log(response);
-    //         this.loggedIn = true;
-    //         this.userRoleID = this.usersTemp[0].useR_ROLE_ID;
-    //         this.loginLevel();
-    //       });
-    //   } else {
-    //     this.sdetails = false;
-    //   }
-    // }
-
-    this.userRoleID = 0;
-    this.loggedIn = true;
-    this.loginLevel();
-  }
-
-  //////////////////////////////////////////////// get functions ///////////////////////////////////////////
+  //////////////////////////////////////////////// get functions //////////////
 
   getUsers() {
     this.userService.getAllUsers().subscribe((res) => {
@@ -194,6 +140,61 @@ export class AppComponent implements OnInit {
       console.log('this is all the employees');
       console.log(this.employees);
     });
+  }
+
+  ////////////////////////////////////////////////// salted passwords //////////
+
+  saltnHash(value: string): string {
+    return CryptoJS.AES.encrypt(value, this.salt.trim()).toString();
+  }
+
+  decrypt(textToDecrypt: string) {
+    return CryptoJS.AES.decrypt(textToDecrypt, this.salt.trim()).toString(
+      CryptoJS.enc.Utf8
+    );
+  }
+
+  ///////////////////////////////////////////// login  ///////////////////////
+
+  login() {
+    console.log('by login');
+    console.log(this.username);
+
+    this.usersTemp = this.users.filter((user) => {
+      return user.username == this.username;
+    });
+
+    console.log(this.usersTemp);
+    console.log('this is the usersTemp length ' + this.usersTemp.length);
+
+    if (this.usersTemp.length == 0) {
+      this.details = false;
+    } else {
+      this.details = true;
+      let saledPass = this.decrypt(this.usersTemp[0].useR_PASSWORD);
+      if (saledPass == this.password) {
+        console.log('THe Current User ID');
+        console.log(this.usersTemp[0].useR_ID);
+        this.currentUser.userID = this.usersTemp[0].useR_ID;
+        this.currentUser.username = this.username;
+        this.currentUser.employeeID = this.usersTemp[0].employeE_ID;
+        this.currentUserService
+          .addCurrentUser(this.currentUser)
+          .subscribe((response) => {
+            console.log('this is the current user');
+            console.log(response);
+            this.loggedIn = true;
+            this.userRoleID = this.usersTemp[0].useR_ROLE_ID;
+            this.loginLevel();
+          });
+      } else {
+        this.sdetails = false;
+      }
+    }
+
+    // this.userRoleID = 0;
+    // this.loggedIn = true;
+    // this.loginLevel();
   }
 
   loginLevel() {
@@ -230,6 +231,8 @@ export class AppComponent implements OnInit {
     console.log('hello');
     console.log(this.validEmail);
   }
+
+  ////////////////////// forget password /////////////////////////////////////
 
   ForgetPassword() {
     this.ValidateEmail();

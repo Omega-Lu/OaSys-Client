@@ -5,11 +5,17 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { User } from 'src/app/models/user.model';
+
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUser } from 'src/app/models/CurrentUser.model';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 import { UserService } from 'src/app/_services/user.service';
 import * as $ from 'jQuery';
 import '../../../../assets/js/smtp.js';
 declare let Email: any;
-import * as bcrypt from 'bcryptjs';
 import * as CryptoJS from 'crypto-js';
 
 @Component({
@@ -76,40 +82,67 @@ export class AddEployeeComponent implements OnInit {
   };
   users: User[] = [];
 
+  //current user
+  currentUser: CurrentUser;
+  currentUsers: CurrentUser[] = [];
+  currentUsersTemp: CurrentUser[] = [];
+
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: '',
+    date: new Date(),
+    month: 'Jan',
+  };
+
   //hashing
   salt = 'YourSecretKeyForEncryption&DescryptionOasys';
 
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private userService: UserService
+    private userService: UserService,
+    private currentUserService: CurrentUserService,
+    private auditLogService: AuditLogService
   ) {}
 
-  comparePassport() {
-    this.employeesTemp = this.employees;
-    this.employeesTemp = this.employeesTemp.filter((employee) => {
-      return employee.employeE_ID_NUMBER == this.employee.employeE_ID_NUMBER;
-    });
-    if (this.employeesTemp.length > 0) this.uniquePassport = false;
-    else this.uniquePassport = true;
+  async ngOnInit() {
+    await this.getAllEmployees();
   }
 
-  compareContactNumber() {
-    this.employeesTemp = this.employees;
-    this.employeesTemp = this.employeesTemp.filter((employee) => {
-      return employee.contacT_NUMBER == this.employee.contacT_NUMBER;
+  /////////////////////// get Functions ////////////////////////////////
+
+  async getAllEmployees() {
+    this.employeeService.getAllEmployees().subscribe((response) => {
+      this.employees = response;
+      console.log('this is all the employees');
+      console.log(this.employees);
+
+      this.getAllEmployeeTypes();
     });
-    if (this.employeesTemp.length > 0) this.uniqueContactNumber = false;
-    else this.uniqueContactNumber = true;
   }
 
-  compareEmail() {
-    this.employeesTemp = this.employees;
-    this.employeesTemp = this.employeesTemp.filter((employee) => {
-      return employee.email == this.employee.email;
+  async getAllEmployeeTypes() {
+    this.employeeTypeService.getAllEmployees().subscribe((response) => {
+      this.employeeTypes = response;
+      console.log('this is all the employee types');
+      console.log(this.employeeTypes);
     });
-    if (this.employeesTemp.length > 0) this.uniqueEmail = false;
-    else this.uniqueEmail = true;
+
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    this.currentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.currentUsers = res;
+      this.currentUser = res[res.length - 1];
+
+      this.auditLog.userID = this.currentUser.userID;
+      this.auditLog.employeeID = this.currentUser.employeeID;
+      this.auditLog.functionUsed = 'Add Employee';
+    });
   }
 
   saltnHash(value: string): string {
@@ -122,26 +155,7 @@ export class AddEployeeComponent implements OnInit {
     );
   }
 
-  async ngOnInit() {
-    await this.getAllEmployees();
-    await this.getAllEmployeeTypes();
-  }
-
-  async getAllEmployees() {
-    this.employeeService.getAllEmployees().subscribe((response) => {
-      this.employees = response;
-      console.log('this is all the employees');
-      console.log(this.employees);
-    });
-  }
-
-  async getAllEmployeeTypes() {
-    this.employeeTypeService.getAllEmployees().subscribe((response) => {
-      this.employeeTypes = response;
-      console.log('this is all the employee types');
-      console.log(this.employeeTypes);
-    });
-  }
+  /////////////////////////// validate functions ////////////////////////
 
   FormValidate() {
     // validate name
@@ -204,45 +218,6 @@ export class AddEployeeComponent implements OnInit {
     this.comparePassport();
   }
 
-  onSubmit() {
-    let empID;
-
-    this.user.useR_PASSWORD = Math.random().toString(36).slice(-8);
-    let normalPass = this.user.useR_PASSWORD;
-    let encryptedText = this.saltnHash(this.user.useR_PASSWORD);
-    this.user.useR_PASSWORD = encryptedText;
-
-    this.employeeService.addEmployee(this.employee).subscribe((response) => {
-      console.log('this is the new Employee');
-      console.log(response);
-      empID = response.employeE_ID;
-      this.user.employeE_ID = empID;
-      this.user.username = this.employee.name + '-' + this.employee.surname;
-
-      console.log('this is the new user');
-      console.log(this.user);
-      this.userService.addUser(this.user).subscribe((response) => {
-        console.log('this is the new user');
-        console.log(response);
-
-        //Send An Email With Username And PassWord
-        Email.send({
-          Host: 'smtp.elasticemail.com',
-          Username: 'oasys.infolutions@gmail.com',
-          Password: '6472A54EB8FB863EC2F2C1D10005742956DE',
-          To: this.employee.email,
-          From: 'oasys.infolutions@gmail.com',
-          Subject: 'Username And Password For OaSys System',
-          Body: `<h3>Your Username: </h3>
-                <p>${this.user.username}</p>
-                <h3>Your Password</h3>
-                <p>${normalPass}</p>`,
-        }).then((message) => console.log(message));
-        this.successSubmit = true;
-      });
-    });
-  }
-
   titlevalidate(title) {
     if (title == '-1' || title == '') {
       this.tdetails = false;
@@ -279,6 +254,122 @@ export class AddEployeeComponent implements OnInit {
         } else this.user.useR_ROLE_ID = 4;
       }
     }
+  }
+
+  ///////////////////// compare functions ///////////////////////////////////
+
+  comparePassport() {
+    this.employeesTemp = this.employees.filter((employee) => {
+      return employee.employeE_ID_NUMBER == this.employee.employeE_ID_NUMBER;
+    });
+    if (this.employeesTemp.length > 0) {
+      if (this.employeesTemp[0].deleted) {
+        this.employee.employeE_ID = this.employeesTemp[0].employeE_ID;
+        console.log('old id set');
+      } else this.uniquePassport = false;
+    } else this.uniquePassport = true;
+  }
+
+  compareContactNumber() {
+    this.employeesTemp = this.employees.filter((employee) => {
+      return employee.contacT_NUMBER == this.employee.contacT_NUMBER;
+    });
+    if (this.employeesTemp.length > 0) this.uniqueContactNumber = false;
+    else this.uniqueContactNumber = true;
+  }
+
+  compareEmail() {
+    this.employeesTemp = this.employees.filter((employee) => {
+      return employee.email == this.employee.email;
+    });
+    if (this.employeesTemp.length > 0) this.uniqueEmail = false;
+    else this.uniqueEmail = true;
+  }
+
+  /////////////////////////////////add employee///////////////////////////////
+
+  onSubmit() {
+    let empID;
+
+    this.user.useR_PASSWORD = Math.random().toString(36).slice(-8);
+    let normalPass = this.user.useR_PASSWORD;
+    let encryptedText = this.saltnHash(this.user.useR_PASSWORD);
+    this.user.useR_PASSWORD = encryptedText;
+
+    if (this.employee.employeE_ID == 0) {
+      this.employeeService.addEmployee(this.employee).subscribe((response) => {
+        console.log('this is the new Employee');
+        console.log(response);
+        empID = response.employeE_ID;
+        this.user.employeE_ID = empID;
+        this.user.username = this.employee.name + '-' + this.employee.surname;
+
+        this.userService.addUser(this.user).subscribe((response) => {
+          console.log('this is the new user');
+          console.log(response);
+
+          //Send An Email With Username And PassWord
+          Email.send({
+            Host: 'smtp.elasticemail.com',
+            Username: 'oasys.infolutions@gmail.com',
+            Password: '6472A54EB8FB863EC2F2C1D10005742956DE',
+            To: this.employee.email,
+            From: 'oasys.infolutions@gmail.com',
+            Subject: 'Username And Password For OaSys System',
+            Body: `<h3>Your Username: </h3>
+                <p>${this.user.username}</p>
+                <h3>Your Password</h3>
+                <p>${normalPass}</p>`,
+          }).then((message) => console.log(message));
+          this.successSubmit = true;
+        });
+      });
+    } else {
+      this.employee.deleted = false;
+      this.employeeService.updateEmployee(this.employee).subscribe((res) => {
+        console.log('ReActivated Employee');
+        console.log(res);
+
+        this.userService.getAllUsers().subscribe((resUser) => {
+          resUser = resUser.filter((user) => {
+            return user.employeE_ID == this.employee.employeE_ID;
+          });
+          this.user = resUser[0];
+          this.user.useR_PASSWORD = Math.random().toString(36).slice(-8);
+          let normalPass = this.user.useR_PASSWORD;
+          let encryptedText = this.saltnHash(this.user.useR_PASSWORD);
+          this.user.useR_PASSWORD = encryptedText;
+
+          this.user.username = this.employee.name + '-' + this.employee.surname;
+          this.user.deleted = false;
+          this.userService.updateUser(this.user).subscribe((response) => {
+            console.log('ReActivated User');
+            console.log(response);
+
+            //Send An Email With Username And PassWord
+            Email.send({
+              Host: 'smtp.elasticemail.com',
+              Username: 'oasys.infolutions@gmail.com',
+              Password: '6472A54EB8FB863EC2F2C1D10005742956DE',
+              To: this.employee.email,
+              From: 'oasys.infolutions@gmail.com',
+              Subject: 'Username And Password For OaSys System',
+              Body: `<h3>Your Username: </h3>
+                <p>${this.user.username}</p>
+                <h3>Your Password</h3>
+                <p>${normalPass}</p>`,
+            }).then((message) => console.log(message));
+            this.successSubmit = true;
+          });
+        });
+      });
+    }
+
+    /// add to audit log
+    this.auditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
   }
 
   Return() {

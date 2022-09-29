@@ -27,6 +27,9 @@ export class SearchProductCategoryComponent implements OnInit {
     this.productCategoryService
       .getAllProductCategories()
       .subscribe((response) => {
+        response = response.filter((temp) => {
+          return temp.deleted == false;
+        });
         this.productCategories = response;
         this.productCategoriesTemp = response;
       });

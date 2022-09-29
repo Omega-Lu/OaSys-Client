@@ -18,6 +18,11 @@ import { ProductOrderReturn } from 'src/app/models/productOrderReturn.model';
 import { ProductOrderReturnService } from 'src/app/_services/productOrderReturn.service';
 import * as $ from 'jquery';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
 @Component({
@@ -93,6 +98,16 @@ export class ReturnOrderComponent implements OnInit {
   //quantity
   quanArray = [];
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Return Supplier Order',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private orderProductService: OrderProductService,
     private productService: ProductService,
@@ -101,11 +116,18 @@ export class ReturnOrderComponent implements OnInit {
     private orderReturnService: OrderReturnService,
     private supplierOrderReturnService: SupplierOrderReturnService,
     private productOrderReturnService: ProductOrderReturnService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
     this.getAllOrderProducts();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
   //////////////////////////////////get functions////////////////////////////
@@ -233,6 +255,7 @@ export class ReturnOrderComponent implements OnInit {
       }
     }
     this.validateReason();
+    this.valdiateReturn();
   }
 
   validReturn: boolean = true;
@@ -242,6 +265,7 @@ export class ReturnOrderComponent implements OnInit {
     });
 
     if (temp.length > 0) {
+      this.validReturn = true;
     } else {
       let reason = this.dynamicArray.filter((dynamic) => {
         return dynamic.retReason != '-1';
@@ -257,6 +281,8 @@ export class ReturnOrderComponent implements OnInit {
   Return() {
     this.return.emit('false');
   }
+
+  ////////////////// return the supplier order ///////////////////////////////
 
   ReturnOrder() {
     //change order status
@@ -316,9 +342,13 @@ export class ReturnOrderComponent implements OnInit {
           .subscribe((response) => {
             console.log('new supplier order return');
             console.log(response);
+
+            //add to audit log
+            this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+              console.log('new audit log entry');
+              console.log(res);
+            });
           });
       });
-
-    
   }
 }

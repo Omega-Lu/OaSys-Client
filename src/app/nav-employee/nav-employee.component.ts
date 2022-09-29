@@ -37,15 +37,11 @@ export class NavEmployeeComponent implements OnInit {
     this.getAllCurrentUsers();
   }
 
-  setCurrentUser() {
-    this.currentUser = this.currentUsers[this.currentUsers.length - 1];
-    this.username = this.currentUser.username;
-  }
-
   getAllCurrentUsers() {
     this.currentUserService.getAllCurrentUsers().subscribe((response) => {
       this.currentUsers = response;
-      this.setCurrentUser();
+      this.currentUser = this.currentUsers[this.currentUsers.length - 1];
+      this.username = this.currentUser.username;
     });
   }
 }

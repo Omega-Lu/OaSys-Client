@@ -5,6 +5,11 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-add-wage-rate',
   templateUrl: './add-wage-rate.component.html',
@@ -23,41 +28,60 @@ export class AddWageRateComponent implements OnInit {
   employeeTypes: EmployeeType[] = [];
   employeeTypesTemp: EmployeeType[] = [];
 
+  //rate
   rate: Rate = {
     ratE_ID: 0,
-    ratE_NAME: 'Select A Name',
+    ratE_NAME: -1,
     ratE_AMOUNT: null,
     deleted: false,
   };
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Add Wage Rate',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private rateService: RateService,
-    private EmployeeTypeService: EmployeeTypeService
+    private EmployeeTypeService: EmployeeTypeService,
+    private AuditLogService: AuditLogService,
+    private CurrentUserService: CurrentUserService
   ) {}
 
   ngOnInit() {
     this.getAllEmployeeTypes();
   }
 
-  FormValidate() {
-    //validate the money
-    this.validateMoney();
-    this.validateRateName();
-  }
-
-  onSubmit() {
-    this.rateService.addEmployee(this.rate).subscribe((response) => {
-      console.log(response);
-      this.successSubmit = true;
-    });
-  }
+  /////////////////////// get functions /////////////////////////////////////
 
   getAllEmployeeTypes() {
     this.EmployeeTypeService.getAllEmployees().subscribe((response) => {
       this.employeeTypes = response;
       console.log('this is all the employee types');
       console.log(this.employeeTypes);
+
+      this.getCurrentUser();
     });
+  }
+
+  getCurrentUser() {
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ///////////////////// validate functions ///////////////////////////////////
+
+  FormValidate() {
+    //validate the money
+    this.validateMoney();
+    this.validateRateName();
   }
 
   validateMoney() {
@@ -68,8 +92,40 @@ export class AddWageRateComponent implements OnInit {
   }
 
   validateRateName() {
-    if (this.rate.ratE_NAME == 'Select A Name') {
+    if (this.rate.ratE_NAME == -1) {
       this.validRateName = false;
     } else this.validRateName = true;
+  }
+
+  ////////////////////// add wage rate //////////////////////////////////////
+
+  onSubmit() {
+    this.rate.ratE_NAME = Number(this.rate.ratE_NAME);
+
+    this.rateService.getAllEmployees().subscribe((res) => {
+      res = res.filter((rate) => {
+        return rate.ratE_NAME == this.rate.ratE_NAME;
+      });
+
+      if (res.length > 0) {
+        this.rate.ratE_ID = res[0].ratE_ID;
+        this.rateService.updateEmployee(this.rate).subscribe((response) => {
+          console.log('updated wage rate');
+          console.log(response);
+        });
+      } else {
+        this.rateService.addEmployee(this.rate).subscribe((response) => {
+          console.log('new wage rate');
+          console.log(response);
+        });
+      }
+      this.successSubmit = true;
+    });
+
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
   }
 }

@@ -8,6 +8,13 @@ import { ProductCategoryService } from 'src/app/_services/product-category.servi
 import { Stocktake } from 'src/app/models/stocktake.model';
 import { StocktakeService } from 'src/app/_services/stocktake.service';
 
+import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-complete-stocktake',
   templateUrl: './complete-stocktake.component.html',
@@ -44,15 +51,35 @@ export class CompleteStocktakeComponent implements OnInit {
     date: '',
   };
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Complete Stocktake',
+    date: new Date(),
+    month: 'Oct',
+  };
+
+  //import validation
+  validate: ValidationServicesComponent = new ValidationServicesComponent();
+
   constructor(
     private productService: ProductService,
     private productTypeService: ProductTypeService,
     private productCategoryService: ProductCategoryService,
-    private stocktakeService: StocktakeService
+    private stocktakeService: StocktakeService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit(): void {
     this.getAllProducts();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
   getAllProducts() {
@@ -95,7 +122,6 @@ export class CompleteStocktakeComponent implements OnInit {
     console.log('productsTemp');
 
     this.productsTemp = this.productsTemp.filter((product) => {
-      console.log(product.producT_CATEGORY_ID == id);
       return product.producT_CATEGORY_ID == id;
     });
 
@@ -109,9 +135,6 @@ export class CompleteStocktakeComponent implements OnInit {
 
       this.productCategoriesTemp = this.productCategoriesTemp.filter(
         (productCategory) => {
-          console.log(
-            productCategory.producT_CATEGORY_ID == element.producT_CATEGORY_ID
-          );
           return (
             productCategory.producT_CATEGORY_ID == element.producT_CATEGORY_ID
           );
@@ -119,7 +142,6 @@ export class CompleteStocktakeComponent implements OnInit {
       );
 
       this.productTypesTemp = this.productTypesTemp.filter((productType) => {
-        console.log(productType.producT_TYPE_ID == element.producT_TYPE_ID);
         return productType.producT_TYPE_ID == element.producT_TYPE_ID;
       });
 
@@ -141,7 +163,7 @@ export class CompleteStocktakeComponent implements OnInit {
 
   quantityVali(quan: number) {
     if (quan >= 0) {
-      this.completeQuantity = true;
+      this.completeQuantity = this.validate.ValidateInteger(quan);
     } else {
       this.completeQuantity = false;
     }
@@ -154,13 +176,7 @@ export class CompleteStocktakeComponent implements OnInit {
 
         console.log('quantity ' + element.Quantity);
 
-        this.getAllProducts();
-        this.sleep(52);
-
-        this.productsTemp = this.products;
-
-        this.productsTemp = this.productsTemp.filter((product) => {
-          console.log(product.producT_ID == element.productID);
+        this.productsTemp = this.products.filter((product) => {
           return product.producT_ID == element.productID;
         });
 
@@ -178,18 +194,21 @@ export class CompleteStocktakeComponent implements OnInit {
         .addStocktake(this.stocktake)
         .subscribe((response) => {
           console.log(response);
-          this.successSubmit = true;
+
+          this.getAllProducts();
+          this.dynamicArray = [];
+
+          //add to audit log
+          this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+            console.log('new audit log entry');
+            console.log(res);
+            this.successSubmit = true;
+          });
         });
     }
   }
 
   Return() {
     this.return.emit('false');
-  }
-
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
   }
 }

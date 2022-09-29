@@ -42,7 +42,7 @@
                   background: var(--bs-orange);
                   border-color: var(--bs-orange);
                 "
-                (click)="populateForm(productType)"
+                (click)="populateForm(productType.productType)"
               >
                 Edit
               </button>
@@ -87,8 +87,8 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel" *ngIf="hasReference">
-              Product Type Cannot Be Deleted Because There Is A Product With A
-              Reference To It
+              Product Type Cannot Be Deleted Because There Is A Product With
+              This Type
             </h5>
             <h5
               class="modal-title"

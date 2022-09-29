@@ -136,31 +136,57 @@
     </div>
     <div class="row">
       <div class="col">
-        <label class="form-label"> Product Cost Price:(R) </label>
-        <input
-          class="form-control"
-          name="costPrice"
-          type="number"
-          placeholder="0.00"
-          required
-          [(ngModel)]="product.cosT_PRICE"
-          (keyup)="Costvalidate()"
-          (input)="Costvalidate()"
-        />
+        <label class="form-label"> Product Cost Price: </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              R
+            </div>
+          </div>
+          <input
+            class="form-control"
+            name="costPrice"
+            type="number"
+            placeholder="0.00"
+            required
+            [(ngModel)]="product.cosT_PRICE"
+            (keyup)="Costvalidate()"
+            (input)="Costvalidate()"
+          />
+        </div>
         <div *ngIf="!validCost" style="color: Red">Invalid Cost Price</div>
       </div>
       <div class="col">
-        <label class="form-label"> Product Selling Price:(R) </label>
-        <input
-          class="form-control"
-          name="sellingPrice"
-          type="number"
-          required
-          placeholder="0.00"
-          [(ngModel)]="product.sellinG_PRICE"
-          (keyup)="Sellvalidate()"
-          (input)="Sellvalidate()"
-        />
+        <label class="form-label"> Product Selling Price:</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              R
+            </div>
+          </div>
+          <input
+            class="form-control"
+            name="sellingPrice"
+            type="number"
+            required
+            placeholder="0.00"
+            [(ngModel)]="product.sellinG_PRICE"
+            (keyup)="Sellvalidate()"
+            (input)="Sellvalidate()"
+          />
+        </div>
         <div *ngIf="!validSell" style="color: Red">Invalid Selling Price</div>
       </div>
     </div>

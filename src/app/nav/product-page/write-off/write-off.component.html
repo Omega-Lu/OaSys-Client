@@ -116,6 +116,8 @@
                 style="width: 100px"
                 [(ngModel)]="quantity"
                 (click)="quantityVali()"
+                (input)="quantityVali()"
+                (keyup)="quantityVali()"
               />
             </td>
           </tr>
@@ -127,11 +129,12 @@
       <i style="color: red" [hidden]="completeSelection"
         >Please Complete the product selection</i
       >
-      <i style="color: red" [hidden]="completeQuantity"
-        >Quantity must be more than 0</i
-      >
+      <i style="color: red" [hidden]="completeQuantity">Invalid Quantity</i>
       <i style="color: red" [hidden]="QuanOnHand"
         >Quantity must be less than the quantity on hand</i
+      >
+      <i style="color: red" [hidden]="!inList"
+        >Product Already In Write Off List</i
       >
       <button
         class="btn btn-primary"
@@ -141,6 +144,8 @@
           border-color: var(--bs-orange);
           float: right;
         "
+        (mouseover)="quantityVali()"
+        [disabled]="!completeSelection || !QuanOnHand || !completeQuantity"
         (click)="addProduct()"
       >
         Add product
@@ -158,6 +163,7 @@
             <th>Product Name</th>
             <th>Reason</th>
             <th>Quantity</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -170,6 +176,17 @@
             <td>{{ dynamic.name }}</td>
             <td>{{ dynamic.reason }}</td>
             <td>{{ dynamic.quantity }}</td>
+            <td (click)="deleteRow(i)">
+              <button
+                class="btn btn-primary"
+                style="
+                  background: var(--bs-orange);
+                  border-color: var(--bs-orange);
+                "
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </td>
           </tr>
           <tr></tr>
         </tbody>

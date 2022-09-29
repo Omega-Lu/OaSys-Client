@@ -53,6 +53,9 @@ export class SearchWarningComponent implements OnInit {
 
   getEmployeeWarnings() {
     this.EmployeeWarningService.getAllEmployeeWarningses().subscribe((res) => {
+      res = res.filter((employeeWarning) => {
+        return employeeWarning.deleted == false;
+      });
       this.employeeWarnings = res;
       console.log('this is all the EmployeeWarnings');
       console.log(this.employeeWarnings);

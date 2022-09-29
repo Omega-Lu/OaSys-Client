@@ -25,13 +25,17 @@ export class ClockInAndOutComponent implements OnInit {
 
   currentTime: any;
 
+  //current user
   currentUsers: CurrentUser[] = [];
   currentUser: CurrentUser;
 
+  //employee
   employee: Employee[] = [];
 
+  //employee type
   employeeType: EmployeeType[] = [];
 
+  //rate
   rate: Rate[] = [];
 
   timeIn: Time = null;
@@ -41,6 +45,7 @@ export class ClockInAndOutComponent implements OnInit {
   totalTime: number = 0;
   totalPay: number = 0;
 
+  //employee hours
   newEmployeeHours: EmployeeHours[] = [];
   employeeHours: EmployeeHours = {
     employeeHoursID: 0,
@@ -48,11 +53,13 @@ export class ClockInAndOutComponent implements OnInit {
     checkInTime: '',
     checkOutTime: '',
   };
-  employeehourss: EmployeeHours[] = [];
+  employeeHourss: EmployeeHours[] = [];
+  employeeHourssTemp: EmployeeHours[] = [];
 
   wage: Wage = {
     wageID: 0,
     employeeID: 0,
+    rateID: 0,
     dateIssued: '',
     dateCollected: '',
     wageCollected: 'false',
@@ -75,57 +82,7 @@ export class ClockInAndOutComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  found = false;
-
-  async ClockIn() {
-    this.employeeHours.employeeID = this.currentUser.employeeID;
-
-    this.currentTime = new Date();
-    this.currentTime = this.currentTime.toLocaleString('en-GB', {
-      hour: 'numeric',
-      minute: 'numeric',
-    });
-    this.employeeHours.checkInTime = this.currentTime;
-
-    await this.EmployeeHoursService.getAllEmployeeHourss().subscribe((res) => {
-      for (let i = 0; i < res.length; i++) {
-        const element = res[i];
-        if (this.currentUser.employeeID == element.employeeID) {
-          this.employeeHours = element;
-          this.employeeHours.checkInTime = this.currentTime;
-          this.found = true;
-        }
-      }
-      if (this.found == false) {
-        console.log('Employee not found');
-        this.EmployeeHoursService.addEmployeeHours(
-          this.employeeHours
-        ).subscribe((res) => {
-          console.log('This is the new Employee Hours Entry');
-          console.log(res);
-          this.successClockIn = true;
-        });
-      } else {
-        this.EmployeeHoursService.updateEmployeeHours(
-          this.employeeHours
-        ).subscribe((res) => {
-          console.log('Updated employee hours');
-          console.log(res);
-
-          this.successClockIn = true;
-        });
-      }
-    });
-  }
-
-  ClockOut() {
-    this.currentTime = new Date();
-    this.currentTime = this.currentTime.toLocaleString('en-GB', {
-      hour: 'numeric',
-      minute: 'numeric',
-    });
-    this.getAllEmployeeHours();
-  }
+  //////////////////// get functions ////////////////////////////////////////
 
   getCurrentUser() {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
@@ -133,95 +90,6 @@ export class ClockInAndOutComponent implements OnInit {
       console.log('This is the Current User');
       console.log(this.currentUser);
       this.getAllEmployees();
-    });
-  }
-
-  getAllEmployeeHours() {
-    // Get All Employee Hours
-    this.EmployeeHoursService.getAllEmployeeHourss().subscribe((res) => {
-      console.log('This is all the Employee Hours');
-      this.employeehourss = res;
-
-      console.log(this.employeehourss);
-
-      //Filter Employee Hours to Get The Correct One
-      this.newEmployeeHours = this.employeehourss.filter((hours) => {
-        return hours.employeeID == this.currentUser.employeeID;
-      });
-
-      this.newEmployeeHours[0].checkOutTime = this.currentTime;
-
-      //Update Employee Hours
-      this.EmployeeHoursService.updateEmployeeHours(
-        this.newEmployeeHours[0]
-      ).subscribe((res) => {
-        console.log('This is the updated employee hours');
-        console.log(res);
-
-        //Work Out Total Time Between Clock In And Clock Out
-        var timeA: number[] = [];
-        var time = res.checkInTime;
-        var timeArrayString = time.toString().split(':', 2);
-        for (let item of timeArrayString) {
-          let no: number = Number(item);
-          timeA.push(no);
-        }
-
-        this.timeInNumber = timeA[0] + timeA[1] / 60;
-        console.log('Time in: ' + this.timeInNumber);
-
-        var timeB: number[] = [];
-        time = this.currentTime;
-        var timeArrayStringA = time.toString().split(':', 2);
-        for (let item of timeArrayStringA) {
-          let no: number = Number(item);
-          timeB.push(no);
-        }
-
-        this.timeOutNumber = timeB[0] + timeB[1] / 60;
-        console.log('Time Out: ' + this.timeOutNumber);
-
-        this.totalTime = this.timeOutNumber - this.timeInNumber;
-        this.totalPay = this.rate[0].ratE_AMOUNT * this.totalTime;
-
-        //Create To Wage Table
-
-        let wageFound = false;
-
-        //check if wage was already added today
-        this.WageService.getAllWages().subscribe((res) => {
-          let wages;
-          wages = res.filter((wage) => {
-            return wage.employeeID == this.currentUser.employeeID;
-          });
-          for (let i = 0; i < wages.length; i++) {
-            const element = wages[i];
-            if (element.dateWorked == new Date().toDateString()) {
-              this.wage = element;
-              this.wage.amount = this.totalPay;
-              wageFound = true;
-            }
-          }
-
-          if (wageFound) {
-            this.WageService.updateWage(this.wage).subscribe((res) => {
-              console.log('this is the upated wage');
-              console.log(res);
-              this.successClockOut = true;
-            });
-          } else {
-            this.wage.employeeID = this.currentUser.employeeID;
-            this.wage.amount = this.totalPay;
-            this.wage.dateWorked = new Date().toDateString();
-
-            this.WageService.addWage(this.wage).subscribe((res) => {
-              console.log('this is the new added Wage');
-              console.log(res);
-              this.successClockOut = true;
-            });
-          }
-        });
-      });
     });
   }
 
@@ -252,10 +120,139 @@ export class ClockInAndOutComponent implements OnInit {
   getAllRates() {
     this.RateService.getAllEmployees().subscribe((res) => {
       this.rate = res.filter((rate) => {
-        return rate.ratE_NAME == this.employeeType[0].positioN_NAME;
+        return rate.ratE_NAME == this.employeeType[0].employeE_TYPE_ID;
       });
       console.log('This is the employee rate');
       console.log(this.rate);
+
+      this.getAllEmployeeHours();
+    });
+  }
+
+  getAllEmployeeHours() {
+    // Get All Employee Hours
+    this.EmployeeHoursService.getAllEmployeeHourss().subscribe((res) => {
+      console.log('This is all the Employee Hours');
+      this.employeeHourss = res;
+      console.log(this.employeeHourss);
+
+      //Filter Employee Hours to Get The Correct One
+      this.employeeHourssTemp = this.employeeHourss.filter((hours) => {
+        return hours.employeeID == this.currentUser.employeeID;
+      });
+
+      if (this.employeeHourssTemp.length < 1) {
+        this.employeeHours.employeeID = this.currentUser.employeeID;
+        this.EmployeeHoursService.addEmployeeHours(
+          this.employeeHours
+        ).subscribe((res) => {
+          console.log('new Employee Hours');
+          console.log(res);
+          this.employeeHours = res;
+        });
+      } else {
+        console.log('found this employees Hours');
+        this.employeeHours = this.employeeHourssTemp[0];
+      }
+    });
+  }
+
+  ////////////////////////////////// clock in /////////////////////////
+
+  async ClockIn() {
+    // get and set the current time
+    this.currentTime = new Date();
+    this.currentTime = this.currentTime.toLocaleString('en-GB', {
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+    this.employeeHours.checkInTime = this.currentTime;
+
+    this.EmployeeHoursService.updateEmployeeHours(this.employeeHours).subscribe(
+      (res) => {
+        console.log('added check in time');
+        console.log(res);
+        this.successClockIn = true;
+      }
+    );
+  }
+
+  ////////////////////// clock out //////////////////////////////
+
+  ClockOut() {
+    this.currentTime = new Date();
+    this.currentTime = this.currentTime.toLocaleString('en-GB', {
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+
+    this.currentTime = '21:00';
+    this.employeeHours.checkOutTime = this.currentTime;
+
+    this.EmployeeHoursService.updateEmployeeHours(this.employeeHours).subscribe(
+      (res) => {
+        console.log('added check out time');
+        console.log(res);
+      }
+    );
+
+    //Work Out Total Time Between Clock In And Clock Out
+
+    var timeA: number[] = [];
+    var time = this.employeeHours.checkInTime;
+    var timeArrayString = time.toString().split(':', 2);
+    for (let item of timeArrayString) {
+      let no: number = Number(item);
+      timeA.push(no);
+    }
+
+    this.timeInNumber = timeA[0] + timeA[1] / 60;
+    console.log('Time in: ' + this.timeInNumber);
+
+    var timeB: number[] = [];
+    time = this.employeeHours.checkOutTime;
+    var timeArrayStringA = time.toString().split(':', 2);
+    for (let item of timeArrayStringA) {
+      let no: number = Number(item);
+      timeB.push(no);
+    }
+
+    this.timeOutNumber = timeB[0] + timeB[1] / 60;
+    console.log('Time Out: ' + this.timeOutNumber);
+
+    this.totalTime = this.timeOutNumber - this.timeInNumber;
+    this.totalPay = this.rate[0].ratE_AMOUNT * this.totalTime;
+
+    //add wage
+
+    this.wage.employeeID = this.currentUser.employeeID;
+    this.wage.rateID = this.rate[0].ratE_ID;
+    this.wage.amount = this.totalPay;
+    this.wage.dateWorked = new Date().toLocaleDateString();
+
+    this.WageService.getAllWages().subscribe((res) => {
+      res = res.filter((wage) => {
+        return wage.employeeID == this.currentUser.employeeID;
+      });
+      res = res.filter((wage) => {
+        return wage.dateWorked == this.wage.dateWorked;
+      });
+
+      if (res.length > 0) {
+        this.wage = res[0];
+        this.wage.amount = this.totalPay;
+        this.WageService.updateWage(this.wage).subscribe((response) => {
+          console.log('Updated todays wage');
+          console.log(response);
+          this.successClockOut = true;
+        });
+      } else {
+        this.WageService.addWage(this.wage).subscribe((response) => {
+          console.log('new Wage');
+          console.log(response);
+          this.successClockOut = true;
+        });
+      }
     });
   }
 }

@@ -19,9 +19,9 @@
           [(ngModel)]="rate.ratE_NAME"
           (click)="validateRateName()"
         >
-          <option disabled selected value="Select A Name">Select A Name</option>
+          <option disabled selected value="-1">Select A Name</option>
           <option
-            value="{{ type.positioN_NAME }}"
+            value="{{ type.employeE_TYPE_ID }}"
             *ngFor="let type of employeeTypes"
           >
             {{ type.positioN_NAME }}
@@ -34,15 +34,28 @@
     </div>
     <div class="row" style="padding-bottom: 15px">
       <div class="col-6">
-        <label class="form-label">Wage Rate(R/h):</label>
-        <input
-          class="form-control"
-          type="number"
-          placeholder="0.00"
-          name="rate"
-          [(ngModel)]="rate.ratE_AMOUNT"
-          (input)="validateMoney()"
-        />
+        <label class="form-label">Wage Rate (/h):</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style="
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              "
+            >
+              R
+            </div>
+          </div>
+          <input
+            class="form-control"
+            type="number"
+            placeholder="0.00"
+            name="rate"
+            [(ngModel)]="rate.ratE_AMOUNT"
+            (input)="validateMoney()"
+          />
+        </div>
         <div *ngIf="!validMoney" style="color: Red">Invalid Wage Rate</div>
       </div>
     </div>

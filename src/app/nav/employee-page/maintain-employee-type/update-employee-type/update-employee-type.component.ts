@@ -3,6 +3,12 @@ import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUser } from 'src/app/models/CurrentUser.model';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-update-employee-type',
   templateUrl: './update-employee-type.component.html',
@@ -26,13 +32,32 @@ export class UpdateEmployeeTypeComponent implements OnInit {
 
   successSubmit: boolean = false;
 
-  constructor(private employeeTypeService: EmployeeTypeService) {}
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Update Employee Type',
+    date: new Date(),
+    month: 'Oct',
+  };
+
+  constructor(
+    private employeeTypeService: EmployeeTypeService,
+    private currentUserService: CurrentUserService,
+    private auditLogService: AuditLogService
+  ) {}
 
   ngOnInit(): void {
     this.employeeTypeService.getAllEmployees().subscribe((res) => {
       console.log('This is all the employeeTypes');
       console.log(res);
       this.employeeTypes = res;
+    });
+
+    this.currentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
     });
   }
 
@@ -44,6 +69,12 @@ export class UpdateEmployeeTypeComponent implements OnInit {
         console.log(response);
         this.successSubmit = true;
       });
+
+    /// add to audit log
+    this.auditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
   }
 
   FormValidate() {

@@ -7,6 +7,11 @@ import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
 import { Output, EventEmitter } from '@angular/core';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-maintain-product-category',
   templateUrl: './maintain-product-category.component.html',
@@ -38,14 +43,31 @@ export class MaintainProductCategoryComponent implements OnInit {
   //delete type and cat
   hasProductOrType: boolean = false;
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Delete Product Category',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private productCategoryService: ProductCategoryService,
     private productService: ProductService,
-    private productTypeService: ProductTypeService
+    private productTypeService: ProductTypeService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit(): void {
     this.getAllProductCategories();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
   deletee(delet: any) {
@@ -63,7 +85,7 @@ export class MaintainProductCategoryComponent implements OnInit {
           type.producT_CATEGORY_ID == this.productCategory.producT_CATEGORY_ID
         );
       });
-      let activeArray;
+      let activeArray = [];
       if (this.productTypesTemp.length > 0) {
         activeArray = this.productTypesTemp.filter((active) => {
           return active.deleted == false;
@@ -83,7 +105,13 @@ export class MaintainProductCategoryComponent implements OnInit {
       .subscribe((response) => {
         this.getAllProductCategories();
         console.log(response);
-        this.successDelete = true;
+
+        //add to audit log
+        this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+          console.log('new audit log entry');
+          console.log(res);
+          this.successDelete = true;
+        });
       });
   }
 
@@ -96,6 +124,9 @@ export class MaintainProductCategoryComponent implements OnInit {
     this.productCategoryService
       .getAllProductCategories()
       .subscribe((response) => {
+        response = response.filter((temp) => {
+          return temp.deleted == false;
+        });
         this.productCategories = response;
         this.productCategoriesTemp = response;
       });

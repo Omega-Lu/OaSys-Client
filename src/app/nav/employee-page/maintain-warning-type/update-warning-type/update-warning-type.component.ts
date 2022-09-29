@@ -3,6 +3,11 @@ import { WarningType } from 'src/app/models/warning-type.model';
 import { WarningTypeService } from 'src/app/_services/warning-type.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-update-warning-type',
   templateUrl: './update-warning-type.component.html',
@@ -10,6 +15,11 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 })
 export class UpdateWarningTypeComponent implements OnInit {
   @Input() warningType: WarningType;
+  warningTypes: WarningType[] = [];
+  warningTypesTemp: WarningType[] = [];
+
+  //unique
+  uniqueName: boolean = true;
 
   @Output() return = new EventEmitter<string>();
   //import validation
@@ -18,16 +28,48 @@ export class UpdateWarningTypeComponent implements OnInit {
   successSubmit: boolean = false;
   validWarning: boolean = true;
 
-  constructor(private warningTypeService: WarningTypeService) {}
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Update Warning Type',
+    date: new Date(),
+    month: 'Oct',
+  };
 
-  ngOnInit(): void {}
+  constructor(
+    private warningTypeService: WarningTypeService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
+  ) {}
+
+  ngOnInit() {
+    this.warningTypeService.getAllEmployees().subscribe((res) => {
+      console.log('this is all the warning types');
+      console.log(res);
+      this.warningTypes = res;
+    });
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
 
   onSubmit() {
     this.warningTypeService
       .updateEmployee(this.warningType)
       .subscribe((response) => {
+        console.log('updated Warning Type');
         console.log(response);
-        this.successSubmit = true;
+
+        //add to audit log
+        this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+          console.log('new audit log entry');
+          console.log(res);
+          this.successSubmit = true;
+        });
       });
   }
 
@@ -35,6 +77,22 @@ export class UpdateWarningTypeComponent implements OnInit {
     this.validWarning = this.validate.ValidateString(
       this.warningType.description
     );
+    this.compareName();
+  }
+
+  compareName() {
+    this.warningTypesTemp = this.warningTypes;
+    this.warningTypesTemp = this.warningTypesTemp.filter((type) => {
+      return type.description == this.warningType.description;
+    });
+
+    if (this.warningTypesTemp.length > 0) {
+      if (
+        this.warningTypesTemp[0].warninG_TYPE_ID ==
+        this.warningType.warninG_TYPE_ID
+      ) {
+      } else this.uniqueName = false;
+    } else this.uniqueName = true;
   }
 
   Return() {

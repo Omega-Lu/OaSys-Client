@@ -13,6 +13,11 @@ import { ProductTypeService } from 'src/app/_services/product-type.service';
 
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-receive-order',
   templateUrl: './receive-order.component.html',
@@ -52,17 +57,76 @@ export class ReceiveOrderComponent implements OnInit {
   dynamicArray = [];
   tempArray = [];
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Receive Supplier Order',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private orderProductService: OrderProductService,
     private orderService: OrderService,
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
-    private productTypeService: ProductTypeService
+    private productTypeService: ProductTypeService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
     this.getAllOrderProducts();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
+
+  /////////////// get functions ////////////////////////////////////////////
+
+  getAllOrderProducts() {
+    this.orderProductService.getAllOrderProducts().subscribe((response) => {
+      this.orderProducts = response;
+      console.log('this is all the order products');
+      console.log(this.orderProducts);
+      this.getAllProducts();
+    });
+  }
+
+  getAllProducts() {
+    this.productService.getAllProducts().subscribe((response) => {
+      this.products = response;
+      console.log('this is all the products');
+      console.log(this.products);
+      this.getAllProductTypes();
+    });
+  }
+
+  getAllProductTypes() {
+    this.productTypeService.getAllProductTypes().subscribe((response) => {
+      this.productTypes = response;
+      console.log('this is all the product types');
+      console.log(this.productTypes);
+      this.getAllProductCategories();
+    });
+  }
+
+  getAllProductCategories() {
+    this.productCategoryService
+      .getAllProductCategories()
+      .subscribe((response) => {
+        this.productCategories = response;
+        console.log('this is all the product categoories');
+        console.log(this.productCategories);
+        this.displayToTable();
+      });
+  }
+
+  //////////////////// create dynamic array /////////////////////////////////
 
   displayToTable() {
     this.orderProducts = this.orderProducts.filter((orderProduct) => {
@@ -113,53 +177,13 @@ export class ReceiveOrderComponent implements OnInit {
     this.return.emit('false');
   }
 
-  getAllOrderProducts() {
-    this.orderProductService.getAllOrderProducts().subscribe((response) => {
-      this.orderProducts = response;
-      console.log('this is all the order products');
-      console.log(this.orderProducts);
-      this.getAllProducts();
-    });
-  }
-
-  getAllProducts() {
-    this.productService.getAllProducts().subscribe((response) => {
-      this.products = response;
-      console.log('this is all the products');
-      console.log(this.products);
-      this.getAllProductTypes();
-    });
-  }
-
-  getAllProductTypes() {
-    this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTypes = response;
-      console.log('this is all the product types');
-      console.log(this.productTypes);
-      this.getAllProductCategories();
-    });
-  }
-
-  getAllProductCategories() {
-    this.productCategoryService
-      .getAllProductCategories()
-      .subscribe((response) => {
-        this.productCategories = response;
-        console.log('this is all the product categoories');
-        console.log(this.productCategories);
-        this.displayToTable();
-      });
-  }
-
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
+  ////////////////////// validate quantity ////////////////////////////////
 
   quantityVali(quan: number) {
     this.validQuantity = this.validate.ValidateInteger(quan);
   }
+
+  ////////////////// receive the order ///////////////////////////////////
 
   ReceiveOrder() {
     for (let i = 0; i < this.dynamicArray.length; i++) {
@@ -202,7 +226,13 @@ export class ReceiveOrderComponent implements OnInit {
     this.orderService.updateOrder(this.order).subscribe((res) => {
       console.log('Updated Order');
       console.log(res);
-      this.successSubmit = true;
+
+      //add to audit log
+      this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+        console.log('new audit log entry');
+        console.log(res);
+        this.successSubmit = true;
+      });
     });
   }
 }

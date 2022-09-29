@@ -38,6 +38,9 @@ export class SearchProductTypeComponent implements OnInit {
 
   getAllProductTypes() {
     this.productTypeService.getAllProductTypes().subscribe((response) => {
+      response = response.filter((temp) => {
+        return temp.deleted == false;
+      });
       this.productTypes = response;
       this.productTypesTemp = response;
       this.getProductCategories();

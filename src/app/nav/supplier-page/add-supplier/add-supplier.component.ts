@@ -3,6 +3,12 @@ import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { of } from 'rxjs';
+
 @Component({
   selector: 'app-add-supplier',
   templateUrl: './add-supplier.component.html',
@@ -42,7 +48,21 @@ export class AddSupplierComponent implements OnInit {
   uniqueEmail: boolean = true;
   uniqueContactNumber: boolean = true;
 
-  constructor(private suppliierService: SupplierService) {}
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Add Supplier',
+    date: new Date(),
+    month: 'Oct',
+  };
+
+  constructor(
+    private suppliierService: SupplierService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
+  ) {}
 
   ngOnInit() {
     this.suppliierService.getAllSuppliers().subscribe((res) => {
@@ -51,14 +71,38 @@ export class AddSupplierComponent implements OnInit {
       this.suppliers = res;
       this.suppliersTemp = res;
     });
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
+  ///////////////////////// add supplier ////////////////////////////////////
+
   onSubmit() {
-    this.suppliierService.addSupplier(this.supplier).subscribe((response) => {
-      console.log(response);
+    if (this.supplier.supplieR_ID == 0) {
+      this.suppliierService.addSupplier(this.supplier).subscribe((response) => {
+        console.log(response);
+        this.successSubmit = true;
+      });
+    } else {
+      this.supplier.deleted == false;
+      this.suppliierService.updateSupplier(this.supplier).subscribe((res) => {
+        console.log('reActivated Supplier');
+        console.log(res);
+        this.successSubmit = true;
+      });
+    }
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
       this.successSubmit = true;
     });
   }
+
+  /////////////////// validate functions/////////////////////////////////////
 
   FormValidate() {
     this.ValidateName();
@@ -78,8 +122,12 @@ export class AddSupplierComponent implements OnInit {
     this.suppliersTemp = this.suppliersTemp.filter((temp) => {
       return temp.name == this.supplier.name;
     });
-    if (this.suppliersTemp.length > 0) this.uniqueName = false;
-    else this.uniqueName = true;
+    if (this.suppliersTemp.length > 0) {
+      if (this.suppliersTemp[0].deleted) {
+      } else {
+        this.uniqueName = false;
+      }
+    } else this.uniqueName = true;
   }
 
   ValidateVat() {
@@ -92,8 +140,13 @@ export class AddSupplierComponent implements OnInit {
     this.suppliersTemp = this.suppliersTemp.filter((temp) => {
       return temp.vaT_NUMBER == this.supplier.vaT_NUMBER;
     });
-    if (this.suppliersTemp.length > 0) this.uniqueVat = false;
-    else this.uniqueVat = true;
+    if (this.suppliersTemp.length > 0) {
+      if (this.suppliersTemp[0].deleted)
+        this.supplier.supplieR_ID = this.suppliersTemp[0].supplieR_ID;
+      else {
+        this.uniqueVat = false;
+      }
+    } else this.uniqueVat = true;
   }
 
   ValidateContactNumber() {
@@ -108,8 +161,12 @@ export class AddSupplierComponent implements OnInit {
     this.suppliersTemp = this.suppliersTemp.filter((temp) => {
       return temp.contacT_NUMBER == this.supplier.contacT_NUMBER;
     });
-    if (this.suppliersTemp.length > 0) this.uniqueContactNumber = false;
-    else this.uniqueContactNumber = true;
+    if (this.suppliersTemp.length > 0) {
+      if (this.suppliersTemp[0].deleted) {
+      } else {
+        this.uniqueContactNumber = false;
+      }
+    } else this.uniqueContactNumber = true;
 
     if (this.supplier.contacT_NUMBER == this.supplier.alT_NUMBER)
       this.validAlt = false;
@@ -132,11 +189,11 @@ export class AddSupplierComponent implements OnInit {
     this.suppliersTemp = this.suppliersTemp.filter((temp) => {
       return temp.email == this.supplier.email;
     });
-    if (this.suppliersTemp.length > 0) this.uniqueEmail = false;
-    else this.uniqueEmail = true;
-  }
-
-  Return() {
-    this.return.emit('false');
+    if (this.suppliersTemp.length > 0) {
+      if (this.suppliersTemp[0].deleted) {
+      } else {
+        this.uniqueEmail = false;
+      }
+    } else this.uniqueEmail = true;
   }
 }

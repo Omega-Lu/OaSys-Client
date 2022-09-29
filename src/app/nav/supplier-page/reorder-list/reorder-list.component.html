@@ -125,11 +125,14 @@
         <p style="color: red; float: right" [hidden]="addComplete">
           Complete the product selection
         </p>
+        <p style="color: red; float: right" [hidden]="!isInList">
+          Product Already In Re-Order List
+        </p>
       </div>
     </div>
 
     <div id="print-section">
-      <div class="row" style="margin-top: 25px">
+      <div class="row" style="margin-top: 75px">
         <h1 class="col-6">ReOrder List</h1>
         <h3 class="col-6">{{ thisDate }}</h3>
       </div>
@@ -189,7 +192,7 @@
         border-color: var(--bs-orange);
         float: right;
       "
-      (click)="addHeader = true"
+      (click)="addHeader = true; printReorder()"
       [disabled]="!completeQuantity"
       [printStyle]="{
         table: {

@@ -81,7 +81,7 @@
                   id="nameOption"
                   value=" {{ product.producT_ID }} "
                   *ngFor="let product of productsTemp"
-                  (click)="pID = product.producT_ID"
+                  (input)="pID = product.producT_ID"
                 >
                   {{ product.producT_NAME }}
                 </option>
@@ -110,6 +110,9 @@
     <i style="color: red" [hidden]="completeQuantity"
       >Quantity must be more than 0 and a whole number</i
     >
+    <i style="color: red" [hidden]="!inOrderAlready">
+      This Product Is Already In The Order
+    </i>
     <button
       class="btn btn-primary"
       type="button"

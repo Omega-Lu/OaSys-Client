@@ -49,10 +49,10 @@
             <button
               class="btn btn-primary"
               type="button"
-              style="background: var(--bs-red)"
+              style="background: var(--bs-red); border-color: var(--bs-red)"
               data-toggle="modal"
               data-target="#warningDeleteModal"
-              (click)="deletee(warningtype.warninG_TYPE_ID)"
+              (click)="deletee(warningtype)"
             >
               Delete
             </button>
@@ -89,7 +89,7 @@
         <h5
           class="modal-title"
           id="warningDeleteModalLabel"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasReference"
         >
           Are You Sure You Would Like To Delete This Warning Type
         </h5>
@@ -100,6 +100,13 @@
         >
           Warning Type Successfully Deleted
         </h5>
+        <h5
+          class="modal-title"
+          id="warningDeleteModalLabel"
+          *ngIf="hasReference"
+        >
+          All Warnings With Type Must Be Changed First
+        </h5>
       </div>
 
       <div class="modal-footer">
@@ -107,7 +114,7 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasReference"
         >
           No
         </button>
@@ -116,8 +123,8 @@
           class="btn btn-primary"
           name="deleteempl"
           data-target="#warningDeleteModal"
-          *ngIf="!successDelete"
-          (click)="deleteEmployee()"
+          *ngIf="!successDelete && !hasReference"
+          (click)="deleteWarningType()"
         >
           Yes
         </button>
@@ -129,6 +136,16 @@
           data-dismiss="modal"
           *ngIf="successDelete"
           routerLink="/employee-page"
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#warningDeleteModal"
+          data-dismiss="modal"
+          *ngIf="hasReference"
         >
           OK
         </button>

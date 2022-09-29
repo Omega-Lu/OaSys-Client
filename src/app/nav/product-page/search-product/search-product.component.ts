@@ -45,6 +45,9 @@ export class SearchProductComponent implements OnInit {
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
       console.log('this is all the products');
       console.log(response);
       this.products = response;

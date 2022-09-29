@@ -4,6 +4,11 @@ import { SupplierService } from 'src/app/_services/supplier.service';
 import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/_services/order.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-maintain-supplier',
   templateUrl: './maintain-supplier.component.html',
@@ -31,13 +36,29 @@ export class MaintainSupplierComponent implements OnInit {
   lekke: any;
   deletenumber: any;
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Delete Supplier',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private supplierService: SupplierService,
-    private OrderService: OrderService
+    private OrderService: OrderService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit(): void {
     this.getAllSuppliers();
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
   deletee(delet: any) {
@@ -64,7 +85,10 @@ export class MaintainSupplierComponent implements OnInit {
 
   checkReference() {
     this.ordersTemp = this.orders.filter((order) => {
-      return order.supplierID == this.supplier.supplieR_ID;
+      return (
+        order.supplierID == this.supplier.supplieR_ID &&
+        order.orderStatusID == 'Placed'
+      );
     });
 
     if (this.ordersTemp.length > 0) this.hasReference = true;
@@ -72,14 +96,33 @@ export class MaintainSupplierComponent implements OnInit {
   }
 
   deleteSupplier() {
-    this.supplierService
-      .deleteSupplier(this.supplier.supplieR_ID)
-      .subscribe((response) => {
-        this.getAllSuppliers();
-        console.log('deleted supplier');
-        console.log(response);
+    this.ordersTemp = this.orders.filter((order) => {
+      return order.supplierID == this.supplier.supplieR_ID;
+    });
+
+    if (this.ordersTemp.length > 0) {
+      this.supplier.deleted = true;
+      this.supplierService.updateSupplier(this.supplier).subscribe((res) => {
+        console.log('Hidden Supplier');
+        console.log(res);
         this.successDelete = true;
       });
+    } else {
+      this.supplierService
+        .deleteSupplier(this.supplier.supplieR_ID)
+        .subscribe((response) => {
+          this.getAllSuppliers();
+          console.log('deleted supplier');
+          console.log(response);
+          this.successDelete = true;
+        });
+    }
+
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
   }
 
   populateForm(supplier: Supplier) {

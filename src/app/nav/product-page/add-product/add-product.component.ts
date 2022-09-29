@@ -6,11 +6,13 @@ import { ProductCategoryService } from 'src/app/_services/product-category.servi
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductTypeService } from 'src/app/_services/product-type.service';
 import { CurrentUser } from 'src/app/models/CurrentUser.model';
-import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
-import { AuditLogService } from 'src/app/_services/AuditLog.service';
-import { AuditLog } from 'src/app/models/AuditLog.model';
+
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
-import { ThisReceiver } from '@angular/compiler';
+
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 
 @Component({
   selector: 'app-add-product',
@@ -54,17 +56,15 @@ export class AddProductComponent implements OnInit {
   currentUsers: CurrentUser[] = [];
   currentUsersTemp: CurrentUser[] = [];
 
-  //audit Log
-  audit: AuditLog = {
+  //audit log
+  auditLog: AuditLog = {
     auditLogID: 0,
     userID: 0,
     employeeID: 0,
     functionUsed: 'Add Product',
     date: new Date(),
-    month: '',
+    month: 'Oct',
   };
-  audits: AuditLog[] = [];
-  auditsTemp: AuditLog[] = [];
 
   //validation
   validate: ValidationServicesComponent = new ValidationServicesComponent();
@@ -85,36 +85,56 @@ export class AddProductComponent implements OnInit {
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
     private productTypeService: ProductTypeService,
-    private auditLogService: AuditLogService,
-    private currentUserService: CurrentUserService
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
-    this.getAllProductCategories();
-    this.getAllProductTypes();
     this.getProducts();
-    await this.getAllCurrentUsers();
-    await this.sleep(500);
 
-    //set the current user
-    this.audit.userID = this.currentUsers[this.currentUsers.length - 1].userID;
-    this.audit.employeeID =
-      this.currentUsers[this.currentUsers.length - 1].employeeID;
-  }
-
-  async getAllCurrentUsers() {
-    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
-      this.currentUsers = response;
-      console.log('All current Users');
-      console.log(this.currentUsers);
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
     });
   }
 
-  async sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
+  //////////// get functions /////////////////////////////////////////////
+
+  getProducts() {
+    this.productService.getAllProducts().subscribe((res) => {
+      this.products = res;
+      console.log('this is all the products');
+      console.log(this.products);
+
+      this.getAllProductCategories();
     });
   }
+
+  getAllProductCategories() {
+    this.productCategoryService
+      .getAllProductCategories()
+      .subscribe((response) => {
+        response = response.filter((temp) => {
+          return temp.deleted == false;
+        });
+        this.productCategories = response;
+        console.log(this.productCategories);
+
+        this.getAllProductTypes();
+      });
+  }
+
+  getAllProductTypes() {
+    this.productTypeService.getAllProductTypes().subscribe((response) => {
+      response = response.filter((temp) => {
+        return temp.deleted == false;
+      });
+      this.productTypes = response;
+      console.log(this.productTypes);
+    });
+  }
+
+  //////////////////////// validate functions ////////////////////////////////
 
   FormValidate() {
     this.Costvalidate();
@@ -127,52 +147,6 @@ export class AddProductComponent implements OnInit {
     this.validateType();
     this.compareBarcode();
     this.CompareNameAndDescription();
-  }
-
-  getAllProductCategories() {
-    this.productCategoryService
-      .getAllProductCategories()
-      .subscribe((response) => {
-        this.productCategories = response;
-        console.log(this.productCategories);
-      });
-  }
-
-  getAllProductTypes() {
-    this.productTypeService.getAllProductTypes().subscribe((response) => {
-      this.productTypes = response;
-      console.log(this.productTypes);
-    });
-  }
-
-  getProducts() {
-    this.productService.getAllProducts().subscribe((res) => {
-      this.products = res;
-      console.log('this is all the products');
-      console.log(this.products);
-    });
-  }
-
-  onSubmit() {
-    if (this.product.producT_ID == 0) {
-      this.productService.addProduct(this.product).subscribe((response) => {
-        console.log('this is the new product');
-        console.log(response);
-        this.successSubmit = true;
-      });
-    } else {
-      this.productService.updateProduct(this.product).subscribe((res) => {
-        console.log('this is the updated product');
-        console.log(res);
-        this.successSubmit = true;
-      });
-    }
-
-    //adding to audit log
-    this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
-      console.log('entry into audit log');
-      console.log(response);
-    });
   }
 
   nameValidate() {
@@ -209,10 +183,6 @@ export class AddProductComponent implements OnInit {
         }
       }
     }
-  }
-
-  Return() {
-    this.return.emit('false');
   }
 
   Costvalidate() {
@@ -271,9 +241,7 @@ export class AddProductComponent implements OnInit {
   }
 
   async categorySelect(id: number) {
-    this.productTypesTemp = this.productTypes;
-    this.productTypesTemp = this.productTypesTemp.filter((productType) => {
-      console.log(productType.producT_CATEGORY_ID == id);
+    this.productTypesTemp = this.productTypes.filter((productType) => {
       return productType.producT_CATEGORY_ID == id;
     });
     console.log(this.productTypes);
@@ -290,5 +258,29 @@ export class AddProductComponent implements OnInit {
     if (this.product.producT_TYPE_ID == -1) {
       this.validType = false;
     } else this.validType = true;
+  }
+
+  ///////////////// add product /////////////////////////////////////////////
+
+  onSubmit() {
+    if (this.product.producT_ID == 0) {
+      this.productService.addProduct(this.product).subscribe((response) => {
+        console.log('this is the new product');
+        console.log(response);
+        this.successSubmit = true;
+      });
+    } else {
+      this.productService.updateProduct(this.product).subscribe((res) => {
+        console.log('this is the reActivated product');
+        console.log(res);
+        this.successSubmit = true;
+      });
+    }
+
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
   }
 }
