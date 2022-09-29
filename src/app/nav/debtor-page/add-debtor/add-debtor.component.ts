@@ -9,6 +9,11 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { CustomerApplication } from '../../../models/CustomerApplication.model';
 import { CustomerApplicationService } from '../../../_services/CustomerApplication.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-add-debtor',
   templateUrl: './add-debtor.component.html',
@@ -63,16 +68,70 @@ export class AddDebtorComponent implements OnInit {
   uniqueContactNumber: boolean = true;
   uniqueEmail: boolean = true;
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Add Debtor',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private debtorService: DebtorService,
     private provinceService: ProvinceService,
     private cityService: CityService,
-    private customerApplicationService: CustomerApplicationService
+    private customerApplicationService: CustomerApplicationService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit() {
     this.getProvinces();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
+
+  ///////////////// get functions
+
+  getProvinces() {
+    this.provinceService.getAllProvinces().subscribe((res) => {
+      this.provinces = res;
+      console.log('this is all the provinces');
+      console.log(this.provinces);
+      this.getCities();
+    });
+  }
+
+  getCities() {
+    this.cityService.getAllCitys().subscribe((res) => {
+      this.cities = res;
+      console.log('this is all the cities');
+      console.log(this.cities);
+      this.getDebtors();
+    });
+  }
+
+  getDebtors() {
+    this.debtorService.getAllDebtors().subscribe((res) => {
+      this.debtors = res;
+      this.getCustomerApplications();
+    });
+  }
+
+  getCustomerApplications() {
+    this.customerApplicationService
+      .getAllCustomerApplications()
+      .subscribe((res) => {
+        this.customerApplications = res;
+      });
+  }
+
+  ////////////////// validate ///////////////////////////////////////////////
 
   FormValidate() {
     this.nameValidate();
@@ -197,38 +256,7 @@ export class AddDebtorComponent implements OnInit {
       );
   }
 
-  getProvinces() {
-    this.provinceService.getAllProvinces().subscribe((res) => {
-      this.provinces = res;
-      console.log('this is all the provinces');
-      console.log(this.provinces);
-      this.getCities();
-    });
-  }
-
-  getCities() {
-    this.cityService.getAllCitys().subscribe((res) => {
-      this.cities = res;
-      console.log('this is all the cities');
-      console.log(this.cities);
-      this.getDebtors();
-    });
-  }
-
-  getDebtors() {
-    this.debtorService.getAllDebtors().subscribe((res) => {
-      this.debtors = res;
-      this.getCustomerApplications();
-    });
-  }
-
-  getCustomerApplications() {
-    this.customerApplicationService
-      .getAllCustomerApplications()
-      .subscribe((res) => {
-        this.customerApplications = res;
-      });
-  }
+  ////////////////// add debtor //////////////////////////////////////////////
 
   onSubmit() {
     if (this.debtor.customeR_ACCOUNT_ID == 0) {
@@ -244,6 +272,12 @@ export class AddDebtorComponent implements OnInit {
         this.successSubmit = true;
       });
     }
+
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+    });
   }
 
   categorySelect(id: number) {

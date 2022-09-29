@@ -13,6 +13,11 @@ import { CityService } from 'src/app/_services/City.service';
 import { Debtor } from 'src/app/models/debtor.model';
 import { DebtorService } from '../../../../_services/debtor.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-view-credit-account',
   templateUrl: './view-credit-account.component.html',
@@ -77,19 +82,81 @@ export class ViewCreditAccountComponent implements OnInit {
   debtors: Debtor[] = [];
   debtorsTemp: Debtor[] = [];
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: '',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private customerApplicationService: CustomerApplicationService,
     private accountStatusService: AccountStatusService,
     private customerAccountService: CustomerAccountService,
     private provinceService: ProvinceService,
     private cityService: CityService,
-    private debtorService: DebtorService
+    private debtorService: DebtorService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit(): void {
     this.getProvinces();
     this.getAllAccountStatusses();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
+
+  /////////////////// get functions //////////////////////////////////////////
+
+  getProvinces() {
+    this.provinceService.getAllProvinces().subscribe((res) => {
+      this.provinces = res;
+      console.log('this is all the provinces');
+      console.log(this.provinces);
+      this.getCities();
+    });
+  }
+
+  getCities() {
+    this.cityService.getAllCitys().subscribe((res) => {
+      this.cities = res;
+      console.log('this is all the cities');
+      console.log(this.cities);
+      this.getDebtors();
+    });
+  }
+
+  getDebtors() {
+    this.debtorService.getAllDebtors().subscribe((res) => {
+      this.debtors = res;
+      this.getCustomerApplications();
+    });
+  }
+
+  getCustomerApplications() {
+    this.customerApplicationService
+      .getAllCustomerApplications()
+      .subscribe((res) => {
+        this.customerApplications = res;
+      });
+    this.categorySelect(this.customerApplication.provinceID);
+  }
+
+  getAllAccountStatusses() {
+    this.accountStatusService.getAllAccountStatusses().subscribe((response) => {
+      this.accountStatusses = response;
+      console.log(this.accountStatusses);
+    });
+  }
+
+  ////////////////// validate functions /////////////////////////////////////
 
   FormValidate() {
     this.nameValidate();
@@ -233,40 +300,6 @@ export class ViewCreditAccountComponent implements OnInit {
       );
   }
 
-  getProvinces() {
-    this.provinceService.getAllProvinces().subscribe((res) => {
-      this.provinces = res;
-      console.log('this is all the provinces');
-      console.log(this.provinces);
-      this.getCities();
-    });
-  }
-
-  getCities() {
-    this.cityService.getAllCitys().subscribe((res) => {
-      this.cities = res;
-      console.log('this is all the cities');
-      console.log(this.cities);
-      this.getDebtors();
-    });
-  }
-
-  getDebtors() {
-    this.debtorService.getAllDebtors().subscribe((res) => {
-      this.debtors = res;
-      this.getCustomerApplications();
-    });
-  }
-
-  getCustomerApplications() {
-    this.customerApplicationService
-      .getAllCustomerApplications()
-      .subscribe((res) => {
-        this.customerApplications = res;
-      });
-    this.categorySelect(this.customerApplication.provinceID);
-  }
-
   categorySelect(id: number) {
     this.citiesTemp = this.cities;
     this.citiesTemp = this.citiesTemp.filter((city) => {
@@ -275,16 +308,11 @@ export class ViewCreditAccountComponent implements OnInit {
     this.categorySelected = true;
   }
 
-  getAllAccountStatusses() {
-    this.accountStatusService.getAllAccountStatusses().subscribe((response) => {
-      this.accountStatusses = response;
-      console.log(this.accountStatusses);
-    });
-  }
-
   Return() {
     this.return.emit('false');
   }
+
+  //////////////////// approve account /////////////////////////////////////
 
   onSubmit() {
     this.debtor.accounT_STATUS_ID = this.customerApplication.accountStatusID;
@@ -302,7 +330,6 @@ export class ViewCreditAccountComponent implements OnInit {
         .subscribe((response) => {
           console.log('new debtor');
           console.log(response);
-          this.successSubmit = true;
         });
     } else {
       this.customerAccountService
@@ -310,7 +337,6 @@ export class ViewCreditAccountComponent implements OnInit {
         .subscribe((res) => {
           console.log('updated debtor added');
           console.log(res);
-          this.successSubmit = true;
         });
     }
 
@@ -319,8 +345,18 @@ export class ViewCreditAccountComponent implements OnInit {
       .subscribe((response) => {
         console.log('aplication accepted and deleted');
         console.log(response);
+
+        //add to audit log
+        this.auditLog.functionUsed = 'Approve Credit Account';
+        this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+          console.log('new audit log entry');
+          console.log(res);
+          this.successSubmit = true;
+        });
       });
   }
+
+  //////////////////// Decline account ////////////////////////////////////////
 
   async Decilne() {
     this.customerApplicationService
@@ -328,7 +364,14 @@ export class ViewCreditAccountComponent implements OnInit {
       .subscribe((response) => {
         console.log('deleted/declined customer applciation');
         console.log(response);
-        this.successDecline = true;
+
+        //add to audit log
+        this.auditLog.functionUsed = 'Decline Credit Account';
+        this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+          console.log('new audit log entry');
+          console.log(res);
+          this.successDecline = true;
+        });
       });
   }
 }

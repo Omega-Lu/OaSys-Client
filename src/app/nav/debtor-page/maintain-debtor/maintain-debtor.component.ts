@@ -2,6 +2,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Debtor } from 'src/app/models/debtor.model';
 import { DebtorService } from 'src/app/_services/debtor.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-maintain-debtor',
   templateUrl: './maintain-debtor.component.html',
@@ -21,10 +26,30 @@ export class MaintainDebtorComponent implements OnInit {
   searchText: any = '';
   updateDebtor: boolean = false;
   deleteNumber: any;
-  constructor(private debtorService: DebtorService) {}
+
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Delete Debtor',
+    date: new Date(),
+    month: 'Oct',
+  };
+
+  constructor(
+    private debtorService: DebtorService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
+  ) {}
 
   ngOnInit() {
     this.getAllDebtors();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
   getAllDebtors() {
@@ -60,7 +85,13 @@ export class MaintainDebtorComponent implements OnInit {
       console.log('this is the deleted debtor');
       console.log(response);
       this.getAllDebtors();
-      this.successDelete = true;
+
+      //add to audit log
+      this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+        console.log('new audit log entry');
+        console.log(res);
+        this.successDelete = true;
+      });
     });
   }
 
@@ -82,5 +113,7 @@ export class MaintainDebtorComponent implements OnInit {
 
   back() {
     this.return.emit('false');
+    this.getAllDebtors();
+    this.updateDebtor = false;
   }
 }

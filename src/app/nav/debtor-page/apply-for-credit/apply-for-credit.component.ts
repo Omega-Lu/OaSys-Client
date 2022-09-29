@@ -9,6 +9,11 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { Debtor } from 'src/app/models/debtor.model';
 import { DebtorService } from 'src/app/_services/debtor.service';
 
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+
 @Component({
   selector: 'app-apply-for-credit',
   templateUrl: './apply-for-credit.component.html',
@@ -61,15 +66,32 @@ export class ApplyForCreditComponent implements OnInit {
   cities: City[] = [];
   citiesTemp: City[] = [];
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Add Credit Application',
+    date: new Date(),
+    month: 'Oct',
+  };
+
   constructor(
     private customerApplicationService: CustomerApplicationService,
     private provinceService: ProvinceService,
     private cityService: CityService,
-    private debtorService: DebtorService
+    private debtorService: DebtorService,
+    private CurrentUserService: CurrentUserService,
+    private AuditLogService: AuditLogService
   ) {}
 
   ngOnInit() {
     this.getProvinces();
+
+    this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
   FormValidate() {
@@ -261,5 +283,11 @@ export class ApplyForCreditComponent implements OnInit {
           this.successSubmit = true;
         });
     }
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
+      this.successSubmit = true;
+    });
   }
 }
