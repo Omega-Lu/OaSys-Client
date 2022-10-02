@@ -85,6 +85,8 @@ export class ViewReturnSaleComponent implements OnInit {
 
   successSubmit: boolean = false;
 
+  returnReason: string = '';
+
   //validation
   validate: ValidationServicesComponent = new ValidationServicesComponent();
 
@@ -209,30 +211,25 @@ export class ViewReturnSaleComponent implements OnInit {
   ////////////////////////////////Return the Sale////////////////////////////
 
   ReturnSale() {
-    console.log('return sale');
-
     // new return
 
-    this.return.reason = 'Expired';
-    this.return.date = new Date().toString();
+    this.return.reason = this.returnReason;
+    this.return.date = new Date().toISOString();
 
     this.returnService.addReturn(this.return).subscribe((response) => {
       console.log('new return');
       console.log(response);
-    });
 
-    // new sale return
+      // new sale return
 
-    this.saleReturn.returnID =
-      this.returns[this.returns.length - 1].returnID + 1;
-    this.saleReturn.saleID = this.sale.saleID;
+      this.saleReturn.saleID = this.sale.saleID;
+      this.saleReturn.returnID = response.returnID;
 
-    this.saleReturnService
-      .addSaleReturn(this.saleReturn)
-      .subscribe((response) => {
+      this.saleReturnService.addSaleReturn(this.saleReturn).subscribe((res) => {
         console.log('new sale return');
-        console.log(response);
+        console.log(res);
       });
+    });
 
     //adding to audit log
     this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
@@ -242,51 +239,16 @@ export class ViewReturnSaleComponent implements OnInit {
     });
   }
 
-  //////////////////////////validation functions////////////////////////////////////////
-  FormValidate() {
-    this.validateQuantity();
-    this.validateReason();
-  }
-
-  validQuantity: boolean = true;
-  moreThanZero: boolean = true;
-  validateQuantity() {
-    this.validQuantity = true;
-    this.moreThanZero = true;
-
-    for (let i = 0; i < this.dynamicArray.length; i++) {
-      const element = this.dynamicArray[i];
-
-      if (!this.validate.ValidateInteger(element.quantityReturned)) {
-        this.validQuantity = false;
-      }
-    }
-
-    for (let i = 0; i < this.dynamicArray.length; i++) {
-      const element = this.dynamicArray[i];
-      if (element.reason != '-1') {
-        if (element.quantityReturned < 1) {
-          this.moreThanZero = false;
-        }
-      }
-    }
-  }
+  //////////////////////////validation functions//////////////////////////
 
   validReason: boolean = true;
-  validateReason() {
-    this.validReason = true;
 
-    for (let i = 0; i < this.dynamicArray.length; i++) {
-      const element = this.dynamicArray[i];
-      if (element.quantityReturned > 0) {
-        if (element.reason == '-1') {
-          this.validReason = false;
-        }
-      }
-    }
+  validateReason() {
+    if (this.returnReason == '') this.validReason = false;
+    else this.validReason = true;
   }
 
-  ////////////////////// return ///////////////////////////
+  //////////////////////////////////// return ///////////////////////////
 
   Return() {
     this.back.emit('false');

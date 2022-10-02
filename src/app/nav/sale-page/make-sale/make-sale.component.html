@@ -7,10 +7,11 @@
         ><input
           class="form-control"
           name="inputBarcode"
+          id="inputBarcode"
           type="text"
           [(ngModel)]="searchText"
           (keyup)="Search()"
-          (input)="Search()"
+          (input)="Search(); scan()"
           list="products"
           style="margin-bottom: 20px"
         />
@@ -30,7 +31,7 @@
             background: var(--bs-orange);
             margin-bottom: -74px;
           "
-          (click)="addProduct()"
+          (click)="inList()"
         >
           Add {{ barcodeProductName }}
         </button>
@@ -349,6 +350,7 @@
           data-toggle="modal"
           data-target="#exampleModal"
           data-dismiss="modal"
+          routerLink="sale-page"
           *ngIf="successSubmit"
         >
           OK

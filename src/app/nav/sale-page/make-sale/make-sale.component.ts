@@ -147,90 +147,90 @@ export class MakeSaleComponent implements OnInit {
     this.getAllCurrentUsers();
   }
 
-  ///////////////////////////////make the sale////////////////////////////////
+  //////////////////////////get Functions /////////////////////////////////////
 
-  async onSubmit() {
-    //add payment
+  getAllCurrentUsers() {
+    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
+      this.currentUsers = response;
 
-    this.payment.date = new Date().toString();
-    this.payment.amount = this.totalAmount;
-    this.payment.paymentTypeID = this.typeOfPayment;
+      //set the current user
+      this.sale.userID = this.currentUsers[this.currentUsers.length - 1].userID;
 
-    this.paymentService.addPayment(this.payment).subscribe((res) => {
-      console.log('this is the new payment');
-      console.log(res);
+      this.audit.userID =
+        this.currentUsers[this.currentUsers.length - 1].userID;
+      this.audit.employeeID =
+        this.currentUsers[this.currentUsers.length - 1].employeeID;
 
-      // add the sale
+      this.audit.month = 'Jan';
 
-      if (this.typeOfPayment == 'Credit') {
-        this.sale.customerAccountID == this.customerID;
-
-        // add to customer account debt
-        this.customerAccountsTemp = this.customerAccounts.filter((temp) => {
-          return temp.customeR_ACCOUNT_ID == this.customerID;
-        });
-
-        this.customerAccountsTemp[0].amounT_OWING =
-          this.customerAccountsTemp[0].amounT_OWING + this.totalAmount;
-
-        this.customerAccountService
-          .updateCustomerAccount(this.customerAccountsTemp[0])
-          .subscribe((resCustomer) => {
-            console.log('this is the updated customer account');
-            console.log(resCustomer);
-          });
-      }
-      this.sale.date = new Date();
-      this.sale.total = this.totalAmount;
-      this.sale.paymentID = res.paymentID;
-      this.sale;
-
-      this.saleService.addSale(this.sale).subscribe((response) => {
-        console.log('this is the new Sale');
-        console.log(response);
-
-        for (let i = 0; i < this.dynamicArray.length; i++) {
-          const element = this.dynamicArray[i];
-
-          // add sale Product
-
-          this.saleProduct.productID = element.productID;
-          this.saleProduct.saleID = response.saleID;
-          this.saleProduct.quantity = element.quantity;
-
-          this.saleProductService
-            .addSaleProduct(this.saleProduct)
-            .subscribe((resSaleProduct) => {
-              console.log('new SaleProduct');
-              console.log(resSaleProduct);
-            });
-
-          // decrease inventory
-
-          this.productsTemp = this.products.filter((product) => {
-            return product.producT_ID == element.productID;
-          });
-
-          this.productsTemp[0].quantitY_ON_HAND =
-            this.productsTemp[0].quantitY_ON_HAND - element.quantity;
-
-          this.productService
-            .updateProduct(this.productsTemp[0])
-            .subscribe((resProduct) => {
-              console.log('updated product quantity');
-              console.log(resProduct);
-            });
-        }
-      });
-    });
-
-    //adding to audit log
-    this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
-      console.log('entry into audit log');
-      console.log(response);
-      this.successSubmit = true;
+      console.log('All current Users');
+      console.log(this.currentUsers);
+      this.getAllCustomerAccounts();
     });
   }
+
+  getAllCustomerAccounts() {
+    this.customerAccountService
+      .getAllCustomerAccounts()
+      .subscribe((response) => {
+        response = response.filter((debtor) => {
+          return debtor.deleted == false;
+        });
+        this.customerAccounts = response;
+        this.customerAccountsTemp = response;
+        console.log('all customer accounts');
+        console.log(this.customerAccounts);
+        this.getAllPaymentss();
+      });
+  }
+
+  getAllPaymentss() {
+    this.paymentService.getAllPayments().subscribe((response) => {
+      this.payments = response;
+      console.log('all payments');
+      console.log(this.payments);
+      this.getAllSales();
+    });
+  }
+
+  getAllSales() {
+    this.saleService.getAllSales().subscribe((response) => {
+      this.sales = response;
+      console.log('all sales');
+      console.log(this.sales);
+      this.getAllSaleProducts();
+    });
+  }
+
+  getAllSaleProducts() {
+    this.saleProductService.getAllSaleProducts().subscribe((response) => {
+      this.saleProducts = response;
+      console.log('all sale products');
+      console.log(this.saleProducts);
+      this.getAllProducts();
+    });
+  }
+
+  getAllProducts() {
+    this.productService.getAllProducts().subscribe((response) => {
+      response = response.filter((product) => {
+        return product.deleted == false;
+      });
+      this.products = response;
+      console.log('all products');
+      console.log(this.products);
+      this.getAllPaymentTypes();
+    });
+  }
+
+  getAllPaymentTypes() {
+    this.paymentTypeService.getAllPaymentTypes().subscribe((response) => {
+      this.paymentTypes = response;
+      console.log('all payment types');
+    });
+  }
+
+  //////////////////////// validation ////////////////////////////////////////
 
   validAmount: boolean = true;
   changeString: string = '0';
@@ -319,6 +319,50 @@ export class MakeSaleComponent implements OnInit {
 
   ////////////////////////////Add Product To DYnamimc Array///////////////////
 
+  scan() {
+    let temp = this.products.filter((product) => {
+      return product.barcode == this.searchText;
+    });
+    if (temp.length > 0) {
+      console.log('scanned');
+      this.inList();
+    } else {
+      console.log('didnt scan');
+    }
+  }
+
+  Search() {
+    this.productsTemp = this.products;
+    console.log(this.searchText);
+    if (this.searchText !== '') {
+      let searchValue = this.searchText;
+      this.productsTemp = this.productsTemp.filter((product) => {
+        return product.barcode.match(searchValue);
+      });
+      this.barcodeProductName = this.productsTemp[0].producT_NAME;
+    } else {
+      this.productsTemp = this.products;
+      this.barcodeProductName = '';
+    }
+  }
+
+  inListAlready: boolean = false;
+
+  inList() {
+    this.inListAlready = false;
+    for (let i = 0; i < this.dynamicArray.length; i++) {
+      const element = this.dynamicArray[i];
+      if (element.productID == this.productsTemp[0].producT_ID) {
+        this.dynamicArray[i].quantity = this.dynamicArray[i].quantity + 1;
+        this.inListAlready = true;
+        $('#inputBarcode').val('');
+      }
+    }
+    if (!this.inListAlready) {
+      this.addProduct();
+    }
+  }
+
   price: number;
   addProduct() {
     if (this.barcodeProductName == '') {
@@ -348,6 +392,7 @@ export class MakeSaleComponent implements OnInit {
         productID: this.productsTemp[0].producT_ID,
         quanOnHand: this.productsTemp[0].quantitY_ON_HAND,
       });
+
       this.subTotal = 0;
       this.totalAmount = 0;
       for (let i = 0; i < this.dynamicArray.length; i++) {
@@ -359,6 +404,9 @@ export class MakeSaleComponent implements OnInit {
       if (this.customerID > -1) this.creditValidate(this.customerID);
       console.log(this.subTotal);
       this.productAdded = false;
+
+      $('#inputBarcode').val('');
+      console.log($('#inputBarcode').val());
     }
   }
 
@@ -376,109 +424,88 @@ export class MakeSaleComponent implements OnInit {
     }
   }
 
-  Search() {
-    this.productsTemp = this.products;
-    console.log(this.searchText);
-    if (this.searchText !== '') {
-      let searchValue = this.searchText;
-      this.productsTemp = this.productsTemp.filter((product) => {
-        console.log(product.barcode.match(searchValue));
-        return product.barcode.match(searchValue);
-      });
-    } else {
-      this.productsTemp = this.products;
-    }
-    if (this.searchText == '') {
-      this.barcodeProductName = '';
-    } else this.barcodeProductName = this.productsTemp[0].producT_NAME;
-  }
+  ///////////////////////////////make the sale////////////////////////////////
 
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
+  async onSubmit() {
+    //add payment
 
-  //////////////////////////get Functions /////////////////////////////////////
+    this.payment.date = new Date().toString();
+    this.payment.amount = this.totalAmount;
+    this.payment.paymentTypeID = this.typeOfPayment;
 
-  getAllCurrentUsers() {
-    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
-      this.currentUsers = response;
+    this.paymentService.addPayment(this.payment).subscribe((res) => {
+      console.log('this is the new payment');
+      console.log(res);
 
-      //set the current user
-      this.sale.userID = this.currentUsers[this.currentUsers.length - 1].userID;
+      // add the sale
 
-      this.audit.userID =
-        this.currentUsers[this.currentUsers.length - 1].userID;
-      this.audit.employeeID =
-        this.currentUsers[this.currentUsers.length - 1].employeeID;
+      if (this.typeOfPayment == 'Credit') {
+        this.sale.customerAccountID == this.customerID;
 
-      this.audit.month = 'Jan';
-
-      console.log('All current Users');
-      console.log(this.currentUsers);
-      this.getAllCustomerAccounts();
-    });
-  }
-
-  getAllCustomerAccounts() {
-    this.customerAccountService
-      .getAllCustomerAccounts()
-      .subscribe((response) => {
-        response = response.filter((debtor) => {
-          return debtor.deleted == false;
+        // add to customer account debt
+        this.customerAccountsTemp = this.customerAccounts.filter((temp) => {
+          return temp.customeR_ACCOUNT_ID == this.customerID;
         });
-        this.customerAccounts = response;
-        this.customerAccountsTemp = response;
-        console.log('all customer accounts');
-        console.log(this.customerAccounts);
-        this.getAllPaymentss();
+
+        this.customerAccountsTemp[0].amounT_OWING =
+          this.customerAccountsTemp[0].amounT_OWING + this.totalAmount;
+
+        this.customerAccountService
+          .updateCustomerAccount(this.customerAccountsTemp[0])
+          .subscribe((resCustomer) => {
+            console.log('this is the updated customer account');
+            console.log(resCustomer);
+          });
+      }
+      this.sale.date = new Date();
+      this.sale.total = this.totalAmount;
+      this.sale.paymentID = res.paymentID;
+      this.sale;
+
+      this.saleService.addSale(this.sale).subscribe((response) => {
+        console.log('this is the new Sale');
+        console.log(response);
+
+        for (let i = 0; i < this.dynamicArray.length; i++) {
+          const element = this.dynamicArray[i];
+
+          // add sale Product
+
+          this.saleProduct.productID = element.productID;
+          this.saleProduct.saleID = response.saleID;
+          this.saleProduct.quantity = element.quantity;
+
+          this.saleProductService
+            .addSaleProduct(this.saleProduct)
+            .subscribe((resSaleProduct) => {
+              console.log('new SaleProduct');
+              console.log(resSaleProduct);
+            });
+
+          // decrease inventory
+
+          this.productsTemp = this.products.filter((product) => {
+            return product.producT_ID == element.productID;
+          });
+
+          this.productsTemp[0].quantitY_ON_HAND =
+            this.productsTemp[0].quantitY_ON_HAND - element.quantity;
+
+          this.productService
+            .updateProduct(this.productsTemp[0])
+            .subscribe((resProduct) => {
+              console.log('updated product quantity');
+              console.log(resProduct);
+            });
+        }
       });
-  }
-
-  getAllPaymentss() {
-    this.paymentService.getAllPayments().subscribe((response) => {
-      this.payments = response;
-      console.log('all payments');
-      console.log(this.payments);
-      this.getAllSales();
     });
-  }
 
-  getAllSales() {
-    this.saleService.getAllSales().subscribe((response) => {
-      this.sales = response;
-      console.log('all sales');
-      console.log(this.sales);
-      this.getAllSaleProducts();
-    });
-  }
-
-  getAllSaleProducts() {
-    this.saleProductService.getAllSaleProducts().subscribe((response) => {
-      this.saleProducts = response;
-      console.log('all sale products');
-      console.log(this.saleProducts);
-      this.getAllProducts();
-    });
-  }
-
-  getAllProducts() {
-    this.productService.getAllProducts().subscribe((response) => {
-      response = response.filter((product) => {
-        return product.deleted == false;
-      });
-      this.products = response;
-      console.log('all products');
-      console.log(this.products);
-      this.getAllPaymentTypes();
-    });
-  }
-
-  getAllPaymentTypes() {
-    this.paymentTypeService.getAllPaymentTypes().subscribe((response) => {
-      this.paymentTypes = response;
-      console.log('all payment types');
+    //adding to audit log
+    this.auditLogService.addAuditLog(this.audit).subscribe((response) => {
+      console.log('entry into audit log');
+      console.log(response);
+      this.successSubmit = true;
     });
   }
 }

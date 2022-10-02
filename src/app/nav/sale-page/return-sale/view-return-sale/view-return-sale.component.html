@@ -9,8 +9,6 @@
             <th>Product Name</th>
             <th>Product Description</th>
             <th>Quantity Sold</th>
-            <th>Quantity Returned</th>
-            <th>Reason</th>
             <th>Product Price</th>
           </tr>
         </thead>
@@ -19,48 +17,10 @@
             <td>{{ dynamic.name }}</td>
             <td>{{ dynamic.description }}</td>
             <td>{{ dynamic.quantity }}</td>
-            <td>
-              <input
-                class="form-control"
-                type="number"
-                name="QuantityReturned"
-                style="max-width: 100px"
-                [(ngModel)]="dynamic.quantityReturned"
-                (input)="validateQuantity()"
-                (keyup)="validateQuantity()"
-              />
-            </td>
-            <td>
-              <select
-                id="categoryID{{ i }}"
-                class="btn"
-                name="PCategory"
-                style="
-                  background: var(--bs-gray-100);
-                  border-color: var(--bs-orange);
-                  color: var(--bs-orange);
-                "
-                [(ngModel)]="dynamic.reason"
-                (input)="validateReason()"
-                (click)="validateReason()"
-                (click)="validateQuantity()"
-              >
-                <option value="-1" selected>No Return</option>
-                <option value="Expired">Expired</option>
-                <option value="Damaged">Damaged</option>
-              </select>
-            </td>
             <td>R{{ dynamic.price.toFixed(2) }}</td>
           </tr>
         </tbody>
       </table>
-      <div style="color: red" *ngIf="!validQuantity">Invalid Quantity</div>
-      <div style="color: red" *ngIf="!moreThanZero">
-        Quantity Must Be More Than 0
-      </div>
-      <div style="color: red" *ngIf="!validReason">
-        Please Select A Quantity
-      </div>
     </div>
     <div class="row">
       <label
@@ -87,14 +47,61 @@
           background: var(--bs-orange);
         "
         data-toggle="modal"
-        data-target="#exampleModal"
-        (mouseover)="FormValidate()"
-        [disabled]="!validQuantity || !validReason || !moreThanZero"
+        data-target="#reasonModal"
       >
         Return Sale
       </button>
     </div>
   </form>
+</div>
+
+<div
+  class="modal fade"
+  id="reasonModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="reasonModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="reasonModalLabel"
+          *ngIf="!successSubmit"
+          style="width: 100%"
+        >
+          Reason For Sale Return:
+        </h5>
+      </div>
+      <div class="modal-body">
+        <input
+          class="form-control"
+          [(ngModel)]="returnReason"
+          (input)="validateReason()"
+          (keyup)="validateReason()"
+        />
+      </div>
+      <div style="color: red" class="form-label" *ngIf="!validReason">
+        Invalid Reason
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          (mouseover)="validateReason()"
+          [disabled]="!validReason"
+          *ngIf="!successSubmit"
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div
@@ -109,7 +116,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
-          Are You Sure You Would Return This Sale
+          Are You Sure You Would Return This Sale For Reason: {{ returnReason }}
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
           Sale Successfully Returned
