@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeHours } from 'src/app/models/EmployeeHours.model';
 import { EmployeeHoursService } from 'src/app/_services/EmployeeHours.service';
@@ -13,6 +20,7 @@ import { EmployeeService } from 'src/app/_services/employee.service';
 //current employee
 import { CurrentUser } from 'src/app/models/CurrentUser.model';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-collect-payslip',
@@ -60,6 +68,10 @@ export class CollectPayslipComponent implements OnInit {
   timeOut;
   date;
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Collect payslip.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private employeeHoursService: EmployeeHoursService,
     private wageService: WageService,
@@ -73,6 +85,19 @@ export class CollectPayslipComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.currentUser = res[res.length - 1];
       this.getAllWages();
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

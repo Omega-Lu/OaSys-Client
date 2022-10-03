@@ -341,6 +341,11 @@ export class MakeSaleComponent implements OnInit {
     }
   }
 
+  checkAmountGiven() {
+    if (this.typeOfPayment == 'Cash') {
+      this.AmountEntered();
+    }
+  }
   ////////////////////////////Add Product To DYnamimc Array///////////////////
 
   scan() {
