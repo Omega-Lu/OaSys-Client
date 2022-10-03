@@ -46,7 +46,7 @@ export class SearchSaleComponent implements OnInit {
     this.getAllSales();
   }
 
-  ////////////////////////////// get Funtions /////////////////////////////////////////
+  ////////////////////////////// get Funtions //////////////////////////////////
 
   getAllSales() {
     this.saleService.getAllSales().subscribe((response) => {
@@ -78,7 +78,7 @@ export class SearchSaleComponent implements OnInit {
     });
   }
 
-  /////////////////////// create the dynamic array ////////////////////////////////
+  /////////////////////// create the dynamic array ////////////////////////////
 
   createDynamicArray() {
     this.dynamicArray = [];
@@ -90,10 +90,18 @@ export class SearchSaleComponent implements OnInit {
         return payment.paymentID == element.paymentID;
       });
 
+      let status;
+      if (element.returned) {
+        status = 'Returned';
+      } else {
+        status = 'Made';
+      }
+
       this.dynamicArray.push({
         saleID: element.saleID,
         date: element.date,
         method: this.paymentsTemp[0].paymentTypeID,
+        status: status,
         total: element.total,
         sale: element,
       });
@@ -108,7 +116,7 @@ export class SearchSaleComponent implements OnInit {
     });
   }
 
-  ///////////////////////// search function /////////////////////////////////////
+  ///////////////////////// search function ///////////////////////////////
 
   Search() {
     this.TempArray = this.dynamicArray;

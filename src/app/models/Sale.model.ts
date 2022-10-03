@@ -5,4 +5,5 @@ export interface Sale {
   paymentID: number;
   date: Date;
   total: number;
+  returned: boolean;
 }

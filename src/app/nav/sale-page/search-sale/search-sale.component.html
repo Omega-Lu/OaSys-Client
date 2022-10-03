@@ -19,7 +19,8 @@
           <th style="width: 97.195px">Sale ID</th>
           <th>Date of Sale</th>
           <th>Method of Payment  </th>
-          <th style="width: 120.953px">Total</th>
+          <th>Status</th>
+          <th>Total</th>
           <th>View</th>
         </tr>
       </thead>
@@ -28,6 +29,7 @@
           <td>{{ dynamic.saleID }}</td>
           <td>{{ dynamic.date }}</td>
           <td>{{ dynamic.method }}</td>
+          <td>{{ dynamic.status }}</td>
           <td>R{{ dynamic.total.toFixed(2) }}</td>
           <td>
             <button

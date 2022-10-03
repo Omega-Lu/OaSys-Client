@@ -166,6 +166,7 @@ export class ClockInAndOutComponent implements OnInit {
       hour: 'numeric',
       minute: 'numeric',
     });
+    this.currentTime = '07:30';
     this.employeeHours.checkInTime = this.currentTime;
 
     this.EmployeeHoursService.updateEmployeeHours(this.employeeHours).subscribe(
@@ -186,7 +187,7 @@ export class ClockInAndOutComponent implements OnInit {
       minute: 'numeric',
     });
 
-    this.currentTime = '21:00';
+    this.currentTime = '17:00';
     this.employeeHours.checkOutTime = this.currentTime;
 
     this.EmployeeHoursService.updateEmployeeHours(this.employeeHours).subscribe(

@@ -168,7 +168,6 @@ export class CalculateWagesComponent implements OnInit {
     this.displayWages = [];
     this.employeesTemp = this.employees;
     this.employeesTemp = this.employeesTemp.filter((employee) => {
-      console.log(employee.employeE_ID == id);
       return employee.employeE_ID == id;
     });
     this.employee = this.employeesTemp[0];
@@ -187,8 +186,11 @@ export class CalculateWagesComponent implements OnInit {
     for (let i = 0; i < this.wages.length; i++) {
       const element = this.wages[i];
 
+      this.ratesTemp = this.rates.filter((rate) => {
+        return rate.ratE_ID == element.rateID;
+      });
       this.employeeTypesTemp = this.employeeTypes.filter((type) => {
-        return type.employeE_TYPE_ID == element.rateID;
+        return type.employeE_TYPE_ID == this.ratesTemp[0].ratE_NAME;
       });
 
       if (element.employeeID == this.employee.employeE_ID) {

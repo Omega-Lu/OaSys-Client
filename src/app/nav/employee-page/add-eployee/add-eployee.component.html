@@ -173,7 +173,7 @@
           Please Select An Employee Role
         </div>
       </div>
-      <div class="col-6" *ngIf="employeeSelected">
+      <div class="col-6" [hidden]="!employeeSelected">
         <label for="eployeeTypeSelect" class="form-label">Employee Type:</label>
         <select
           name="eployeeTypeSelect"

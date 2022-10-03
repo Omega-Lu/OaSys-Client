@@ -61,6 +61,9 @@ export class AddWageRateComponent implements OnInit {
 
   getAllEmployeeTypes() {
     this.EmployeeTypeService.getAllEmployees().subscribe((response) => {
+      response = response.filter((res) => {
+        return res.deleted == false;
+      });
       this.employeeTypes = response;
       console.log('this is all the employee types');
       console.log(this.employeeTypes);

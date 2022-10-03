@@ -149,14 +149,16 @@ export class MaintainWarningComponent implements OnInit {
       });
 
       //push dynamic array
-      this.dynamicArray.push({
-        name: this.employeesTemp[0].name,
-        warningType: this.warningTypesTemp[0].description,
-        warningName: this.warningsTemp[0].warininG_NAME,
-        reason: this.warningsTemp[0].reason,
-        employeeWarning: element,
-        warning: this.warningsTemp[0],
-      });
+      if (!this.employeesTemp[0].deleted) {
+        this.dynamicArray.push({
+          name: this.employeesTemp[0].name,
+          warningType: this.warningTypesTemp[0].description,
+          warningName: this.warningsTemp[0].warininG_NAME,
+          reason: this.warningsTemp[0].reason,
+          employeeWarning: element,
+          warning: this.warningsTemp[0],
+        });
+      }
     }
     this.tempArray = this.dynamicArray;
   }

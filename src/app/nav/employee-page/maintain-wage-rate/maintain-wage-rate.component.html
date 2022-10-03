@@ -91,7 +91,7 @@
         <h5
           class="modal-title"
           id="wageRateDeleteModalLabel"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasReference"
         >
           Are You Sure You Would Like To Delete This Wage Rate
         </h5>
@@ -102,6 +102,9 @@
         >
           Wage Rate Successfully Deleted
         </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="hasReference">
+          All Employees With This Wage Rate Must be Changes First
+        </h5>
       </div>
 
       <div class="modal-footer">
@@ -109,7 +112,7 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasReference"
         >
           No
         </button>
@@ -118,7 +121,7 @@
           class="btn btn-primary"
           name="deleteempl"
           data-target="#wageRateDeleteModal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasReference"
           (click)="deleteWageRate()"
         >
           Yes
@@ -131,6 +134,16 @@
           data-dismiss="modal"
           *ngIf="successDelete"
           routerLink="/employee-page"
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="hasReference"
         >
           OK
         </button>

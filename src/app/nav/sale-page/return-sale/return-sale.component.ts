@@ -46,10 +46,13 @@ export class ReturnSaleComponent implements OnInit {
     this.getAllSales();
   }
 
-  ////////////////////////////// get Funtions /////////////////////////////////////////
+  ////////////////////////////// get Funtions /////////////////////////////////
 
   getAllSales() {
     this.saleService.getAllSales().subscribe((response) => {
+      response = response.filter((res) => {
+        return res.returned == false;
+      });
       this.sales = response;
       this.salesTemp = response;
       console.log('this is all the sales');

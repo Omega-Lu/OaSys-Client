@@ -65,6 +65,7 @@ export class ViewApprovedAccountsComponent implements OnInit {
 
   Return() {
     this.return.emit('false');
+    this.capturePayment = false;
   }
 
   onSubmit() {}

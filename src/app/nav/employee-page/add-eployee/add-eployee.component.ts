@@ -241,6 +241,17 @@ export class AddEployeeComponent implements OnInit {
     } else {
       this.validRole = true;
     }
+    if (this.user.useR_ROLE_ID == 4) {
+      this.employeeSelected = true;
+      console.log(
+        'employee selected' + this.employeeSelected + this.user.useR_ROLE_ID
+      );
+    } else {
+      this.employeeSelected = false;
+      console.log(
+        'else employee' + this.employeeSelected + this.user.useR_ROLE_ID
+      );
+    }
   }
 
   typeValidate() {

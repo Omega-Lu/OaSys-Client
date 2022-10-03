@@ -30,6 +30,9 @@ export class ViewDebtorAccountComponent implements OnInit {
     this.customerAccountService
       .getAllCustomerAccounts()
       .subscribe((response) => {
+        response = response.filter((res) => {
+          return res.deleted == false;
+        });
         this.customerAccounts = response;
         this.customerAccountsTemp = this.customerAccounts;
       });

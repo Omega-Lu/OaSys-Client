@@ -5,6 +5,9 @@ import { RateService } from 'src/app/_services/rate.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 
+import { Employee } from 'src/app/models/employee.model';
+import { EmployeeService } from 'src/app/_services/employee.service';
+
 //audit log
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
@@ -28,6 +31,11 @@ export class MaintainWageRateComponent implements OnInit {
   employeeTypes: EmployeeType[] = [];
   employeeTypesTemp: EmployeeType[] = [];
 
+  //employee
+  employee: Employee;
+  employees: Employee[] = [];
+  employeesTemp: Employee[] = [];
+
   searchText: any = '';
 
   successDelete: boolean = false;
@@ -42,11 +50,15 @@ export class MaintainWageRateComponent implements OnInit {
     month: 'Oct',
   };
 
+  //validation
+  hasReference: boolean = false;
+
   constructor(
     private rateService: RateService,
     private employeeTypeService: EmployeeTypeService,
     private AuditLogService: AuditLogService,
-    private CurrentUserService: CurrentUserService
+    private CurrentUserService: CurrentUserService,
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit() {
@@ -75,6 +87,18 @@ export class MaintainWageRateComponent implements OnInit {
       this.employeeTypesTemp = res;
 
       this.createDynamicArray();
+      this.getEmployees();
+    });
+  }
+
+  getEmployees() {
+    this.employeeService.getAllEmployees().subscribe((res) => {
+      res = res.filter((employee) => {
+        return employee.deleted == false;
+      });
+      this.employees = res;
+      this.employeesTemp = res;
+
       this.getCurrentUser();
     });
   }
@@ -113,6 +137,13 @@ export class MaintainWageRateComponent implements OnInit {
 
   deletee(id) {
     this.rate = id;
+
+    this.employeesTemp = this.employees.filter((employee) => {
+      return employee.employeE_TYPE_ID == this.rate.ratE_NAME;
+    });
+
+    if (this.employeesTemp.length > 0) this.hasReference = true;
+    else this.hasReference = false;
   }
 
   deleteWageRate() {

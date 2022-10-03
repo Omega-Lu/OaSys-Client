@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="!capturePayment">
   <h1>View Debtor Account</h1>
   <h2 style="margin-left: 1%">Debtor Details:</h2>
   <form style="width: 700px; margin-left: 2%" #form="ngForm">
@@ -142,7 +142,7 @@
             type="number"
             placeholder="0.00"
             required
-            [(ngModel)]="debtor.crediT_LIMIT"
+            value="{{ debtor.crediT_LIMIT.toFixed(2) }}"
             disabled
           />
         </div>
@@ -167,7 +167,7 @@
             type="text"
             placeholder="0.00"
             required
-            [(ngModel)]="debtor.amounT_OWING"
+            value="{{ debtor.amounT_OWING.toFixed(2) }}"
             disabled
           />
         </div>
@@ -194,7 +194,7 @@
         <button
           type="button"
           class="btn btn-primary"
-          routerLink="/debtor-page"
+          (click)="populateForm()"
           style="
             border-color: var(--bs-orange);
             background: var(--bs-orange);
@@ -211,6 +211,6 @@
 
 <app-capture-payment
   *ngIf="capturePayment"
-  [customerAccount]="customerAccount"
+  [customerAccount]="debtor"
   (return)="Return()"
 ></app-capture-payment>

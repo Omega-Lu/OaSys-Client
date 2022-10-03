@@ -96,7 +96,8 @@ export class ViewReturnSaleComponent implements OnInit {
     private returnService: ReturnService,
     private productService: ProductService,
     private auditLogService: AuditLogService,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    private saleService: SaleService
   ) {}
 
   async ngOnInit() {
@@ -211,6 +212,14 @@ export class ViewReturnSaleComponent implements OnInit {
   ////////////////////////////////Return the Sale////////////////////////////
 
   ReturnSale() {
+    // set sale status
+
+    this.sale.returned = true;
+    this.saleService.updateSale(this.sale).subscribe((res) => {
+      console.log('new sale status');
+      console.log(res);
+    });
+
     // new return
 
     this.return.reason = this.returnReason;

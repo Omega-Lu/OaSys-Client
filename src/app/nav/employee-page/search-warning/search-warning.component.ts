@@ -51,6 +51,8 @@ export class SearchWarningComponent implements OnInit {
     this.getEmployeeWarnings();
   }
 
+  ////////////////////////////////// get functions //////////////////////////
+
   getEmployeeWarnings() {
     this.EmployeeWarningService.getAllEmployeeWarningses().subscribe((res) => {
       res = res.filter((employeeWarning) => {
@@ -90,6 +92,8 @@ export class SearchWarningComponent implements OnInit {
     });
   }
 
+  /////////////////// create dynamic array ///////////////////////////////////
+
   createDynamicArray() {
     //create dynamic array
     for (let i = 0; i < this.employeeWarnings.length; i++) {
@@ -116,15 +120,19 @@ export class SearchWarningComponent implements OnInit {
       });
 
       //push dynamic array
-      this.dynamicArray.push({
-        name: this.employeesTemp[0].name,
-        warningType: this.warningTypesTemp[0].description,
-        warningName: this.warningsTemp[0].warininG_NAME,
-        reason: this.warningsTemp[0].reason,
-      });
+      if (!this.employeesTemp[0].deleted) {
+        this.dynamicArray.push({
+          name: this.employeesTemp[0].name,
+          warningType: this.warningTypesTemp[0].description,
+          warningName: this.warningsTemp[0].warininG_NAME,
+          reason: this.warningsTemp[0].reason,
+        });
+      }
     }
     this.tempArray = this.dynamicArray;
   }
+
+  ///////////////////// search /////////////////////////////////////////////
 
   Search() {
     this.dynamicArray = this.tempArray;

@@ -41,6 +41,7 @@ export class MakeSaleComponent implements OnInit {
     paymentID: 0,
     date: new Date(),
     total: 0,
+    returned: false,
   };
   sales: Sale[] = [];
   salesTemp: Sale[] = [];
