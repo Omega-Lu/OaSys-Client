@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { User } from './models/user.model';
 import { UserService } from './_services/user.service';
 import { FormGroup } from '@angular/forms';
@@ -14,6 +14,7 @@ import { Location } from '@angular/common';
 import { LogoutTimer } from 'src/app/models/LogoutTimer.model';
 import { LogoutTimerService } from 'src/app/_services/LogoutTimer.service';
 import * as CryptoJS from 'crypto-js';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-root',
@@ -78,6 +79,10 @@ export class AppComponent implements OnInit {
   };
   logoutTimers: LogoutTimer[] = [];
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Login.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private userService: UserService,
     private currentUserService: CurrentUserService,
@@ -115,6 +120,19 @@ export class AppComponent implements OnInit {
         this.router.navigate['forgot-reset-password'];
         this.forgotPass = true;
       }
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

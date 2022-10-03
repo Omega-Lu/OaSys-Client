@@ -84,6 +84,7 @@ export class LogoutTimerComponent implements OnInit {
           console.log(res);
           this.getLogoutTimers();
           this.newItemEvent.emit(this.logoutTimer);
+          this.successAdd = false;
         }
       );
     } else {
@@ -92,6 +93,7 @@ export class LogoutTimerComponent implements OnInit {
           console.log('this is the updated logout timer');
           console.log(res);
           this.newItemEvent.emit(this.logoutTimer);
+          this.successAdd = false;
         }
       );
     }
@@ -184,6 +186,6 @@ export class LogoutTimerComponent implements OnInit {
   }
 
   ValidateTime() {
-    this.validTime = this.validate.ValidateInteger(this.time);
+    this.validTime = this.validate.ValidateMoney(this.time);
   }
 }

@@ -180,6 +180,7 @@ const appRoutes: Routes = [
   { path: 'logout-timer', component: LogoutTimerComponent },
   { path: 'complete-stocktake', component: CompleteStocktakeComponent },
   { path: 'return-sale', component: ReturnSaleComponent },
+  { path: 'sale-returns-report', component: SaleReturnReportComponent },
 ];
 
 @NgModule({

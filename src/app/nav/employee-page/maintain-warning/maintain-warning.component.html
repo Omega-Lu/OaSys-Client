@@ -38,12 +38,13 @@
 </div>
 
 <div class="container-fluid" *ngIf="!updateWarning" [hidden]="displayPDF">
-    <i
+  <i
     class="fa fa-question-circle"
     aria-hidden="true"
     style="float: right"
     (click)="displayPDF = true"
-  ></i>
+    >Help</i
+  >
   <h1>Maintain warning</h1>
 
   <input

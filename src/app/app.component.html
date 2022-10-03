@@ -1,4 +1,50 @@
-<div class="container" *ngIf="!loggedIn">
+<div
+  class="container"
+  *ngIf="displayPDF"
+  style="margin-top: 50px; background-color: #111111"
+>
+  <div class="row" style="padding-bottom: 0px">
+    <h1
+      style="
+        width: fit-content;
+        height: 60px;
+        color: white;
+        justify-content: space-around;
+        margin-top: 30px;
+      "
+    >
+      Search:
+    </h1>
+    <input
+      class="form-control"
+      type="text"
+      style="width: 300px; height: 35px; margin-top: 30px"
+      placeholder="Search..."
+      (input)="search($event.target.value)"
+    />
+  </div>
+  <div class="row" style="padding-bottom: 0px">
+    <pdf-viewer
+      [src]="pdfPath"
+      [render-text]="true"
+      style="display: block; height: 650px"
+    ></pdf-viewer>
+  </div>
+  <button
+    class="btn btn-primary"
+    style="
+      border-color: var(--bs-orange);
+      background: var(--bs-orange);
+      margin-top: 15px;
+      margin-bottom: 15px;
+    "
+    (click)="displayPDF = false"
+  >
+    Back
+  </button>
+</div>
+
+<div class="container" *ngIf="!loggedIn" [hidden]="displayPDF">
   <div class="row justify-content-center">
     <div class="col-9">
       <div class="card shadow-lg o-hidden border-0 m-5">
@@ -83,15 +129,12 @@
                   <hr />
                 </form>
                 <div class="text-center">
-                  <a
-                    class="small"
-                    data-toggle="modal"
-                    data-target="#ForgotPassModal"
-                    data-whatever="@mdo"
-                    >Forgot Password?</a
-                  >
+                  <i
+                    class="fa fa-question-circle"
+                    aria-hidden="true"
+                    (click)="displayPDF = true"
+                  ></i>
                 </div>
-                <div class="text-center"></div>
               </div>
             </div>
           </div>

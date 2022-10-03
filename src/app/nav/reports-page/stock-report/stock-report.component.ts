@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
@@ -14,6 +20,11 @@ import {
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 //import * as $ from 'jQuery';
+
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-stock-report',
@@ -42,14 +53,47 @@ export class StockReportComponent implements OnInit {
   currentUsers: CurrentUser[] = [];
   currentUsersTemp: CurrentUser[] = [];
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Print Stock Report',
+    date: new Date(),
+    month: 'Oct',
+  };
+
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Stock report.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private productService: ProductService,
     private currentUserService: CurrentUserService,
-    private productCategoryService: ProductCategoryService
+    private productCategoryService: ProductCategoryService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
     await this.getAllCurrentUsers();
+
+    this.currentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   ////////////// get functions///////////////////////////////////
@@ -173,6 +217,12 @@ export class StockReportComponent implements OnInit {
       let position = 0;
       this.PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
       this.PDF.save('Stock-Report.pdf');
+    });
+
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
     });
   }
 

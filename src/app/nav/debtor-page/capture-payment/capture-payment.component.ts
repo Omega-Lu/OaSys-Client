@@ -1,4 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { CustomerAccount } from 'src/app/models/Customer-account.model';
 import { CustomerAccountService } from 'src/app/_services/customer-account.service';
 
@@ -9,6 +16,7 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-capture-payment',
@@ -45,6 +53,10 @@ export class CapturePaymentComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/View debtor account.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private customerAccountService: CustomerAccountService,
     private AuditLogService: AuditLogService,
@@ -55,6 +67,19 @@ export class CapturePaymentComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.auditLog.userID = res[res.length - 1].userID;
       this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

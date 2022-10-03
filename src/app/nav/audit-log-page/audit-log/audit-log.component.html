@@ -37,7 +37,8 @@
     aria-hidden="true"
     style="float: right"
     (click)="displayPDF = true"
-  ></i>
+    >Help</i
+  >
   <h1>VIEW AUDIT LOG</h1>
 
   <input
@@ -45,7 +46,7 @@
     type="search"
     style="width: 320px"
     placeholder="Enter Audit Log Search Details.."
-    (keyup)="search($event.target.value)"
+    (keyup)="Search($event.target.value)"
   />
 
   <hr />

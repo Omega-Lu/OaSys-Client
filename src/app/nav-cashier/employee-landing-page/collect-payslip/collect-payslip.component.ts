@@ -119,8 +119,11 @@ export class CollectPayslipComponent implements OnInit {
     for (let i = 0; i < this.wages.length; i++) {
       const element = this.wages[i];
 
-      this.employeeTypesTemp = this.employeeTypes.filter((employee) => {
-        return employee.employeE_TYPE_ID == element.rateID;
+      this.ratesTemp = this.rates.filter((rate) => {
+        return rate.ratE_ID == element.rateID;
+      });
+      this.employeeTypesTemp = this.employeeTypes.filter((type) => {
+        return type.employeE_TYPE_ID == this.ratesTemp[0].ratE_NAME;
       });
 
       //push to dynamic array

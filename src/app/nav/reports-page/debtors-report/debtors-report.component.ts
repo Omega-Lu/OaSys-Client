@@ -1,8 +1,19 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { CurrentUser } from 'src/app/models/CurrentUser.model';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { CustomerAccount } from 'src/app/models/Customer-account.model';
 import { CustomerAccountService } from 'src/app/_services/customer-account.service';
+
+//audit log
+import { AuditLog } from 'src/app/models/AuditLog.model';
+import { AuditLogService } from 'src/app/_services/AuditLog.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-debtors-report',
@@ -31,9 +42,24 @@ export class DebtorsReportComponent implements OnInit {
   totalAmount: number = 0;
   totalAmountString: String;
 
+  //audit log
+  auditLog: AuditLog = {
+    auditLogID: 0,
+    userID: 0,
+    employeeID: 0,
+    functionUsed: 'Print Debtors Report',
+    date: new Date(),
+    month: 'Oct',
+  };
+
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Debtor report.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private currentUserService: CurrentUserService,
-    private customerAccountService: CustomerAccountService
+    private customerAccountService: CustomerAccountService,
+    private AuditLogService: AuditLogService
   ) {}
 
   async ngOnInit() {
@@ -56,6 +82,11 @@ export class DebtorsReportComponent implements OnInit {
       });
     }
     this.totalAmountString = this.totalAmount.toFixed(2);
+
+    this.currentUserService.getAllCurrentUsers().subscribe((res) => {
+      this.auditLog.userID = res[res.length - 1].userID;
+      this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
   }
 
   async getAllCustomerAccounts() {
@@ -69,6 +100,19 @@ export class DebtorsReportComponent implements OnInit {
       this.customerAccounts = res;
       console.log('this is all the customer accounts');
       console.log(this.customerAccounts);
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 
@@ -88,6 +132,14 @@ export class DebtorsReportComponent implements OnInit {
       console.log('this is the current user for stock report');
       this.currentUser = this.currentUsers[this.currentUsers.length - 1];
       console.log(this.currentUser);
+    });
+  }
+
+  addToAudit() {
+    //add to audit log
+    this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
+      console.log('new audit log entry');
+      console.log(res);
     });
   }
 }

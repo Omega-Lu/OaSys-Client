@@ -19,7 +19,12 @@
           Add Logout Timer
         </button>
       </div>
-      <div class="card-body" style="border: 2px solid var(--bs-gray-900)">
+      <div
+        class="card-body"
+        style="border: 2px solid var(--bs-gray-900)"
+        data-toggle="modal"
+        data-target="#ViewTimerModal"
+      >
         <i
           class="fas fa-eye text-warning"
           style="--bs-warning: #ff7a00; --bs-warning-rgb: 255, 122, 0"
@@ -75,7 +80,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width: 585px">
       <div class="modal-header">
         <h2 class="modal-title" id="DeleteTimerLabel" *ngIf="!successDelete">
           Delete Logout Timer?
@@ -85,8 +90,10 @@
         </h2>
       </div>
       <div class="modal-body" *ngIf="!successDelete">
-        This action will delete the logout timer that is implemented in the
-        system. Are you sure you want to do this?
+        This Action Will Delete The Logout Timer That Is Currently Set To:
+        {{ time }} Minutes
+        <br />
+        Are You Sure You Want To Do This?
       </div>
       <div class="modal-footer">
         <button
@@ -132,19 +139,21 @@
   aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width: 585px">
       <div class="modal-header">
         <h2 class="modal-title" id="EditTimerLabel" *ngIf="!successEdit">
           Edit Logout Timer?
         </h2>
         <h2 class="modal-title" id="EditTimerLabel" *ngIf="successEdit">
-          Time in Minutes
+          New Logout Time in Minutes:
         </h2>
       </div>
       <div class="modal-body">
         <p *ngIf="!successEdit">
-          This action will edit the logout timer that is implemented in the
-          system. Are you sure you want to do this?
+          This Action Will Edit The Logout Timer That Is Currently Set To:
+          {{ time }} Minutes
+          <br />
+          Are You Sure You Want To Do This?
         </p>
         <input
           type="text"
@@ -183,7 +192,7 @@
           data-target="#EditTimerModal"
           data-dismiss="modal"
           *ngIf="successEdit"
-          (click)="editLogoutTimer()"
+          (click)="editLogoutTimer(); this.successEdit = false"
         >
           Edit
         </button>
@@ -203,7 +212,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width: 585px">
       <div class="modal-header">
         <h2 class="modal-title" id="AddTimerLabel" *ngIf="!successAdd">
           Add Logout Timer?
@@ -213,15 +222,16 @@
         </h2>
       </div>
       <div class="modal-body">
-        <p *ngIf="!successEdit">
-          This action will add a logout timer that is implemented in the system.
-          Are you sure you want to do this?
+        <p *ngIf="!successAdd">
+          This Action Will Add a Logout Timer That Will Be Implemented In The
+          System. <br />
+          Are You Sure You Want To Do This?
         </p>
         <input
           type="text"
           class="form-control"
           id="email"
-          placeholder="your@email.com"
+          placeholder="Time In Minutes"
           (keyup)="ValidateTime()"
           [(ngModel)]="time"
           [ngModelOptions]="{ standalone: true }"
@@ -257,6 +267,40 @@
           (click)="addLogoutTimer()"
         >
           Add
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal View -->
+
+<div
+  class="modal fade"
+  id="ViewTimerModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ViewTimerLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 585px">
+      <div class="modal-header">
+        <h2 class="modal-title" id="ViewTimerLabel">
+          The Current Logout Timer Is Set To:
+        </h2>
+      </div>
+      <div class="modal-body">
+        <h2>{{ time }} Minutes</h2>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successAdd"
+        >
+          OK
         </button>
       </div>
     </div>
