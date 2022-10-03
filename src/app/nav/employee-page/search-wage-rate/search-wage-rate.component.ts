@@ -1,9 +1,16 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Rate } from 'src/app/models/rate.model';
 import { RateService } from 'src/app/_services/rate.service';
 
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-search-wage-rate',
@@ -23,6 +30,10 @@ export class SearchWageRateComponent implements OnInit {
 
   searchText: string = '';
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search wage rate.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private rateService: RateService,
     private employeeTypeService: EmployeeTypeService
@@ -30,6 +41,19 @@ export class SearchWageRateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRates();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getRates() {

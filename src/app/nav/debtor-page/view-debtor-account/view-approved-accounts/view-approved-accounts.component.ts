@@ -1,10 +1,18 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  Input,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { Debtor } from 'src/app/models/debtor.model';
 import { DebtorService } from '../../../../_services/debtor.service';
 import { Province } from 'src/app/models/province.model';
 import { ProvinceService } from 'src/app/_services/Province.service';
 import { City } from 'src/app/models/City.model';
 import { CityService } from 'src/app/_services/City.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-view-approved-accounts',
@@ -27,6 +35,10 @@ export class ViewApprovedAccountsComponent implements OnInit {
   cities: City[] = [];
   citiesTemp: City[] = [];
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/View debtor account.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private debtorService: DebtorService,
     private provinceService: ProvinceService,
@@ -35,6 +47,19 @@ export class ViewApprovedAccountsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProvinces();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getProvinces() {

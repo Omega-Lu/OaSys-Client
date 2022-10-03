@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { Debtor } from 'src/app/models/debtor.model';
 import { DebtorService } from '../../../_services/debtor.service';
 import { Province } from 'src/app/models/province.model';
@@ -13,6 +19,7 @@ import { CustomerApplicationService } from '../../../_services/CustomerApplicati
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-add-debtor',
@@ -78,6 +85,10 @@ export class AddDebtorComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Add%20debtor.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private debtorService: DebtorService,
     private provinceService: ProvinceService,
@@ -96,6 +107,18 @@ export class AddDebtorComponent implements OnInit {
     });
   }
 
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
+  }
   ///////////////// get functions
 
   getProvinces() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Warning } from 'src/app/models/warning.model';
 import { WarningService } from 'src/app/_services/warning.service';
 import { Employee } from 'src/app/models/employee.model';
@@ -13,6 +13,7 @@ import { EmployeeWarningService } from 'src/app/_services/EmployeeWarning.servic
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-add-warning',
@@ -71,6 +72,10 @@ export class AddWarningComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Add warning.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private warningService: WarningService,
     private WarningTypeService: WarningTypeService,
@@ -86,6 +91,19 @@ export class AddWarningComponent implements OnInit {
       console.log('this is all the warnings');
       console.log(res);
       this.warnings = res;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

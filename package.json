@@ -30,7 +30,7 @@
     "html2canvas": "^1.4.1",
     "jquery": "^3.6.0",
     "jspdf": "^2.5.1",
-    "ng2-pdf-viewer": "^9.1.0",
+    "ng2-pdf-viewer": "^9.1.2",
     "ngx-bootstrap": "^8.0.0",
     "ngx-print": "^1.2.1",
     "rxjs": "~7.5.0",

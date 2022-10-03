@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 
@@ -10,6 +10,7 @@ import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUser } from 'src/app/models/CurrentUser.model';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-maintain-employee-type',
@@ -46,6 +47,11 @@ export class MaintainEmployeeTypeComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath =
+    'https://localhost:7113/Resources/pdfs/Maintain employee type-1.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private employeeTypeService: EmployeeTypeService,
     private employeeService: EmployeeService,
@@ -55,6 +61,19 @@ export class MaintainEmployeeTypeComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEmployeeTypes();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getAllEmployeeTypes() {

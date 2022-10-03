@@ -1,4 +1,10 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -8,6 +14,7 @@ import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { of } from 'rxjs';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-add-supplier',
@@ -58,6 +65,10 @@ export class AddSupplierComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Add supplier.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private suppliierService: SupplierService,
     private CurrentUserService: CurrentUserService,
@@ -75,6 +86,19 @@ export class AddSupplierComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.auditLog.userID = res[res.length - 1].userID;
       this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

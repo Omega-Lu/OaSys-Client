@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import { WarningType } from 'src/app/models/warning-type.model';
 import { WarningTypeService } from 'src/app/_services/warning-type.service';
 
@@ -16,10 +17,27 @@ export class SearchWarningTypeComponent implements OnInit {
 
   searchText: string = '';
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search warning type.pdf';
+  displayPDF: boolean = false;
+
   constructor(private warningtypesService: WarningTypeService) {}
 
   ngOnInit(): void {
     this.getAllEmployees();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getAllEmployees() {

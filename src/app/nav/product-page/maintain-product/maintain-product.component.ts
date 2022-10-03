@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductType } from 'src/app/models/Product-Type.model';
@@ -19,6 +19,7 @@ import { ProductWriteOffService } from 'src/app/_services/productWriteOff.servic
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-maintain-product',
@@ -78,6 +79,10 @@ export class MaintainProductComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Maintain product.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
@@ -95,6 +100,19 @@ export class MaintainProductComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.auditLog.userID = res[res.length - 1].userID;
       this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

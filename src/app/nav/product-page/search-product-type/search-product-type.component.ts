@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductType } from 'src/app/models/Product-Type.model';
 import { ProductTypeService } from 'src/app/_services/product-type.service';
 import { Output, EventEmitter } from '@angular/core';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-search-product-type',
@@ -27,6 +28,10 @@ export class SearchProductTypeComponent implements OnInit {
 
   searchText: string = '';
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search product type.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private productTypeService: ProductTypeService,
     private productCategoryService: ProductCategoryService
@@ -34,6 +39,19 @@ export class SearchProductTypeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProductTypes();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getAllProductTypes() {

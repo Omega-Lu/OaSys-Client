@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductType } from 'src/app/models/Product-Type.model';
@@ -6,6 +6,7 @@ import { ProductTypeService } from 'src/app/_services/product-type.service';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
 import { Output, EventEmitter } from '@angular/core';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-search-product',
@@ -37,6 +38,10 @@ export class SearchProductComponent implements OnInit {
   description = '';
   imagePath = '';
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search product.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
@@ -45,6 +50,19 @@ export class SearchProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProducts();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   ////////////// get the picture /////////////////////////////////////////

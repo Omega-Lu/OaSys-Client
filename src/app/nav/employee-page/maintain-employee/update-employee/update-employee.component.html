@@ -1,4 +1,43 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="displayPDF">
+  <div class="row" style="padding-bottom: 0px">
+    <h1 style="width: fit-content; height: 60px; justify-content: space-around">
+      Search:
+    </h1>
+    <input
+      class="form-control"
+      type="text"
+      style="width: 300px; height: 35px"
+      placeholder="Search..."
+      (input)="search($event.target.value)"
+    />
+  </div>
+  <div class="row" style="padding-bottom: 0px">
+    <pdf-viewer
+      [src]="pdfPath"
+      [render-text]="true"
+      style="display: block; height: 645px"
+    ></pdf-viewer>
+  </div>
+  <button
+    class="btn btn-primary"
+    style="
+      border-color: var(--bs-orange);
+      background: var(--bs-orange);
+      margin-top: 15px;
+    "
+    (click)="displayPDF = false"
+  >
+    Back
+  </button>
+</div>
+
+<div class="container-fluid" [hidden]="displayPDF">
+  <i
+    class="fa fa-question-circle"
+    aria-hidden="true"
+    style="float: right"
+    (click)="displayPDF = true"
+  ></i>
   <h1>Update Employee</h1>
   <h2 style="margin-left: 1%">Employee Details:</h2>
   <form #form="ngForm" style="margin-left: 2%; width: 700px">

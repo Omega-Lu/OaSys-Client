@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { Rate } from 'src/app/models/rate.model';
 import { RateService } from 'src/app/_services/rate.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -10,6 +17,7 @@ import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-update-wage-rate',
@@ -41,6 +49,10 @@ export class UpdateWageRateComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Maintain wage rate.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private rateService: RateService,
     private employeeTypeSevice: EmployeeTypeService,
@@ -59,6 +71,19 @@ export class UpdateWageRateComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.auditLog.userID = res[res.length - 1].userID;
       this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

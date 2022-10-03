@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -11,6 +11,7 @@ import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 //rate
 import { Rate } from 'src/app/models/rate.model';
 import { RateService } from 'src/app/_services/rate.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-add-eployee-type',
@@ -56,6 +57,10 @@ export class AddEployeeTypeComponent implements OnInit {
   rates: Rate[] = [];
   ratesTemp: Rate[] = [];
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Add employee type.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private employeetypeService: EmployeeTypeService,
     private CurrentUserService: CurrentUserService,
@@ -72,6 +77,20 @@ export class AddEployeeTypeComponent implements OnInit {
 
     this.getCurrentUser();
   }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
+  }
+
 
   //////////////////////// get functions /////////////////////////////////
 

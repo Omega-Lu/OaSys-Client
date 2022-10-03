@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Warning } from 'src/app/models/warning.model';
 import { WarningService } from 'src/app/_services/warning.service';
 import { Employee } from 'src/app/models/employee.model';
@@ -7,6 +13,7 @@ import { EmployeeWarning } from 'src/app/models/EmployeeWarning.model';
 import { EmployeeWarningService } from 'src/app/_services/EmployeeWarning.service';
 import { WarningType } from 'src/app/models/warning-type.model';
 import { WarningTypeService } from 'src/app/_services/warning-type.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-search-warning',
@@ -40,6 +47,10 @@ export class SearchWarningComponent implements OnInit {
   dynamicArray = [];
   tempArray = [];
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search warning-1.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private warningService: WarningService,
     private EmployeeService: EmployeeService,
@@ -49,6 +60,19 @@ export class SearchWarningComponent implements OnInit {
 
   async ngOnInit() {
     this.getEmployeeWarnings();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   ////////////////////////////////// get functions //////////////////////////

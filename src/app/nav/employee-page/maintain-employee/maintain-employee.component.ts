@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
@@ -13,6 +19,7 @@ import { UserService } from 'src/app/_services/user.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-maintain-employee',
@@ -56,6 +63,11 @@ export class MaintainEmployeeComponent implements OnInit {
 
   dynamicArray = [];
   tempArray = [];
+
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Maintain employee.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
@@ -66,6 +78,19 @@ export class MaintainEmployeeComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEmployees();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   //////////////get functions /////////////////////////////////////

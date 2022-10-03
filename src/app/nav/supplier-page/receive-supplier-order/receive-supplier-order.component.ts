@@ -1,8 +1,15 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
 import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/_services/order.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-receive-supplier-order',
@@ -27,6 +34,10 @@ export class ReceiveSupplierOrderComponent implements OnInit {
 
   boolReceive: boolean = false;
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Receive supplier order.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private supplierService: SupplierService,
     private orderService: OrderService
@@ -34,6 +45,19 @@ export class ReceiveSupplierOrderComponent implements OnInit {
 
   async ngOnInit() {
     this.getAllOrders();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   async createDynamicArray() {

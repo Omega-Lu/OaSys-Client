@@ -1,8 +1,15 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-audit-log',
@@ -25,6 +32,10 @@ export class AuditLogComponent implements OnInit {
   auditArray = [];
   auditArrayTemp = [];
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/View audit log.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private auditLogService: AuditLogService,
     private employeeService: EmployeeService
@@ -32,6 +43,19 @@ export class AuditLogComponent implements OnInit {
 
   async ngOnInit() {
     await this.getAuditLogs();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   //////////////////// get functions ////////////////////////////////////
@@ -80,7 +104,7 @@ export class AuditLogComponent implements OnInit {
 
   ///////////////////search audit log/////////////////////////////////////////
 
-  search(text) {
+  Search(text) {
     this.auditArrayTemp = this.auditArray.filter((audit) => {
       return (
         audit.auditID.toString().match(text) ||

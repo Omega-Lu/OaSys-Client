@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
 import { Output, EventEmitter } from '@angular/core';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-search-employee',
@@ -23,10 +24,27 @@ export class SearchEmployeeComponent implements OnInit {
   surname = '';
   idNumber = 0;
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search employee.pdf';
+  displayPDF: boolean = false;
+
   constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
     this.getAllEmployees();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getAllEmployees() {

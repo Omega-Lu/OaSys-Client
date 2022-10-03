@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { CustomerApplication } from '../../../models/CustomerApplication.model';
 import { CustomerApplicationService } from '../../../_services/CustomerApplication.service';
 import { Province } from 'src/app/models/province.model';
@@ -13,6 +13,7 @@ import { DebtorService } from 'src/app/_services/debtor.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-apply-for-credit',
@@ -76,6 +77,10 @@ export class ApplyForCreditComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Apply for credit.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private customerApplicationService: CustomerApplicationService,
     private provinceService: ProvinceService,
@@ -91,6 +96,19 @@ export class ApplyForCreditComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.auditLog.userID = res[res.length - 1].userID;
       this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

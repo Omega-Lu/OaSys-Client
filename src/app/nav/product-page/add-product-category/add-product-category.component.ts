@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ProductCategory } from 'src/app/models/Product-Category.model';
 import { ProductCategoryService } from 'src/app/_services/product-category.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -7,6 +13,7 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-add-product-category',
@@ -44,6 +51,10 @@ export class AddProductCategoryComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Add product category.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private productCategoryService: ProductCategoryService,
     private CurrentUserService: CurrentUserService,
@@ -56,6 +67,19 @@ export class AddProductCategoryComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.auditLog.userID = res[res.length - 1].userID;
       this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

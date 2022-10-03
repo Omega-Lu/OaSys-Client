@@ -1,4 +1,10 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/_services/supplier.service';
 import { Order } from 'src/app/models/order.model';
@@ -6,6 +12,7 @@ import { OrderService } from 'src/app/_services/order.service';
 import { OrderStatus } from 'src/app/models/orderStatus.model';
 import { OrderStatusService } from 'src/app/_services/orderStatus.service';
 import { __await } from 'tslib';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-search-supplier-order',
@@ -32,6 +39,10 @@ export class SearchSupplierOrderComponent implements OnInit {
 
   searchText: any = '';
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search supplier order.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private supplierService: SupplierService,
     private orderService: OrderService,
@@ -40,6 +51,19 @@ export class SearchSupplierOrderComponent implements OnInit {
 
   async ngOnInit() {
     await this.getAllOrders();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   Return() {

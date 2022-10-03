@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -18,6 +24,7 @@ import '../../../../assets/js/smtp.js';
 declare let Email: any;
 import * as CryptoJS from 'crypto-js';
 import { HttpClient } from '@angular/common/http';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-add-eployee',
@@ -109,6 +116,10 @@ export class AddEployeeComponent implements OnInit {
   public response: { dbPath: '' };
   validFile: boolean = true;
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Add employee.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
@@ -120,6 +131,19 @@ export class AddEployeeComponent implements OnInit {
 
   async ngOnInit() {
     await this.getAllEmployees();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   ///////////////// uploading an image////////////////////////

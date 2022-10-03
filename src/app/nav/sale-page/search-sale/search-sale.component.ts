@@ -1,10 +1,17 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { Sale } from 'src/app/models/Sale.model';
 import { PaymentService } from 'src/app/_services/Payment.service';
 import { SaleService } from 'src/app/_services/Sale.service';
 import { Payment } from 'src/app/models/Payment.model';
 import { PaymentType } from 'src/app/models/PaymentType.model';
 import { PaymentTypeService } from 'src/app/_services/PaymentType.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-search-sale',
@@ -36,6 +43,10 @@ export class SearchSaleComponent implements OnInit {
 
   viewSale: boolean = false;
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Search Sale.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private saleService: SaleService,
     private paymentService: PaymentService,
@@ -44,6 +55,19 @@ export class SearchSaleComponent implements OnInit {
 
   async ngOnInit() {
     this.getAllSales();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   ////////////////////////////// get Funtions //////////////////////////////////

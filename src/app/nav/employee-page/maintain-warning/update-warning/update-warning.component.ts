@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Warning } from 'src/app/models/warning.model';
 import { WarningService } from 'src/app/_services/warning.service';
 
@@ -15,6 +15,7 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-update-warning',
@@ -55,6 +56,10 @@ export class UpdateWarningComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Maintain warning.pdf';
+  displayPDF: boolean = false;
+
   successSubmit: boolean = false;
 
   constructor(
@@ -72,6 +77,19 @@ export class UpdateWarningComponent implements OnInit {
       this.warnings = res;
     });
     this.getWarningTypes();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   /////////////////////get functions ////////////////////////////////////////

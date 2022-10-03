@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import { CustomerAccount } from 'src/app/models/Customer-account.model';
 import { CustomerAccountService } from 'src/app/_services/customer-account.service';
 
@@ -20,10 +21,27 @@ export class ViewDebtorAccountComponent implements OnInit {
   viewAccount: boolean = false;
   searchText: string = '';
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/View debtor account.pdf';
+  displayPDF: boolean = false;
+
   constructor(private customerAccountService: CustomerAccountService) {}
 
   async ngOnInit() {
     this.getDebtors();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getDebtors() {

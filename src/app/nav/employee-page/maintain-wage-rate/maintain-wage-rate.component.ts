@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Rate } from 'src/app/models/rate.model';
 import { RateService } from 'src/app/_services/rate.service';
 
@@ -12,6 +12,7 @@ import { EmployeeService } from 'src/app/_services/employee.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-maintain-wage-rate',
@@ -53,6 +54,10 @@ export class MaintainWageRateComponent implements OnInit {
   //validation
   hasReference: boolean = false;
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Maintain wage rate.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private rateService: RateService,
     private employeeTypeService: EmployeeTypeService,
@@ -63,6 +68,19 @@ export class MaintainWageRateComponent implements OnInit {
 
   ngOnInit() {
     this.getRates();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   //////////////////////// get functions ///////////////////////////////////

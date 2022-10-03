@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/_services/product.service';
 import { CustomerAccount } from 'src/app/models/Customer-account.model';
@@ -19,6 +25,7 @@ import { AuditLog } from 'src/app/models/AuditLog.model';
 
 // valdiation
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-make-sale',
@@ -124,7 +131,6 @@ export class MakeSaleComponent implements OnInit {
   validQuantity: boolean = true;
 
   validate: ValidationServicesComponent = new ValidationServicesComponent();
-  s;
 
   monthInt: number = new Date().getMonth();
   month: string;
@@ -132,6 +138,10 @@ export class MakeSaleComponent implements OnInit {
   typeOfPaymentID: number;
 
   dynamicArray = [];
+
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Make sale.pdf';
+  displayPDF: boolean = false;
 
   constructor(
     private customerAccountService: CustomerAccountService,
@@ -146,6 +156,19 @@ export class MakeSaleComponent implements OnInit {
 
   async ngOnInit() {
     this.getAllCurrentUsers();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   //////////////////////////get Functions /////////////////////////////////////

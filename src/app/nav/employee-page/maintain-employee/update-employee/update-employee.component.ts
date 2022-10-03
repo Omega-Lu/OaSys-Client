@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -12,6 +19,7 @@ import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { HttpClient } from '@angular/common/http';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-update-employee',
@@ -74,6 +82,10 @@ export class UpdateEmployeeComponent implements OnInit {
   public response: { dbPath: '' };
   validFile: boolean = true;
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Maintain employee.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
@@ -93,6 +105,19 @@ export class UpdateEmployeeComponent implements OnInit {
       console.log('this is all the employees');
       console.log(res);
       this.employees = res;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

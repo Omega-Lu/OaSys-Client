@@ -50,8 +50,43 @@ export class StockReportComponent implements OnInit {
 
   async ngOnInit() {
     await this.getAllCurrentUsers();
+  }
 
-    this.generatedBy = this.currentUser.username;
+  ////////////// get functions///////////////////////////////////
+
+  async getAllCurrentUsers() {
+    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
+      this.currentUsers = response;
+      console.log('this is the current user for stock report');
+      this.currentUser = this.currentUsers[this.currentUsers.length - 1];
+      console.log(this.currentUser);
+      this.generatedBy = this.currentUser.username;
+      this.getAllProducts();
+    });
+  }
+
+  async getAllProducts() {
+    this.productService.getAllProducts().subscribe((res) => {
+      res = res.filter((product) => {
+        return product.deleted == false;
+      });
+      this.products = res;
+      console.log('this is all the products');
+      console.log(this.products);
+      this.getAllCategories();
+    });
+  }
+
+  async getAllCategories() {
+    this.productCategoryService.getAllProductCategories().subscribe((res) => {
+      res = res.filter((productCat) => {
+        return productCat.deleted == false;
+      });
+      this.productCategories = res;
+      console.log('this is all the product categories');
+      console.log(this.productCategories);
+    });
+    this.buildTable();
   }
 
   categorySelect(id) {
@@ -146,38 +181,4 @@ export class StockReportComponent implements OnInit {
   }
 
   //////////////////////////// Get Functions /////////////////////////////
-
-  async getAllCurrentUsers() {
-    this.currentUserService.getAllCurrentUsers().subscribe((response) => {
-      this.currentUsers = response;
-      console.log('this is the current user for stock report');
-      this.currentUser = this.currentUsers[this.currentUsers.length - 1];
-      console.log(this.currentUser);
-      this.getAllProducts();
-    });
-  }
-
-  async getAllProducts() {
-    this.productService.getAllProducts().subscribe((res) => {
-      res = res.filter((product) => {
-        return product.deleted == false;
-      });
-      this.products = res;
-      console.log('this is all the products');
-      console.log(this.products);
-      this.getAllCategories();
-    });
-  }
-
-  async getAllCategories() {
-    this.productCategoryService.getAllProductCategories().subscribe((res) => {
-      res = res.filter((productCat) => {
-        return productCat.deleted == false;
-      });
-      this.productCategories = res;
-      console.log('this is all the product categories');
-      console.log(this.productCategories);
-    });
-    this.buildTable();
-  }
 }

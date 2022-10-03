@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { WarningType } from 'src/app/models/warning-type.model';
 import { WarningTypeService } from 'src/app/_services/warning-type.service';
 
@@ -10,6 +10,7 @@ import { WarningService } from 'src/app/_services/warning.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-maintain-warning-type',
@@ -47,6 +48,10 @@ export class MaintainWarningTypeComponent implements OnInit {
   warnings: Warning[] = [];
   warningsTemp: Warning[] = [];
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Maintain warning type.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private warningTypeService: WarningTypeService,
     private CurrentUserService: CurrentUserService,
@@ -60,6 +65,19 @@ export class MaintainWarningTypeComponent implements OnInit {
     this.CurrentUserService.getAllCurrentUsers().subscribe((res) => {
       this.auditLog.userID = res[res.length - 1].userID;
       this.auditLog.employeeID = res[res.length - 1].employeeID;
+    });
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
     });
   }
 

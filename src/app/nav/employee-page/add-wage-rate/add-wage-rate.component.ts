@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Rate } from 'src/app/models/rate.model';
 import { RateService } from 'src/app/_services/rate.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -9,6 +9,7 @@ import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-add-wage-rate',
@@ -46,6 +47,10 @@ export class AddWageRateComponent implements OnInit {
     month: 'Oct',
   };
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Add wage rate.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private rateService: RateService,
     private EmployeeTypeService: EmployeeTypeService,
@@ -55,6 +60,19 @@ export class AddWageRateComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEmployeeTypes();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   /////////////////////// get functions /////////////////////////////////////
