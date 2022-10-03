@@ -11,6 +11,7 @@ import { UserService } from 'src/app/_services/user.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-update-employee',
@@ -66,12 +67,19 @@ export class UpdateEmployeeComponent implements OnInit {
     month: 'Oct',
   };
 
+  //upload
+  public message: string;
+  public progress: number;
+  @Output() public onUploadFinished = new EventEmitter();
+  public response: { dbPath: '' };
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
     private userService: UserService,
     private CurrentUserService: CurrentUserService,
-    private AuditLogService: AuditLogService
+    private AuditLogService: AuditLogService,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -86,6 +94,25 @@ export class UpdateEmployeeComponent implements OnInit {
       this.employees = res;
     });
   }
+
+  ///////////////// uploading an image////////////////////////
+
+  public uploadFile = (files) => {
+    if (FileSystem.length === 0) this.return;
+
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+
+    this.http
+      .post('https://localhost:7113/api/upload', formData)
+      .subscribe((res) => {
+        console.log(res['dbPath']);
+        this.employee.img = res['dbPath'];
+      });
+  };
+
+  ////////////////// validate ///////////////////////////////////////
 
   FormValidate() {
     // validate name

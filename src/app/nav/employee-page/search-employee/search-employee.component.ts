@@ -17,6 +17,12 @@ export class SearchEmployeeComponent implements OnInit {
 
   searchText: string = '';
 
+  imagePath: string;
+
+  name = '';
+  surname = '';
+  idNumber = 0;
+
   constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
@@ -44,5 +50,12 @@ export class SearchEmployeeComponent implements OnInit {
 
   Return() {
     this.return.emit('false');
+  }
+
+  getPicture(emp: Employee) {
+    this.name = emp.name;
+    this.surname = emp.surname;
+    this.idNumber = emp.employeE_ID_NUMBER;
+    this.imagePath = 'https://localhost:7113/' + emp.img;
   }
 }

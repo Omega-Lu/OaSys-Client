@@ -23,6 +23,7 @@
           <th>Surname</th>
           <th>Contact Number</th>
           <th>ID Number</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +33,20 @@
           <td>{{ employee.surname }}</td>
           <td>0{{ employee.contacT_NUMBER }}</td>
           <td>{{ employee.employeE_ID_NUMBER }}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              style="
+                border-color: var(--bs-orange);
+                background: var(--bs-orange);
+              "
+              data-toggle="modal"
+              data-target="#exampleModal"
+              (click)="getPicture(employee)"
+            >
+              View Employee
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -50,4 +65,41 @@
   >
     Back
   </button>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">
+          {{ name }} {{ surname }}
+        </h3>
+        <h3 class="modal-title" id="exampleModalLabel">
+          {{ idNumber }}
+        </h3>
+      </div>
+      <div class="modal-body">
+        <img src="{{ imagePath }}" style="width: 100%" />
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

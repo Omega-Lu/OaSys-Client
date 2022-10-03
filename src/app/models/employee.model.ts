@@ -11,4 +11,5 @@ export interface Employee {
   email: string;
   address: string;
   deleted: boolean;
+  img: string;
 }

@@ -17,6 +17,7 @@ import * as $ from 'jQuery';
 import '../../../../assets/js/smtp.js';
 declare let Email: any;
 import * as CryptoJS from 'crypto-js';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-eployee',
@@ -66,6 +67,7 @@ export class AddEployeeComponent implements OnInit {
     email: '',
     address: '',
     deleted: false,
+    img: '',
   };
   employees: Employee[] = [];
   employeesTemp: Employee[] = [];
@@ -100,17 +102,41 @@ export class AddEployeeComponent implements OnInit {
   //hashing
   salt = 'YourSecretKeyForEncryption&DescryptionOasys';
 
+  //upload
+  public message: string;
+  public progress: number;
+  @Output() public onUploadFinished = new EventEmitter();
+  public response: { dbPath: '' };
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
     private userService: UserService,
     private currentUserService: CurrentUserService,
-    private auditLogService: AuditLogService
+    private auditLogService: AuditLogService,
+    private http: HttpClient
   ) {}
 
   async ngOnInit() {
     await this.getAllEmployees();
   }
+
+  ///////////////// uploading an image////////////////////////
+
+  public uploadFile = (files) => {
+    if (FileSystem.length === 0) this.return;
+
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+
+    this.http
+      .post('https://localhost:7113/api/upload', formData)
+      .subscribe((res) => {
+        console.log(res['dbPath']);
+        this.employee.img = res['dbPath'];
+      });
+  };
 
   /////////////////////// get Functions ////////////////////////////////
 
