@@ -13,6 +13,7 @@ import { ValidationServicesComponent } from 'src/app/validation-services/validat
 import { AuditLog } from 'src/app/models/AuditLog.model';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-product',
@@ -47,6 +48,7 @@ export class AddProductComponent implements OnInit {
     reordeR_LIMIT: null,
     barcode: '',
     deleted: false,
+    img: '',
   };
   products: Product[] = [];
   productsTemp: Product[] = [];
@@ -81,12 +83,20 @@ export class AddProductComponent implements OnInit {
   uniqueNameAndDesc: boolean = true;
   uniqueBarcode: boolean = true;
 
+  //upload
+  public message: string;
+  public progress: number;
+  @Output() public onUploadFinished = new EventEmitter();
+  public response: { dbPath: '' };
+  validFile: boolean = true;
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
     private productTypeService: ProductTypeService,
     private CurrentUserService: CurrentUserService,
-    private AuditLogService: AuditLogService
+    private AuditLogService: AuditLogService,
+    private http: HttpClient
   ) {}
 
   async ngOnInit() {
@@ -97,6 +107,27 @@ export class AddProductComponent implements OnInit {
       this.auditLog.employeeID = res[res.length - 1].employeeID;
     });
   }
+
+  ///////////////// uploading an image////////////////////////
+
+  public uploadFile = (files) => {
+    let fileToUpload = <File>files[0];
+
+    if (fileToUpload.name.match(/png|jpg|jpeg/g)) {
+      const formData = new FormData();
+      formData.append('file', fileToUpload, fileToUpload.name);
+
+      this.http
+        .post('https://localhost:7113/api/upload', formData)
+        .subscribe((res) => {
+          console.log(res['dbPath']);
+          this.product.img = res['dbPath'];
+          this.validFile = true;
+        });
+    } else {
+      this.validFile = false;
+    }
+  };
 
   //////////// get functions /////////////////////////////////////////////
 
@@ -147,6 +178,12 @@ export class AddProductComponent implements OnInit {
     this.validateType();
     this.compareBarcode();
     this.CompareNameAndDescription();
+
+    if (this.product.img == '') {
+      this.validFile = false;
+    } else {
+      this.validFile = true;
+    }
   }
 
   nameValidate() {

@@ -102,6 +102,7 @@ import { ForgotResetPasswordComponent } from './forgot-reset-password/forgot-res
 import { LogoutTimerComponent } from './nav/logout-timer/logout-timer.component';
 import { ReturnSaleComponent } from './nav/sale-page/return-sale/return-sale.component';
 import { ViewReturnSaleComponent } from './nav/sale-page/return-sale/view-return-sale/view-return-sale.component';
+import { SaleReturnReportComponent } from './nav/reports-page/sale-return-report/sale-return-report.component';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -270,6 +271,7 @@ const appRoutes: Routes = [
     LogoutTimerComponent,
     ReturnSaleComponent,
     ViewReturnSaleComponent,
+    SaleReturnReportComponent,
   ],
   imports: [
     BrowserModule,

@@ -72,6 +72,7 @@ export class UpdateEmployeeComponent implements OnInit {
   public progress: number;
   @Output() public onUploadFinished = new EventEmitter();
   public response: { dbPath: '' };
+  validFile: boolean = true;
 
   constructor(
     private employeeService: EmployeeService,
@@ -98,18 +99,22 @@ export class UpdateEmployeeComponent implements OnInit {
   ///////////////// uploading an image////////////////////////
 
   public uploadFile = (files) => {
-    if (FileSystem.length === 0) this.return;
-
     let fileToUpload = <File>files[0];
-    const formData = new FormData();
-    formData.append('file', fileToUpload, fileToUpload.name);
 
-    this.http
-      .post('https://localhost:7113/api/upload', formData)
-      .subscribe((res) => {
-        console.log(res['dbPath']);
-        this.employee.img = res['dbPath'];
-      });
+    if (fileToUpload.name.match(/png|jpg|jpeg/g)) {
+      const formData = new FormData();
+      formData.append('file', fileToUpload, fileToUpload.name);
+
+      this.http
+        .post('https://localhost:7113/api/upload', formData)
+        .subscribe((res) => {
+          console.log(res['dbPath']);
+          this.employee.img = res['dbPath'];
+          this.validFile = true;
+        });
+    } else {
+      this.validFile = false;
+    }
   };
 
   ////////////////// validate ///////////////////////////////////////
@@ -140,6 +145,12 @@ export class UpdateEmployeeComponent implements OnInit {
     this.compareContactNumber();
     this.compareEmail();
     this.comparePassport();
+
+    if (this.employee.img == '') {
+      this.validFile = false;
+    } else {
+      this.validFile = true;
+    }
   }
 
   comparePassport() {
@@ -258,6 +269,17 @@ export class UpdateEmployeeComponent implements OnInit {
       this.validRole = false;
     } else {
       this.validRole = true;
+    }
+    if (this.user.useR_ROLE_ID == 4 || this.user.useR_ROLE_ID == 3) {
+      this.employeeSelected = true;
+      console.log(
+        'employee selected' + this.employeeSelected + this.user.useR_ROLE_ID
+      );
+    } else {
+      this.employeeSelected = false;
+      console.log(
+        'else employee' + this.employeeSelected + this.user.useR_ROLE_ID
+      );
     }
   }
 

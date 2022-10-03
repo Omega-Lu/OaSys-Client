@@ -192,7 +192,17 @@
     </div>
 
     <div class="row">
-      <div class="col">
+      <div class="col-6">
+        <label class="form-label" style="width: 100%">Product Picture:</label>
+        <input
+          #file
+          type="file"
+          class="form-control"
+          (change)="uploadFile(file.files)"
+        />
+        <div style="color: red" *ngIf="!validFile">Invalid Picture</div>
+      </div>
+      <div class="col-6">
         <div class="form-check">
           <input
             id="formCheck-1"
@@ -238,7 +248,8 @@
             !validReorder ||
             !validBarcode ||
             !uniqueNameAndDesc ||
-            !uniqueBarcode
+            !uniqueBarcode ||
+            !validFile
           "
         >
           Save

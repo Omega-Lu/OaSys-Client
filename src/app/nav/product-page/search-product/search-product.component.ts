@@ -33,6 +33,10 @@ export class SearchProductComponent implements OnInit {
 
   searchText: string = '';
 
+  name = '';
+  description = '';
+  imagePath = '';
+
   constructor(
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
@@ -42,6 +46,15 @@ export class SearchProductComponent implements OnInit {
   ngOnInit(): void {
     this.getAllProducts();
   }
+
+  ////////////// get the picture /////////////////////////////////////////
+  getPicture(prod: Product) {
+    this.name = prod.producT_NAME;
+    this.description = prod.producT_DESCRIPTION;
+    this.imagePath = 'https://localhost:7113/' + prod.img;
+  }
+
+  /////////////////// get functions /////////////////////////////////
 
   getAllProducts() {
     this.productService.getAllProducts().subscribe((response) => {

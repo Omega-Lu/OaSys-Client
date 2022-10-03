@@ -10,4 +10,5 @@ export interface Product {
   reordeR_LIMIT: number;
   barcode: string;
   deleted: boolean;
+  img: string;
 }

@@ -211,6 +211,7 @@
           class="form-control"
           (change)="uploadFile(file.files)"
         />
+        <div style="color: red" *ngIf="!validFile">Invalid Picture</div>
       </div>
     </div>
     <div class="form-group" style="margin-top: 15px">
@@ -245,7 +246,8 @@
             !validType ||
             !uniquePassport ||
             !uniqueEmail ||
-            !uniqueContactNumber
+            !uniqueContactNumber ||
+            !validFile
           "
           (pointerover)="FormValidate()"
           (mouseover)="FormValidate()"
