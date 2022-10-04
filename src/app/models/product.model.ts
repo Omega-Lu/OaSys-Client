@@ -11,4 +11,5 @@ export interface Product {
   barcode: string;
   deleted: boolean;
   img: string;
+  vat: boolean;
 }

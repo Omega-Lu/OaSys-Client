@@ -1,0 +1,101 @@
+<div class="container-fluid">
+  <h1>Update VAT</h1>
+  <h2 style="margin-left: 1%">Vat Details:</h2>
+  <form style="width: 700px; margin-left: 2%">
+    <div class="row" style="padding-bottom: 30px">
+      <div class="col-6">
+        <label class="form-label">VAT Percentage: (%)</label>
+        <input
+          placeholder="Percentage"
+          type="number"
+          class="form-control"
+          style="width: 100%"
+          name="vatAmount"
+          [(ngModel)]="vat.vatAmount"
+          [ngModelOptions]="{ standalone: true }"
+          (input)="validateVat()"
+          (keyup)="validateVat()"
+        />
+        <div *ngIf="!validVat" style="color: red">Invalid Vat</div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      routerLink="/product-page"
+      style="
+        border-color: var(--bs-orange);
+        background: var(--bs-orange);
+        margin-right: 30px;
+      "
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-toggle="modal"
+      data-target="#exampleModal"
+      style="border-color: var(--bs-orange); background-color: var(--bs-orange)"
+      (mouseover)="validateVat()"
+      (pointerover)="validateVat()"
+      [disabled]="!validVat"
+    >
+      Save
+    </button>
+  </form>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successSubmit">
+          Are You Sure You Would Like To Update This VAT Percentage
+        </h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="successSubmit">
+          VAT Percentage Successfully Updated
+        </h5>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          *ngIf="!successSubmit"
+        >
+          No
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-target="#exampleModal"
+          *ngIf="!successSubmit"
+          (click)="onSubmit()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="successSubmit"
+          (click)="Return()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

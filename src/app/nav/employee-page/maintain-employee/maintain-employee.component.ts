@@ -10,6 +10,8 @@ import { Employee } from 'src/app/models/employee.model';
 import { EmployeeService } from 'src/app/_services/employee.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
+import { Wage } from 'src/app/models/Wage.model';
+import { WageService } from 'src/app/_services/Wage.service';
 
 //user
 import { User } from 'src/app/models/user.model';
@@ -61,6 +63,11 @@ export class MaintainEmployeeComponent implements OnInit {
   users: User[] = [];
   usersTemp: User[] = [];
 
+  //wage
+  wage: Wage;
+  wages: Wage[] = [];
+  wagesTemp: Wage[] = [];
+
   dynamicArray = [];
   tempArray = [];
 
@@ -73,11 +80,19 @@ export class MaintainEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private CurrentUserService: CurrentUserService,
     private AuditLogService: AuditLogService,
-    private UserService: UserService
+    private UserService: UserService,
+    private wageService: WageService
   ) {}
 
   ngOnInit() {
     this.getAllEmployees();
+
+    this.wageService.getAllWages().subscribe((res) => {
+      res = res.filter((wage) => {
+        return wage.wageCollected == 'false';
+      });
+      this.wages = res;
+    });
   }
 
   ////////////// pdf functions ///////////////////////////////
@@ -138,10 +153,19 @@ export class MaintainEmployeeComponent implements OnInit {
 
   ////////////////////// delete employee ///////////////////////////
 
+  hasOutstandingWage: boolean = false;
+
   deletee(delet: any) {
     this.employee = delet;
     console.log('the employee');
     console.log(this.employee);
+
+    this.wagesTemp = this.wages.filter((wage) => {
+      return wage.employeeID == this.employee.employeE_ID;
+    });
+
+    if (this.wagesTemp.length > 0) this.hasOutstandingWage = true;
+    else this.hasOutstandingWage = false;
   }
 
   deleteEmployee() {

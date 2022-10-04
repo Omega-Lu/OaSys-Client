@@ -21,6 +21,8 @@ import { OrderProduct } from 'src/app/models/orderProduct.model';
 import { OrderProductService } from 'src/app/_services/orderProduct.service';
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 import * as $ from 'jquery';
+import 'src/assets/js/smtp.js';
+declare let Email: any;
 
 //audit log
 import { AuditLog } from 'src/app/models/AuditLog.model';
@@ -285,6 +287,11 @@ export class SupplierOrderComponent implements OnInit {
         this.ordered = true;
       }
     }
+    console.log(
+      this.dynamicArray.forEach((res) => {
+        res;
+      })
+    );
   }
 
   ////////////// remove from dynamic array /////////////////////////////////
@@ -324,6 +331,7 @@ export class SupplierOrderComponent implements OnInit {
           });
       }
     });
+
     //add to audit log
     this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {
       console.log('new audit log entry');

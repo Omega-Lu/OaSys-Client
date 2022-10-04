@@ -1,0 +1,49 @@
+<app-update-vat *ngIf="updateVAT" (return)="back()"> </app-update-vat>
+
+<div class="container-fluid" *ngIf="!updateVAT">
+  <h1>Maintain VAT</h1>
+
+  <div class="table-responsive" style="max-height: 550px">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Vat Percentage</th>
+          <th>Date Mddified</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vat of vats">
+          <td>{{ vat.vatAmount }}%</td>
+          <td>{{ vat.dateModified }}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              style="
+                border-color: var(--bs-orange);
+                background: var(--bs-orange);
+              "
+              (click)="updateVAT = true"
+            >
+              Edit
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    class="btn btn-primary"
+    type="button"
+    style="
+      border-color: var(--bs-orange);
+      background: var(--bs-orange);
+      margin-left: 10px;
+      margin-top: 30px;
+    "
+    routerLink="/product-page"
+  >
+    Back
+  </button>
+</div>

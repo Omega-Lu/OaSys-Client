@@ -5,12 +5,14 @@ import {
   EventEmitter,
   Output,
   NgZone,
+  ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../_services/CurrentUser.service';
 import { CurrentUser } from '../models/CurrentUser.model';
 import { LogoutTimer } from 'src/app/models/LogoutTimer.model';
 import { LogoutTimerService } from 'src/app/_services/LogoutTimer.service';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-nav',
@@ -38,6 +40,10 @@ export class NavComponent implements OnInit {
   currentUser: CurrentUser = null;
   currentUsers: CurrentUser[] = [];
 
+  //help pdf
+  pdfPath = 'https://localhost:7113/Resources/pdfs/Team 5 - User Manual.pdf';
+  displayPDF: boolean = false;
+
   constructor(
     private router: Router,
     private currentUserService: CurrentUserService,
@@ -55,6 +61,19 @@ export class NavComponent implements OnInit {
     this.check();
     this.initListener();
     this.initInterval();
+  }
+
+  ////////////// pdf functions ///////////////////////////////
+  @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
+  search(stringToSearch: string) {
+    this.pdfComponent.eventBus.dispatch('find', {
+      query: stringToSearch,
+      type: 'again',
+      caseSensitive: false,
+      findPrevious: undefined,
+      highlightAll: true,
+      phraseSearch: true,
+    });
   }
 
   getLastAction() {

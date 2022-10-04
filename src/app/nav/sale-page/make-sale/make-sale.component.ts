@@ -22,6 +22,8 @@ import { CurrentUser } from 'src/app/models/CurrentUser.model';
 import { CurrentUserService } from 'src/app/_services/CurrentUser.service';
 import { AuditLogService } from 'src/app/_services/AuditLog.service';
 import { AuditLog } from 'src/app/models/AuditLog.model';
+import { Vat } from 'src/app/models/Vat.model';
+import { VatService } from 'src/app/_services/Vat.service';
 
 // valdiation
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
@@ -36,6 +38,10 @@ import jsPDF from 'jspdf';
 })
 export class MakeSaleComponent implements OnInit {
   @Output() return = new EventEmitter<string>();
+
+  //vat
+  vat: Vat;
+  vats: Vat[] = [];
 
   //customer account
   customerAccount: CustomerAccount;
@@ -141,6 +147,8 @@ export class MakeSaleComponent implements OnInit {
 
   dynamicArray = [];
 
+  vatAmount: number = 0;
+
   //help pdf
   pdfPath = 'https://localhost:7113/Resources/pdfs/Make sale.pdf';
   displayPDF: boolean = false;
@@ -153,11 +161,22 @@ export class MakeSaleComponent implements OnInit {
     private paymentService: PaymentService,
     private paymentTypeService: PaymentTypeService,
     private auditLogService: AuditLogService,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    private vatService: VatService
   ) {}
 
   async ngOnInit() {
     this.getAllCurrentUsers();
+
+    this.vatService.getAllVatses().subscribe((res) => {
+      this.vats = res;
+      this.vat = res[0];
+      this.vatAmount = this.vat.vatAmount / 100 + 1;
+    });
+
+    var input = document.getElementById('inputBarcode');
+
+    input.focus();
   }
 
   ////////////// pdf functions ///////////////////////////////
@@ -321,7 +340,7 @@ export class MakeSaleComponent implements OnInit {
       let priceTemp = this.price;
       priceTemp = priceTemp * quan;
       this.dynamicArray[i].total = priceTemp;
-      this.dynamicArray[i].vatPrice = (priceTemp / 1.15).toFixed(2);
+      this.dynamicArray[i].vatPrice = (priceTemp / this.vatAmount).toFixed(2);
       console.log(this.dynamicArray);
 
       this.subTotal = 0;
@@ -330,7 +349,7 @@ export class MakeSaleComponent implements OnInit {
         const element = this.dynamicArray[i];
         this.totalAmount = this.totalAmount + element.total;
         this.totalAmountString = this.totalAmount.toFixed(2);
-        this.subTotal = (this.totalAmount / 1.15).toFixed(2);
+        this.subTotal = (this.totalAmount / this.vatAmount).toFixed(2);
       }
       this.quanValidate = true;
       if (this.customerID > -1) this.creditValidate(this.customerID);

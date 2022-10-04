@@ -56,6 +56,7 @@ export class AddProductComponent implements OnInit {
     barcode: '',
     deleted: false,
     img: '',
+    vat: false,
   };
   products: Product[] = [];
   productsTemp: Product[] = [];

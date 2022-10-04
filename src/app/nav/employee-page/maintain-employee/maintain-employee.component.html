@@ -137,7 +137,19 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successDelete">
+        <h5
+          class="modal-title"
+          id="exampleModalLabel"
+          *ngIf="hasOutstandingWage"
+        >
+          Employee Cannot Be Deleted Because Employee Has An Outstanding Wage
+          Payment
+        </h5>
+        <h5
+          class="modal-title"
+          id="exampleModalLabel"
+          *ngIf="!successDelete && !hasOutstandingWage"
+        >
           Are You Sure You Would Like To Delete This Employee
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="successDelete">
@@ -150,7 +162,7 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasOutstandingWage"
         >
           No
         </button>
@@ -159,7 +171,7 @@
           class="btn btn-primary"
           name="deleteempl"
           data-target="#exampleModal"
-          *ngIf="!successDelete"
+          *ngIf="!successDelete && !hasOutstandingWage"
           (click)="deleteEmployee()"
         >
           Yes
@@ -172,6 +184,17 @@
           data-dismiss="modal"
           *ngIf="successDelete"
           routerLink="/employee-page"
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-dismiss="modal"
+          *ngIf="hasOutstandingWage"
+
         >
           OK
         </button>

@@ -103,6 +103,10 @@ import { LogoutTimerComponent } from './nav/logout-timer/logout-timer.component'
 import { ReturnSaleComponent } from './nav/sale-page/return-sale/return-sale.component';
 import { ViewReturnSaleComponent } from './nav/sale-page/return-sale/view-return-sale/view-return-sale.component';
 import { SaleReturnReportComponent } from './nav/reports-page/sale-return-report/sale-return-report.component';
+import { AddVatComponent } from './nav/product-page/add-vat/add-vat.component';
+import { SearchVatComponent } from './nav/product-page/search-vat/search-vat.component';
+import { MaintainVatComponent } from './nav/product-page/maintain-vat/maintain-vat.component';
+import { UpdateVatComponent } from './nav/product-page/maintain-vat/update-vat/update-vat.component';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -181,6 +185,9 @@ const appRoutes: Routes = [
   { path: 'complete-stocktake', component: CompleteStocktakeComponent },
   { path: 'return-sale', component: ReturnSaleComponent },
   { path: 'sale-returns-report', component: SaleReturnReportComponent },
+  { path: 'add-vat', component: AddVatComponent },
+  { path: 'search-vat', component: SearchVatComponent },
+  { path: 'maintain-vat', component: MaintainVatComponent },
 ];
 
 @NgModule({
@@ -273,6 +280,10 @@ const appRoutes: Routes = [
     ReturnSaleComponent,
     ViewReturnSaleComponent,
     SaleReturnReportComponent,
+    AddVatComponent,
+    SearchVatComponent,
+    MaintainVatComponent,
+    UpdateVatComponent,
   ],
   imports: [
     BrowserModule,
