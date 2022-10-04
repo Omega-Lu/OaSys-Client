@@ -91,8 +91,8 @@ export class AuditLogComponent implements OnInit {
       });
 
       this.auditArrayTemp.push({
-        auditID: element.auditLogID,
-        userID: element.userID,
+        //auditID: element.auditLogID,
+        //userID: element.userID,
         name: this.employeesTemp[0].name,
         surname: this.employeesTemp[0].surname,
         function: element.functionUsed,
@@ -107,7 +107,7 @@ export class AuditLogComponent implements OnInit {
   Search(text) {
     this.auditArrayTemp = this.auditArray.filter((audit) => {
       return (
-        audit.auditID.toString().match(text) ||
+        //audit.auditID.toString().match(text) ||
         audit.name.match(text) ||
         audit.surname.match(text) ||
         audit.function.match(text)

@@ -83,226 +83,245 @@
 
     <!-- Add product Table -->
 
-    <div class="table-responsive" style="max-height: 250px; min-height: 100px">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Quantity </th>
-            <th>Price excl. VAT</th>
-            <th>Total price</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let dynamic of dynamicArray; let i = index">
-            <td>{{ dynamic.name }}</td>
-            <td>
-              <input
-                class="form-control"
-                type="number"
-                style="width: 100px"
-                value="{{ dynamic.quantity }}"
-                [(ngModel)]="dynamic.quantity"
-                [ngModelOptions]="{ standalone: true }"
-                (input)="CalQuan(i, dynamic.quantity)"
-              />
-            </td>
-            <td>{{ dynamic.vatPrice }}</td>
-            <td>{{ dynamic.total }}</td>
-            <td (click)="deleteRow(i)">
-              <button
-                class="btn btn-primary"
-                style="
-                  background: var(--bs-orange);
-                  border-color: var(--bs-orange);
-                "
-              >
-                <i class="fa fa-trash-alt"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div [hidden]="quanValidate">
-        <p style="color: red">Quantity must be more than 0</p>
-      </div>
-      <div [hidden]="moreThanOnHand">
-        <p style="color: red">Quantity cannot be more than quantity on hand</p>
-      </div>
-      <div [hidden]="validQuantity">
-        <p style="color: red">Invalid Quantity</p>
-      </div>
-    </div>
-
-    <div class="row" style="padding-bottom: 15px">
-      <div class="col-6">
-        <div [hidden]="productAdded">
-          <label class="form-label" style="font-size: 18px; font-weight: bold"
-            >Payment Method: </label
-          >
-          <select
-            id="paymentID"
-            class="btn"
-            name="payment"
-            style="
-              background: var(--bs-gray-100);
-              border-color: var(--bs-orange);
-              color: var(--bs-orange);
-              width: 100%;
-            "
-            (input)="selectPayment($event.target.value)"
-          >
-            <option value="-1" disabled selected>Method</option>
-            <option value="Cash">Cash</option>
-            <option value="Card">Card</option>
-            <option value="Credit">Customer Account</option>
-          </select>
+    <div id="htmlData">
+      <div
+        class="row"
+        style="margin-top: -53px; z-index: -1; position: relative"
+      >
+        <div class="form-label" style="width: fit-content; font-size: x-large">
+          Sale ID: {{ receiptID }}
+        </div>
+        <div class="form-label" style="width: fit-content; font-size: x-large">
+          Sale Made By: {{ currentUser.username }}
         </div>
       </div>
-      <div class="col-6">
-        <label class="form-label">Subtotal: R</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <div
-              class="input-group-text"
-              style="
-                border-top-right-radius: 0px;
-                border-bottom-right-radius: 0px;
-              "
+
+      <div
+        class="table-responsive"
+        style="max-height: 250px; min-height: 100px"
+      >
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity </th>
+              <th>Price excl. VAT</th>
+              <th>Total price</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dynamic of dynamicArray; let i = index">
+              <td>{{ dynamic.name }}</td>
+              <td>
+                <input
+                  class="form-control"
+                  type="number"
+                  style="width: 100px"
+                  value="{{ dynamic.quantity }}"
+                  [(ngModel)]="dynamic.quantity"
+                  [ngModelOptions]="{ standalone: true }"
+                  (input)="CalQuan(i, dynamic.quantity)"
+                />
+              </td>
+              <td>{{ dynamic.vatPrice }}</td>
+              <td>{{ dynamic.total }}</td>
+              <td (click)="deleteRow(i)">
+                <button
+                  class="btn btn-primary"
+                  style="
+                    background: var(--bs-orange);
+                    border-color: var(--bs-orange);
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div [hidden]="quanValidate">
+          <p style="color: red">Quantity must be more than 0</p>
+        </div>
+        <div [hidden]="moreThanOnHand">
+          <p style="color: red">
+            Quantity cannot be more than quantity on hand
+          </p>
+        </div>
+        <div [hidden]="validQuantity">
+          <p style="color: red">Invalid Quantity</p>
+        </div>
+      </div>
+
+      <div class="row" style="padding-bottom: 15px">
+        <div class="col-6">
+          <div [hidden]="productAdded">
+            <label class="form-label" style="font-size: 18px; font-weight: bold"
+              >Payment Method: </label
             >
-              R
-            </div>
-          </div>
-          <input
-            class="form-control"
-            type="text"
-            style="width: 200px"
-            value="{{ subTotal }}"
-            disabled
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="row" style="padding-bottom: 15px">
-      <div class="col-6">
-        <!-- payment credit -->
-
-        <div *ngIf="typeOfPayment == 'Credit'">
-          <label class="form-label" style="font-size: 18px; font-weight: bold"
-            >Customer account: </label
-          >
-          <div>
             <select
-              id="customerAccountID"
+              id="paymentID"
               class="btn"
-              name="customerAccount"
+              name="payment"
               style="
                 background: var(--bs-gray-100);
                 border-color: var(--bs-orange);
                 color: var(--bs-orange);
                 width: 100%;
               "
-              (input)="creditValidate($event.target.value)"
+              (input)="selectPayment($event.target.value)"
             >
-              <option value="-1" disabled selected>Customer Name</option>
-              <option
-                *ngFor="let customer of customerAccounts"
-                value="{{ customer.customeR_ACCOUNT_ID }}"
-              >
-                {{ customer.name }}
-              </option>
+              <option value="-1" disabled selected>Method</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Credit">Customer Account</option>
             </select>
           </div>
-          <div [hidden]="customerCreditValidate">
-            <p style="color: red">This customer has insufficient funds</p>
-          </div>
         </div>
-
-        <!-- payment Cash -->
-
-        <div *ngIf="typeOfPayment == 'Cash'">
-          <div>
-            <label class="form-label">Amount tendered: R </label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div
-                  class="input-group-text"
-                  style="
-                    border-top-right-radius: 0px;
-                    border-bottom-right-radius: 0px;
-                  "
-                >
-                  R
-                </div>
+        <div class="col-6">
+          <label class="form-label">Subtotal: R</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div
+                class="input-group-text"
+                style="
+                  border-top-right-radius: 0px;
+                  border-bottom-right-radius: 0px;
+                "
+              >
+                R
               </div>
-              <input
-                class="form-control"
-                type="number"
-                value="{{ amountGiven }}"
-                [(ngModel)]="amountGiven"
-                [ngModelOptions]="{ standalone: true }"
-                (input)="AmountEntered()"
-              />
             </div>
-          </div>
-          <div [hidden]="amountvalidate">
-            <p style="color: red">The amount must be more than 0</p>
-          </div>
-          <div [hidden]="notEnough">
-            <p style="color: red">The amount entered is not enough</p>
-          </div>
-          <div [hidden]="validAmount">
-            <p style="color: red">Invalid Amount</p>
-          </div>
-          <div style="height: 58px; margin-bottom: 0px; margin-top: 10px">
-            <label class="form-label">Change: </label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div
-                  class="input-group-text"
-                  style="
-                    border-top-right-radius: 0px;
-                    border-bottom-right-radius: 0px;
-                  "
-                >
-                  R
-                </div>
-              </div>
-              <input
-                class="form-control"
-                type="number"
-                value="{{ changeString }}"
-                [(ngModel)]="changeString"
-                [ngModelOptions]="{ standalone: true }"
-                disabled
-              />
-            </div>
+            <input
+              class="form-control"
+              type="text"
+              style="width: 200px"
+              value="{{ subTotal }}"
+              disabled
+            />
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <label class="form-label">Total Amount Due: R</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <div
-              class="input-group-text"
-              style="
-                border-top-right-radius: 0px;
-                border-bottom-right-radius: 0px;
-              "
+
+      <div class="row" style="padding-bottom: 15px">
+        <div class="col-6">
+          <!-- payment credit -->
+
+          <div *ngIf="typeOfPayment == 'Credit'">
+            <label class="form-label" style="font-size: 18px; font-weight: bold"
+              >Customer account: </label
             >
-              R
+            <div>
+              <select
+                id="customerAccountID"
+                class="btn"
+                name="customerAccount"
+                style="
+                  background: var(--bs-gray-100);
+                  border-color: var(--bs-orange);
+                  color: var(--bs-orange);
+                  width: 100%;
+                "
+                (input)="creditValidate($event.target.value)"
+              >
+                <option value="-1" disabled selected>Customer Name</option>
+                <option
+                  *ngFor="let customer of customerAccounts"
+                  value="{{ customer.customeR_ACCOUNT_ID }}"
+                >
+                  {{ customer.name }}
+                </option>
+              </select>
+            </div>
+            <div [hidden]="customerCreditValidate">
+              <p style="color: red">This customer has insufficient funds</p>
             </div>
           </div>
-          <input
-            class="form-control"
-            type="text"
-            style="width: 250px"
-            value="{{ totalAmountString }}"
-            disabled
-          />
+
+          <!-- payment Cash -->
+
+          <div *ngIf="typeOfPayment == 'Cash'">
+            <div>
+              <label class="form-label">Amount tendered: R </label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div
+                    class="input-group-text"
+                    style="
+                      border-top-right-radius: 0px;
+                      border-bottom-right-radius: 0px;
+                    "
+                  >
+                    R
+                  </div>
+                </div>
+                <input
+                  class="form-control"
+                  type="number"
+                  value="{{ amountGiven }}"
+                  [(ngModel)]="amountGiven"
+                  [ngModelOptions]="{ standalone: true }"
+                  (input)="AmountEntered()"
+                />
+              </div>
+            </div>
+            <div [hidden]="amountvalidate">
+              <p style="color: red">The amount must be more than 0</p>
+            </div>
+            <div [hidden]="notEnough">
+              <p style="color: red">The amount entered is not enough</p>
+            </div>
+            <div [hidden]="validAmount">
+              <p style="color: red">Invalid Amount</p>
+            </div>
+            <div style="height: 58px; margin-bottom: 0px; margin-top: 10px">
+              <label class="form-label">Change: </label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div
+                    class="input-group-text"
+                    style="
+                      border-top-right-radius: 0px;
+                      border-bottom-right-radius: 0px;
+                    "
+                  >
+                    R
+                  </div>
+                </div>
+                <input
+                  class="form-control"
+                  type="number"
+                  value="{{ changeString }}"
+                  [(ngModel)]="changeString"
+                  [ngModelOptions]="{ standalone: true }"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="form-label">Total Amount Due: R</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div
+                class="input-group-text"
+                style="
+                  border-top-right-radius: 0px;
+                  border-bottom-right-radius: 0px;
+                "
+              >
+                R
+              </div>
+            </div>
+            <input
+              class="form-control"
+              type="text"
+              style="width: 250px"
+              value="{{ totalAmountString }}"
+              disabled
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -391,7 +410,7 @@
           data-toggle="modal"
           data-target="#exampleModal"
           data-dismiss="modal"
-          routerLink="sale-page"
+          routerLink="/sale-page"
           *ngIf="successSubmit"
         >
           OK

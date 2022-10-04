@@ -26,6 +26,8 @@ import { AuditLog } from 'src/app/models/AuditLog.model';
 // valdiation
 import { ValidationServicesComponent } from 'src/app/validation-services/validation-services.component';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-make-sale',
@@ -184,6 +186,7 @@ export class MakeSaleComponent implements OnInit {
         this.currentUsers[this.currentUsers.length - 1].userID;
       this.audit.employeeID =
         this.currentUsers[this.currentUsers.length - 1].employeeID;
+      this.currentUser = this.currentUsers[this.currentUsers.length - 1];
 
       this.audit.month = 'Jan';
 
@@ -222,6 +225,7 @@ export class MakeSaleComponent implements OnInit {
       this.sales = response;
       console.log('all sales');
       console.log(this.sales);
+      this.receiptID = this.sales[this.sales.length - 1].saleID + 1;
       this.getAllSaleProducts();
     });
   }
@@ -455,6 +459,8 @@ export class MakeSaleComponent implements OnInit {
 
   ///////////////////////////////make the sale////////////////////////////////
 
+  receiptID = 0;
+
   async onSubmit() {
     //add payment
 
@@ -494,6 +500,21 @@ export class MakeSaleComponent implements OnInit {
       this.saleService.addSale(this.sale).subscribe((response) => {
         console.log('this is the new Sale');
         console.log(response);
+
+        this.sale = response;
+        this.receiptID = this.sale.saleID;
+
+        let ccanvas = document.getElementById('htmlData');
+        html2canvas(ccanvas).then((canvas) => {
+          this.receiptID = this.sale.saleID;
+          let fileWidth = 590;
+          let fileHeight = (canvas.height * fileWidth) / canvas.width;
+          const FILEURI = canvas.toDataURL('image/png');
+          this.PDF = new jsPDF('p', 'pt', 'a4');
+          let position = 0;
+          this.PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+          this.PDF.save('Sale ' + this.sale.saleID + '.pdf');
+        });
 
         for (let i = 0; i < this.dynamicArray.length; i++) {
           const element = this.dynamicArray[i];
@@ -537,4 +558,6 @@ export class MakeSaleComponent implements OnInit {
       this.successSubmit = true;
     });
   }
+
+  PDF;
 }

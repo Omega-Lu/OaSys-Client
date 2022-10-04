@@ -78,6 +78,7 @@
       <div class="modal-body">
         <input
           class="form-control"
+          maxlength="50"
           [(ngModel)]="returnReason"
           (input)="validateReason()"
           (keyup)="validateReason()"
