@@ -383,10 +383,10 @@ export class AddEployeeComponent implements OnInit {
           //Send An Email With Username And PassWord
           Email.send({
             Host: 'smtp.elasticemail.com',
-            Username: 'oasys.infolutions@gmail.com',
-            Password: '6472A54EB8FB863EC2F2C1D10005742956DE',
+            Username: 'infolutions.oasys@gmail.com',
+            Password: '34E038B25E4ED84B4EDF5254355D6B00EBE0',
             To: this.employee.email,
-            From: 'oasys.infolutions@gmail.com',
+            From: 'infolutions.oasys@gmail.com',
             Subject: 'Username And Password For OaSys System',
             Body: `<h3>Your Username: </h3>
                 <p>${this.user.username}</p>
@@ -421,10 +421,10 @@ export class AddEployeeComponent implements OnInit {
             //Send An Email With Username And PassWord
             Email.send({
               Host: 'smtp.elasticemail.com',
-              Username: 'oasys.infolutions@gmail.com',
-              Password: '6472A54EB8FB863EC2F2C1D10005742956DE',
+              Username: 'oasys.infolutions.system@gmail.com',
+              Password: '74070592FFF6FE6CB38473D9E004DCB78B31',
               To: this.employee.email,
-              From: 'oasys.infolutions@gmail.com',
+              From: 'oasys.infolutions.system@gmail.com',
               Subject: 'Username And Password For OaSys System',
               Body: `<h3>Your Username: </h3>
                 <p>${this.user.username}</p>

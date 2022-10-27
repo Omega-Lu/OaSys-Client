@@ -99,6 +99,7 @@
         <div *ngIf="!validWarningType" style="color: Red">
           Select A Warning Type
         </div>
+        <div *ngIf="!uniqueWarning" style="color: Red">Employee Already Has This Warning Type</div>
       </div>
     </div>
     <div class="row" style="margin-bottom: 15px">
@@ -135,7 +136,7 @@
         <div *ngIf="!validReason" style="color: Red">Invalid Reason</div>
       </div>
     </div>
-    <div *ngIf="!uniqueWarning" style="color: Red">Duplicate Warning</div>
+
     <div style="margin-top: 20px">
       <button
         type="button"

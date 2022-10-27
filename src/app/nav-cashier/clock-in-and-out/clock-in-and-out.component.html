@@ -35,11 +35,18 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="ClockInModalLabel" *ngIf="!successClockIn">
-          Are You Sure You Would Like Clock-In
+        <h5
+          class="modal-title"
+          id="ClockInModalLabel"
+          *ngIf="!successClockIn && !alreadyCheckedIn"
+        >
+          Would You Like Clock-In?
         </h5>
         <h5 class="modal-title" id="ClockInModalLabel" *ngIf="successClockIn">
           Successfully Clocked In At {{ currentTime }}
+        </h5>
+        <h5 class="modal-title" id="ClockInModalLabel" *ngIf="alreadyCheckedIn">
+          You Have To Clock-Out Before You Can Clock-In Again
         </h5>
       </div>
 
@@ -48,7 +55,7 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successClockIn"
+          *ngIf="!successClockIn && !alreadyCheckedIn"
         >
           No
         </button>
@@ -56,10 +63,21 @@
           type="submit"
           class="btn btn-primary"
           data-target="#ClockInModal"
-          *ngIf="!successClockIn"
+          *ngIf="!successClockIn && !alreadyCheckedIn"
           (click)="ClockIn()"
         >
           Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-toggle="modal"
+          data-target="#ClockInModal"
+          data-dismiss="modal"
+          *ngIf="alreadyCheckedIn"
+          (click)="alreadyCheckedIn = false"
+        >
+          OK
         </button>
         <button
           type="button"
@@ -68,6 +86,7 @@
           data-target="#ClockInModal"
           data-dismiss="modal"
           *ngIf="successClockIn"
+          (click)="successClockIn = false"
         >
           OK
         </button>
@@ -91,12 +110,15 @@
         <h5
           class="modal-title"
           id="ClockOutModalLabel"
-          *ngIf="!successClockOut"
+          *ngIf="!successClockOut && !notClockedInYet"
         >
-          Are You Sure You Would Like Clock-Out
+          Would You Like Clock-Out?
         </h5>
         <h5 class="modal-title" id="ClockOutModalLabel" *ngIf="successClockOut">
           Successfully Clocked Out At {{ currentTime }}
+        </h5>
+        <h5 class="modal-title" id="ClockOutModalLabel" *ngIf="notClockedInYet">
+          You Have To Be Clocked In Before You Can Clock Out
         </h5>
       </div>
 
@@ -105,7 +127,7 @@
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          *ngIf="!successClockOut"
+          *ngIf="!successClockOut && !notClockedInYet"
         >
           No
         </button>
@@ -113,7 +135,7 @@
           type="submit"
           class="btn btn-primary"
           data-target="#ClockOutModal"
-          *ngIf="!successClockOut"
+          *ngIf="!successClockOut && !notClockedInYet"
           (click)="ClockOut()"
         >
           Yes
@@ -124,7 +146,19 @@
           data-toggle="modal"
           data-target="#ClockOutModal"
           data-dismiss="modal"
+          *ngIf="notClockedInYet"
+          (click)="notClockedInYet = false"
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ClockOutModal"
+          data-dismiss="modal"
           *ngIf="successClockOut"
+          (click)="successClockOut = false"
         >
           OK
         </button>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
+
 import {
   AbstractControl,
   FormBuilder,
@@ -107,6 +108,7 @@ import { AddVatComponent } from './nav/product-page/add-vat/add-vat.component';
 import { SearchVatComponent } from './nav/product-page/search-vat/search-vat.component';
 import { MaintainVatComponent } from './nav/product-page/maintain-vat/maintain-vat.component';
 import { UpdateVatComponent } from './nav/product-page/maintain-vat/update-vat/update-vat.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: 'nav', component: NavComponent },
@@ -296,6 +298,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     NgxPrintModule,
     PdfViewerModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

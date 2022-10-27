@@ -46,10 +46,15 @@ export class WageReportComponent implements OnInit {
 
   generatedBy: string;
 
-  totalWage: number = 0;
-  totalWageString: string;
-
   dynamicArray = [];
+
+  DateFrom;
+  DateTo;
+
+  //validation
+  validDateTo: boolean = true;
+  validDateFrom: boolean = true;
+  validDate: boolean = true;
 
   //audit log
   auditLog: AuditLog = {
@@ -115,22 +120,92 @@ export class WageReportComponent implements OnInit {
     });
   }
 
+  somewage;
   async getAllWages() {
     this.wageService.getAllWages().subscribe((response) => {
       this.wages = response;
+      this.somewage = response;
       console.log('this is all the wages');
       console.log(this.wages);
-      this.buildTable();
     });
+  }
+
+  //////////////////// valiation ///////////////////////////////////////////
+
+  FormValidate() {
+    this.validateDate();
+    this.valdiateDateFrom();
+    this.valdiateDateTo();
+  }
+
+  valdiateDateFrom() {
+    if (this.DateFrom < '2022-0-01' || this.DateFrom == null) {
+      this.validDateFrom = false;
+    } else {
+      this.validDateFrom = true;
+    }
+    this.validateDate();
+  }
+
+  valdiateDateTo() {
+    let today = new Date().toISOString().split('T', 2);
+
+    if (this.DateTo > today[0] || this.DateTo == null) {
+      this.validDateTo = false;
+    } else {
+      this.validDateTo = true;
+    }
+    this.validateDate();
+  }
+
+  validateDate() {
+    if (this.DateFrom > this.DateTo) {
+      this.validDate = false;
+    } else {
+      this.validDate = true;
+    }
+  }
+
+  /////////////////////sort out dates/////////////////////////////////////////
+  dateStuff() {
+    console.log('Date From: ' + this.DateFrom);
+    console.log('Date To: ' + this.DateTo);
+
+    let re = /-/gi;
+    this.DateFrom = this.DateFrom.replace(re, '/');
+    this.DateTo = this.DateTo.replace(re, '/');
+
+    console.log('Date From: ' + this.DateFrom);
+    console.log('Date To: ' + this.DateTo);
+
+    this.wages = this.somewage;
+    this.wages = this.wages.filter((wage) => {
+      return wage.dateWorked >= this.DateFrom && wage.dateWorked <= this.DateTo;
+    });
+    this.buildTable();
   }
 
   ///////////////// create the dynamic array /////////////////////////////////
 
+  totalWage: number = 0;
+  totalWageString: string;
+
   buildTable() {
+    this.totalWage = 0;
+    this.dynamicArray = [];
+    this.exists = false;
+
+    console.log('this is the build table wages');
+    console.log(this.wages);
+
     this.wagesTemp = this.wages.filter((wage) => {
       return wage.wageCollected == 'true';
     });
 
+    console.log('this is the build table wagesTemp');
+    console.log(this.wagesTemp);
+
+    //for all wages
     for (let i = 0; i < this.wagesTemp.length; i++) {
       const element = this.wagesTemp[i];
 
@@ -142,12 +217,19 @@ export class WageReportComponent implements OnInit {
       if (this.dynamicArray.length > 0) {
         for (let i = 0; i < this.dynamicArray.length; i++) {
           const x = this.dynamicArray[i];
+
           if (x.empID == this.employeesTemp[0].employeE_ID) {
+            //employee found
             let wageSome = Number(this.dynamicArray[i].wage);
+            let timeSome = Number(this.dynamicArray[i].totalTime);
             wageSome = wageSome + element.amount;
+            timeSome = timeSome + Number(element.totalTime);
             this.dynamicArray[i].wage = wageSome;
+            this.dynamicArray[i].totalTime = timeSome.toFixed(2);
+
             this.exists = true;
-            this.totalWage = this.totalWage + this.dynamicArray[i].wage;
+            this.totalWage = this.totalWage + element.amount;
+
             break;
           } else {
             this.exists = false;
@@ -160,6 +242,7 @@ export class WageReportComponent implements OnInit {
           name: this.employeesTemp[0].name,
           surname: this.employeesTemp[0].surname,
           wage: element.amount,
+          totalTime: element.totalTime,
           empID: element.employeeID,
         });
 

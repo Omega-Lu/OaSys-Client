@@ -205,7 +205,9 @@ export class MaintainProductComponent implements OnInit {
 
   /////////////////// validation functions /////////////////////////////////
 
+  hasQuantity: boolean = false;
   ActiveReferences() {
+    this.hasQuantity = false;
     console.log(this.product);
     this.hasReference = false;
 
@@ -241,6 +243,10 @@ export class MaintainProductComponent implements OnInit {
         this.hasReference = true;
       }
     });
+
+    if (this.product.quantitY_ON_HAND > 0) {
+      this.hasReference = true;
+    }
   }
 
   back() {

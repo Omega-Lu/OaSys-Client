@@ -97,6 +97,9 @@
           <tr>
             <th>Date</th>
             <th>Wage Name</th>
+            <th>Time Clocked In</th>
+            <th>Time Clocked Out</th>
+            <th>Total Time Worked</th>
             <th>Total pay</th>
           </tr>
         </thead>
@@ -104,6 +107,9 @@
           <tr *ngFor="let wages of displayWages">
             <td>{{ wages.date }}</td>
             <td>{{ wages.wageName }}</td>
+            <td>{{ wages.timeIN }}</td>
+            <td>{{ wages.timeOut }}</td>
+            <td>{{ wages.totalTime }} hour/s</td>
             <td>R{{ wages.totalPay.toFixed(2) }}</td>
           </tr>
           <tr *ngIf="!employeeSelected">

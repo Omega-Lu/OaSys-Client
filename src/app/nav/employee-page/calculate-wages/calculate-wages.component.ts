@@ -221,6 +221,9 @@ export class CalculateWagesComponent implements OnInit {
         this.displayWages.push({
           date: element.dateWorked,
           wageName: this.employeeTypesTemp[0].positioN_NAME,
+          timeIN: element.timeIn,
+          timeOut: element.timeOut,
+          totalTime: element.totalTime,
           totalPay: element.amount,
           wageID: element.wageID,
         });

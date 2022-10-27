@@ -8,4 +8,7 @@ export interface Wage {
   amount: number;
   hrApproved: string;
   dateWorked: string;
+  timeIn: string;
+  timeOut: string;
+  totalTime: string;
 }

@@ -94,6 +94,9 @@
         <div class="form-label" style="width: fit-content; font-size: x-large">
           Sale Made By: {{ currentUser.username }}
         </div>
+        <div class="form-label" style="width: fit-content; font-size: x-large">
+          Date: {{ today }}
+        </div>
       </div>
 
       <div
@@ -105,6 +108,7 @@
             <tr>
               <th>Product Name</th>
               <th>Quantity </th>
+              <th>Product Price</th>
               <th>Price excl. VAT</th>
               <th>Total price</th>
               <th></th>
@@ -124,8 +128,9 @@
                   (input)="CalQuan(i, dynamic.quantity)"
                 />
               </td>
+              <td>{{ dynamic.prodPrice.toFixed(2) }}</td>
               <td>{{ dynamic.vatPrice }}</td>
-              <td>{{ dynamic.total }}</td>
+              <td>{{ dynamic.total.toFixed(2) }}</td>
               <td (click)="deleteRow(i)">
                 <button
                   class="btn btn-primary"

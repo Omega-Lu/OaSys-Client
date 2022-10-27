@@ -36,4 +36,6 @@ export class SearchVatComponent implements OnInit {
       });
     }
   }
+
+
 }

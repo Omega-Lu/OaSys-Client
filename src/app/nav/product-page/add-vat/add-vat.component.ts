@@ -65,19 +65,12 @@ export class AddVatComponent implements OnInit {
     this.validVat = this.validate.ValidateMoney(this.vat.vatAmount);
   }
 
+  //add new vat
   onSubmit() {
-    if (this.vats.length > 0) {
-      this.vats[0].vatAmount = this.vat.vatAmount;
-      this.vatService.updateVat(this.vats[0]).subscribe((res) => {
-        console.log('updated.vat');
-        console.log(res);
-      });
-    } else {
-      this.vatService.addVat(this.vat).subscribe((res) => {
-        console.log('new vat');
-        console.log(res);
-      });
-    }
+    this.vatService.addVat(this.vat).subscribe((res) => {
+      console.log('new vat');
+      console.log(res);
+    });
 
     //add to audit log
     this.AuditLogService.addAuditLog(this.auditLog).subscribe((res) => {

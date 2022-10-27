@@ -1,5 +1,18 @@
 <div class="container-fluid">
   <h1>View VAT</h1>
+  <div class="row" style="padding-bottom: 0px">
+    <h1 style="width: fit-content; height: 60px; justify-content: space-around">
+      Search:
+    </h1>
+    <input
+      class="form-control"
+      type="text"
+      style="width: 300px; height: 35px"
+      placeholder="Search..."
+      [(ngModel)]="searchText"
+      (input)="Search()"
+    />
+  </div>
 
   <div class="table-responsive" style="max-height: 550px">
     <table class="table">
@@ -11,7 +24,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let vat of vats">
-          <td>{{ vat.vatAmount }}</td>
+          <td>{{ vat.vatAmount.toFixed(2) }}</td>
           <td>{{ vat.dateModified }}</td>
         </tr>
       </tbody>

@@ -4,7 +4,7 @@
       Search:
     </h1>
     <input
-    maxlength="50"
+      maxlength="50"
       class="form-control"
       type="text"
       style="width: 300px; height: 35px"
@@ -47,7 +47,7 @@
       <div class="col">
         <label class="form-label">Name:</label>
         <input
-        maxlength="50"
+          maxlength="50"
           class="form-control"
           name="debtorName"
           placeholder="Debtor Name"
@@ -61,7 +61,7 @@
       <div class="col">
         <label class="form-label">Surname:</label
         ><input
-        maxlength="50"
+          maxlength="50"
           class="form-control"
           type="text"
           placeholder="Debtor Surname"
@@ -91,7 +91,7 @@
             </div>
           </div>
           <input
-          maxlength="50"
+            maxlength="50"
             class="form-control"
             type="text"
             required
@@ -115,7 +115,7 @@
       <div class="col">
         <label class="form-label">Email:</label>
         <input
-        maxlength="50"
+          maxlength="50"
           class="form-control"
           name="debtorEmail"
           placeholder="example@email.com"
@@ -342,11 +342,22 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="!successDecline">
-          Are You Sure You Would Like To Decilne This Application
+          Are You Sure You Would Like To Decline This Application
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" *ngIf="successDecline">
-          Application Successfully Declined
+          Reason For Declining This Credit Application
         </h5>
+      </div>
+      <div class="modal-body">
+        <input
+          *ngIf="successDecline"
+          maxlength="50"
+          class="form-control"
+          name="declineReason"
+          [(ngModal)]="declinereason"
+          placeholder="Decline Reason"
+          type="text"
+        />
       </div>
 
       <div class="modal-footer">

@@ -226,13 +226,10 @@ export class AddWarningComponent implements OnInit {
   compareWarning() {
     this.warningsTemp = this.warnings;
     this.warningsTemp = this.warningsTemp.filter((warning) => {
-      return warning.employeE_ID == this.warning.employeE_ID;
-    });
-    this.warningsTemp = this.warningsTemp.filter((warning) => {
-      return warning.warninG_TYPE_ID == this.warning.warninG_TYPE_ID;
-    });
-    this.warningsTemp = this.warningsTemp.filter((warning) => {
-      return warning.warininG_NAME == this.warning.warininG_NAME;
+      return (
+        warning.employeE_ID == this.warning.employeE_ID &&
+        warning.warninG_TYPE_ID == this.warning.warninG_TYPE_ID
+      );
     });
     if (this.warningsTemp.length > 0) {
       this.EmployeeWarningService.getAllEmployeeWarningses().subscribe(

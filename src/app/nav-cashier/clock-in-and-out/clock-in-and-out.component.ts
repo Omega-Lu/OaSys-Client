@@ -12,7 +12,10 @@ import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/_services/employe-type.service';
 import { Rate } from 'src/app/models/rate.model';
 import { RateService } from 'src/app/_services/rate.service';
-import { of } from 'rxjs';
+import * as $ from 'jquery';
+import * as bootstrap from 'bootstrap';
+
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-clock-in-and-out',
@@ -66,6 +69,9 @@ export class ClockInAndOutComponent implements OnInit {
     amount: 0,
     hrApproved: 'false',
     dateWorked: '',
+    timeIn: '',
+    timeOut: '',
+    totalTime: '',
   };
   wages: Wage[] = [];
 
@@ -75,11 +81,16 @@ export class ClockInAndOutComponent implements OnInit {
     private WageService: WageService,
     private EmployeeService: EmployeeService,
     private EmployeeTypeService: EmployeeTypeService,
-    private RateService: RateService
+    private RateService: RateService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
     this.getCurrentUser();
+  }
+
+  open(content: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   //////////////////// get functions ////////////////////////////////////////
@@ -159,7 +170,9 @@ export class ClockInAndOutComponent implements OnInit {
 
   ////////////////////////////////// clock in /////////////////////////
 
+  alreadyCheckedIn: boolean = false;
   async ClockIn() {
+    this.alreadyCheckedIn = false;
     // get and set the current time
     this.currentTime = new Date();
     this.currentTime = this.currentTime.toLocaleString('en-GB', {
@@ -167,27 +180,37 @@ export class ClockInAndOutComponent implements OnInit {
       minute: 'numeric',
     });
 
-    this.employeeHours.checkInTime = this.currentTime;
+    if (this.employeeHours.checkInTime == '') {
+      this.employeeHours.checkInTime = this.currentTime;
 
-    this.EmployeeHoursService.updateEmployeeHours(this.employeeHours).subscribe(
-      (res) => {
+      this.EmployeeHoursService.updateEmployeeHours(
+        this.employeeHours
+      ).subscribe((res) => {
         console.log('added check in time');
         console.log(res);
         this.successClockIn = true;
-      }
-    );
+      });
+    } else {
+      this.alreadyCheckedIn = true;
+    }
   }
 
   ////////////////////// clock out //////////////////////////////
 
+  notClockedInYet: boolean = false;
   ClockOut() {
+    //check if not clocked in yet
+    if (this.employeeHours.checkInTime == '') {
+      this.notClockedInYet = true;
+      return;
+    }
+
     this.currentTime = new Date();
     this.currentTime = this.currentTime.toLocaleString('en-GB', {
       hour: 'numeric',
       minute: 'numeric',
     });
 
-  
     this.employeeHours.checkOutTime = this.currentTime;
 
     this.EmployeeHoursService.updateEmployeeHours(this.employeeHours).subscribe(
@@ -230,30 +253,16 @@ export class ClockInAndOutComponent implements OnInit {
     this.wage.rateID = this.rate[0].ratE_ID;
     this.wage.amount = this.totalPay;
     this.wage.dateWorked = new Date().toLocaleDateString();
+    this.wage.timeIn = this.employeeHours.checkInTime;
+    this.wage.timeOut = this.employeeHours.checkOutTime;
+    this.wage.totalTime = this.totalTime.toFixed(2);
 
-    this.WageService.getAllWages().subscribe((res) => {
-      res = res.filter((wage) => {
-        return wage.employeeID == this.currentUser.employeeID;
-      });
-      res = res.filter((wage) => {
-        return wage.dateWorked == this.wage.dateWorked;
-      });
-
-      if (res.length > 0) {
-        this.wage = res[0];
-        this.wage.amount = this.totalPay;
-        this.WageService.updateWage(this.wage).subscribe((response) => {
-          console.log('Updated todays wage');
-          console.log(response);
-          this.successClockOut = true;
-        });
-      } else {
-        this.WageService.addWage(this.wage).subscribe((response) => {
-          console.log('new Wage');
-          console.log(response);
-          this.successClockOut = true;
-        });
-      }
+    this.WageService.addWage(this.wage).subscribe((response) => {
+      console.log('new Wage');
+      console.log(response);
+      this.successClockOut = true;
+      this.employeeHours.checkInTime = '';
+      this.employeeHours.checkOutTime = '';
     });
   }
 }

@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
 
     console.log(new Date().toLocaleDateString());
     console.log('//////////////////////////////////////');
-    console.log(this.saltnHash('12uqlgth'));
+    console.log(this.saltnHash('GM'));
 
     // Email.send({
     //   Host: 'smtp.elasticemail.com',

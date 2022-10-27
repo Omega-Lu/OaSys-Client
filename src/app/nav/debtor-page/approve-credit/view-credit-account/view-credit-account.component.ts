@@ -255,6 +255,8 @@ export class ViewCreditAccountComponent implements OnInit {
     }
   }
 
+  declinereason = '';
+
   emailValidate() {
     this.emailDetails = this.validate.ValidateEmail(
       this.customerApplication.email

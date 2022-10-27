@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { CurrentUserService } from '../_services/CurrentUser.service';
 import { CurrentUser } from '../models/CurrentUser.model';
 
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from '../_services/employee.service';
+
 @Component({
   selector: 'app-nav-cashier',
   templateUrl: './nav-cashier.component.html',
@@ -18,9 +21,13 @@ export class NavCashierComponent implements OnInit {
   currentUser: CurrentUser = null;
   currentUsers: CurrentUser[] = [];
 
+  employee: Employee;
+  employees: Employee[] = [];
+
   constructor(
     private router: Router,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    private employeeService: EmployeeService
   ) {
     this.loggedIn = true;
   }
@@ -40,12 +47,28 @@ export class NavCashierComponent implements OnInit {
   setCurrentUser() {
     this.currentUser = this.currentUsers[this.currentUsers.length - 1];
     this.username = this.currentUser.username;
+    this.getEmployees();
   }
 
   getAllCurrentUsers() {
     this.currentUserService.getAllCurrentUsers().subscribe((response) => {
       this.currentUsers = response;
       this.setCurrentUser();
+    });
+  }
+
+  employeeimg;
+
+  getEmployees() {
+    this.employeeService.getAllEmployees().subscribe((res) => {
+      this.employees = res;
+      this.employees = this.employees.filter((employee) => {
+        return employee.employeE_ID == this.currentUser.employeeID;
+      });
+
+      this.employee = this.employees[0];
+
+      this.employeeimg = 'https://localhost:7113/' + this.employee.img;
     });
   }
 }

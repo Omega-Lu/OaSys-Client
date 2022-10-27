@@ -153,6 +153,8 @@ export class MakeSaleComponent implements OnInit {
   pdfPath = 'https://localhost:7113/Resources/pdfs/Make sale.pdf';
   displayPDF: boolean = false;
 
+  today = new Date();
+
   constructor(
     private customerAccountService: CustomerAccountService,
     private productService: ProductService,
@@ -440,6 +442,7 @@ export class MakeSaleComponent implements OnInit {
         name: productName,
         quantity: this.saleQuantity,
         vatPrice: vatPrice,
+        prodPrice: this.productsTemp[0].sellinG_PRICE,
         total: this.price,
         productID: this.productsTemp[0].producT_ID,
         quanOnHand: this.productsTemp[0].quantitY_ON_HAND,
